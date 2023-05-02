@@ -4,6 +4,7 @@ import Input from '../input/input'
 import { SubmitHandler, FormHandles } from '@unform/core'
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
+import { validateEmail, validateMatricula, validatePassword } from "@/utils/validate";
 
 
 interface UserFormState {
@@ -17,15 +18,33 @@ interface UserFormState {
 
 function Register(){
     const formRef = useRef<FormHandles>(null)
+    const [emailErr, setEmailErr] = useState<Boolean>(false)
+    const [matriculaErr, setMatriculaErr] = useState<Boolean>(false)
+    const [passwordErr, setPasswordErr] = useState<Boolean>(false)
     
     const handleSubmit: SubmitHandler<UserFormState> = data => {
-      const name = data.name;
-      const email = data.email;
-      const telephone = data.telephone;
-      const matricula = data.matricula;
-      const password = data.password;
-      const confirmPassowrd = data.confirmPassowrd;
-      console.log(data)
+        if(!validateEmail(data.email)){
+            setEmailErr(true);
+            return
+        }
+        setEmailErr(false);
+
+        if(!validateMatricula(data.matricula)){
+            setMatriculaErr(true);
+            return
+        }
+        setMatriculaErr(false);
+
+        if(!validatePassword(data.password)){
+            setPasswordErr(true);
+            return
+        }
+        setPasswordErr(false);
+
+        if(!(emailErr && matriculaErr && passwordErr)){
+            //envia os dados para o Back
+            console.log(data)
+        }
     }
 
     return(
@@ -43,6 +62,7 @@ function Register(){
                         <div className="flex flex-col gap-3">
                             <label className="font-['Poppins'] text-[#616161] text-sm font-bold">Email (Acadêmico)</label>
                             <Input name="email" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-16 px-5" type="email" placeholder="seu.nome@ufcg.edu.br" required/>
+                            {emailErr && <p className="text-red-500">Email inválido *</p>}
                         </div>
 
                         <div className="flex flex-col gap-3">
@@ -52,10 +72,12 @@ function Register(){
                         <div className="flex flex-col gap-3">
                             <label className="font-['Poppins'] text-[#616161] text-sm font-bold">Matricula</label>
                             <Input name="matricula" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-16 px-5" type="text" placeholder="999999999" required/>
+                            {matriculaErr && <p className="text-red-500">Matricula invalida *</p>}
                         </div>
                         <div className="flex flex-col gap-3">
                             <label className="font-['Poppins'] text-[#616161] text-sm font-bold">Senha:</label>
                             <Input name="password" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-16 px-5" type="password" placeholder="*********" required/>
+                            {passwordErr && <p className="text-red-500">Senha muito curta *</p>}
                         </div>
                         <div className="flex flex-col gap-3">
                             <label className="font-['Poppins'] text-[#616161] text-sm font-bold">Confirme sua senha:</label>
