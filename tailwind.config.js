@@ -6,12 +6,24 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    colors: {
+      'default': '#252525',
+      'primary': '#FFB400',
+      'green': '#52B788',
+      'hover-green': '#4EB283',
+      'light-blue': '#219EBC',
+      'dark-blue': '#073F5A',
+      'gray': '#969696',
+      'light': '#C2C2C2',
+      'dark': '#222222',
+      'white': '#FFFFFF'
+    },
     extend: {
-      backgrounds: {
-        'background': '#252525',
-        'backgroundButtonYellow': '#FFB400',
-        'backgroundInput': '#C2C2C2',
-        'backgroundContent': '#222222',
+      width: {
+        '528': '33rem',
+      },
+      transitionProperty: {
+        'height': 'height'
       },
       fontFamily:{
         'body':['"Poppins"']

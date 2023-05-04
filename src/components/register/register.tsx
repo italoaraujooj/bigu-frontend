@@ -6,6 +6,7 @@ import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
 import { validateEmail, validateMatricula, validatePassword } from "@/utils/validate";
 import bcrypt from 'bcryptjs'
+import Button from "../button";
 
 interface UserFormState {
     name: string;
@@ -91,7 +92,8 @@ function Register(){
                             <label className="font-['Poppins'] text-[#616161] text-sm font-bold md:text-lg">Confirme sua senha:</label>
                             <Input name="confirmPassowrd" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-11 px-5 text-sm md:h-14 md:text-base" type="password"  placeholder="*********" required/>
                         </div>
-                        <button className="bg-[#FFB400] rounded-lg h-12 font-bold text-white text-xl md:h-16 md:text-3xl" type="submit">Cadastrar</button>
+                        {/* <button className="bg-[#FFB400] rounded-lg h-16 font-bold text-2xl text-white" type="submit">Cadastrar</button> */}
+                        <Button label="Cadastrar" onClick={() => {}} size="lg" color="yellow" shape="square" />
                         <div>
                             <p className="text-xs md:text-sm flex justify-center">Ao se inscrever, você concorda com nossos</p>
                             <p className="text-xs md:text-sm flex justify-center">Termos de Uso e com a Política de Privacidade.</p>
