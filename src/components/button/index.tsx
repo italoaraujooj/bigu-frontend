@@ -27,9 +27,9 @@ const Button = (props: Props) => {
 
   const styles = {
     sizes: {
-      sm: "w-48 h-16 px-8",
-      md: "w-60 h-16 px-8",
-      lg: "w-80 h-16 px-8",
+      sm: "w-48 h-12 px-8 text-base",
+      md: "w-60 h-16 px-8 text-xl",
+      lg: "w-80 h-16 px-8 text-2xl",
     },
     colors: {
       yellow: "bg-primary",
@@ -49,7 +49,6 @@ const Button = (props: Props) => {
         styles.sizes[size],
         styles.colors[color],
         styles.shapes[shape],
-        "text-2xl",
         "font-bold",
         "text-white",
         className,
