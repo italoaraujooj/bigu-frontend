@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     colors: {
       'default': '#252525',
-      'primary': '#FFB400',
+      'yellow': '#FFB400',
       'green': '#52B788',
       'hover-green': '#4EB283',
       'light-blue': '#219EBC',
@@ -27,6 +27,15 @@ module.exports = {
       },
       fontFamily:{
         'body':['"Poppins"']
+      },
+      keyframes: {
+        pulse: {
+          '0%': { transform: 'scale(1.05)'  },
+          '25%': { transform: 'scale(1.04)'  },
+          '50%': { transform: 'scale(1.03)'  },
+          '75%': { transform: 'scale(1.04)'  },
+          '100%': { transform: 'scale(1.05)' },
+        }
       }
     },
   },
