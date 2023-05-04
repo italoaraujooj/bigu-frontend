@@ -4,8 +4,6 @@ import Input from '../input/input'
 import { SubmitHandler, FormHandles } from '@unform/core'
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
-import { validateEmail, validateMatricula, validatePassword } from "@/utils/validate";
-import bcrypt from 'bcryptjs'
 import Button from "../button";
 
 interface UserFormState {
@@ -19,41 +17,14 @@ interface UserFormState {
 
 function Register(){
     const formRef = useRef<FormHandles>(null)
-    const [emailErr, setEmailErr] = useState<Boolean>(false)
-    const [matriculaErr, setMatriculaErr] = useState<Boolean>(false)
-    const [passwordErr, setPasswordErr] = useState<Boolean>(false)
     
     const handleSubmit: SubmitHandler<UserFormState> = data => {
-        if(!validateEmail(data.email)){
-            setEmailErr(true);
-            return
-        }
-        setEmailErr(false);
-
-        if(!validateMatricula(data.matricula)){
-            setMatriculaErr(true);
-            return
-        }
-        setMatriculaErr(false);
-
-        if(!validatePassword(data.password)){
-            setPasswordErr(true);
-            return
-        }
-        setPasswordErr(false);
-
-        if(!(emailErr && matriculaErr && passwordErr)){
-            const encryptedPassword = encryptPassword(data.password);
-            console.log(encryptedPassword)
-            //enviar dados para o backend aqui
-        }
-    }
-
-    function encryptPassword(password: string): string {
-        const saltRounds = 10;
-        const salt = bcrypt.genSaltSync(saltRounds);
-        const hash = bcrypt.hashSync(password, salt);
-        return hash;
+        console.log(data.name)
+        console.log(data.email)
+        console.log(data.telephone)
+        console.log(data.matricula)
+        console.log(data.name)
+    
     }
 
     return(
@@ -65,32 +36,19 @@ function Register(){
                     </h1>
                     <div className="flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
-                            <label className="font-['Poppins'] text-[#616161] font-bold text-sm md:text-lg">Nome completo:</label>
-                            <Input name="name" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-14 px-5 text-sm md:h-14 md:text-base" type = "text" placeholder="Exemplo eaosdlss" required />
+                            <Input label="Nome Completo: " name="name" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="text" placeholder="Exemplo Alves" required  />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="font-['Poppins'] text-[#616161] text-sm font-bold md:text-lg">Email (Acadêmico)</label>
-                            <Input name="email" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-14 px-5 text-sm md:h-14 md:text-base" type="email" placeholder="seu.nome@ufcg.edu.br" required/>
-                            {emailErr && <p className="text-red-500">Email inválido *</p>}
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="font-['Poppins'] text-[#616161] text-sm font-bold md:text-lg">Telefone</label>
-                            <Input name="telephone" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-14 px-5 text-sm md:h-14 md:text-base"  type="tel" placeholder="(83)999999999" required/>
+                            <Input label="Email (Acadêmico)"  name="email" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="email" placeholder="seu.nome@ufcg.edu.br" required/>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="font-['Poppins'] text-[#616161] text-sm font-bold md:text-lg">Matricula</label>
-                            <Input name="matricula" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-14 px-5 text-sm md:h-14 md:text-base" type="text" placeholder="999999999" required/>
-                            {matriculaErr && <p className="text-red-500">Matricula invalida *</p>}
+                            <Input label="Telefone" name="telephone" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg"  type="tel" placeholder="(83)999999999" required/>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="font-['Poppins'] text-[#616161] text-sm font-bold md:text-lg">Senha:</label>
-                            <Input name="password" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-14 px-5 text-sm md:h-14 md:text-base" type="password" placeholder="*********" required/>
-                            {passwordErr && <p className="text-red-500">Senha muito curta *</p>}
+                            <Input label="Senha:"  name="password" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="password" placeholder="*********" required/>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="font-['Poppins'] text-[#616161] text-sm font-bold md:text-lg">Confirme sua senha:</label>
-                            <Input name="confirmPassowrd" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-11 px-5 text-sm md:h-14 md:text-base" type="password"  placeholder="*********" required/>
+                            <Input label="Confirme sua senha:" name="confirmPassowrd" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="password"  placeholder="*********" required/>
                         </div>
                         {/* <button className="bg-[#FFB400] rounded-lg h-16 font-bold text-2xl text-white" type="submit">Cadastrar</button> */}
                         <Button label="Cadastrar" onClick={() => {}} size="lg" color="yellow" shape="square" />

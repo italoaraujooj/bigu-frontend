@@ -4,12 +4,11 @@ import Input from '../input/input'
 import { SubmitHandler, FormHandles } from '@unform/core'
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
-import bcrypt from 'bcryptjs'
+import Button from "../button";
 
 interface UserLoginState {
     email: string;
     password: string;
-    
 }
 
 function Login(){
@@ -29,14 +28,12 @@ function Login(){
                 </h1>
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-3">
-                        <label className="font-['Poppins'] text-[#616161] text-sm font-bold md:text-lg">Email (Acadêmico)</label>
-                        <Input name="email" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-14 px-5 text-sm md:h-14 md:text-lg" type="email" placeholder="seu.nome@ufcg.edu.br" required/>
+                        <Input label = "Email" name="email" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="email" placeholder="seu.nome@ufcg.edu.br" required/>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <label className="font-['Poppins'] text-[#616161] text-sm font-bold md:text-lg">Senha:</label>
-                        <Input name="password" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-14 px-5 text-sm md:h-14 md:text-lg" type="password" placeholder="*********" required/>
+                        <Input label="Senha:" name="password" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="password" placeholder="*********" required/>
                     </div>
-                    <button className="bg-[#FFB400] rounded-lg h-12 font-bold text-white text-xl md:h-16 md:text-3xl" type="submit">Entrar</button>
+                    <Button label="Entrar" onClick={() => {}} size="lg" color="yellow" shape="square" />
                 </div>    
             </Form>
         </div>
