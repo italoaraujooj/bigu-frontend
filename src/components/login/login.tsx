@@ -12,23 +12,13 @@ interface UserLoginState {
     
 }
 
-const handleSubmit: SubmitHandler<UserLoginState> = data => {
-    console.log(data.email)//verificar se o email está cadastrado no banco
-    
-    if(bcrypt.compareSync(encryptPassword(data.password), "$2a$10$0TWtAxZHow3epDrPJp1vfu6qXfijnnlwlQZsRGVD4S/IhYR7wUCa6")){//comparar com a senha cadastrada no banco))
-            //estaAutenticado
-    } 
-}
-    
-    function encryptPassword(password: string): string {
-    const saltRounds = 10;
-    const salt = bcrypt.genSaltSync(saltRounds);
-    const hash = bcrypt.hashSync(password, salt);
-    return hash;
-}
-
 function Login(){
     const formRef = useRef<FormHandles>(null);
+    
+    const handleSubmit: SubmitHandler<UserLoginState> = data => {
+    console.log(data.email)
+    console.log(data.password)
+}
 
     return(
         <div className="flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 lg:right-0 lg:max-w-[30.125rem]">
