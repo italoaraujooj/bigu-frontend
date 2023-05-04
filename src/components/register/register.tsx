@@ -4,7 +4,7 @@ import Input from '../input/input'
 import { SubmitHandler, FormHandles } from '@unform/core'
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
-
+import Button from "../button";
 
 interface UserFormState {
     name: string;
@@ -30,7 +30,7 @@ function Register(){
 
     return(
         <div className="flex justify-center content-end h-screen fixed top-0 right-0 bg-white max-w-[482px] w-[100%]">
-                <Form className="flex flex-col gap-5 justify-center"ref={formRef} onSubmit={handleSubmit}>
+                <Form className="flex flex-col gap-5 justify-center" ref={formRef} onSubmit={handleSubmit}>
                     <Image className="w-10 h-10" src={Back} alt="voltar"/>
                     <h1 className="font-['Poppins'] font-semibold font text-3xl">
                         Criar Conta
@@ -61,7 +61,8 @@ function Register(){
                             <label className="font-['Poppins'] text-[#616161] text-sm font-bold">Confirme sua senha:</label>
                             <Input name="confirmPassowrd" className="font-['Poppins'] placeholder-[#808080] block bg-[#C2C2C2] rounded-xl w-80 h-16 px-5" type="password"  placeholder="*********" required/>
                         </div>
-                        <button className="bg-[#FFB400] rounded-lg h-16 font-bold text-2xl text-white" type="submit">Cadastrar</button>
+                        {/* <button className="bg-[#FFB400] rounded-lg h-16 font-bold text-2xl text-white" type="submit">Cadastrar</button> */}
+                        <Button label="Cadastrar" onClick={() => {}} size="lg" color="yellow" shape="square" />
                         <div>
                             <p>Ao se inscrever, você concorda com nossos</p>
                             <p>Termos de Uso e com a Política de Privacidade.</p>
