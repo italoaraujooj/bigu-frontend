@@ -7,8 +7,10 @@ import Button from "../button";
 
 function Ride() {
   const [favorite, setFavorite] = React.useState(false);
+  const [askRide, setAskRide] = React.useState(false);
 
-  const toggleFavorite = () => setFavorite(prev => !prev);
+  const toggleFavorite = () => setFavorite((prev) => !prev);
+  const toggleAskRide = () => setAskRide((prev) => !prev);
 
   return (
     <div className="bg-dark w-[33rem] h-fit rounded-lg py-6 px-9">
@@ -29,21 +31,47 @@ function Ride() {
               </p>
             </div>
             <div className="space-y-2">
-              <p className="font-['Poppins']">Corolla Prata - <strong>Placa X8X1543</strong></p>
+              <p className="font-['Poppins']">
+                Corolla Prata - <strong>Placa X8X1543</strong>
+              </p>
               <p className="font-['Poppins']">3 vagas disponíveis</p>
-              <p className="font-['Poppins']"><strong>Saída às 7 horas</strong></p>
+              <p className="font-['Poppins']">
+                <strong>Saída às 7 horas</strong>
+              </p>
             </div>
 
-            <div className="flex items-center gap-4">
-              <Button label="Pedir carona" onClick={() => {}} size="sm" color="green" shape="square" className="font-semibold hover:bg-hover-green"/>
-              <div className="flex items-center gap-2">
+            <div className={`flex items-center gap-4`}>
+              {!askRide ? (
+                <Button
+                  label={
+                    !askRide ? "Pedir carona" : "Aguardando confirmação..."
+                  }
+                  onClick={toggleAskRide}
+                  size="sm"
+                  color="green"
+                  shape="square"
+                  className={`font-semibold hover:bg-hover-green`}
+                />
+              ) : (
+                <span className="animate-pulse text-yellow ease-in-out infinite">Aguardando confirmação..</span>
+              )}
+              <div className={`flex items-center gap-2 ${askRide && 'translate-x-44 duration-500 ease-out'}`}>
                 <button onClick={toggleFavorite}>
-                  { !favorite ? <Image className="w-6 h-6" src={Heart} alt="heart" /> : <Image className="w-6 h-6 transition-transform scale-110" src={HeartFilled} alt="heart" /> }
+                  {!favorite ? (
+                    <Image className="w-6 h-6" src={Heart} alt="heart" />
+                  ) : (
+                    <Image
+                      className="w-6 h-6 transition-transform scale-110"
+                      src={HeartFilled}
+                      alt="heart"
+                    />
+                  )}
                 </button>
-                <p className="font-['Poppins'] text-sm font-normal">Adicionar aos favoritos</p>
+                { !askRide && <p className="font-['Poppins'] text-sm font-normal">
+                  Adicionar aos favoritos
+                </p> }
               </div>
             </div>
-          
           </div>
         ))}
       </div>
