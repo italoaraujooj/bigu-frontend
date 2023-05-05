@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react'
 import { useField } from '@unform/core'
 
-type InputType = "text" | "email" | "password" | "tel" | "file" | "search";
+type InputType = "text" | "email" | "password" | "tel" | "file" | "search" | "checkbox";
 type InputColor = "light" | "extralight";
 type InputSize = "sm";
 
@@ -13,6 +13,7 @@ interface Props {
   color: InputColor
   sizing: InputSize
   placeholder:string
+  readOnly:boolean
 }
 
 type InputProps = JSX.IntrinsicElements['input'] & Props
@@ -25,6 +26,7 @@ export default function Input(props: InputProps) {
     sizing,
     color,
     placeholder,
+    readOnly,
     className,
   } = props;
 
@@ -76,6 +78,7 @@ export default function Input(props: InputProps) {
         defaultValue={defaultValue}
         type={type}
         placeholder={placeholder}
+        readOnly={readOnly}
       />
 
       {error && <span>{error}</span>}

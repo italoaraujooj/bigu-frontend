@@ -28,10 +28,10 @@ function Login(){
                 </h1>
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-3">
-                        <Input label = "Email" name="email" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="email" placeholder="seu.nome@ufcg.edu.br" required/>
+                        <Input label = "Email" name="email" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="email" placeholder="seu.nome@ufcg.edu.br" required readOnly={false}/>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <Input label="Senha:" name="password" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="password" placeholder="*********" required/>
+                        <Input label="Senha:" name="password" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="password" placeholder="*********" required readOnly={false}/>
                     </div>
                     <Button label="Entrar" onClick={() => {}} size="lg" color="yellow" shape="square" />
                 </div>    

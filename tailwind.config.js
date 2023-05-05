@@ -17,7 +17,9 @@ module.exports = {
       'light': '#C2C2C2',
       'extralight': '#F3F3F3',
       'dark': '#222222',
-      'white': '#FFFFFF'
+      'white': '#FFFFFF',
+      'blackLine': '#474747'
+
     },
     extend: {
       width: {
