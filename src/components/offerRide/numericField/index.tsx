@@ -67,7 +67,7 @@ const NumericField = (props: Props) => {
           )}
         >
           {[1, 2, 3].map((item) => (
-            <p key={item} className="text-base">
+            <p key={item} className="text-base text-gray">
               {item}
             </p>
           ))}

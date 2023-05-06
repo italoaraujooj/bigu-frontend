@@ -81,6 +81,7 @@ export default function Input(props: Props) {
           styles.sizes[sizing],
           styles.colors[color],
           styles.shapes[shape],
+          "text-gray",
           "placeholder-[#808080]",
           "font-['Poppins']",
           "my-2",
