@@ -82,7 +82,7 @@ export default function Input(props: Props) {
           styles.colors[color],
           styles.shapes[shape],
           "text-gray",
-          "placeholder-[#808080]",
+          "placeholder-placeholder",
           "font-['Poppins']",
           "my-2",
           className,
