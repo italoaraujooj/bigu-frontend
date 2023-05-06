@@ -22,12 +22,24 @@ module.exports = {
     extend: {
       width: {
         '528': '33rem',
+        '500': '99rem',
+        '1136': '71' // 71rem
       },
       transitionProperty: {
         'height': 'height'
       },
       fontFamily:{
-        'body':['"Poppins"']
+        'family':['"Poppins"']
+      },
+      spacing: {
+        '-110.5%': '-110.5%',
+        '300%': '-221%',
+        '-300%': '-300%',
+        '-400%': '-400%'
+      },
+      transitionTimingFunction: {
+        'in-expo': 'cubic-bezier(0.645, 0.045, 0.355, 1.000)',
+        'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
       },
       keyframes: {
         pulse: {
@@ -36,7 +48,19 @@ module.exports = {
           '50%': { transform: 'scale(1.03)'  },
           '75%': { transform: 'scale(1.04)'  },
           '100%': { transform: 'scale(1.05)' },
+        },
+        checkbox: {
+          '0%': { transform: 'scale(1.2)'  },
+          '25%': { transform: 'scale(1.05)'  },
+          '50%': { transform: 'scale(1.10)'  },
+          '75%': { transform: 'scale(1.15)'  },
+          '100%': { transform: 'scale(1.2)' },
         }
+        // toggle: {
+        //   '0%': { transform: 'scale(1.05)'  },
+        //   '50%': { transform: 'scale(1.10)'  },
+        //   '100%': { transform: 'scale(1.25)'  },
+        // }
       }
     },
   },

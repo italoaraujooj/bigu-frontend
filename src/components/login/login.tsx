@@ -13,7 +13,6 @@ interface UserLoginState {
 
 function Login(){
     const formRef = useRef<FormHandles>(null);
-    
     const handleSubmit: SubmitHandler<UserLoginState> = data => {
     console.log(data.email)
     console.log(data.password)
