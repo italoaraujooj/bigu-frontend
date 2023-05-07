@@ -3,13 +3,13 @@ import React from "react";
 
 type ButtonType = "submit" | "button" | "reset";
 type ButtonColor = "yellow" | "green" | "dark-blue" | "light-blue";
-type ButtonSize = "sm" | "md" | "lg";
+type ButtonSize = "sm" | "base" | "md" | "lg";
 
 type Props = {
   label: string;
   onClick?: () => void;
   type?: ButtonType;
-  shape: "rounded" | "square";
+  shape?: "rounded" | "square";
   size: ButtonSize;
   color: ButtonColor;
 } & React.ComponentProps<"button">;
@@ -19,7 +19,7 @@ const Button = (props: Props) => {
     label,
     onClick,
     type = "submit",
-    shape,
+    shape = "square",
     size,
     color,
     className,
@@ -27,12 +27,13 @@ const Button = (props: Props) => {
 
   const styles = {
     sizes: {
-      sm: "w-48 h-12 px-8 text-base",
+      sm: "w-48 h-12 px-8 text-xs",
+      base: "w-48 h-14 px-6 text-sm",
       md: "w-60 h-16 px-8 text-xl",
       lg: "w-80 h-16 px-8 text-2xl",
     },
     colors: {
-      yellow: "bg-primary",
+      yellow: "bg-yellow",
       green: "bg-green",
       "dark-blue": "bg-dark-blue",
       "light-blue": "bg-light-blue",
