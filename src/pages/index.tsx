@@ -33,7 +33,9 @@ export default function Home() {
               className="my-6"
             />
           </div>
-          <Button label="Conhecer" onClick={() => {}} size="lg" color="yellow" shape="rounded" />
+          <div className="my-8">
+            <Button label="Conhecer" onClick={() => {}} size="lg" color="yellow" shape="rounded" />
+          </div>
         </main>
       </div>
       <Register />

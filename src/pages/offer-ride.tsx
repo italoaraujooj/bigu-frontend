@@ -34,6 +34,8 @@ const OfferRide = (props: Props) => {
     },
   ]);
 
+  const [onlyWomanChecked, setOnlyWomanChecked] = React.useState(true);
+
   const handleCheckboxChange = (checkboxId: number) => {
     const updatedCheckboxes = checkboxes.map((checkbox) => {
       if (checkbox.id === checkboxId) {
@@ -94,6 +96,13 @@ const OfferRide = (props: Props) => {
                   placeholder="R$ 8,90"
                 />
               </div>
+            </div>
+            <div>
+            <Checkbox
+                label="oferecer carona apenas para as mulheres"
+                checked={onlyWomanChecked}
+                onChange={() => setOnlyWomanChecked(prev => !prev)}
+              />
             </div>
           </div>
           <div className="w-1/2 space-y-7">

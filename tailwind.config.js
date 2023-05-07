@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -7,6 +9,7 @@ module.exports = {
   ],
   theme: {
     colors: {
+      ...colors,
       'default': '#252525',
       'yellow': '#FFB400',
       'green': '#52B788',
@@ -18,13 +21,14 @@ module.exports = {
       'extralight': '#F3F3F3',
       'dark': '#222222',
       'white': '#FFFFFF',
-      'placeholder': '#CCCCCC'
+      'placeholder': '#CCCCCC',
     },
     extend: {
       width: {
         '528': '33rem',
         '500': '99rem',
-        '1136': '71' // 71rem
+        '1136': '71', // 71rem
+        '1120': '70rem'
       },
       transitionProperty: {
         'height': 'height'
@@ -37,6 +41,9 @@ module.exports = {
         '300%': '-221%',
         '-300%': '-300%',
         '-400%': '-400%'
+      },
+      lineHeight: {
+        '80': '5rem',
       },
       transitionTimingFunction: {
         'in-expo': 'cubic-bezier(0.645, 0.045, 0.355, 1.000)',

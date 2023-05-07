@@ -13,7 +13,7 @@ type Props = {
 const Checkbox = (props: Props) => {
   const { checked, label, onChange } = props;
   return (
-    <button className="relative flex items-center justify-center gap-2 h-12" onClick={onChange}>
+    <button className="relative flex items-center gap-2 h-12" onClick={onChange}>
       { !checked ? <Image className="w-10 h-10 scale-100 duration-300 ease-out" src={Unchecked} alt="unchecked"/> :<Image className="w-8 h-8 m-1 scale-120 duration-300 ease-in" src={Checked} alt="unchecked"/>}
       <Text label={label} size="sm" />
     </button>
