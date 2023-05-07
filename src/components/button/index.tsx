@@ -33,7 +33,7 @@ const Button = (props: Props) => {
       lg: "w-80 h-16 px-8 text-2xl",
     },
     colors: {
-      yellow: "bg-primary",
+      yellow: "bg-yellow",
       green: "bg-green",
       "dark-blue": "bg-dark-blue",
       "light-blue": "bg-light-blue",

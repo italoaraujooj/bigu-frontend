@@ -3,7 +3,7 @@ import React from "react";
 
 type Props = {
   label: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "6xl";
   color?: "white" | "dark" | "gray" | "red" | "green";
   weight?: "normal" | "medium" | "bold";
   className?: string;
@@ -17,6 +17,7 @@ const Text = (props: Props) => {
       sm: "text-sm", // normal text (p)
       md: "text-md", // subtitle
       lg: "text-3xl font-bold", // title
+      '6xl': "text-6xl"
     },
     weight: {
       normal: "font-normal",
