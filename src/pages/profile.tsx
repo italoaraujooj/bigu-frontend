@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import Button from "../button";
-import MaleAvatar from "../../assets/avatar.png";
-import Star from "../../assets/star.png";
+import Button from "../components/button";
+import MaleAvatar from "../assets/woman.png";
+import Star from "../assets/star.png";
 import Image from 'next/image';
-import Input from "../input/input";
+import Input from "../components/input/input";
 import { Form } from "@unform/web";
 function Profile(){
 
@@ -32,7 +32,7 @@ function Profile(){
     }
 
     return(
-        <Form className="bg-dark max-w-[350px] rounded-2xl p-4 flex flex-col gap-6 md:max-w-[1258px] md:p-16" 
+        <Form className="bg-dark max-w-[350px] rounded-2xl p-4 flex flex-col gap-6 md:max-w-[1258px] md:p-16 mx-auto" 
         onSubmit={handleSubmit} 
         initialData={{ name: response.nome, 
         email: response.email, 
@@ -73,7 +73,7 @@ function Profile(){
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-row">
                         <Input label="Endereço (rua)" name="rua" sizing="sm" color="light" className="md:w-96 md:h-16 md:text-lg" type="text" placeholder="*********" readOnly={true} visibility="visible"/>
-                        <Input label="Numero" name="numero" sizing="adjustable" color="light" className="w-28 md:w-80 md:h-16 md:text-lg" type="text" placeholder="*********" readOnly={true} visibility="md:visible hidden"/>
+                        <Input label="Numero" name="numero" sizing="adjustable" color="light" className="w-28 md:w-80 md:h-16 md:text-lg" type="text" placeholder="*********" readOnly={true} visibility="hidden md:visible"/>
                     </div>
                     <div className="flex gap-11 md:flex-col md:gap-6">
                         <div className="flex flex-col gap-2">

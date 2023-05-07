@@ -42,9 +42,7 @@ function Login(){
             const hash = bcrypt.hashSync(password, salt);
             return hash;
         }
-    
-}
-
+    }
     return(
         <div className="flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 lg:right-0 lg:max-w-[30.125rem]">
             <Form className="flex flex-col gap-5 justify-center"ref={formRef} onSubmit={handleSubmit}>
@@ -54,17 +52,15 @@ function Login(){
                 </h1>
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-3">
-                        <Input label = "Email" name="email" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="email" placeholder="seu.nome@ufcg.edu.br" required readOnly={false}/>
+                        <Input label = "Email" name="email" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="email" placeholder="seu.nome@ufcg.edu.br" readOnly={false}/>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <Input label="Senha:" name="password" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="password" placeholder="*********" required readOnly={false}/>
+                        <Input label="Senha:" name="password" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="password" placeholder="*********" readOnly={false}/>
                     </div>
                     <Button label="Entrar" onClick={() => {}} size="lg" color="yellow" shape="square" />
                 </div>    
             </Form>
         </div>
     )
-
 }
-
 export default Login;
