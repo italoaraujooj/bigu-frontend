@@ -94,6 +94,7 @@ const OfferRide = (props: Props) => {
                   color="extralight"
                   sizing="adjustable"
                   placeholder="R$ 8,90"
+                  readOnly={false}
                 />
               </div>
             </div>

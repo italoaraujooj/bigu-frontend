@@ -8,6 +8,7 @@ const fieldsFirstRow: OfferRideField[] = [
     color: "extralight",
     sizing: "adjustable",
     placeholder: "CATOLÉ",
+    readOnly: true
   },
   {
     name:"destination",
@@ -16,6 +17,7 @@ const fieldsFirstRow: OfferRideField[] = [
     color: "extralight",
     sizing: "adjustable",
     placeholder: "UNIVERSIDADE FEDERAL DE CAMPINA GRANDE",
+    readOnly: true
   },
 ]
 
@@ -27,6 +29,7 @@ const fieldsLastRow: OfferRideField[] = [
     color: "extralight",
     sizing: "adjustable",
     placeholder: "",
+    readOnly: true
   },
   {
     name:"hours",
@@ -35,6 +38,7 @@ const fieldsLastRow: OfferRideField[] = [
     color: "extralight",
     sizing: "adjustable",
     placeholder: "6:30",
+    readOnly: true
   }
 ]
 

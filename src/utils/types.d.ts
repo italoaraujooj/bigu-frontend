@@ -18,6 +18,7 @@ export interface OfferRideField {
   color: InputColor;
   sizing: InputSize;
   placeholder: string;
+  readOnly: boolean
 }
 
 interface OfferRideFormState {

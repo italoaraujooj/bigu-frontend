@@ -14,6 +14,8 @@ interface Props {
   sizing: InputSize;
   placeholder: string;
   shape?: "rounded" | "square";
+  readOnly:boolean;
+  visibility:string;
   className?: string;
 };
 
@@ -28,6 +30,8 @@ export default function Input(props: Props) {
     color,
     shape = "rounded",
     placeholder,
+    readOnly,
+    visibility,
     className,
   } = props;
 
@@ -43,7 +47,7 @@ export default function Input(props: Props) {
     colors: {
       light: "bg-light",
       extralight: "bg-extralight",
-    },
+    }
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -66,10 +70,10 @@ export default function Input(props: Props) {
   }, [fieldName, registerField]);
 
   return (
-    <div className="flex flex-col">
+    <div className={clsx([`flex flex-col`,visibility])}>
       {label && (
         <label
-          className="font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase"
+          className={`font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase`}
           htmlFor={fieldName}
         >
           {label}
@@ -92,6 +96,7 @@ export default function Input(props: Props) {
         defaultValue={defaultValue}
         type={type}
         placeholder={placeholder}
+        readOnly={readOnly}
       />
       {error && <span>{error}</span>}
     </div>

@@ -22,6 +22,7 @@ module.exports = {
       'dark': '#222222',
       'white': '#FFFFFF',
       'placeholder': '#CCCCCC',
+      'blackLine': '#474747',
     },
     extend: {
       width: {
