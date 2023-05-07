@@ -52,7 +52,7 @@ function Profile(){
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-start md:gap-x-20">
+            <div className="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-start xl:gap-x-20">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-2">
                         <Input label="Nome Completo" name="name" sizing="sm" color="light" className="md:w-96 md:h-16 md:text-lg" type="text" placeholder="Exemplo Alves" readOnly={true} visibility="visible"/>
@@ -68,7 +68,7 @@ function Profile(){
                     </div>
                 </div>
                 
-                <div className="w-[20.625rem] border border-solid border-blackLine md:h-[32.5rem] md:w-0"></div>
+                <div className="w-[20.625rem] border border-solid border-blackLine xl:h-[32.5rem] xl:w-0"></div>
                 
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-row">
