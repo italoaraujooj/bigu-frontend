@@ -5,6 +5,8 @@ import { SubmitHandler, FormHandles } from '@unform/core'
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
 import Button from "../button";
+import bcrypt from "bcryptjs"
+import Router from "next/router"
 
 interface UserFormState {
     name: string;
@@ -17,13 +19,35 @@ interface UserFormState {
 function Register(){
     const formRef = useRef<FormHandles>(null)
     
-    const handleSubmit: SubmitHandler<UserFormState> = data => {
-        console.log(data.name)
-        console.log(data.email)
-        console.log(data.telephone)
-        console.log(data.password)
-        console.log(data.confirmPassowrd)
-    
+    const handleSubmit: SubmitHandler<UserFormState> = async data => {
+        const fullName = data.name;
+        const email = data.email;
+        const phoneNumber = data.telephone;
+        const senha = data.password;
+        const password = encryptPassword(senha);
+
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/auth/register', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ fullName , email, phoneNumber, password })
+            });
+            console.log(response.json()
+            .then(data => console.log(data))
+            )
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    }
+
+    function encryptPassword(password: string): string {
+        const saltRounds = 10;
+        const salt = bcrypt.genSaltSync(saltRounds);
+        const hash = bcrypt.hashSync(password, salt);
+        return hash;
     }
 
     return(
