@@ -4,7 +4,7 @@ import { useField } from "@unform/core";
 
 type InputType = "text" | "email" | "password" | "tel" | "file" | "search" | "date";
 type InputColor = "light" | "extralight";
-type InputSize = "sm" | "adjustable";
+type InputSize = "sm" | "adjustable" | "xs";
 
 interface Props {
   name: string;
@@ -15,7 +15,7 @@ interface Props {
   placeholder: string;
   shape?: "rounded" | "square";
   readOnly:boolean;
-  visibility:string;
+  visibility?:string;
   className?: string;
 };
 
@@ -37,6 +37,7 @@ export default function Input(props: Props) {
 
   const styles = {
     sizes: {
+      xs: "w-24 h-14 px-5 text-sm",
       sm: "w-80 h-14 px-5 text-sm",
       adjustable: 'w-full h-14 px-5 text-sm'
     },

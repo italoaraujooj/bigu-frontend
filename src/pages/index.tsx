@@ -39,7 +39,7 @@ export default function Home() {
           </div>
         </main>
       </div>
-      <Profile />
+      {/* <Profile /> */}
     </div>
   );
 }
