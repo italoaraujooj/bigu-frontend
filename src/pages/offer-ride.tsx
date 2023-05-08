@@ -53,19 +53,19 @@ const OfferRide = (props: Props) => {
   };
 
   return (
-    <div className="flex w-full h-screen items-center justify-center">
-      <div className="bg-dark w-[64rem]	 h-fit rounded-lg px-14 py-16 space-y-12">
+    <div className="flex w-full items-center justify-center my-16">
+      <div className="bg-dark w-[28rem] lg:w-[64rem] h-fit rounded-lg px-6 py-8 lg:px-14 lg:py-16 space-y-12 mx-8">
         <header className="flex gap-4 items-center">
           <Image className="w-20 h-20" src={Woman} alt="woman-avatar" />
           <Text label="Olá, Joana!" size="lg" weight="bold" />
           {/* <Image className="w-4 h-4" src={Star} alt="woman-avatar"/> */}
         </header>
         <Form
-          className="flex gap-6 justify-between"
+          className="flex flex-col lg:flex-row  lg:justify-between"
           ref={formRef}
           onSubmit={() => {}}
         >
-          <div className="w-2/5 space-y-2">
+          <div className="w-full lg:w-2/5 space-y-2">
             <section className="mb-7">
               <Checkbox
                 label="estou indo para a universidade"
@@ -81,12 +81,12 @@ const OfferRide = (props: Props) => {
               />
             </section>
             {createFields(fieldsFirstRow, "space-y-4")}
-            {createFields(fieldsLastRow, "flex items-end gap-4 space-y-2")}
+            {createFields(fieldsLastRow, "w-full flex items-end gap-4 space-y-2")}
             <div className="flex gap-4 items-center space-y-2">
-              <div className="w-1/2 flex flex-col ">
+              <div className="w-1/2 lg:w-3/4 flex flex-col ">
                 <NumericField />
               </div>
-              <div>
+              <div className="w-1/2">
                 <Input
                   name="estimated_value"
                   label="VALOR ESTIMADO"
@@ -103,10 +103,11 @@ const OfferRide = (props: Props) => {
                 label="oferecer carona apenas para as mulheres"
                 checked={onlyWomanChecked}
                 onChange={() => setOnlyWomanChecked(prev => !prev)}
+                className="my-4 mb-6"
               />
             </div>
           </div>
-          <div className="w-1/2 space-y-7">
+          <div className="w-full lg:w-1/2 space-y-7">
             <div>
               <Text
                 label="Escolha um veículo"
@@ -127,13 +128,13 @@ const OfferRide = (props: Props) => {
               <Button
                 label="salvar rascunho"
                 size="base"
-                className="uppercase font-semibold"
+                className="uppercase font-semibold px-3 lg:px-6"
                 color="dark-blue"
               />
               <Button
                 label="oferecer carona"
                 size="base"
-                className="uppercase font-semibold"
+                className="uppercase font-semibold px-3 lg:px-6"
                 color="green"
               />
             </section>

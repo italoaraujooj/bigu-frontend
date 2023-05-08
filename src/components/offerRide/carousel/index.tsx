@@ -72,9 +72,9 @@ const Carousel = (props: Props) => {
               )}
             >
               <div className="w-full h-20 bg-extralight px-6 rounded-lg flex items-center justify-between ">
-                <Image className="w-12 h-12" src={car} alt="car" />
-                <Text label={model} size="md" color="gray" weight="medium" />
-                <button className="h-12 font-family bg-green rounded-lg text-white font-semibold text-base px-6 flex items-center justify-between gap-6 uppercase tracking-tight hover:bg-hover-green">
+                <Image className="w-10 h-10 lg:w-12 lg:h-12" src={car} alt="car" />
+                <Text label={model} size="md" color="gray" weight="medium" className="text-sm lg:text-md" />
+                <button className="h-12 font-family bg-green rounded-lg text-white font-semibold text-sm lg:text-base px-4 lg:px-6 flex items-center justify-between gap-3 lg:gap-6 uppercase tracking-tight hover:bg-hover-green">
                   <div
                     className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center"
                     onClick={() => toggleCar(index)}
