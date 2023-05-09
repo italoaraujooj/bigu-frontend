@@ -24,7 +24,8 @@ module.exports = {
       'placeholder': '#CCCCCC',
       'blackLine': '#474747',
       'light-yellow': '#FFB703',
-      'orange': '#FB8500'
+      'orange': '#FB8500',
+      'light-white': '#F6F6F6'
     },
     extend: {
       width: {
