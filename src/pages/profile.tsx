@@ -1,12 +1,16 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Button from "../components/button";
 import MaleAvatar from "../assets/woman.png";
 import Star from "../assets/star.png";
 import Image from "next/image";
 import Input from "../components/input/input";
 import { Form } from "@unform/web";
+import Carousel from "@/components/offerRide/carousel";
 function Profile() {
-  const response = {
+  
+    const [readOnly, setReadOnly] = useState(true);
+
+    const response = {
     //response da API retornando os dados do usuaio
     nome: "Matheus Alves Rafael",
     email: "seu.nome@ccc.ufcg.edu.br",
@@ -20,13 +24,23 @@ function Profile() {
     },
     veiculos: {
       corolla: {
+        id:1,
         capacidade: 3,
         placa: "1232xmp",
       },
+      golf:{
+        id:2,
+        capacidade: 3,
+        placa: "122232xmp"
+      }
     },
   };
 
   function handleSubmit() {}
+  
+  function editSubmit(){
+    setReadOnly(false);
+  }
 
   return (
     <div className="w-full h-fit flex items-center justify-center mt-24">
@@ -35,21 +49,24 @@ function Profile() {
         onSubmit={handleSubmit}
         initialData={{ ...response, ...response.endereco, ...response.veiculos }}
       >
-        <div className="flex items-center gap-3">
-          <Image
-            className="w-12 h-12 md:w-32 md:h-32"
-            src={MaleAvatar}
-            alt="avatar"
-          ></Image>
-          <div className="flex gap-1">
-            <h1 className="text-2xl font-bold text-white md:text-5xl">
-              Olá, Joana
-            </h1>
-            <div className="flex items-center gap-1 pt-2">
-              <Image className="w-3 h-3" src={Star} alt="estrela" />
-              <span className="text-gray text-[0.625rem]">5.0</span>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <Image
+              className="w-12 h-12 md:w-32 md:h-32"
+              src={MaleAvatar}
+              alt="avatar"
+            ></Image>
+            <div className="flex gap-1">
+              <h1 className="text-2xl font-bold text-white md:text-5xl">
+                Olá, Joana
+              </h1>
+              <div className="flex items-center gap-1 pt-2">
+                <Image className="w-3 h-3" src={Star} alt="estrela" />
+                <span className="text-gray text-[0.625rem]">5.0</span>
+              </div>
             </div>
           </div>
+          <Button label="Salvar" onClick={editSubmit} size="md" color="green" shape="square" />
         </div>
 
         <div className="w-full flex flex-col md:flex-row gap-12">
@@ -62,7 +79,7 @@ function Profile() {
               className="w-full md:h-16 md:text-lg"
               type="text"
               placeholder="Exemplo Alves"
-              readOnly={true}
+              readOnly={readOnly}
               visibility="visible"
             />
             <Input
@@ -73,7 +90,7 @@ function Profile() {
               className="w-full md:h-16 md:text-lg"
               type="text"
               placeholder="seu.nome@ufcg.edu.br"
-              readOnly={true}
+              readOnly={readOnly}
               visibility="visible"
             />
             <Input
@@ -84,7 +101,7 @@ function Profile() {
               className="w-full  md:h-16 md:text-lg"
               type="text"
               placeholder="(83)999999999"
-              readOnly={true}
+              readOnly={readOnly}
               visibility="visible"
             />
             <Input
@@ -95,7 +112,7 @@ function Profile() {
               className="w-full  md:h-16 md:text-lg"
               type="text"
               placeholder="*********"
-              readOnly={true}
+              readOnly={readOnly}
               visibility="visible"
             />
           </div>
@@ -113,7 +130,7 @@ function Profile() {
                 className="w-full md:h-16 md:text-lg"
                 type="text"
                 placeholder="*********"
-                readOnly={true}
+                readOnly={readOnly}
                 visibility="visible"
               />
               <Input
@@ -124,7 +141,7 @@ function Profile() {
                 className="md:h-16 md:text-lg"
                 type="text"
                 placeholder="*********"
-                readOnly={true}
+                readOnly={readOnly}
                 visibility="visible"
               />
             </div>
@@ -137,7 +154,7 @@ function Profile() {
                 className="w-1/2 md:h-16 md:text-lg"
                 type="text"
                 placeholder="*********"
-                readOnly={true}
+                readOnly={readOnly}
               />
               <Input
                 label="Bairro"
@@ -147,10 +164,15 @@ function Profile() {
                 className="md:h-16 md:text-lg"
                 type="text"
                 placeholder="*********"
-                readOnly={true}
+                readOnly={readOnly}
               />
             </div>
             <h1 className="text-2xl text-white font-bold"> Meus veículos</h1>
+            <Carousel profile={true}/>
+            <div className="flex gap-7">
+                <Button label="Alterar senha" onClick={() => {}} size="lg" color="light-blue" shape="square" />
+                <Button label="Editar" onClick={editSubmit} size="lg" color="yellow" shape="square" />
+            </div>
           </div>
         </div>
       </Form>
