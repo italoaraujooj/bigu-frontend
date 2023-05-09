@@ -4,6 +4,7 @@ import Register from "@/components/register/register";
 import Text from "@/components/text";
 import Button from "@/components/button";
 import Profile from "@/components/profile";
+import Ride from "@/components/ride";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,7 +40,7 @@ export default function Home() {
           </div>
         </main>
       </div>
-      {/* <Profile /> */}
+      { <Ride /> }
     </div>
   );
 }
