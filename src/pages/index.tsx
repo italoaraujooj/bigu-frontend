@@ -14,8 +14,9 @@ export default function Home() {
       className="relative w-full "
     >
       <div className="w-[70rem] mx-auto">
-        <header className="flex items-center gap-4 py-12">
+        <header className="flex items-center gap-4 py-12 justify-around">
           {/* <Image className="w-48 h-48" src={Logo} alt="car" /> */}
+          {/* <Button label="Entrar" size="md" color="yellow" shape="rounded" /> */}
           {/* <Text label="Bigu" size="lg" weight="bold" /> */}
         </header>
         {/* <Ride /> */}
@@ -39,6 +40,7 @@ export default function Home() {
           </div>
         </main>
       </div>
+      <Register />
       {/* <Profile /> */}
     </div>
   );
