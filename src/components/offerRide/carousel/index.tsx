@@ -4,8 +4,11 @@ import CarSecondary from "../../../assets/car-secondary.png";
 import clsx from "clsx";
 import Image from "next/image";
 import Text from "../../text";
+import SportCar from "../../../assets/sport-car.png"
 
-type Props = {};
+type Props = {
+  profile?: boolean
+};
 
 interface CarsGarageProps {
   id: number;
@@ -60,7 +63,7 @@ const Carousel = (props: Props) => {
         onMouseLeave={() => goToIndex(selectedCar)}
         className={`w-full flex items-center overflow-hidden space-x-12`}
       >
-        {!!items &&
+        {!!items && !props.profile &&
           items?.map(({ id, model, car }, index) => (
             <div
               key={id}
@@ -88,6 +91,35 @@ const Carousel = (props: Props) => {
                   </div>
                   Selecionar
                 </button>
+              </div>
+            </div>
+          ))}
+
+        {!!props.profile &&
+          items?.map(({ id, model, car }, index) => (
+            <div
+              key={id}
+              className={clsx(
+                "w-full shrink-0",
+                "transform-gpu",
+                memoizedPosition,
+                'duration-700 ease-["cubic-bezier(0.645, 0.045, 0.355, 1.000)"]'
+              )}
+            >
+              <div className="w-full h-44 bg-extralight px-6 rounded-lg flex items-start justify-between md:h-48 pt-6 pl-8">
+                <Image className="w-12 h-12" src={SportCar} alt="car"/>
+                <div className="flex flex-col items-center text-gray font-medium text-xs md:text-lg">
+                  <div className="bg-light-blue h-9 p-3 flex items-center rounded-md font-bold text-white text-sm md:text-lg md:p-4">Modelo</div>
+                  <p>Modelo</p>
+                </div>
+                <div className="flex flex-col items-center text-gray font-medium text-xs md:text-lg">
+                  <div className="bg-light-yellow h-9 p-3 flex items-center rounded-md font-bold text-white text-sm md:text-lg md:p-4">Capacidade</div>
+                  <p>Capacidade</p>
+                </div>
+                <div className="flex flex-col items-center text-gray font-medium text-xs md:text-lg">
+                  <div className="bg-orange h-9 p-3 flex items-center rounded-md font-bold text-white text-sm md:text-lg md:p-4">Placa</div>
+                  <p>Placa</p>
+                </div>
               </div>
             </div>
           ))}
