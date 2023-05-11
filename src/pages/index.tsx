@@ -1,10 +1,6 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
-import Register from "@/components/register/register";
 import Text from "@/components/text";
 import Button from "@/components/button";
-import Profile from "@/components/profile";
-import Ride from "@/components/ride";
 import RideFull from "@/components/rideFull";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -39,9 +35,9 @@ export default function Home() {
           <div className="my-8">
             <Button label="Conhecer" onClick={() => {}} size="lg" color="yellow" shape="rounded" />
           </div>
+          <RideFull />
         </main>
       </div>
-      { <RideFull /> }
     </div>
   );
 }
