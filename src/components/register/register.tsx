@@ -5,8 +5,10 @@ import { SubmitHandler, FormHandles } from '@unform/core'
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
 import Button from "../button";
-import bcrypt from "bcryptjs"
 import Router from "next/router"
+import { signUp } from "@/services/auth";
+import { encryptPassword } from "@/utils/validate";
+
 
 interface UserFormState {
     name: string;
@@ -20,38 +22,20 @@ function Register(){
     const formRef = useRef<FormHandles>(null)
     
     const handleSubmit: SubmitHandler<UserFormState> = async data => {
-        const fullName = data.name;
-        const email = data.email;
-        const phoneNumber = data.telephone;
-        const senha = data.password;
-        const password = encryptPassword(senha);
-
-        try {
-            const response = await fetch('http://localhost:8080/api/v1/auth/register', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ fullName , email, phoneNumber, password })
-            });
-            console.log(response.json()
-            .then(data => console.log(data))
-            )
-        } catch (error) {
-            console.error(error);
-            return false;
+        const user = {
+          fullName: data.name,
+          email: data.email,
+          phoneNumber: data.telephone,
+          password: data.password,
+          role: 'USER',
+          userType: 'RIDER'
         }
-    }
-
-    function encryptPassword(password: string): string {
-        const saltRounds = 10;
-        const salt = bcrypt.genSaltSync(saltRounds);
-        const hash = bcrypt.hashSync(password, salt);
-        return hash;
+        console.log(user)
+        const token = (await signUp(user)).data.token;
     }
 
     return (
-      <div className="absolute flex justify-center items-start h-screen bg-white w-[100%] overflow-y-scroll py-6 lg:right-0 lg:max-w-[30.125rem] top-0">
+      <div className="absolute flex justify-center items-start h-screen bg-white w-[100%] overflow-y-scroll py-6 lg:right-0 lg:max-w-[30.125rem] top-0 md:w-full">
         <Form
           className="flex flex-col gap-5 justify-center"
           ref={formRef}

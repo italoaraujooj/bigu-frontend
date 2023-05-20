@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../components/button";
 import WomanAvatar from "../assets/woman.png";
 import Star from "../assets/star.png";
@@ -11,6 +11,7 @@ import Text from "@/components/text";
 import Trash from "../assets/trash.png";
 import Plus from "../assets/plus-green.png";
 import Edit from "../assets/edit.png";
+import { getUser } from "@/services/auth";
 
 function CarItems() {
   const items = [1, 2]
@@ -67,6 +68,21 @@ function CarItems() {
 
 function Profile() {
   const [readOnly, setReadOnly] = useState(true);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const obterDadosDaAPI = async () => {
+      try {
+        const response = await getUser();
+        console.log(response)
+      } catch (error) {
+        console.error('Erro ao obter os dados da API:', error);
+      }
+    };
+  
+    obterDadosDaAPI();
+  }, []);
+
 
   const response = {
     //response da API retornando os dados do usuaio
@@ -103,7 +119,7 @@ function Profile() {
   return (
     <div className="w-full h-fit flex items-center justify-center mt-12">
       <Form
-        className="bg-dark max-w-[99rem] rounded-2xl px-8 py-12 flex flex-col gap-6 md:max-w-[1258px] md:p-16 space-y-6 mx-10"
+        className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 mx-10 lg:max-w-4xl xl:max-w-7xl"
         onSubmit={handleSubmit}
         initialData={{
           ...response,

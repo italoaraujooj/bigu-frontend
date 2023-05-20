@@ -12,6 +12,7 @@ import Button from "../button";
 import Fav from "../../assets/heart.png"
 import Plus from "../../assets/PlusCircle.png"
 import Map from "../../assets/map.png"
+import X from "../../assets/X.png"
 
 function RideFull(){
   const [showModal, setShowModal] = useState(false);
@@ -93,8 +94,11 @@ function RideFull(){
       </div>
       {showModal && 
         <Modal show={showModal} handleClose={handleClose}>
-          <div>
-            <Button label="Sair do Modal" size="lg" color="yellow" onClick={handleClose}/>
+          <div className="w-2/4 bg-white h-2/4 relative rounded-lg p-2">
+            <Image className=" absolute top-2 right-2 cursor-pointer" src={X} alt="sair" onClick={handleClose}/>
+            <div>
+
+            </div>
           </div>
         </Modal>
       }

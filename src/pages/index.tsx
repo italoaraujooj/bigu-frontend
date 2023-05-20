@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import Text from "@/components/text";
 import Button from "@/components/button";
 import RideFull from "@/components/rideFull";
+import Register from "@/components/register/register";
+import Login from "@/components/login/login";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -9,12 +11,13 @@ export default function Home() {
   return (
     <div
       // className=""
-      className="relative w-full "
+      className="relative w-full"
     >
-      <div className="w-[70rem] mx-auto">
-        <header className="flex items-center gap-4 py-12 justify-around">
+      <div className="w-[80rem] mx-auto">
+        <header className="flex items-center gap-4 py-12 justify-end">
           {/* <Image className="w-48 h-48" src={Logo} alt="car" /> */}
-          {/* <Button label="Entrar" size="md" color="yellow" shape="rounded" /> */}
+           {/* <Button label="Entrar" size="md" color="yellow" shape="rounded" onClick={Login} />
+           <Button label="Cadastrar" size="md" color="yellow" shape="rounded" onClick={Register} /> */}
           {/* <Text label="Bigu" size="lg" weight="bold" /> */}
         </header>
         {/* <Ride /> */}
@@ -34,10 +37,10 @@ export default function Home() {
             />
           </div>
           <div className="my-8">
-            <Button label="Conhecer" onClick={() => {}} size="lg" color="yellow" shape="rounded" />
+            <Button label="Conhecer" onClick={Register} size="lg" color="yellow" shape="rounded" />
           </div>
-          <RideFull />
         </main>
+      <Login/>
       </div>
     </div>
   );
