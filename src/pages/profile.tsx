@@ -13,6 +13,14 @@ import Plus from "../assets/plus-green.png";
 import Edit from "../assets/edit.png";
 import { getUser } from "@/services/auth";
 
+type User = {
+  fullName: string,
+  email: string,
+  phoneNumber: string,
+  matricula: string,
+  address: Array<String>
+}
+
 function CarItems() {
   const items = [1, 2]
   return (
@@ -74,7 +82,8 @@ function Profile() {
     const obterDadosDaAPI = async () => {
       try {
         const response = await getUser();
-        console.log(response)
+        setUser(response.data)
+        console.log(user)
       } catch (error) {
         console.error('Erro ao obter os dados da API:', error);
       }
@@ -135,8 +144,8 @@ function Profile() {
               alt="avatar"
             ></Image>
             <div className="flex gap-1">
-              <h1 className="text-2xl font-bold text-white md:text-4xl mr-2">
-                Olá, Joana
+              <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
+                {`Olá, ${user.fullName}`}
               </h1>
               <div className="flex items-center gap-2 pt-2">
                 <Image className="w-3 h-3" src={Star} alt="estrela" />
@@ -159,6 +168,7 @@ function Profile() {
               placeholder="Exemplo Alves"
               readOnly={readOnly}
               visibility="visible"
+              value={user.fullName}
             />
             <Input
               label="Email"
@@ -170,6 +180,7 @@ function Profile() {
               placeholder="seu.nome@ufcg.edu.br"
               readOnly={readOnly}
               visibility="visible"
+              value={user.email}
             />
             <Input
               label="Telefone"
@@ -181,6 +192,7 @@ function Profile() {
               placeholder="(83)999999999"
               readOnly={readOnly}
               visibility="visible"
+              value={user.phoneNumber}
             />
             <Input
               label="Matricula"
@@ -211,6 +223,7 @@ function Profile() {
                   placeholder="*********"
                   readOnly={readOnly}
                   visibility="visible"
+                  value={user.address}
                 />
               </div>
               <Input
@@ -223,6 +236,7 @@ function Profile() {
                 placeholder="*********"
                 readOnly={readOnly}
                 visibility="visible"
+                value={user.address}
               />
             </div>
             <div className="w-full flex flex-col md:flex-row gap-5">
@@ -235,6 +249,7 @@ function Profile() {
                 type="text"
                 placeholder="*********"
                 readOnly={readOnly}
+                value={user.address}
               />
               <div className="w-full">
               <Input
@@ -246,6 +261,7 @@ function Profile() {
                 type="text"
                 placeholder="*********"
                 readOnly={readOnly}
+                value={user.address}
               />
               </div>
             </div>

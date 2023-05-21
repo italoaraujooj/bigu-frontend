@@ -16,6 +16,7 @@ interface Props {
   shape?: "rounded" | "square";
   readOnly:boolean;
   visibility?:string;
+  value?: string | number;
   className?: string;
 };
 
@@ -32,6 +33,7 @@ export default function Input(props: Props) {
     placeholder,
     readOnly,
     visibility,
+    value,
     className,
   } = props;
 
@@ -98,6 +100,7 @@ export default function Input(props: Props) {
         type={type}
         placeholder={placeholder}
         readOnly={readOnly}
+        value={value}
       />
       {error && <span>{error}</span>}
     </div>

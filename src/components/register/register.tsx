@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import { Form } from '@unform/web'
 import Input from '../input/input'
 import { SubmitHandler, FormHandles } from '@unform/core'
@@ -6,8 +6,8 @@ import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
 import Button from "../button";
 import Router from "next/router"
-import { signUp } from "@/services/auth";
 import { encryptPassword } from "@/utils/validate";
+import { AuthContext } from "@/context/AuthContext";
 
 
 interface UserFormState {
@@ -20,6 +20,7 @@ interface UserFormState {
 
 function Register(){
     const formRef = useRef<FormHandles>(null)
+    const { signUp } = useContext(AuthContext);
     
     const handleSubmit: SubmitHandler<UserFormState> = async data => {
         const user = {
@@ -30,8 +31,8 @@ function Register(){
           role: 'USER',
           userType: 'RIDER'
         }
-        console.log(user)
-        const token = (await signUp(user)).data.token;
+        
+        await signUp(user);
     }
 
     return (

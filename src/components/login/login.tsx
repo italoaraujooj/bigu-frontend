@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import { Form } from '@unform/web'
 import Input from '../input/input'
 import { SubmitHandler, FormHandles } from '@unform/core'
@@ -6,7 +6,7 @@ import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
 import Button from "../button";
 import { encryptPassword } from "@/utils/validate";
-import { signIn } from "@/services/auth";
+import { AuthContext } from "@/context/AuthContext";
 
 
 interface UserLoginState {
@@ -16,6 +16,7 @@ interface UserLoginState {
 
 function Login(){
     const formRef = useRef<FormHandles>(null);
+    const { signIn } = useContext(AuthContext);
     
     const handleSubmit: SubmitHandler<UserLoginState> = async data => {
         const user = {
@@ -23,7 +24,7 @@ function Login(){
             password: data.password
         }
 
-        const token = (await signIn(user)).data.token;
+        await signIn(user);
     }
     return(
         <div className="flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem]">

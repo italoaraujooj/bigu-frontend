@@ -40,7 +40,7 @@ export default function Home() {
             <Button label="Conhecer" onClick={Register} size="lg" color="yellow" shape="rounded" />
           </div>
         </main>
-      <Login/>
+      <Register/>
       </div>
     </div>
   );

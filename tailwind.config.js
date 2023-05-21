@@ -11,6 +11,7 @@ module.exports = {
     colors: {
       ...colors,
       'default': '#252525',
+      'container': '#222222',
       'yellow': '#FFB400',
       'green': '#52B788',
       'hover-green': '#4EB283',

@@ -94,7 +94,7 @@ function RideFull(){
       </div>
       {showModal && 
         <Modal show={showModal} handleClose={handleClose}>
-          <div className="w-2/4 bg-white h-2/4 relative rounded-lg p-2">
+          <div className="w-3/4 bg-white h-2/4 relative rounded-lg p-2 sm:2/4">
             <Image className=" absolute top-2 right-2 cursor-pointer" src={X} alt="sair" onClick={handleClose}/>
             <div>
 

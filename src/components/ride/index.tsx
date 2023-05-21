@@ -13,8 +13,8 @@ function Ride() {
   const toggleAskRide = () => setAskRide((prev) => !prev);
 
   return (
-    <div className="bg-dark w-[33rem] h-fit rounded-lg py-6 px-9">
-      <h2 className="font-['Poppins'] text-3xl text-white font-bold pb-8">
+    <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-9 flex flex-col items-center mx-auto lg:mx-0 lg:w-[30rem]">
+      <h2 className="font-['Poppins'] text-2xl sm:text-3xl text-white font-bold pb-8">
         Caronas disponíveis
       </h2>
 
@@ -22,11 +22,11 @@ function Ride() {
         {[1, 2, 3].map((item) => (
           <div
             key={item}
-            className="w-full h-20 bg-white rounded-xl px-6 py-4 transition-height duration-500 ease-in-out overflow-hidden	space-y-4 hover:h-64"
+            className="w-full h-14 bg-white rounded-xl px-6 py-4 transition-height duration-500 ease-in-out overflow-hidden	space-y-4 hover:h-64 sm:h-20"
           >
             <div className="flex items-center gap-2">
-              <Image className="w-12 h-12" src={MaleAvatar} alt="male avatar" />
-              <p className="font-['Poppins'] font-light text-lg">
+              <Image className="w-8 h-8 sm:w-12 sm:h-12" src={MaleAvatar} alt="male avatar" />
+              <p className="font-['Poppins'] font-light text-xs sm:text-xl">
                 Carlos está saindo do Alto Branco...
               </p>
             </div>

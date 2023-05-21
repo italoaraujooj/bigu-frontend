@@ -27,7 +27,7 @@ const Button = (props: Props) => {
 
   const styles = {
     sizes: {
-      res: "w-36 h-10 px-5 text-base",
+      res: "w-36 h-10 px-3 text-base",
       sm: "w-48 h-12 px-8 text-xs",
       base: "w-48 h-14 px-6 text-sm",
       md: "w-60 h-16 px-8 text-xl",

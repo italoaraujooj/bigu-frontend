@@ -1,30 +1,39 @@
+import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
 
-type CredentialsRegister = {
+type SignUpRequestData = {
     fullName:string,
     email:string,
     phoneNumber:string,
     password:string
 }
 
-type CredentialsLogin = {
+type SignInRequestData = {
     email:string;
     password:string
 }
 
-export async function signUp(credentials: CredentialsRegister) {
-  return api.post('/api/v1/auth/register', credentials);
+export async function signUpRequest(credentials: SignUpRequestData) {
+  try{
+    return api.post('/api/v1/auth/register', credentials);
+  }catch (error: any){
+    handleError(error);
+  }
 }
 
-export function signIn(credentials: CredentialsLogin){
-  return api.post('/api/v1/auth/authenticate', credentials)
+export function signInRequest(credentials: SignInRequestData){
+  try{
+    return api.post('/api/v1/auth/authenticate', credentials)
+  }catch (error: any){
+    handleError(error);
+  }
 }
 
 export function getUser(){
   const token = localStorage.getItem("bigu-token")
-  return api.get('/api/v1/users/', {
+  return api.get('/api/v1/users', {
     headers: {
-      'Authorization': `Bearer${token}`
+      'Authorization': `Bearer ${token}`
     }  
   })
 }
