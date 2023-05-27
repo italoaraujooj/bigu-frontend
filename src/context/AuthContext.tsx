@@ -1,12 +1,15 @@
-import { getUser, signInRequest, signUpRequest } from "@/services/auth";
+import { getUser, signInRequest, signUpRequest, logOut } from "@/services/auth";
 import { Children, createContext, useEffect, useState } from "react";
 import Router from "next/router"
 import jwt from "jsonwebtoken"
+import { api } from "@/services/api";
 
 type AuthContextType = {
     isAuthenticated: boolean
     signIn: (data: SignInData) => Promise<void>
     signUp: (data: SignUpData) => Promise<void>
+    logOu: (data: Token) => Promise<void>
+    user: any
 }
 
 type SignInData = {
@@ -21,39 +24,37 @@ type SignUpData = {
     password:string
 }
 
-
-
 type User = {
     email:string
+}
+
+type Token = {
+    token: string;
 }
 
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthProvider({children}: any){
-    const [user, setUser] = useState<User | null>(null)
-    const isAuthenticated = false;
+    const [user, setUser] = useState({})
+    const isAuthenticated = !!user;
 
-    // setar o usuario com os dados recebidos do back
-    // useEffect(() => {
-    //     const token = localStorage.getItem("bigu-token");
-        
-    //     if(token){
-    //         getUser().then(response => {
-    //             console.log(response)
-    //         })
-    //     }
-    // })
-
+    useEffect(() => {
+        const token = localStorage.getItem("bigu-token");
+        if(token){
+            getUser().then(response => {
+                setUser(response.data)
+            })
+        }   
+    }, [])
+   
     async function signIn({email, password}: SignInData) {
         const response = await signInRequest(
             {email,
             password
         })
-        localStorage.setItem("bigu-token", response.data.token)
-        const payload = decodeJWT(response.data.token)
-        console.log(payload);
-        console.log(response.data.token);
-        Router.push("/profile")
+        localStorage.setItem("bigu-token", response?.data.token)
+        api.defaults.headers['Authorization'] = `Bearer ${response?.data.token}`
+        Router.push("/dashboard")
     }
 
     async function signUp({fullName, email, phoneNumber, password}: SignUpData) {
@@ -63,25 +64,21 @@ export function AuthProvider({children}: any){
             phoneNumber,
             password
         })
-        localStorage.setItem("bigu-token", response.data.token)
-        const payload = decodeJWT(response.data.token)
-        console.log(payload);
-        console.log(response.data.token);
-        Router.push("/profile")
+        localStorage.setItem("bigu-token", response?.data.token)
+        api.defaults.headers['Authorization'] = `Bearer ${response?.data.token}`
+        Router.push("/dashboard")
     }
 
-    function decodeJWT(token:string) {
-        try {
-          const decoded = jwt.decode(token);
-          return decoded;
-        } catch (error) {
-          console.error('Erro ao decodificar o token JWT:', error);
-          return null;
-        }
+    async function logOu(params:Token) {
+        const response = await logOut(params);
+        if(response?.status == 200){
+            localStorage.removeItem("Bigu-token")
+            Router.push("/")
+        }        
     }
 
     return(
-        <AuthContext.Provider value={{isAuthenticated, signIn, signUp}}>
+        <AuthContext.Provider value={{user, isAuthenticated, signIn, signUp, logOu}}>
             {children}
         </AuthContext.Provider>
     )

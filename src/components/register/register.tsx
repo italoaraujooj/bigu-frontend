@@ -18,7 +18,11 @@ interface UserFormState {
     confirmPassowrd: string
 }
 
-function Register(){
+type Props = {
+  handleClose: () => void
+}
+
+function Register(props: Props){
     const formRef = useRef<FormHandles>(null)
     const { signUp } = useContext(AuthContext);
     
@@ -36,13 +40,13 @@ function Register(){
     }
 
     return (
-      <div className="absolute flex justify-center items-start h-screen bg-white w-[100%] overflow-y-scroll py-6 lg:right-0 lg:max-w-[30.125rem] top-0 md:w-full">
+      <div id="register" className="flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem] lg:mx-auto">
         <Form
           className="flex flex-col gap-5 justify-center"
           ref={formRef}
           onSubmit={handleSubmit}
         >
-          <Image className="w-10 h-10" src={Back} alt="voltar" />
+          <Image className="w-10 h-10" src={Back} alt="voltar" onClick={props.handleClose} />
           <h1 className="font-['Poppins'] font-semibold text-2xl md:text-4xl my-2">
             Criar Conta
           </h1>

@@ -13,6 +13,10 @@ type SignInRequestData = {
     password:string
 }
 
+type Token = {
+    token: String;
+}
+
 export async function signUpRequest(credentials: SignUpRequestData) {
   try{
     return api.post('/api/v1/auth/register', credentials);
@@ -29,12 +33,16 @@ export function signInRequest(credentials: SignInRequestData){
   }
 }
 
+export function logOut( credentials: Token){
+  try{
+    return api.post('/api/v1/auth/logout', credentials)
+  }catch (error: any){
+    handleError(error)
+  }
+}
+
 export function getUser(){
   const token = localStorage.getItem("bigu-token")
-  return api.get('/api/v1/users', {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }  
-  })
+  return api.get('/api/v1/users/self',)
 }
 

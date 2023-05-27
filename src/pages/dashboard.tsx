@@ -3,12 +3,26 @@ import Foto from "../assets/woman.png"
 import Star from "../assets/star.png"
 import Image from "next/image"
 import Ride from "@/components/ride";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Button from "@/components/button";
 import Back from "../assets/CaretRight.svg"
 import RideFull from "@/components/rideFull";
+import { AuthContext } from "@/context/AuthContext";
+import Link from "next/link";
+import History from "@/components/history";
+import Router from "next/router"
+
 function Dashboard(){
+  
+  const { user, isAuthenticated } = useContext(AuthContext)
   const[drawer, setDrawer] = React.useState(false);
+
+  useEffect(() => {
+    if(!localStorage.getItem("bigu-token")){
+      Router.push("/")
+    }
+  })
+
 
   const openDrawer = () => {
     setDrawer(true);
@@ -28,11 +42,13 @@ function Dashboard(){
           <header className="flex justify-between items-center px-6">
             <div className="flex gap-2 items-center">
               <Image className=" w-10 h-10" src={Foto} alt="foto" />
-              <a className=" text-gray" href="">
-                Ver perfil
-              </a>
+              <Link href="/profile" className="text-gray">Ver perfil</Link>
             </div>
-            <Image className=" w-9 h-6" src={Menu} alt="menu" onClick={openDrawer}/>
+            <Image className=" w-9 h-6 md:hidden" src={Menu} alt="menu" onClick={openDrawer}/>
+            <div className="hidden md:flex md:gap-5">
+              <Link href="/offer-ride" className="text-gray"><Button label="Oferecer carona" onClick={() => {}} size="md" color="green" shape="square" /></Link>
+              <Button label="Sair" onClick={ () => {}} size="md" color="green" shape="square" />
+            </div>
             {drawer && 
               <div id="drawer" className="bg-white w-1/2 fixed top-0 right-0 h-44 rounded flex justify-center items-center">
                 <div className="flex flex-col p-5 justify-center items-center gap-5 ">
@@ -46,8 +62,7 @@ function Dashboard(){
             <div className="flex items-center gap-3">
               <div className="flex gap-1">
                 <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
-                  Olá, Matheus
-                  {/* {`Olá, ${user.fullName}`} */}
+                  {`Olá, ${user?.fullName}`}
                 </h1>
                 <div className="flex items-center gap-2 pt-2">
                   <Image className="w-3 h-3" src={Star} alt="estrela" />
@@ -55,9 +70,12 @@ function Dashboard(){
                 </div>
               </div>
             </div>
-            {/* <Button label="Salvar" onClick={editSubmit} size="md" color="green" shape="square" /> */}
           </div>
-          <Ride/>
+          <div className="flex justify-between">
+            <Ride/>
+              <div className=" h-96 border-r border-solid border-warmGray-700"></div>
+            <History/>
+          </div>
         </div>
       </div>
     );

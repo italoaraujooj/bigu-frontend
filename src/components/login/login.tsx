@@ -14,7 +14,11 @@ interface UserLoginState {
     password: string;
 }
 
-function Login(){
+type Props = {
+    handleClose: () => void
+}
+
+function Login( props: Props){
     const formRef = useRef<FormHandles>(null);
     const { signIn } = useContext(AuthContext);
     
@@ -27,9 +31,9 @@ function Login(){
         await signIn(user);
     }
     return(
-        <div className="flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem]">
+        <div id="login" className="flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem]">
             <Form className="flex flex-col gap-5 justify-center"ref={formRef} onSubmit={handleSubmit}>
-                <Image className="w-10 h-10" src={Back} alt="voltar"/>
+                <Image className="w-10 h-10" src={Back} alt="voltar" onClick={props.handleClose}/>
                 <h1 className="font-['Poppins'] font-semibold text-2xl md:text-4xl">
                     Login
                 </h1>

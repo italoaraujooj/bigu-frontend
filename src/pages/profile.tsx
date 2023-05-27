@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/button";
 import WomanAvatar from "../assets/woman.png";
 import Star from "../assets/star.png";
@@ -11,7 +11,9 @@ import Text from "@/components/text";
 import Trash from "../assets/trash.png";
 import Plus from "../assets/plus-green.png";
 import Edit from "../assets/edit.png";
-import { getUser } from "@/services/auth";
+import { AuthContext } from "@/context/AuthContext";
+import Link from "next/link";
+import Router from "next/router"
 
 type User = {
   fullName: string,
@@ -75,49 +77,17 @@ function CarItems() {
 }
 
 function Profile() {
+  const formRef = useRef(null);
   const [readOnly, setReadOnly] = useState(true);
-  const [user, setUser] = useState({});
+  const { user, isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
-    const obterDadosDaAPI = async () => {
-      try {
-        const response = await getUser();
-        setUser(response.data)
-        console.log(user)
-      } catch (error) {
-        console.error('Erro ao obter os dados da API:', error);
-      }
-    };
-  
-    obterDadosDaAPI();
-  }, []);
+    if(!localStorage.getItem("bigu-token")){
+      Router.push("/")
+    }
+  },[isAuthenticated])
 
-
-  const response = {
-    //response da API retornando os dados do usuaio
-    nome: "Matheus Alves Rafael",
-    email: "seu.nome@ccc.ufcg.edu.br",
-    telefone: "99999999999",
-    matricula: "128929323",
-    endereco: {
-      rua: "Rua vigario calixto",
-      cep: "58417205",
-      numero: 246,
-      bairro: "catole",
-    },
-    veiculos: {
-      corolla: {
-        id: 1,
-        capacidade: 3,
-        placa: "1232xmp",
-      },
-      golf: {
-        id: 2,
-        capacidade: 3,
-        placa: "122232xmp",
-      },
-    },
-  };
+  console.log(user)
 
   function handleSubmit() {}
 
@@ -126,157 +96,161 @@ function Profile() {
   }
 
   return (
-    <div className="w-full h-fit flex items-center justify-center mt-12">
-      <Form
-        className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 mx-10 lg:max-w-4xl xl:max-w-7xl"
-        onSubmit={handleSubmit}
-        initialData={{
-          ...response,
-          ...response.endereco,
-          ...response.veiculos,
-        }}
-      >
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <Image
-              className="w-12 h-12 md:w-24 md:h-24"
-              src={WomanAvatar}
-              alt="avatar"
-            ></Image>
-            <div className="flex gap-1">
-              <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
-                {`Olá, ${user.fullName}`}
-              </h1>
-              <div className="flex items-center gap-2 pt-2">
-                <Image className="w-3 h-3" src={Star} alt="estrela" />
-                <span className="text-gray text-[0.725rem]">5.0</span>
-              </div>
-            </div>
-          </div>
-          {/* <Button label="Salvar" onClick={editSubmit} size="md" color="green" shape="square" /> */}
+    <div className="flex w-full items-center justify-center my-12">
+      <div>
+        <div>
+          <Link href="/dashboard" className="text-gray"> Voltar para tela inicial</Link>
         </div>
+        <div className="w-full h-fit flex items-center justify-center">
+          <Form
+            className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-7xl"
+            onSubmit={handleSubmit}
+            initialData={{name: user.fullName, email: user.email, telephone: user.phoneNumber}}
+            ref={formRef}
+          >
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <Image
+                  className="w-12 h-12 md:w-24 md:h-24"
+                  src={WomanAvatar}
+                  alt="avatar"
+                ></Image>
+                <div className="flex gap-1">
+                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
+                    {`Olá, ${user.fullName} `}
+                  </h1>
+                  <div className="flex items-center gap-2 pt-2">
+                    <Image className="w-3 h-3" src={Star} alt="estrela" />
+                    <span className="text-gray text-[0.725rem]">5.0</span>
+                  </div>
+                </div>
+              </div>
+              {/* <Button label="Salvar" onClick={editSubmit} size="md" color="green" shape="square" /> */}
+            </div>
 
-        <div className="w-full flex flex-col md:flex-row gap-12">
-          <div className="w-full md:w-5/12 space-y-4">
-            <Input
-              label="Nome Completo"
-              name="name"
-              sizing="adjustable"
-              color="extralight"
-              className="w-full md:h-16 md:text-lg"
-              type="text"
-              placeholder="Exemplo Alves"
-              readOnly={readOnly}
-              visibility="visible"
-              value={user.fullName}
-            />
-            <Input
-              label="Email"
-              name="email"
-              sizing="adjustable"
-              color="extralight"
-              className="w-full md:h-16 md:text-lg"
-              type="text"
-              placeholder="seu.nome@ufcg.edu.br"
-              readOnly={readOnly}
-              visibility="visible"
-              value={user.email}
-            />
-            <Input
-              label="Telefone"
-              name="telephone"
-              sizing="adjustable"
-              color="extralight"
-              className="w-full  md:h-16 md:text-lg"
-              type="text"
-              placeholder="(83)999999999"
-              readOnly={readOnly}
-              visibility="visible"
-              value={user.phoneNumber}
-            />
-            <Input
-              label="Matricula"
-              name="matricula"
-              sizing="adjustable"
-              color="extralight"
-              className="w-full  md:h-16 md:text-lg"
-              type="text"
-              placeholder="*********"
-              readOnly={readOnly}
-              visibility="visible"
-            />
-          </div>
-
-          <div className="w-full h-1 bg-blackLine md:w-1 md:h-[32.5rem]"></div>
-          {/* <div className="w-full border border-solid border-blackLine xl:h-[32.5rem] xl:w-0"></div> */}
-
-          <div className="w-full flex flex-col md:w-1/2 gap-4">
-            <div className="w-full flex items-center justify-between flex-row gap-5">
-              <div className="w-full">
+            <div className="w-full flex flex-col md:flex-row gap-12">
+              <div className="w-full md:w-5/12 space-y-4">
                 <Input
-                  label="Endereço (rua)"
-                  name="rua"
+                  label="Nome Completo"
+                  name="name"
                   sizing="adjustable"
                   color="extralight"
                   className="w-full md:h-16 md:text-lg"
                   type="text"
+                  placeholder="Exemplo Alves"
+                  readOnly={readOnly}
+                  visibility="visible"
+                  
+                />
+                <Input
+                  label="Email"
+                  name="email"
+                  sizing="adjustable"
+                  color="extralight"
+                  className="w-full md:h-16 md:text-lg"
+                  type="text"
+                  placeholder="seu.nome@ufcg.edu.br"
+                  readOnly={readOnly}
+                  visibility="visible"
+                  
+                />
+                <Input
+                  label="Telefone"
+                  name="telephone"
+                  sizing="adjustable"
+                  color="extralight"
+                  className="w-full  md:h-16 md:text-lg"
+                  type="text"
+                  placeholder="(83)999999999"
+                  readOnly={readOnly}
+                  visibility="visible"
+                  
+                />
+                <Input
+                  label="Matricula"
+                  name="matricula"
+                  sizing="adjustable"
+                  color="extralight"
+                  className="w-full  md:h-16 md:text-lg"
+                  type="text"
                   placeholder="*********"
                   readOnly={readOnly}
                   visibility="visible"
-                  value={user.address}
                 />
               </div>
-              <Input
-                label="Número"
-                name="numero"
-                sizing="xs"
-                color="extralight"
-                className="md:h-16 md:text-lg"
-                type="text"
-                placeholder="*********"
-                readOnly={readOnly}
-                visibility="visible"
-                value={user.address}
-              />
-            </div>
-            <div className="w-full flex flex-col md:flex-row gap-5">
-              <Input
-                label="CEP"
-                name="cep"
-                sizing="adjustable"
-                color="extralight"
-                className="w-1/2 md:h-16 md:text-lg"
-                type="text"
-                placeholder="*********"
-                readOnly={readOnly}
-                value={user.address}
-              />
-              <div className="w-full">
-              <Input
-                label="Bairro"
-                name="bairro"
-                sizing="adjustable"
-                color="extralight"
-                className="md:h-16 md:text-lg"
-                type="text"
-                placeholder="*********"
-                readOnly={readOnly}
-                value={user.address}
-              />
+
+              <div className="w-full h-1 bg-blackLine md:w-1 md:h-[32.5rem]"></div>
+              {/* <div className="w-full border border-solid border-blackLine xl:h-[32.5rem] xl:w-0"></div> */}
+
+              <div className="w-full flex flex-col md:w-1/2 gap-4">
+                <div className="w-full flex items-center justify-between flex-row gap-5">
+                  <div className="w-full">
+                    <Input
+                      label="Endereço (rua)"
+                      name="rua"
+                      sizing="adjustable"
+                      color="extralight"
+                      className="w-full md:h-16 md:text-lg"
+                      type="text"
+                      placeholder="*********"
+                      readOnly={readOnly}
+                      visibility="visible"
+                      
+                    />
+                  </div>
+                  <Input
+                    label="Número"
+                    name="numero"
+                    sizing="xs"
+                    color="extralight"
+                    className="md:h-16 md:text-lg"
+                    type="text"
+                    placeholder="*********"
+                    readOnly={readOnly}
+                    visibility="visible"
+                    
+                  />
+                </div>
+                <div className="w-full flex flex-col md:flex-row gap-5">
+                  <Input
+                    label="CEP"
+                    name="cep"
+                    sizing="adjustable"
+                    color="extralight"
+                    className="w-1/2 md:h-16 md:text-lg"
+                    type="text"
+                    placeholder="*********"
+                    readOnly={readOnly}
+                    
+                  />
+                  <div className="w-full">
+                  <Input
+                    label="Bairro"
+                    name="bairro"
+                    sizing="adjustable"
+                    color="extralight"
+                    className="md:h-16 md:text-lg"
+                    type="text"
+                    placeholder="*********"
+                    readOnly={readOnly}
+                    
+                  />
+                  </div>
+                </div>
+                <div className="w-full flex flex-col items-center justify-center">           
+                  <h1 className="text-2xl text-white font-bold mb-2">Meus veículos</h1>
+                  <Carousel profile />
+                </div> 
+                {/* <Carousel profile={true}/> */}
+                <div className="flex gap-7">
+                    <Button label="Alterar senha" onClick={() => {}} size="base" color="light-blue" shape="square" className="uppercase" />
+                    <Button label={`${readOnly ? "Editar" : "Salvar"}`} onClick={editSubmit} size="base" color={`${readOnly ? "yellow" : "green"}`} shape="square" className="uppercase" />
+                </div> 
               </div>
             </div>
-            <div className="w-full flex flex-col items-center justify-center">           
-              <h1 className="text-2xl text-white font-bold mb-2">Meus veículos</h1>
-              <Carousel profile />
-            </div> 
-            {/* <Carousel profile={true}/> */}
-            <div className="flex gap-7">
-                <Button label="Alterar senha" onClick={() => {}} size="base" color="light-blue" shape="square" className="uppercase" />
-                <Button label={`${readOnly ? "Editar" : "Salvar"}`} onClick={editSubmit} size="base" color={`${readOnly ? "yellow" : "green"}`} shape="square" className="uppercase" />
-            </div> 
-          </div>
+          </Form>
         </div>
-      </Form>
+      </div>
     </div>
   );
 }
