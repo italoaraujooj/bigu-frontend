@@ -8,7 +8,7 @@ const fieldsFirstRow: OfferRideField[] = [
     color: "extralight",
     sizing: "adjustable",
     placeholder: "CATOLÉ",
-    readOnly: true
+    readOnly: false
   },
   {
     name:"destination",
@@ -29,7 +29,7 @@ const fieldsLastRow: OfferRideField[] = [
     color: "extralight",
     sizing: "adjustable",
     placeholder: "",
-    readOnly: true
+    readOnly: false
   },
   {
     name:"hours",
@@ -38,7 +38,7 @@ const fieldsLastRow: OfferRideField[] = [
     color: "extralight",
     sizing: "adjustable",
     placeholder: "6:30",
-    readOnly: true
+    readOnly: false
   }
 ]
 

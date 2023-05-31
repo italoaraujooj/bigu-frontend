@@ -11,18 +11,18 @@ import { AuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import History from "@/components/history";
 import Router from "next/router"
+import { getToken } from "@/utils/cookies";
+import { GetServerSideProps } from "next";
+import { getUser } from "@/services/auth";
+import { hasCookie } from "cookies-next";
+import { parseCookies } from "nookies";
 
-function Dashboard(){
+function Dashboard({ cars }: any){
   
-  const { user, isAuthenticated } = useContext(AuthContext)
-  const[drawer, setDrawer] = React.useState(false);
-
-  useEffect(() => {
-    if(!localStorage.getItem("bigu-token")){
-      Router.push("/")
-    }
-  })
-
+  const { user, logOu } = useContext(AuthContext);
+  console.log('page');
+  console.log(user);
+  const [drawer, setDrawer] = React.useState(false);
 
   const openDrawer = () => {
     setDrawer(true);
@@ -35,7 +35,15 @@ function Dashboard(){
     }
   };
 
-  
+  const handleLogout = async () => {
+    try {
+      console.log('chamou')
+      await logOu();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
       <div className=" relative w-full py-9" onClick={handleOutsideClick}>
         <div className=" max-w-[89%] mx-auto flex flex-col gap-9">
@@ -47,13 +55,13 @@ function Dashboard(){
             <Image className=" w-9 h-6 md:hidden" src={Menu} alt="menu" onClick={openDrawer}/>
             <div className="hidden md:flex md:gap-5">
               <Link href="/offer-ride" className="text-gray"><Button label="Oferecer carona" onClick={() => {}} size="md" color="green" shape="square" /></Link>
-              <Button label="Sair" onClick={ () => {}} size="md" color="green" shape="square" />
+              <Button label="Sair" onClick={handleLogout} size="md" color="green" shape="square" />
             </div>
             {drawer && 
               <div id="drawer" className="bg-white w-1/2 fixed top-0 right-0 h-44 rounded flex justify-center items-center">
                 <div className="flex flex-col p-5 justify-center items-center gap-5 ">
                   <Button label="Oferecer carona" onClick={() => {}} size="res" color="yellow" shape="square" />
-                  <Button label="Sair" onClick={() => {}} size="res" color="yellow" shape="square" />
+                  <Button label="Sair" onClick={handleLogout} size="res" color="yellow" shape="square" />
                 </div>
               </div>
             }
@@ -80,4 +88,44 @@ function Dashboard(){
       </div>
     );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { 'nextauth.token': token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  // const isAuthenticated = getToken();// Lógica para verificar autenticação
+  // if (!hasCookie("token")) {
+  //   return {
+  //     redirect: {
+  //       destination: '/',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+
+  //   const data = await getUser();
+  //   console.log(data);
+  // } catch (err) {
+  //   console.log(err);
+  // }
+
+  // const cars = await fetchUserCars();
+  // const addresses = await fetchUserAddresses();
+
+  return {
+    props: {
+      // cars: [],
+      // addresses: [],
+    },
+  };
+}
+
 export default Dashboard;

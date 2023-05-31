@@ -93,12 +93,10 @@ function RideFull(){
         </div>
       </div>
       {showModal && 
-        <Modal show={showModal} handleClose={handleClose}>
+        <Modal isOpen={showModal} onClose={handleClose}>
           <div className="w-3/4 bg-white h-2/4 relative rounded-lg p-2 sm:2/4">
-            <Image className=" absolute top-2 right-2 cursor-pointer" src={X} alt="sair" onClick={handleClose}/>
-            <div>
-
-            </div>
+            {/* <Image className=" absolute top-2 right-2 cursor-pointer" src={X} alt="sair" onClick={handleClose}/> */}
+            dasdfdfdssdf
           </div>
         </Modal>
       }

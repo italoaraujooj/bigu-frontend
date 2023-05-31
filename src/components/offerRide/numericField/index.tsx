@@ -4,10 +4,13 @@ import Plus from "../../../assets/plus.png";
 import Minus from "../../../assets/minus.png";
 import clsx from "clsx";
 
-type Props = {};
+type Props = {
+  vacancies: number;
+  setVacancies: React.Dispatch<React.SetStateAction<number>>;
+};
 
 const NumericField = (props: Props) => {
-  const [vacancies, setVacancies] = React.useState(0);
+  const { vacancies, setVacancies } = props;
 
   const vacanciesUp = () =>
     setVacancies((prev) => {

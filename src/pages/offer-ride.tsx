@@ -14,11 +14,18 @@ import { OfferRideFormState } from "@/utils/types";
 import useFields from "@/hooks/useFields";
 import Checkbox from "@/components/checkbox";
 import { AuthContext } from "@/context/AuthContext";
+import { GetServerSideProps } from "next";
+import { fetchUserAddresses } from "@/services/address";
+import { formatDateTime } from "@/utils/masks";
+import { getToken } from "@/utils/cookies";
+import { hasCookie } from "cookies-next";
 
 type Props = {};
 
-const OfferRide = (props: Props) => {
+const OfferRide = ({ addresses }: any) => {
+  console.log(hasCookie("token"));
   const { user } = useContext(AuthContext)
+  
   const formRef = React.useRef<FormHandles>(null);
   const { createFields } = useFields();
   const [checkboxes, setCheckboxes] = React.useState([
@@ -26,7 +33,7 @@ const OfferRide = (props: Props) => {
       id: 1,
       label: "estou indo para a universidade",
       value: "going",
-      checked: false,
+      checked: true,
     },
     {
       id: 2,
@@ -35,9 +42,8 @@ const OfferRide = (props: Props) => {
       checked: false,
     },
   ]);
-
+  const [vacancies, setVacancies] = React.useState(0);
   const [onlyWomanChecked, setOnlyWomanChecked] = React.useState(true);
-
   const handleCheckboxChange = (checkboxId: number) => {
     const updatedCheckboxes = checkboxes.map((checkbox) => {
       if (checkbox.id === checkboxId) {
@@ -52,6 +58,25 @@ const OfferRide = (props: Props) => {
 
   const handleSubmit: SubmitHandler<OfferRideFormState> = (data) => {
     console.log(data.origin_locale);
+    const checkboxSelected = checkboxes.find(checkbox => checkbox.checked);
+    console.log(checkboxes);
+    console.log(onlyWomanChecked);
+    console.log(vacancies);
+    console.log(data);
+
+    const body = {
+      goingToCollege: checkboxSelected!.value === "going" && checkboxSelected!.checked,
+      startId: 1,
+      destinationId: 1,
+      dateTime: formatDateTime(data.date, data?.hours),
+      numSeats: vacancies + 1,
+      price: data.estimated_value,
+      toWomen: onlyWomanChecked,
+      carId: 1,
+      description: "any description"
+    }
+
+    console.log(body);
   };
 
   return (
@@ -64,7 +89,7 @@ const OfferRide = (props: Props) => {
         <Form
           className="flex flex-col lg:flex-row  lg:justify-between"
           ref={formRef}
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
         >
           <div className="w-full lg:w-2/5 space-y-2">
             <section className="mb-7">
@@ -81,11 +106,12 @@ const OfferRide = (props: Props) => {
                 }}
               />
             </section>
+            {/* <Dropdown /> */}
             {createFields(fieldsFirstRow, "space-y-4")}
             {createFields(fieldsLastRow, "w-full flex items-end gap-4 space-y-2")}
             <div className="flex gap-4 items-center space-y-2">
               <div className="w-1/2 lg:w-3/4 flex flex-col ">
-                <NumericField />
+                <NumericField vacancies={vacancies} setVacancies={setVacancies} />
               </div>
               <div className="w-1/2">
                 <Input
@@ -127,6 +153,7 @@ const OfferRide = (props: Props) => {
 
             <section className="w-full flex justify-end gap-8">
               <Button
+                type="button"
                 label="salvar rascunho"
                 size="base"
                 className="uppercase font-semibold px-3 lg:px-6"
@@ -145,5 +172,30 @@ const OfferRide = (props: Props) => {
     </div>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  console.log(ctx);
+  // const isAuthenticated = getToken();// Lógica para verificar autenticação
+  console.log(hasCookie("token"));
+  console.log('entrou')
+  // if (!hasCookie("token")) {
+  //   return {
+  //     redirect: {
+  //       destination: '/',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+
+  // const cars = await fetchUserCars();
+  // const addresses = await fetchUserAddresses();
+  // enderecos do sistema (entradas ufcg);
+  return {
+    props: {
+      cars: [],
+      addresses: [],
+    },
+  };
+}
 
 export default OfferRide;

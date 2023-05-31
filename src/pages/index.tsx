@@ -42,17 +42,17 @@ export default function Home() {
           <Image className=" w-14 h-14" src={Logo} alt="car" />
           <Image className=" w-8 h-8 lg:hidden" src={Menu} alt="car" />
           <div className="hidden lg:flex lg:gap-10">
-          <Button label="Entrar" size="md" color="yellow" shape="rounded" onClick={handleOpenLogin} />
-          <Button label="Cadastrar" size="md" color="yellow" shape="rounded" onClick={handleOpenRegister} />
+          <Button label="ENTRAR" size="base" color="yellow" shape="rounded" onClick={handleOpenLogin} />
+          <Button label="CADASTRAR" size="base" color="yellow" shape="rounded" onClick={handleOpenRegister} />
 
           </div>
           {/* <Text label="Bigu" size="lg" weight="bold" /> */}
         </header>
         {/* <Ride /> */}
-        <main className="flex flex-col gap-10 my-auto sm:gap-10">
+        <main className="flex flex-col w-8/12 gap-10 my-auto sm:gap-10">
           <Text
             label="Compartilhe viagens, economize e proteja o planeta."
-            size="lg"
+            size="5xl"
             weight="bold"
             className="leading-[3rem]"
           />
@@ -67,14 +67,15 @@ export default function Home() {
             </div>
             <div className="">
               <Button
-                label="Conhecer"
+                label="VER MAIS"
                 onClick={handleOpenRegister}
-                size="lg"
+                size="base"
                 color="yellow"
                 shape="rounded"
               />
             </div>
           </div>
+          <RideFull />
         </main>
         {showLogin && <Login handleClose={handleCloseLogin}/>}
         {showRegister && <Register handleClose={handleCloseRegister}/>}

@@ -8,7 +8,6 @@ import Button from "../button";
 import { encryptPassword } from "@/utils/validate";
 import { AuthContext } from "@/context/AuthContext";
 
-
 interface UserLoginState {
     email: string;
     password: string;
@@ -39,12 +38,12 @@ function Login( props: Props){
                 </h1>
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-3">
-                        <Input label = "Email" name="email" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="email" placeholder="seu.nome@ufcg.edu.br" readOnly={false}/>
+                        <Input label = "Email" name="email" sizing="sm" color="extralight" className="md:w-80 md:h-16 md:text-lg" type="email" placeholder="seu.nome@ufcg.edu.br" readOnly={false}/>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <Input label="Senha:" name="password" sizing="sm" color="light" className="md:w-80 md:h-16 md:text-lg" type="password" placeholder="*********" readOnly={false}/>
+                        <Input label="Senha:" name="password" sizing="sm" color="extralight" className="md:w-80 md:h-16 md:text-lg" type="password" placeholder="*********" readOnly={false}/>
                     </div>
-                    <Button label="Entrar" onClick={() => {}} size="lg" color="yellow" shape="square" />
+                    <Button label="Entrar" size="lg" color="yellow" shape="square" />
                 </div>    
             </Form>
         </div>

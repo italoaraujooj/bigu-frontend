@@ -1,5 +1,7 @@
 import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
+import { AxiosResponse } from "axios";
+import { SignInResponse } from "@/utils/types";
 
 type SignUpRequestData = {
     fullName:string,
@@ -25,24 +27,24 @@ export async function signUpRequest(credentials: SignUpRequestData) {
   }
 }
 
-export function signInRequest(credentials: SignInRequestData){
+export async function signInRequest(credentials: SignInRequestData){
   try{
-    return api.post('/api/v1/auth/authenticate', credentials)
+    return await api.post('/api/v1/auth/authenticate', credentials)
   }catch (error: any){
     handleError(error);
   }
 }
 
-export function logOut( credentials: Token){
+export async function logOut(){
   try{
-    return api.post('/api/v1/auth/logout', credentials)
+    await api.post('/api/v1/auth/logout')
   }catch (error: any){
     handleError(error)
   }
 }
 
-export function getUser(){
-  const token = localStorage.getItem("bigu-token")
-  return api.get('/api/v1/users/self',)
+export async function getUser(){
+  // const token = localStorage.getItem("bigu-token")
+  return await api.get('/api/v1/users/self',)
 }
 

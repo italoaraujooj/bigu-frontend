@@ -14,6 +14,7 @@ import Edit from "../assets/edit.png";
 import { AuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import Router from "next/router"
+import withPrivateRoute from "@/routes/PrivateRoute";
 
 type User = {
   fullName: string,
@@ -81,11 +82,11 @@ function Profile() {
   const [readOnly, setReadOnly] = useState(true);
   const { user, isAuthenticated } = useContext(AuthContext);
 
-  useEffect(() => {
-    if(!localStorage.getItem("bigu-token")){
-      Router.push("/")
-    }
-  },[isAuthenticated])
+  // useEffect(() => {
+  //   if(!localStorage.getItem("bigu-token")){
+  //     Router.push("/")
+  //   }
+  // }, [isAuthenticated])
 
   console.log(user)
 
@@ -105,7 +106,7 @@ function Profile() {
           <Form
             className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-7xl"
             onSubmit={handleSubmit}
-            initialData={{name: user.fullName, email: user.email, telephone: user.phoneNumber}}
+            initialData={{name: user?.fullName, email: user?.email, telephone: user?.phoneNumber}}
             ref={formRef}
           >
             <div className="flex justify-between items-center">
@@ -117,7 +118,7 @@ function Profile() {
                 ></Image>
                 <div className="flex gap-1">
                   <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
-                    {`Olá, ${user.fullName} `}
+                    {`Olá, ${user?.fullName} `}
                   </h1>
                   <div className="flex items-center gap-2 pt-2">
                     <Image className="w-3 h-3" src={Star} alt="estrela" />
