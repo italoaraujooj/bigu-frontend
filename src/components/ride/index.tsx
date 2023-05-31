@@ -4,6 +4,7 @@ import Heart from "../../assets/heart.png";
 import HeartFilled from "../../assets/heart-filled.png";
 import Image from "next/image";
 import Button from "../button";
+import Text from "../text";
 
 function Ride() {
   const [favorite, setFavorite] = React.useState(false);
@@ -13,7 +14,7 @@ function Ride() {
   const toggleAskRide = () => setAskRide((prev) => !prev);
 
   return (
-    <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-9 flex flex-col items-center mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
+    <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-9 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[36rem]">
       <h2 className="font-['Poppins'] text-2xl sm:text-3xl text-white font-bold pb-8">
         Caronas disponíveis
       </h2>
@@ -25,7 +26,11 @@ function Ride() {
             className="w-full h-14 bg-white rounded-xl px-6 py-4 transition-height duration-500 ease-in-out overflow-hidden	space-y-4 hover:h-64 sm:h-20"
           >
             <div className="flex items-center gap-2">
-              <Image className="w-8 h-8 sm:w-12 sm:h-12" src={MaleAvatar} alt="male avatar" />
+              <Image
+                className="w-8 h-8 sm:w-12 sm:h-12"
+                src={MaleAvatar}
+                alt="male avatar"
+              />
               <p className="font-['Poppins'] font-light text-xs sm:text-xl">
                 Carlos está saindo do Alto Branco...
               </p>
@@ -53,9 +58,15 @@ function Ride() {
                   className={`font-semibold hover:bg-hover-green`}
                 />
               ) : (
-                <span className="animate-pulse text-yellow ease-in-out infinite">Aguardando confirmação..</span>
+                <span className="animate-pulse text-yellow ease-in-out infinite">
+                  Aguardando confirmação..
+                </span>
               )}
-              <div className={`flex items-center gap-2 ${askRide && 'translate-x-44 duration-500 ease-out'}`}>
+              <div
+                className={`flex items-center gap-2 ${
+                  askRide && "translate-x-44 duration-500 ease-out"
+                }`}
+              >
                 <button onClick={toggleFavorite}>
                   {!favorite ? (
                     <Image className="w-6 h-6" src={Heart} alt="heart" />
@@ -67,9 +78,11 @@ function Ride() {
                     />
                   )}
                 </button>
-                { !askRide && <p className="font-['Poppins'] text-sm font-normal">
-                  Adicionar aos favoritos
-                </p> }
+                {!askRide && (
+                  <p className="font-['Poppins'] text-sm font-normal">
+                    Adicionar aos favoritos
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -77,7 +90,14 @@ function Ride() {
       </div>
 
       <footer className="pt-4">
-        <p className="flex text-gray">Ver mais</p>
+        {/* {!!races?.length && ( */}
+        <Text
+          label="Ver mais"
+          className="self-start cursor-pointer hover:text-stone-400"
+          color="gray"
+          size="md"
+        />
+        {/* )}       */}
       </footer>
     </div>
   );

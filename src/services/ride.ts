@@ -1,10 +1,11 @@
 import { OfferRideBody } from "@/utils/types";
 import { api } from "./api";
 
-const getAllRides = async () => {
+export const getAllRides = async () => {
   try {
     const response = api.get('/api/v1/rides');
     console.log(response);
+    return response;
   } catch (err) {
     console.log(err);
   }

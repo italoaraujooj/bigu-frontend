@@ -51,7 +51,6 @@ export function AuthProvider({ children }: any) {
   async function signIn({ email, password }: SignInData) {
     try {
       const response = await signInRequest({ email, password });
-      console.log(JSON.stringify(response, null, 2));
       // localStorage.setItem("bigu-token", response?.data.token)
       setCookie(undefined, 'nextauth.token', response?.data?.token, {
         maxAge: 8600,

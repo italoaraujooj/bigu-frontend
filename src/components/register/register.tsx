@@ -8,6 +8,7 @@ import Button from "../button";
 import Router from "next/router"
 import { encryptPassword } from "@/utils/validate";
 import { AuthContext } from "@/context/AuthContext";
+import clsx from "clsx";
 
 
 interface UserFormState {
@@ -19,13 +20,14 @@ interface UserFormState {
 }
 
 type Props = {
+  visible: boolean;
   handleClose: () => void
 }
 
 function Register(props: Props){
     const formRef = useRef<FormHandles>(null)
     const { signUp } = useContext(AuthContext);
-    
+    const { visible, handleClose } = props;
     const handleSubmit: SubmitHandler<UserFormState> = async data => {
         const user = {
           fullName: data.name,
@@ -40,13 +42,13 @@ function Register(props: Props){
     }
 
     return (
-      <div id="register" className="flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem] lg:mx-auto">
+      <div id="register" className={clsx("transition ease-in-out delay-150 duration-500", "flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem] lg:mx-auto", visible ? "translate-x-0" : "translate-x-full")}>
         <Form
           className="flex flex-col gap-5 justify-center"
           ref={formRef}
           onSubmit={handleSubmit}
         >
-          <Image className="w-10 h-10" src={Back} alt="voltar" onClick={props.handleClose} />
+          <Image className="w-10 h-10 cursor-pointer" src={Back} alt="voltar" onClick={handleClose} />
           <h1 className="font-['Poppins'] font-semibold text-2xl md:text-4xl my-2">
             Criar Conta
           </h1>

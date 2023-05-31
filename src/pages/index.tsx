@@ -4,33 +4,32 @@ import Button from "@/components/button";
 import RideFull from "@/components/rideFull";
 import Register from "@/components/register/register";
 import Login from "@/components/login/login";
-import Image from "next/image"
-import Logo from "../assets/car-secondary.png"
-import Menu from "../assets/Menu.png"
+import Image from "next/image";
+import Logo from "../assets/car-secondary.png";
+import Menu from "../assets/Menu.png";
 import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
 
   const handleOpenLogin = () => {
-    setShowLogin(true);  
-  }
+    setShowLogin(true);
+  };
 
   const handleCloseLogin = () => {
-    setShowLogin(false);  
-  }
+    setShowLogin(false);
+  };
 
   const handleOpenRegister = () => {
-    setShowRegister(true);  
-  }
+    setShowRegister(true);
+  };
 
   const handleCloseRegister = () => {
-    setShowRegister(false);  
-  }
+    setShowRegister(false);
+  };
 
   return (
     <div
@@ -42,14 +41,23 @@ export default function Home() {
           <Image className=" w-14 h-14" src={Logo} alt="car" />
           <Image className=" w-8 h-8 lg:hidden" src={Menu} alt="car" />
           <div className="hidden lg:flex lg:gap-10">
-          <Button label="ENTRAR" size="base" color="yellow" shape="rounded" onClick={handleOpenLogin} />
-          <Button label="CADASTRAR" size="base" color="yellow" shape="rounded" onClick={handleOpenRegister} />
-
+            <Button
+              label="CADASTRAR"
+              size="base"
+              color="yellow"
+              shape="rounded"
+              onClick={handleOpenRegister}
+            />
+            <Button
+              label="ENTRAR"
+              size="base"
+              color="yellow"
+              shape="rounded"
+              onClick={handleOpenLogin}
+            />
           </div>
-          {/* <Text label="Bigu" size="lg" weight="bold" /> */}
         </header>
-        {/* <Ride /> */}
-        <main className="flex flex-col w-8/12 gap-10 my-auto sm:gap-10">
+        <main className="flex flex-col w-8/12 gap-10 my-auto sm:gap-10 mt-28">
           <Text
             label="Compartilhe viagens, economize e proteja o planeta."
             size="5xl"
@@ -75,10 +83,11 @@ export default function Home() {
               />
             </div>
           </div>
-          <RideFull />
+          {/* <RideFull /> */}
         </main>
-        {showLogin && <Login handleClose={handleCloseLogin}/>}
-        {showRegister && <Register handleClose={handleCloseRegister}/>}
+
+        <Login handleClose={handleCloseLogin} visible={showLogin} />
+        <Register handleClose={handleCloseRegister} visible={showRegister} />
       </div>
     </div>
   );

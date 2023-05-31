@@ -19,13 +19,40 @@ import { fetchUserAddresses } from "@/services/address";
 import { formatDateTime } from "@/utils/masks";
 import { getToken } from "@/utils/cookies";
 import { hasCookie } from "cookies-next";
+import { getUserCars } from "@/services/car";
+import Dropdown from "@/components/dropdown";
 
 type Props = {};
 
-const OfferRide = ({ addresses }: any) => {
-  console.log(hasCookie("token"));
-  const { user } = useContext(AuthContext)
-  
+
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+  try {
+    const cars = await getUserCars();
+    const addresses = await fetchUserAddresses();
+
+    return {
+      props: {
+        cars,
+        addresses,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        error: "Failed to fetch data",
+      },
+    };
+  }
+};
+
+
+const OfferRide = ({ cars, addresses }: any) => {
+  const { user } = useContext(AuthContext);
+
+  React.useEffect(() => {
+    getUserCars().then(data => console.log(data));
+    fetchUserAddresses().then(data => console.log(data));
+  }, [cars, addresses])
   const formRef = React.useRef<FormHandles>(null);
   const { createFields } = useFields();
   const [checkboxes, setCheckboxes] = React.useState([
@@ -58,23 +85,24 @@ const OfferRide = ({ addresses }: any) => {
 
   const handleSubmit: SubmitHandler<OfferRideFormState> = (data) => {
     console.log(data.origin_locale);
-    const checkboxSelected = checkboxes.find(checkbox => checkbox.checked);
+    const checkboxSelected = checkboxes.find((checkbox) => checkbox.checked);
     console.log(checkboxes);
     console.log(onlyWomanChecked);
     console.log(vacancies);
     console.log(data);
 
     const body = {
-      goingToCollege: checkboxSelected!.value === "going" && checkboxSelected!.checked,
+      goingToCollege:
+        checkboxSelected!.value === "going" && checkboxSelected!.checked,
       startId: 1,
       destinationId: 1,
-      dateTime: formatDateTime(data.date, data?.hours),
+      dateTime: formatDateTime(data?.date, data?.hours),
       numSeats: vacancies + 1,
       price: data.estimated_value,
       toWomen: onlyWomanChecked,
       carId: 1,
-      description: "any description"
-    }
+      description: "any description",
+    };
 
     console.log(body);
   };
@@ -106,12 +134,19 @@ const OfferRide = ({ addresses }: any) => {
                 }}
               />
             </section>
-            {/* <Dropdown /> */}
-            {createFields(fieldsFirstRow, "space-y-4")}
-            {createFields(fieldsLastRow, "w-full flex items-end gap-4 space-y-2")}
+            <Dropdown label="Local de Origem" options={[{ label: "Ola", value: "1"}, { label: "Ola", value: "2"}, { label: "Ola", value: "3"}]} onSelectOption={() => {}} />
+            <Dropdown label="Local de Destino" options={[{ label: "Ola", value: "1"}, { label: "Ola", value: "2"}, { label: "Ola", value: "3"}]} onSelectOption={() => {}} />
+            {/* {createFields(fieldsFirstRow, "space-y-4")} */}
+            {createFields(
+              fieldsLastRow,
+              "w-full flex items-end gap-4 space-y-2"
+            )}
             <div className="flex gap-4 items-center space-y-2">
               <div className="w-1/2 lg:w-3/4 flex flex-col ">
-                <NumericField vacancies={vacancies} setVacancies={setVacancies} />
+                <NumericField
+                  vacancies={vacancies}
+                  setVacancies={setVacancies}
+                />
               </div>
               <div className="w-1/2">
                 <Input
@@ -126,10 +161,10 @@ const OfferRide = ({ addresses }: any) => {
               </div>
             </div>
             <div>
-            <Checkbox
+              <Checkbox
                 label="oferecer carona apenas para as mulheres"
                 checked={onlyWomanChecked}
-                onChange={() => setOnlyWomanChecked(prev => !prev)}
+                onChange={() => setOnlyWomanChecked((prev) => !prev)}
                 className="my-4 mb-6"
               />
             </div>
@@ -173,29 +208,5 @@ const OfferRide = ({ addresses }: any) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  console.log(ctx);
-  // const isAuthenticated = getToken();// Lógica para verificar autenticação
-  console.log(hasCookie("token"));
-  console.log('entrou')
-  // if (!hasCookie("token")) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-
-  // const cars = await fetchUserCars();
-  // const addresses = await fetchUserAddresses();
-  // enderecos do sistema (entradas ufcg);
-  return {
-    props: {
-      cars: [],
-      addresses: [],
-    },
-  };
-}
 
 export default OfferRide;
