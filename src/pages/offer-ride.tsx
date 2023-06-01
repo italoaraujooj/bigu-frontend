@@ -15,12 +15,13 @@ import useFields from "@/hooks/useFields";
 import Checkbox from "@/components/checkbox";
 import { AuthContext } from "@/context/AuthContext";
 import { GetServerSideProps } from "next";
-import { fetchUserAddresses } from "@/services/address";
+import { fetchUfcgAddresses, fetchUserAddresses } from "@/services/address";
 import { formatDateTime } from "@/utils/masks";
 import { getToken } from "@/utils/cookies";
 import { hasCookie } from "cookies-next";
 import { getUserCars } from "@/services/car";
 import Dropdown from "@/components/dropdown";
+import { createRide } from "@/services/ride";
 
 type Props = {};
 
@@ -48,11 +49,23 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 
 const OfferRide = ({ cars, addresses }: any) => {
   const { user } = useContext(AuthContext);
+  const [ufcgAddresses, setUfcgAddresses] = React.useState([]);
+  const [userAddresses, setUserAddresses] = React.useState([]);
+  const [ufcgAddressesSelected, setUfcgAddressesSelected] = React.useState({});
+  const [userAddressesSelected, setUserAddressesSelected] = React.useState({});
 
   React.useEffect(() => {
     getUserCars().then(data => console.log(data));
-    fetchUserAddresses().then(data => console.log(data));
+    fetchUserAddresses().then(data => {
+      const addressesFormated = data?.data.map((address: any) => ({ label: address.nickname, value: address.addressId}));
+      setUserAddresses(addressesFormated)
+    });
+    fetchUfcgAddresses().then(data => {
+      const addressesFormated = data?.data.map((address: any) => ({ label: address.nickname, value: address.addressId}));
+      setUfcgAddresses(addressesFormated)
+    });
   }, [cars, addresses])
+
   const formRef = React.useRef<FormHandles>(null);
   const { createFields } = useFields();
   const [checkboxes, setCheckboxes] = React.useState([
@@ -83,19 +96,30 @@ const OfferRide = ({ cars, addresses }: any) => {
     setCheckboxes(updatedCheckboxes);
   };
 
-  const handleSubmit: SubmitHandler<OfferRideFormState> = (data) => {
-    console.log(data.origin_locale);
-    const checkboxSelected = checkboxes.find((checkbox) => checkbox.checked);
+  const handleSubmit: SubmitHandler<OfferRideFormState> = async (data) => {
+
     console.log(checkboxes);
     console.log(onlyWomanChecked);
     console.log(vacancies);
     console.log(data);
-
+    console.log(data.origin_locale);
+    // {
+    //   "goingToCollege": true,
+    //   "startAddressId": 0,
+    //   "destinationAddressId": 0,
+    //   "dateTime": "2023-06-01T11:59:06.931Z",
+    //   "numSeats": 3,
+    //   "price": 8.9,
+    //   "toWomen": true,
+    //   "carId": 0,
+    //   "description": "string"
+    // }
+    const checkboxSelected = checkboxes.find((checkbox) => checkbox.checked);
     const body = {
       goingToCollege:
         checkboxSelected!.value === "going" && checkboxSelected!.checked,
-      startId: 1,
-      destinationId: 1,
+      startId: checkboxes[0].checked ? userAddressesSelected : ufcgAddressesSelected,
+      destinationId: checkboxes[0].checked ? ufcgAddressesSelected : userAddressesSelected,
       dateTime: formatDateTime(data?.date, data?.hours),
       numSeats: vacancies + 1,
       price: data.estimated_value,
@@ -104,9 +128,12 @@ const OfferRide = ({ cars, addresses }: any) => {
       description: "any description",
     };
 
+    const response = await createRide(body);
+    console.log(response);
     console.log(body);
   };
 
+  console.log(ufcgAddresses);
   return (
     <div className="flex w-full items-center justify-center my-16">
       <div className="bg-dark w-[21rem] md:w-528 lg:w-[64rem] h-fit rounded-lg px-6 py-8 lg:px-14 lg:py-16 space-y-12 mx-8">
@@ -134,8 +161,8 @@ const OfferRide = ({ cars, addresses }: any) => {
                 }}
               />
             </section>
-            <Dropdown label="Local de Origem" options={[{ label: "Ola", value: "1"}, { label: "Ola", value: "2"}, { label: "Ola", value: "3"}]} onSelectOption={() => {}} />
-            <Dropdown label="Local de Destino" options={[{ label: "Ola", value: "1"}, { label: "Ola", value: "2"}, { label: "Ola", value: "3"}]} onSelectOption={() => {}} />
+            <Dropdown label="Local de Origem" options={checkboxes[0].checked ? userAddresses : ufcgAddresses } onSelectOption={() => checkboxes[0].checked ? () => setUserAddressesSelected : () => setUfcgAddressesSelected} />
+            <Dropdown label="Local de Destino" options={checkboxes[0].checked ? ufcgAddresses : userAddresses } onSelectOption={() => checkboxes[0].checked ? () => setUfcgAddressesSelected : () => setUserAddressesSelected} />
             {/* {createFields(fieldsFirstRow, "space-y-4")} */}
             {createFields(
               fieldsLastRow,

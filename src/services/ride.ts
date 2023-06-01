@@ -37,3 +37,13 @@ const getMember = async () => {
     console.log(err);
   }
 }
+
+export const createRide = async (body: any) => {
+  try {
+    const response = api.post('/api/v1/rides', body);
+    console.log(response);
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}

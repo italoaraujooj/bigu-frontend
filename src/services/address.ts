@@ -11,3 +11,11 @@ export const fetchUserAddresses = async () => {
   }
 }
 
+export const fetchUfcgAddresses = async () => {
+  try {
+    const response = await api.get('/api/v1/addresses/get-ufcg');
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}

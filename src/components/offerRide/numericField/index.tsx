@@ -54,6 +54,7 @@ const NumericField = (props: Props) => {
         <button
           onClick={vacanciesDown}
           className="w-full h-full cursor-pointer"
+          type="button"
         >
           <Image
             className="absolute inset-y-3 right-0 w-8 h-8 left-6 cursor-pointer"
@@ -75,7 +76,7 @@ const NumericField = (props: Props) => {
             </p>
           ))}
         </div>
-        <button onClick={vacanciesUp}>
+        <button onClick={vacanciesUp} type="button">
           <Image
             className="absolute inset-y-3 w-8 h-8 right-6 cursor-pointer "
             src={Plus}
