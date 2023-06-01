@@ -119,6 +119,7 @@ function Register(props: Props){
               size="lg"
               color="yellow"
               shape="square"
+              type="submit" 
             />
             <div>
               <p className="text-xs md:text-sm flex justify-center">

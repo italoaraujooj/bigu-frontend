@@ -16,6 +16,8 @@ import Link from "next/link";
 import Router from "next/router";
 import withPrivateRoute from "@/routes/PrivateRoute";
 import { ArrowCircleLeft } from "@phosphor-icons/react";
+import Modal from "@/components/modal";
+import { getUser } from "@/services/auth";
 
 type User = {
   fullName: string;
@@ -91,12 +93,14 @@ function Profile() {
   const formRef = useRef(null);
   const [readOnly, setReadOnly] = useState(true);
   const { user, isAuthenticated } = useContext(AuthContext);
+  const [changePassword, setChangePassord] = useState(false);
+  const [save, setSave] = useState(false);
 
-  // useEffect(() => {
-  //   if(!localStorage.getItem("bigu-token")){
-  //     Router.push("/")
-  //   }
-  // }, [isAuthenticated])
+  const handleOpenChangePassword = () => setChangePassord(true);
+  const handleCloseChangePassword  = () => setChangePassord(false);
+
+  const handleOpenSave = () => setSave(true);
+  const handleCloseSave  = () => setSave(false);
 
   function handleSubmit() {}
 
@@ -108,7 +112,10 @@ function Profile() {
     <div className="flex w-full items-center justify-center my-12">
       <div>
         <div>
-          <Link href="/dashboard" className="text-gray flex items-center gap-2 mb-4" >
+          <Link
+            href="/dashboard"
+            className="text-gray flex items-center gap-2 mb-4"
+          >
             <ArrowCircleLeft size={32} />
             <Text
               label="Voltar para tela inicial"
@@ -121,7 +128,7 @@ function Profile() {
         <div className="w-full h-fit flex items-center justify-center">
           <Form
             className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-7xl"
-            onSubmit={handleSubmit}
+            onSubmit={handleOpenSave}
             initialData={{
               name: user?.fullName,
               email: user?.email,
@@ -261,11 +268,12 @@ function Profile() {
                 <div className="flex gap-7">
                   <Button
                     label="Alterar senha"
-                    onClick={() => {}}
+                    onClick={handleOpenChangePassword}
                     size="base"
                     color="light-blue"
                     shape="square"
                     className="uppercase"
+                    type="button"
                   />
                   <Button
                     label={`${readOnly ? "Editar" : "Salvar"}`}
@@ -274,10 +282,91 @@ function Profile() {
                     color={`${readOnly ? "yellow" : "green"}`}
                     shape="square"
                     className="uppercase"
+                    type={`${readOnly ? "submit" : "button"}`}
                   />
                 </div>
               </div>
             </div>
+            {changePassword && (
+              <Modal isOpen={changePassword} onClose={handleCloseChangePassword}>
+                <form>
+                  <div className=" bg-white rounded-lg p-3 flex flex-col gap-4 justify-center items-center">
+                    <h2 className=" text-2xl font-semibold">Alterar senha</h2>
+                    <Input
+                      label="Senha atual:"
+                      name="password"
+                      sizing="sm"
+                      color="light"
+                      className="md:h-16 md:text-lg"
+                      type="text"
+                      placeholder="*********"
+                    />
+
+                    <Input
+                      label="Nova senha:"
+                      name="password"
+                      sizing="sm"
+                      color="light"
+                      className="md:h-16 md:text-lg"
+                      type="text"
+                      placeholder="*********"
+                    />
+                    <Input
+                      label="Confirmar senha:"
+                      name="password"
+                      sizing="sm"
+                      color="light"
+                      className="md:h-16 md:text-lg"
+                      type="text"
+                      placeholder="*********"
+                    />
+                    <p className=" text-gray">Esqueci minha senha</p>
+                    <div className="flex gap-2">
+                      <Button
+                        label="Cancelar"
+                        size="base"
+                        className="uppercase font-semibold px-3 lg:px-6"
+                        color="red"
+                        onClick={handleCloseChangePassword}
+                      />
+                      <Button
+                        label="Confirmar"
+                        size="base"
+                        className="uppercase font-semibold px-3 lg:px-6"
+                        color="green"
+                        type="submit"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </Modal>
+            )}
+            {
+              save && 
+              <Modal isOpen={save} onClose={handleCloseSave}>
+                <form>
+                  <div className=" bg-white rounded-lg p-3 flex flex-col gap-4 justify-center items-center">
+                    <h2 className=" text-2xl font-semibold">Confirmar modificações</h2>
+                    <div className="flex gap-2">
+                      <Button
+                        label="Cancelar"
+                        size="base"
+                        className="uppercase font-semibold px-3 lg:px-6"
+                        color="red"
+                        onClick={handleCloseSave}
+                      />
+                      <Button
+                        label="Confirmar"
+                        size="base"
+                        className="uppercase font-semibold px-3 lg:px-6"
+                        color="green"
+                        type="submit"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </Modal>
+            }
           </Form>
         </div>
       </div>

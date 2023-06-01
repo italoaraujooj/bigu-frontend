@@ -14,7 +14,7 @@ interface Props {
   sizing: InputSize;
   placeholder: string;
   shape?: "rounded" | "square";
-  readOnly:boolean;
+  readOnly?:boolean;
   visibility?:string;
   value?: string | number;
   className?: string;

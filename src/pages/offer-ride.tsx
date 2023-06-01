@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Woman from "../assets/woman.png";
 import Image from "next/image";
 import Text from "@/components/text";
@@ -21,9 +21,9 @@ import { getToken } from "@/utils/cookies";
 import { hasCookie } from "cookies-next";
 import { getUserCars } from "@/services/car";
 import Dropdown from "@/components/dropdown";
+import Modal from "@/components/modal";
 
 type Props = {};
-
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   try {
@@ -45,14 +45,18 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   }
 };
 
-
 const OfferRide = ({ cars, addresses }: any) => {
   const { user } = useContext(AuthContext);
 
+  const [showModalConfirmation, setshowModalConfirmation] = useState(false);
+
+  const handleCloseConfirmation = () => setshowModalConfirmation(false);
+  const handleOpenConfirmation = () => setshowModalConfirmation(true);
+
   React.useEffect(() => {
-    getUserCars().then(data => console.log(data));
-    fetchUserAddresses().then(data => console.log(data));
-  }, [cars, addresses])
+    getUserCars().then((data) => console.log(data));
+    fetchUserAddresses().then((data) => console.log(data));
+  }, [cars, addresses]);
   const formRef = React.useRef<FormHandles>(null);
   const { createFields } = useFields();
   const [checkboxes, setCheckboxes] = React.useState([
@@ -107,6 +111,8 @@ const OfferRide = ({ cars, addresses }: any) => {
     console.log(body);
   };
 
+  const handleConfimation = () => {};
+
   return (
     <div className="flex w-full items-center justify-center my-16">
       <div className="bg-dark w-[21rem] md:w-528 lg:w-[64rem] h-fit rounded-lg px-6 py-8 lg:px-14 lg:py-16 space-y-12 mx-8">
@@ -115,9 +121,9 @@ const OfferRide = ({ cars, addresses }: any) => {
           <Text label={`Ola, ${user?.fullName}!`} size="lg" weight="bold" />
         </header>
         <Form
-          className="flex flex-col lg:flex-row  lg:justify-between"
+          className="flex flex-col lg:flex-row lg:justify-between"
           ref={formRef}
-          onSubmit={handleSubmit}
+          onSubmit={handleConfimation}
         >
           <div className="w-full lg:w-2/5 space-y-2">
             <section className="mb-7">
@@ -134,8 +140,24 @@ const OfferRide = ({ cars, addresses }: any) => {
                 }}
               />
             </section>
-            <Dropdown label="Local de Origem" options={[{ label: "Ola", value: "1"}, { label: "Ola", value: "2"}, { label: "Ola", value: "3"}]} onSelectOption={() => {}} />
-            <Dropdown label="Local de Destino" options={[{ label: "Ola", value: "1"}, { label: "Ola", value: "2"}, { label: "Ola", value: "3"}]} onSelectOption={() => {}} />
+            <Dropdown
+              label="Local de Origem"
+              options={[
+                { label: "Ola", value: "1" },
+                { label: "Ola", value: "2" },
+                { label: "Ola", value: "3" },
+              ]}
+              onSelectOption={() => {}}
+            />
+            <Dropdown
+              label="Local de Destino"
+              options={[
+                { label: "Ola", value: "1" },
+                { label: "Ola", value: "2" },
+                { label: "Ola", value: "3" },
+              ]}
+              onSelectOption={() => {}}
+            />
             {/* {createFields(fieldsFirstRow, "space-y-4")} */}
             {createFields(
               fieldsLastRow,
@@ -199,14 +221,42 @@ const OfferRide = ({ cars, addresses }: any) => {
                 size="base"
                 className="uppercase font-semibold px-3 lg:px-6"
                 color="green"
+                onClick={handleOpenConfirmation}
               />
             </section>
           </div>
+          {showModalConfirmation && (
+            <Modal
+              isOpen={showModalConfirmation}
+              onClose={handleCloseConfirmation}
+            >
+              <div className=" flex flex-col gap-3 justify-center items-center bg-white rounded-lg p-3">
+                <p className=" text-xl font-semibold text-warmGray-800">
+                  Tem certeza?
+                </p>
+                <div className="flex gap-2">
+                <Button
+                    label="Cancelar"
+                    size="base"
+                    className="uppercase font-semibold px-3 lg:px-6"
+                    color="red"
+                    onClick={handleCloseConfirmation}
+                  />
+                  <Button
+                    label="Confirmar"
+                    size="base"
+                    className="uppercase font-semibold px-3 lg:px-6"
+                    color="green"
+                    type="submit"
+                  />
+                </div>
+              </div>
+            </Modal>
+          )}
         </Form>
       </div>
     </div>
   );
 };
-
 
 export default OfferRide;

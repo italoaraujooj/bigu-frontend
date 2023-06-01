@@ -22,11 +22,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }: any) => {
 
   return isOpen
     ? ReactDOM.createPortal(
-        <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black/50">
+        <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black/70">
           <div className="modal">
-            <button className="modal-close" onClick={onClose}>
-              X
-            </button>
             <div className="modal-content">{children}</div>
           </div>
         </div>,
