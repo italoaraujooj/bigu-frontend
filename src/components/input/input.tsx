@@ -8,7 +8,7 @@ type InputSize = "sm" | "adjustable" | "xs";
 
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   type: InputType;
   color: InputColor;
   sizing: InputSize;

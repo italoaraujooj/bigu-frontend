@@ -1,6 +1,6 @@
 import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { SignInResponse } from "@/utils/types";
 
 type SignUpRequestData = {
@@ -13,10 +13,6 @@ type SignUpRequestData = {
 type SignInRequestData = {
     email:string;
     password:string
-}
-
-type Token = {
-    token: String;
 }
 
 export async function signUpRequest(credentials: SignUpRequestData) {
@@ -47,4 +43,14 @@ export async function getUser(){
   // const token = localStorage.getItem("bigu-token")
   return await api.get('/api/v1/users/self',)
 }
+
+export async function forgotPasswordRequest(email: string){
+  try{
+    console.log("forgot")
+    await axios.post('http://localhost:8080/api/v1/auth/forgot-password')
+  }catch (error: any){
+    handleError(error)
+  }
+}
+
 

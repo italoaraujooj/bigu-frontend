@@ -7,6 +7,7 @@ export const handleReplaceToLogin = () => {
   }
 
 export const handleError = (error: any) => {
+  console.log(error)
     if (axios.isCancel(error)) {
       console.log("Request canceled");
     }
@@ -17,7 +18,6 @@ export const handleError = (error: any) => {
       }
       else if (error.response.status === 500) {
         window.alert(error.response.data.message);
-        // window.alert("Internal server error\nTry again in feel minutes");
       }
       else if (!axios.isCancel(error)) {
         window.alert(error.response.data.message);

@@ -19,6 +19,7 @@ function Dropdown({ label, options, onSelectOption }: Props) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleSelectOption = (option: DropdownOption) => {
+    console.log('here!! ->' + option)
     setSelectedOption(option);
     onSelectOption(option);
     setIsOpen(false);

@@ -1,26 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MaleAvatar from "../../assets/avatar.png";
 import Heart from "../../assets/heart.png";
 import HeartFilled from "../../assets/heart-filled.png";
 import Image from "next/image";
 import Button from "../button";
 import Text from "../text";
+import { getAllRidesAvailable } from "@/services/ride";
 
 function Ride() {
   const [favorite, setFavorite] = React.useState(false);
   const [askRide, setAskRide] = React.useState(false);
+  const [ridesAvailable, setRidesAvailable] = React.useState([]);
+  
 
   const toggleFavorite = () => setFavorite((prev) => !prev);
   const toggleAskRide = () => setAskRide((prev) => !prev);
 
-  return (
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const response = await getAllRidesAvailable();
+        const dadosDaApi = response.data;
+        setRidesAvailable(dadosDaApi);
+      } catch (error) {
+        console.error('Erro ao buscar os dados:', error);
+      }
+    }
+
+    loadData();
+  }, []);
+
+return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-9 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
       <h2 className="font-['Poppins'] text-2xl sm:text-3xl text-white font-bold pb-8">
         Caronas disponíveis
       </h2>
 
       <div className="space-y-4">
-        {[1, 2, 3].map((item) => (
+        {ridesAvailable.slice(0, 3).map((item : any) => (
           <div
             key={item}
             className="w-full h-14 bg-white rounded-xl px-6 py-4 transition-height duration-500 ease-in-out overflow-hidden	space-y-4 hover:h-64 sm:h-20"
@@ -32,16 +49,16 @@ function Ride() {
                 alt="male avatar"
               />
               <p className="font-['Poppins'] font-light text-xs sm:text-xl">
-                Carlos está saindo do Alto Branco...
+                {`${item.driver.fullName} está saindo do ${item.start.district}...`}
               </p>
             </div>
             <div className="space-y-2">
               <p className="font-['Poppins']">
-                Corolla Prata - <strong>Placa X8X1543</strong>
+                {`${item.car.model} ${item.car.color}`} - <strong>{item.car.plate}</strong>
               </p>
-              <p className="font-['Poppins']">3 vagas disponíveis</p>
+              <p className="font-['Poppins']">{item.numSeats} vagas disponíveis</p>
               <p className="font-['Poppins']">
-                <strong>Saída às 7 horas</strong>
+                <strong>Saída às {item.dateTime} horas</strong>
               </p>
             </div>
 

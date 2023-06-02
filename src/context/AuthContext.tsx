@@ -1,4 +1,4 @@
-import { getUser, signInRequest, signUpRequest, logOut } from "@/services/auth";
+import { getUser, signInRequest, signUpRequest, logOut, forgotPasswordRequest } from "@/services/auth";
 import { Children, createContext, useEffect, useState } from "react";
 import Router from "next/router";
 import { api } from "@/services/api";
@@ -11,6 +11,7 @@ type AuthContextType = {
   logOu: () => Promise<void>;
   user: any;
   setUser: (user: User) => void;
+  forgotPassword: (data: string) => Promise<void>
 };
 
 type SignInData = {
@@ -51,16 +52,13 @@ export function AuthProvider({ children }: any) {
   async function signIn({ email, password }: SignInData) {
     try {
       const response = await signInRequest({ email, password });
-      // localStorage.setItem("bigu-token", response?.data.token)
-      setCookie(undefined, 'nextauth.token', response?.data?.token, {
-        maxAge: 8600,
-      });
-
-      setUser(response?.data?.userDTO)
-      
-      Router.push("/dashboard");
-
-      // return response;
+      if(response){
+        setCookie(undefined, 'nextauth.token', response?.data?.token, {
+          maxAge: 8600,
+        });
+        setUser(response?.data?.userDTO)
+        Router.push("/dashboard");
+      }  
     } catch (err) {
       console.log(err);
     }
@@ -79,12 +77,25 @@ export function AuthProvider({ children }: any) {
       phoneNumber,
       password,
     });
-    // localStorage.setItem("bigu-token", response?.data.token);
-    setCookie(undefined, 'nextauth.token', response?.data?.token, {
-      maxAge: 8600,
-    });    
-    // api.defaults.headers["Authorization"] = `Bearer ${response?.data.token}`;
-    Router.push("/dashboard");
+    if(response){
+      setCookie(undefined, 'nextauth.token', response?.data?.token, {
+        maxAge: 8600,
+      });    
+      Router.push("/dashboard");
+    }
+  }
+
+  async function forgotPassword(email: string) {
+    try {
+      const response = await forgotPasswordRequest(email);
+      console.log(response)
+      Router.push("/");
+
+      
+    } catch (err) {
+      console.log(err);
+    }
+    
   }
 
   async function logOu() {
@@ -96,7 +107,7 @@ export function AuthProvider({ children }: any) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, signIn, signUp, logOu, setUser }}
+      value={{ user, isAuthenticated, signIn, signUp, logOu, setUser, forgotPassword }}
     >
       {children}
     </AuthContext.Provider>
