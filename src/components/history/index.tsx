@@ -11,6 +11,7 @@ interface RacesHistory {
   date: string;
   status: string;
 }
+// @ts-ignore
 function History({ races }: { races: any[] }) {
     return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-10 px-10 mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
@@ -33,7 +34,7 @@ function History({ races }: { races: any[] }) {
         )}
         {races?.map((race: RacesHistory) => (
           <div
-            key={race} // @ts-ignore
+            key={race}
             className="h-24 w-full px-6 py-6 border-light border-2 flex justify-between items-center gap-5 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer transition-colors duration-600"
           >
             <Image src={OK} className="w-9 h-9" alt="race finished status" />
