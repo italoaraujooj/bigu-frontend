@@ -38,5 +38,8 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2"
+  },
+  "engines": {
+    "node": "19.6.0"
   }
 }
