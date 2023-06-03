@@ -42,4 +42,19 @@ const fieldsLastRow: OfferRideField[] = [
   }
 ]
 
-export { fieldsFirstRow, fieldsLastRow };
+const checkboxesOptions = [
+  {
+    id: 1,
+    label: "estou indo para a universidade",
+    value: "going",
+    checked: true,
+  },
+  {
+    id: 2,
+    label: "estou saindo da universidade",
+    value: "leaving",
+    checked: false,
+  },
+]
+
+export { fieldsFirstRow, fieldsLastRow, checkboxesOptions };

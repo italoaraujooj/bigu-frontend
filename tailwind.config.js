@@ -26,7 +26,8 @@ module.exports = {
       'blackLine': '#474747',
       'light-yellow': '#FFB703',
       'orange': '#FB8500',
-      'light-white': '#F6F6F6'
+      'light-white': '#F6F6F6',
+      'red': '#dd5035'
     },
     extend: {
       width: {

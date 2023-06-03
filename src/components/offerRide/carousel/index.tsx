@@ -100,7 +100,7 @@ const Carousel = (props: Props) => {
                   weight="medium"
                   className="text-sm lg:text-md"
                 />
-                <button className="h-12 font-family bg-green rounded-lg text-white font-semibold text-sm lg:text-base px-4 lg:px-6 flex items-center justify-between gap-3 lg:gap-6 uppercase tracking-tight hover:bg-hover-green">
+                <button type="button" className="h-12 font-family bg-green rounded-lg text-white font-semibold text-sm lg:text-base px-4 lg:px-6 flex items-center justify-between gap-3 lg:gap-6 uppercase tracking-tight hover:bg-hover-green">
                   <div
                     className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center"
                     onClick={() => toggleCar(index)}
@@ -202,6 +202,7 @@ const Carousel = (props: Props) => {
             key={index}
             className="w-4 h-4 bg-gray rounded-full"
             onClick={() => goToIndex(index)}
+            type="button"
           ></button>
         ))}
         {/* <button className="w-4 h-4 bg-gray rounded-full" onClick={prevItem}></button> */}

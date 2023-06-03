@@ -19,7 +19,7 @@ function History({ races }: { races: any[] }) {
       </h2>
       <div
         className={clsx(
-          `w-full flex flex-col gap-3 overflow-scroll`,
+          `w-full flex flex-col gap-3 overflow-y-scroll`,
           races?.length ? "h-80" : "h-fit"
         )}
       >
@@ -33,7 +33,7 @@ function History({ races }: { races: any[] }) {
         )}
         {races?.map((race: RacesHistory) => (
           <div
-            key={race}
+            key={race.id}
             className="h-24 w-full px-6 py-6 border-light border-2 flex justify-between items-center gap-5 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer transition-colors duration-600"
           >
             <Image src={OK} className="w-9 h-9" alt="race finished status" />

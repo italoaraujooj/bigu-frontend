@@ -7,7 +7,7 @@ interface Props {
     children?: JSX.Element
 }
 
-function Modal({handleClose, show, children}: Props) {
+function ModalSecondary({handleClose, show, children}: Props) {
   
 return (
     <div>
@@ -19,5 +19,5 @@ return (
   )
 }
 
-export default Modal;
+export default ModalSecondary;
 

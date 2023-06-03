@@ -79,7 +79,7 @@ function Login(props: Props) {
               readOnly={false}
             />
           </div>
-          <Button label="Entrar" size="lg" color="yellow" shape="square" />
+          <Button label="Entrar" size="lg" color="yellow" shape="square" type="submit" />
         </div>
       </Form>
     </div>
