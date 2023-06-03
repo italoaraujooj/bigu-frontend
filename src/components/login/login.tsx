@@ -40,7 +40,16 @@ function Login(props: Props) {
       password: data.password,
     };
 
-    await signIn(user);
+    const response = await signIn(user);
+
+    if (response?.status !== 200) { 
+      // dashboard
+    } else {
+      // modal error
+    }
+
+
+    console.log(JSON.stringify(response, null, 2));
   };
 
   const handleSubmitPassword: SubmitHandler<UserPasswordForgot> = async (data) => {
@@ -97,7 +106,7 @@ function Login(props: Props) {
               readOnly={false}
             />
           </div>
-          <span className=" text-gray cursor-pointer" onClick={handleOpenModal}>Esqueci minha senha</span>
+          <span className="text-sm text-gray cursor-pointer self-end" onClick={handleOpenModal}>Esqueci minha senha</span>
           <Button label="Entrar" size="lg" color="yellow" shape="square" type="submit" />
         </div>
         {showModal && 

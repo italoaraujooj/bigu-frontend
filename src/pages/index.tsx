@@ -8,6 +8,7 @@ import Image from "next/image";
 import Logo from "../assets/car-secondary.png";
 import Menu from "../assets/Menu.png";
 import { useState } from "react";
+import LottieAnimation from "@/components/LottieAnimation";
 
 const inter = Inter({ subsets: ["latin"] });
 

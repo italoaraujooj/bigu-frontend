@@ -6,8 +6,8 @@ import { destroyCookie, parseCookies, setCookie } from "nookies";
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  signIn: (data: SignInData) => Promise<void>;
-  signUp: (data: SignUpData) => Promise<void>;
+  signIn: (data: SignInData) => Promise<any>;
+  signUp: (data: SignUpData) => Promise<any>;
   logOu: () => Promise<void>;
   user: any;
   setUser: (user: User) => void;
@@ -51,14 +51,15 @@ export function AuthProvider({ children }: any) {
 
   async function signIn({ email, password }: SignInData) {
     try {
-      const response = await signInRequest({ email, password });
-      if(response){
+      const response: any = await signInRequest({ email, password });
+      if (response.status === 200) {
         setCookie(undefined, 'nextauth.token', response?.data?.token, {
           maxAge: 8600,
         });
         setUser(response?.data?.userDTO)
         Router.push("/dashboard");
       }  
+      return { data: response?.data, status: response?.status };
     } catch (err) {
       console.log(err);
     }

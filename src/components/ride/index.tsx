@@ -6,12 +6,21 @@ import Image from "next/image";
 import Button from "../button";
 import Text from "../text";
 import { getAllRidesAvailable } from "@/services/ride";
+import LottieAnimation from "../LottieAnimation";
+import ghost from '../../assets/ghost.json';
+import empty from '../../assets/empty-box.json';
+import { formatarData } from "@/utils/masks";
+import Modal from "../modal";
+import Dropdown from "../dropdown";
+import { fetchUserAddresses } from "@/services/address";
 
 function Ride() {
+  const [userAddress, setUserAddresses] = React.useState([])
+  const [userAddressesSelected, setUserAddressesSelected] = React.useState({});
   const [favorite, setFavorite] = React.useState(false);
   const [askRide, setAskRide] = React.useState(false);
   const [ridesAvailable, setRidesAvailable] = React.useState([]);
-  
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   const toggleFavorite = () => setFavorite((prev) => !prev);
   const toggleAskRide = () => setAskRide((prev) => !prev);
@@ -30,6 +39,19 @@ function Ride() {
     loadData();
   }, []);
 
+  useEffect(() => {
+    fetchUserAddresses().then((data) => {
+      const addressesFormated = data?.data.map((address: any) => ({
+        label: address.nickname,
+        value: address.addressId,
+      }));
+      setUserAddresses(addressesFormated);
+    });
+  }, [askRide])
+
+  console.log('asasass');
+  console.log(ridesAvailable);
+
 return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-9 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
       <h2 className="font-['Poppins'] text-2xl sm:text-3xl text-white font-bold pb-8">
@@ -37,7 +59,7 @@ return (
       </h2>
 
       <div className="space-y-4">
-        {ridesAvailable.slice(0, 3).map((item : any) => (
+        {!!ridesAvailable.length ? ridesAvailable.map((item : any) => (
           <div
             key={item}
             className="w-full h-14 bg-white rounded-xl px-6 py-4 transition-height duration-500 ease-in-out overflow-hidden	space-y-4 hover:h-64 sm:h-20"
@@ -58,7 +80,7 @@ return (
               </p>
               <p className="font-['Poppins']">{item.numSeats} vagas disponíveis</p>
               <p className="font-['Poppins']">
-                <strong>Saída às {item.dateTime} horas</strong>
+                <strong>Saída às {formatarData(item.dateTime)}</strong>
               </p>
             </div>
 
@@ -68,7 +90,7 @@ return (
                   label={
                     !askRide ? "Pedir carona" : "Aguardando confirmação..."
                   }
-                  onClick={toggleAskRide}
+                  onClick={() => setModalOpen(prev => !prev)}
                   size="sm"
                   color="green"
                   shape="square"
@@ -103,7 +125,14 @@ return (
               </div>
             </div>
           </div>
-        ))}
+        )) : (
+          <div className="w-full flex items-center justify-center">
+            <div className="w-64 h-64 ">
+              {/* <Text label="Não há nada por aqui..." size="xl"  /> */}
+              <LottieAnimation data={ghost} />
+            </div>
+          </div>
+        )}
       </div>
 
       <footer className="pt-4">
@@ -116,6 +145,9 @@ return (
         />
         {/* )}       */}
       </footer>
+      {/* <Modal isOpen={modalOpen} onClose={() => setModalOpen(prev => !prev)}>
+        <Dropdown label="Selecione o ponto de partida" options={userAddress} onSelectOption={setUserAddressesSelected}/>
+      </Modal> */}
     </div>
   );
 }

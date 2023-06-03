@@ -9,8 +9,8 @@ type InputSize = "sm" | "adjustable" | "xs";
 interface Props {
   name: string;
   label?: string;
-  type: InputType;
-  color: InputColor;
+  type?: InputType;
+  color?: InputColor;
   sizing: InputSize;
   placeholder: string;
   shape?: "rounded" | "square";
@@ -26,9 +26,9 @@ export default function Input(props: Props) {
   const {
     name,
     label,
-    type,
+    type = "text",
     sizing,
-    color,
+    color = "extralight",
     shape = "rounded",
     placeholder,
     readOnly,

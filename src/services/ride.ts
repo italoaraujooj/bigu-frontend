@@ -11,6 +11,16 @@ export const getAllRides = async () => {
   }
 }
 
+export const getHistoryRide = async () => {
+  try {
+    const response: any = api.get('/api/v1/rides/history');
+    
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const offerRide = async (data: OfferRideBody) => {
   try {
     const response = api.post('/api/v1/rides', data);

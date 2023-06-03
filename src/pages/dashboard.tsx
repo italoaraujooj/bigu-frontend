@@ -22,9 +22,10 @@ import { SignOut } from "@phosphor-icons/react";
 
 function Dashboard({ cars }: any) {
   const { user, logOu } = useContext(AuthContext);
-  const { rides } = useContext(RideContext)
+  const { rides, history } = useContext(RideContext)
   const [drawer, setDrawer] = React.useState(false);
-
+  console.log('historico');
+  console.log(history);
   const openDrawer = () => {
     setDrawer(true);
   };
@@ -127,7 +128,7 @@ function Dashboard({ cars }: any) {
           </div>
         </div>
         <div className="flex justify-between">
-          <History races={[1,2,3,4]} />
+          <History races={history} />
           <div className=" h-96 border-r border-solid border-warmGray-700"></div>
           <Ride />
         </div>

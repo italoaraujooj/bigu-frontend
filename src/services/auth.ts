@@ -47,7 +47,8 @@ export async function getUser(){
 export async function forgotPasswordRequest(email: string){
   try{
     console.log("forgot")
-    await axios.post('http://localhost:8080/api/v1/auth/forgot-password')
+    const res = await api.post('/api/v1/auth/forgot-password', {email});
+    return res;
   }catch (error: any){
     handleError(error)
   }

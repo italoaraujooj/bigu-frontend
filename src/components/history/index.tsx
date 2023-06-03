@@ -3,6 +3,7 @@ import OK from "../../assets/finished.png";
 import Image from "next/image";
 import Text from "../text";
 import clsx from "clsx";
+import { formatarDate } from "@/utils/masks";
 
 interface RacesHistory {
   id: number;
@@ -36,11 +37,11 @@ function History({ races }: { races: any[] }) {
             key={race.id}
             className="h-24 w-full px-6 py-6 border-light border-2 flex justify-between items-center gap-5 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer transition-colors duration-600"
           >
-            <Image src={OK} className="w-9 h-9" alt="race finished status" />
-            <Text label="Catolé" color="gray" size="xl" />
+            <Image src={OK} className="w-7 h-7" alt="race finished status" />
+            <Text label={race?.start?.nickname} color="gray" size="md" />
             <div className="w-12 h-1 bg-light" />
-            <Text label="UFCG" color="gray" size="xl" />
-            <Text label="12 de abril às 7:35" color="gray" size="xl" />
+            <Text label={race?.destination?.nickname} color="gray" size="md" />
+            <Text label={formatarDate(race?.dateTime)} color="gray" size="md" />
           </div>
         ))}
       </div>
