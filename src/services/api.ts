@@ -2,9 +2,11 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { parseCookies } from "nookies";
 
+const baseURL = process.env.API_URL || 'http://localhost:8080';
+
 export const api = axios.create({
-  baseURL: 'http://localhost:8080',
-  headers: {'Accept': 'application/json'}
+  baseURL,
+  headers: { 'Accept': 'application/json' },
 });
 
 // let token;
