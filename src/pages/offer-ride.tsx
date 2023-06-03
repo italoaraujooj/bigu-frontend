@@ -1,9 +1,6 @@
 import React, { useContext } from "react";
 import { Text, Form } from '@/components';
 import { AuthContext } from "@/context/AuthContext";
-import { GetServerSideProps } from "next";
-import { fetchUserAddresses } from "@/services/address";
-import { getUserCars } from "@/services/car";
 import Woman from "../assets/woman.png";
 import Image from "next/image";
 
