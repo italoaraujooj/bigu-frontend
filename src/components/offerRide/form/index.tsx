@@ -53,10 +53,10 @@ function OfferRideForm() {
     const body = {
       goingToCollege:
         checkboxSelected!.value === "going" && checkboxSelected!.checked,
-      startId: checkboxes[0].checked
+      startAddressId: checkboxes[0].checked
         ? userAddressesSelected?.value
         : ufcgAddressesSelected?.value,
-      destinationId: checkboxes[0].checked
+      destinationAddressId: checkboxes[0].checked
         ? ufcgAddressesSelected?.value
         : userAddressesSelected?.value,
       dateTime: formatDateTime(data?.date, data?.hours),
