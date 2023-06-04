@@ -41,3 +41,67 @@ export function formatarDate(data: string): string {
   const dataFormatada = format(dataRecebida, "dd 'de' MMMM 'às' HH:mm", { locale: ptBR });
   return dataFormatada;
 }
+
+export function moneyMask(value: any) {
+  // Remove todos os caracteres não numéricos
+  const numericValue = value.replace(/[^0-9]/g, '');
+
+  // Verifica se o valor está vazio
+  if (numericValue === '') {
+    return '';
+  }
+
+  // Obtém a parte inteira e a parte decimal
+  const integerPart = numericValue.slice(0, -2);
+  const decimalPart = numericValue.slice(-2);
+
+  // Formata a parte inteira adicionando separadores de milhar
+  const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  // Monta o valor completo com o prefixo "R$" e a parte inteira e decimal
+  const formattedValue = `R$ ${formattedIntegerPart},${decimalPart}`;
+
+  return formattedValue;
+}
+
+export function timeMask(value: any) {
+  // Remove todos os caracteres não numéricos
+  const numericValue = value.replace(/[^0-9]/g, '');
+
+  // Verifica se o valor está vazio
+  if (numericValue === '') {
+    return '';
+  }
+
+  // Obtém as duas primeiras posições para as horas
+  let hours = numericValue.slice(0, 2);
+
+  // Obtém as duas últimas posições para os minutos
+  let minutes = numericValue.slice(2, 4);
+
+  // Validações para garantir que as horas e minutos estejam no formato correto
+  if (hours !== '') {
+    if (parseInt(hours, 10) > 12) {
+      hours = '12';
+    } else if (hours.length === 1 && parseInt(hours, 10) > 1) {
+      hours = `0${hours}`;
+    } else if (hours.length === 2 && parseInt(hours, 10) === 0) {
+      hours = '01';
+    } else if (hours.length === 2 && parseInt(hours, 10) > 12) {
+      hours = '12';
+    }
+  }
+
+  if (minutes !== '') {
+    if (parseInt(minutes, 10) > 59) {
+      minutes = '59';
+    } else if (minutes.length === 1 && parseInt(minutes, 10) > 5) {
+      minutes = `0${minutes}`;
+    }
+  }
+
+  // Monta o valor completo no formato HH:mm
+  const formattedValue = `${hours}:${minutes}`;
+
+  return formattedValue;
+}

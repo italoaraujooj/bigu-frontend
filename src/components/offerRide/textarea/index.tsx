@@ -19,7 +19,7 @@ const TextArea = (props: Props) => {
       />
       <textarea
         rows={6}
-        minLength={90}
+        minLength={10}
         autoComplete="on"
         autoCorrect="on"
         placeholder={placeholder}
