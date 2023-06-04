@@ -29,7 +29,8 @@ function Ride() {
     async function loadData() {
       try {
         const response = await getAllRidesAvailable();
-        const dadosDaApi = response.data;
+        // @ts-ignore
+          const dadosDaApi = response.data;
         setRidesAvailable(dadosDaApi);
       } catch (error) {
         console.error('Erro ao buscar os dados:', error);
