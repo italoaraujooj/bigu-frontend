@@ -10,7 +10,7 @@ function useFields() {
   const createFields = (fields: OfferRideField[], className?: string) => {
     return (
       <div className={clsx(className)}>
-        {fields.map(({ name, label, type, color, sizing, placeholder, readOnly }) => (
+        {fields.map(({ name, label, type, color, sizing, placeholder, readOnly, mask }) => (
           <Input
             key={name}
             name={name}
@@ -20,6 +20,7 @@ function useFields() {
             sizing={sizing}
             placeholder={placeholder}
             readOnly={readOnly}
+            mask={mask}
           />
         ))}
       </div>

@@ -8,31 +8,35 @@ type InputSize = "sm" | "adjustable" | "xs";
 
 interface Props {
   name: string;
-  label: string;
-  type: InputType;
-  color: InputColor;
+  label?: string;
+  type?: InputType;
+  color?: InputColor;
   sizing: InputSize;
   placeholder: string;
   shape?: "rounded" | "square";
-  readOnly:boolean;
-  visibility?:string;
+  readOnly?: boolean;
+  visibility?: string;
+  value?: string | number;
+  mask?: (value: string) => string;
   className?: string;
-};
-
-// type InputProps = JSX.IntrinsicElements["input"] & Props;
+  validate?: (value: string) => string | undefined;
+}
 
 export default function Input(props: Props) {
   const {
     name,
     label,
-    type,
+    type = "text",
     sizing,
-    color,
+    color = "extralight",
     shape = "rounded",
     placeholder,
     readOnly,
     visibility,
+    value,
+    mask,
     className,
+    validate,
   } = props;
 
   const styles = {
@@ -70,11 +74,25 @@ export default function Input(props: Props) {
     });
   }, [fieldName, registerField]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const maskedValue = mask ? mask(value) : value;
+
+    inputRef.current!.value = maskedValue;
+  };
+
+  const handleBlur = () => {
+    const inputValue = inputRef.current!.value;
+    const error = validate ? validate(inputValue) : undefined;
+
+    // TODO: Handle the error state and display the error message accordingly
+  };
+
   return (
-    <div className={clsx([`flex flex-col`,visibility])}>
+    <div className={clsx(["flex flex-col", visibility])}>
       {label && (
         <label
-          className={`font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase`}
+          className="font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase"
           htmlFor={fieldName}
         >
           {label}
@@ -98,6 +116,9 @@ export default function Input(props: Props) {
         type={type}
         placeholder={placeholder}
         readOnly={readOnly}
+        value={value}
+        onChange={handleChange}
+        onBlur={handleBlur}
       />
       {error && <span>{error}</span>}
     </div>

@@ -11,6 +11,7 @@ module.exports = {
     colors: {
       ...colors,
       'default': '#252525',
+      'container': '#222222',
       'yellow': '#FFB400',
       'green': '#52B788',
       'hover-green': '#4EB283',
@@ -23,6 +24,10 @@ module.exports = {
       'white': '#FFFFFF',
       'placeholder': '#CCCCCC',
       'blackLine': '#474747',
+      'light-yellow': '#FFB703',
+      'orange': '#FB8500',
+      'light-white': '#F6F6F6',
+      'red': '#dd5035'
     },
     extend: {
       width: {

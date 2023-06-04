@@ -2,8 +2,8 @@ import clsx from "clsx";
 import React from "react";
 
 type ButtonType = "submit" | "button" | "reset";
-type ButtonColor = "yellow" | "green" | "dark-blue" | "light-blue";
-type ButtonSize = "sm" | "base" | "md" | "lg";
+type ButtonColor = "yellow" | "green" | "dark-blue" | "light-blue" | "red";
+type ButtonSize = "sm" | "base" | "md" | "lg" | "res";
 
 type Props = {
   label: string;
@@ -27,6 +27,7 @@ const Button = (props: Props) => {
 
   const styles = {
     sizes: {
+      res: "w-36 h-10 px-3 text-base",
       sm: "w-48 h-12 px-8 text-xs",
       base: "w-48 h-14 px-6 text-sm",
       md: "w-60 h-16 px-8 text-xl",
@@ -37,6 +38,7 @@ const Button = (props: Props) => {
       green: "bg-green",
       "dark-blue": "bg-dark-blue",
       "light-blue": "bg-light-blue",
+      red:"bg-red"
     },
     shapes: {
       rounded: "rounded-full",
