@@ -18,6 +18,7 @@ interface Props {
   visibility?:string;
   value?: string | number;
   className?: string;
+  required?:boolean
 };
 
 // type InputProps = JSX.IntrinsicElements["input"] & Props;
@@ -34,6 +35,7 @@ export default function Input(props: Props) {
     readOnly,
     visibility,
     value,
+    required,
     className,
   } = props;
 
@@ -76,7 +78,7 @@ export default function Input(props: Props) {
     <div className={clsx([`flex flex-col`,visibility])}>
       {label && (
         <label
-          className={`font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase`}
+          className={`font-['Poppins'] text-[#616161] font-bold text-xs md:text-md uppercase`}
           htmlFor={fieldName}
         >
           {label}
@@ -101,6 +103,7 @@ export default function Input(props: Props) {
         placeholder={placeholder}
         readOnly={readOnly}
         value={value}
+        required={required}
       />
       {error && <span>{error}</span>}
     </div>

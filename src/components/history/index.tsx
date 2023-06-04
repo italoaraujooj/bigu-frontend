@@ -14,9 +14,9 @@ interface RacesHistory {
 }
 function History({ races }: { races: any[] }) {
   return (
-    <div className="bg-dark w-[98%] h-fit rounded-lg py-10 px-10 mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
-      <h2 className="font-['Poppins'] text-2xl sm:text-3xl text-white font-bold pb-8">
-        Seu histórico de caronas
+    <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-6 mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
+      <h2 className="font-['Poppins'] text-xl sm:text-3xl text-white font-bold pb-8">
+        Histórico de caronas
       </h2>
       <div
         className={clsx(

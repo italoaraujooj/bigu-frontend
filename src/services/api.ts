@@ -3,7 +3,7 @@ import { getCookie } from "cookies-next";
 import { parseCookies } from "nookies";
 
 export const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://bigu-backend.herokuapp.com',
   headers: {'Accept': 'application/json'}
 });
 

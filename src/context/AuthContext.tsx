@@ -11,7 +11,6 @@ type AuthContextType = {
   logOu: () => Promise<void>;
   user: any;
   setUser: (user: User) => void;
-  forgotPassword: (data: string) => Promise<void>
 };
 
 type SignInData = {
@@ -56,7 +55,8 @@ export function AuthProvider({ children }: any) {
         setCookie(undefined, 'nextauth.token', response?.data?.token, {
           maxAge: 8600,
         });
-        setUser(response?.data?.userDTO)
+        console.log(response)
+        setUser(response?.data?.userResponse)
         Router.push("/dashboard");
       }  
       return { data: response?.data, status: response?.status };
@@ -86,19 +86,6 @@ export function AuthProvider({ children }: any) {
     }
   }
 
-  async function forgotPassword(email: string) {
-    try {
-      const response = await forgotPasswordRequest(email);
-      console.log(response)
-      Router.push("/");
-
-      
-    } catch (err) {
-      console.log(err);
-    }
-    
-  }
-
   async function logOu() {
     await logOut();
     Router.push('/');
@@ -108,7 +95,7 @@ export function AuthProvider({ children }: any) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, signIn, signUp, logOu, setUser, forgotPassword }}
+      value={{ user, isAuthenticated, signIn, signUp, logOu, setUser }}
     >
       {children}
     </AuthContext.Provider>

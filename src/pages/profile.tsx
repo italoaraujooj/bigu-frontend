@@ -153,7 +153,6 @@ function Profile() {
                   </div>
                 </div>
               </div>
-              {/* <Button label="Salvar" onClick={editSubmit} size="md" color="green" shape="square" /> */}
             </div>
 
             <div className="w-full flex flex-col md:flex-row gap-12">
@@ -205,7 +204,6 @@ function Profile() {
               </div>
 
               <div className="w-full h-1 bg-blackLine md:w-1 md:h-[32.5rem]"></div>
-              {/* <div className="w-full border border-solid border-blackLine xl:h-[32.5rem] xl:w-0"></div> */}
 
               <div className="w-full flex flex-col md:w-1/2 gap-4">
                 <div className="w-full flex items-center justify-between flex-row gap-5">
@@ -264,7 +262,6 @@ function Profile() {
                   </h1>
                   <Carousel profile />
                 </div>
-                {/* <Carousel profile={true}/> */}
                 <div className="flex gap-7">
                   <Button
                     label="Alterar senha"
@@ -320,23 +317,7 @@ function Profile() {
                       type="text"
                       placeholder="*********"
                     />
-                    <p className=" text-gray">Esqueci minha senha</p>
-                    <div className="flex gap-2">
-                      <Button
-                        label="Cancelar"
-                        size="base"
-                        className="uppercase font-semibold px-3 lg:px-6"
-                        color="red"
-                        onClick={handleCloseChangePassword}
-                      />
-                      <Button
-                        label="Confirmar"
-                        size="base"
-                        className="uppercase font-semibold px-3 lg:px-6"
-                        color="green"
-                        type="submit"
-                      />
-                    </div>
+                    <p className=" text-gray cursor-pointer" onClick={() => {Router.push("/recover-password")}}>Esqueci minha senha</p>
                   </div>
                 </form>
               </Modal>
