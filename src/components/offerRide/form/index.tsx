@@ -14,7 +14,7 @@ import {
 } from "@/components";
 import { OfferRideFormState } from "@/utils/types";
 import { checkboxesOptions, fieldsLastRow } from "@/utils/offer-ride-constants";
-import { formatDateTime } from "@/utils/masks";
+import { formatDateTime, moneyMask } from "@/utils/masks";
 import { createRide } from "@/services/ride";
 import useFields from "@/hooks/useFields";
 import { getUserCars } from "@/services/car";
@@ -27,14 +27,10 @@ function OfferRideForm() {
   const [checkboxes, setCheckboxes] = useState(checkboxesOptions);
   const [ufcgAddresses, setUfcgAddresses] = useState([]);
   const [userAddresses, setUserAddresses] = useState([]);
-  const [ufcgAddressesSelected, setUfcgAddressesSelected] = useState({});
-  const [userAddressesSelected, setUserAddressesSelected] = useState({});
-  const [showModalConfirmation, setshowModalConfirmation] = useState(false);
+  const [ufcgAddressesSelected, setUfcgAddressesSelected] = useState({} as any);
+  const [userAddressesSelected, setUserAddressesSelected] = useState({} as any);
   const [vacancies, setVacancies] = useState(0);
   const [onlyWomanChecked, setOnlyWomanChecked] = useState(true);
-
-  // const handleCloseConfirmation = () => setshowModalConfirmation(false);
-  // const handleOpenConfirmation = () => setshowModalConfirmation(true);
 
   const handleCheckboxChange = (checkboxId: number) => {
     const updatedCheckboxes = checkboxes.map((checkbox) => {
@@ -49,28 +45,35 @@ function OfferRideForm() {
   };
 
   const handleSubmit: SubmitHandler<OfferRideFormState> = async (data) => {
-    const checkboxSelected = checkboxes.find((checkbox) => checkbox.checked);
+    const checkboxSelected = checkboxes[0];
+    const { date, hours, estimated_value } = data;
+    const { checked, value } = checkboxSelected!;
+  
+    const startAddressId = checked ? userAddressesSelected?.value : ufcgAddressesSelected?.value;
+    const destinationAddressId = checked ? ufcgAddressesSelected?.value : userAddressesSelected?.value;
+  
+    const dateTime = formatDateTime(date, hours);
+    const numSeats = vacancies + 1;
+    const price = estimated_value;
+    const toWomen = onlyWomanChecked;
+    const carId = 1;
+    const description = "any description";
+  
     const body = {
-      goingToCollege:
-        checkboxSelected!.value === "going" && checkboxSelected!.checked,
-      startAddressId: checkboxes[0].checked
-        ? userAddressesSelected?.value
-        : ufcgAddressesSelected?.value,
-      destinationAddressId: checkboxes[0].checked
-        ? ufcgAddressesSelected?.value
-        : userAddressesSelected?.value,
-      dateTime: formatDateTime(data?.date, data?.hours),
-      numSeats: vacancies + 1,
-      price: data.estimated_value,
-      toWomen: onlyWomanChecked,
-      carId: 1,
-      description: "any description",
+      goingToCollege: value === "going" && checked,
+      startAddressId,
+      destinationAddressId,
+      dateTime,
+      numSeats,
+      price,
+      toWomen,
+      carId,
+      description,
     };
+  
     const response = await createRide(body);
-    console.log(response);
-    console.log(body);
   };
-
+  
   React.useEffect(() => {
     getUserCars().then((data) => console.log(data));
     fetchUserAddresses().then((data) => {
@@ -141,6 +144,7 @@ function OfferRideForm() {
               color="extralight"
               sizing="adjustable"
               placeholder="R$ 8,90"
+              mask={moneyMask}
               readOnly={false}
             />
           </div>

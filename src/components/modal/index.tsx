@@ -5,6 +5,7 @@ import Button from "../button";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSubmit?: () => void;
   children: React.ReactNode;
 }
 
@@ -40,7 +41,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, children }: an
                   size="sm"
                   className="uppercase font-semibold px-3 lg:px-6"
                   color="green"
-                  type="button"
+                  type={!!onSubmit ? "button" : "submit"}
                   onClick={onSubmit}
                 />
               </section>

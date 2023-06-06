@@ -22,6 +22,7 @@ type SignUpData = {
   fullName: string;
   email: string;
   phoneNumber: string;
+  sex: string,
   password: string;
 };
 
@@ -66,23 +67,25 @@ export function AuthProvider({ children }: any) {
     
   }
 
-  async function signUp({
-    fullName,
-    email,
-    phoneNumber,
-    password,
-  }: SignUpData) {
-    const response = await signUpRequest({
-      fullName,
-      email,
-      phoneNumber,
-      password,
-    });
-    if(response){
-      setCookie(undefined, 'nextauth.token', response?.data?.token, {
-        maxAge: 8600,
-      });    
-      Router.push("/dashboard");
+  async function signUp({fullName, email, phoneNumber, sex, password}: SignUpData) {
+    try{
+      const response = await signUpRequest({
+        fullName,
+        email,
+        phoneNumber,
+        sex,
+        password,
+      });
+      if(response){
+        setCookie(undefined, 'nextauth.token', response?.data?.token, {
+          maxAge: 8600,
+        });
+        setUser(response?.data?.userResponse)    
+        Router.push("/dashboard");
+      }
+      return { data: response?.data, status: response?.status };
+    } catch (error) {
+      console.log(error)
     }
   }
 

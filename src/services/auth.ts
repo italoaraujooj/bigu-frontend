@@ -7,6 +7,7 @@ type SignUpRequestData = {
     fullName:string,
     email:string,
     phoneNumber:string,
+    sex: string,
     password:string
 }
 

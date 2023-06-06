@@ -1,3 +1,4 @@
+import { timeMask } from "./masks";
 import { OfferRideField, } from "./types";
 
 const fieldsFirstRow: OfferRideField[] = [
@@ -38,7 +39,8 @@ const fieldsLastRow: OfferRideField[] = [
     color: "extralight",
     sizing: "adjustable",
     placeholder: "6:30",
-    readOnly: false
+    readOnly: false,
+    mask: timeMask
   }
 ]
 
