@@ -29,6 +29,7 @@ function Login(props: Props) {
   const formRef = useRef<FormHandles>(null);
   const { signIn } = useContext(AuthContext);
   const { visible, handleClose } = props;
+  const [errorMessage, setErrorMessage] = useState("");
   
   const handleSubmit: SubmitHandler<UserLoginState> = async (data) => {
     const user = {
@@ -38,13 +39,11 @@ function Login(props: Props) {
 
     const response = await signIn(user);
 
-    if (response?.status !== 200) { 
-      // dashboard
+    if (response?.status !== 200) {
+      setErrorMessage("Email ou senha são inválidos")
     } else {
-      // modal error
+      console.log("oi2") 
     }
-
-
     console.log(JSON.stringify(response, null, 2));
   };
 
@@ -106,6 +105,7 @@ function Login(props: Props) {
           </div>
           <span className="text-sm text-gray cursor-pointer self-end" onClick={handleRecoveryPassword}>Esqueci minha senha</span>
           <Button label="Entrar" size="lg" color="yellow" shape="square" type="submit" />
+          {errorMessage && <div className="bg-red">{`!${errorMessage}!`}</div>}
         </div>
       </Form>
     </div>

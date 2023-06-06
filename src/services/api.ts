@@ -2,10 +2,10 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { parseCookies } from "nookies";
 
-const baseURL = process.env.API_URL || 'http://localhost:8080';
+const baseURL = process.env.API_URL || '';
 
 export const api = axios.create({
-  baseURL: 'http://bigu-backend.herokuapp.com',
+  baseURL: 'http://localhost:8080',
   headers: {'Accept': 'application/json'}
 });
 
