@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Car from "../../../assets/car.png";
 import CarSecondary from "../../../assets/car-secondary.png";
 import clsx from "clsx";
@@ -8,35 +8,53 @@ import SportCar from "../../../assets/sport-car.png";
 import Trash from "../../../assets/trash.png";
 import Plus from "../../../assets/plus-green.png";
 import Edit from "../../../assets/edit.png";
+import { getUserCars } from "@/services/car";
 
 type Props = {
   profile?: boolean;
 };
 
-interface CarsGarageProps {
-  id: number;
-  model: string;
-  car: typeof Car;
-}
+// interface CarsGarageProps {
+//   car: typeof Car;
+//   id: number;
+//   userId: number;
+//   brand: string;
+//   model: string;
+//   model_year: number;
+//   color: string;
+//   plate: string;
+// }
 
 const Carousel = (props: Props) => {
-  const items = [
-    {
-      id: 1,
-      model: "COROLLA PRATA",
-      car: Car,
-    },
-    {
-      id: 2,
-      model: "GOLF BRANCO",
-      car: CarSecondary,
-    },
-  ] as CarsGarageProps[];
+  // const items = [
+  //   {
+  //     id: 1,
+  //     model: "COROLLA PRATA",
+  //     car: Car,
+  //   },
+  //   {
+  //     id: 2,
+  //     model: "GOLF BRANCO",
+  //     car: CarSecondary,
+  //   },
+  // ] as CarsGarageProps[];
+
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [selectedCar, setSelectedCar] = React.useState(1);
   const [porcentage, setPorcentage] = React.useState(0);
   const [vacancies, setVacancies] = React.useState(0);
+  const [items, setItems] = React.useState([] as any);
+  console.log(items)
+  
+  useEffect(() => {
+    const loadData = async () => {
+      getUserCars().then(response => {
+        setItems(response)
+      })
+    }
+    loadData();
+  },[])
 
   const toggleCar = (index: number) => {
     setSelectedCar(index);
@@ -77,7 +95,7 @@ const Carousel = (props: Props) => {
       >
         {!!items &&
           !props.profile &&
-          items?.map(({ id, model, car }, index) => (
+          items?.map(({ id, model, car, }, index) => (
             <div
               key={id}
               className={clsx(
@@ -119,7 +137,7 @@ const Carousel = (props: Props) => {
           ))}
 
         {!!props.profile &&
-          items?.map(({ id, model, car }, index) => (
+          items?.map(({ id, model, car, color, plate }, index) => (
             <div
               key={id}
               className={clsx(
@@ -149,17 +167,17 @@ const Carousel = (props: Props) => {
                           Modelo
                         </div>
                         <Text
-                          label="Corolla"
+                          label={model}
                           color="gray"
                           className="uppercase"
                         />
                       </div>
                       <div className="space-y-2 text-center">
                         <div className="bg-yellow text-white px-4 py-2 rounded-md font-semibold ">
-                          Capacidade
+                          Cor
                         </div>
                         <Text
-                          label="Até 3 pessoas"
+                          label={color}
                           color="gray"
                           className="uppercase"
                         />
@@ -170,7 +188,7 @@ const Carousel = (props: Props) => {
                         <div className="bg-orange text-white px-4 py-2 rounded-md font-semibold ">
                           Placa
                         </div>
-                        <Text label="XY4329" color="gray" />
+                        <Text label={plate}color="gray" />
                       </div>{" "}
                       <div className="flex items-center justify-end gap-4 mb-2">
                         <Image

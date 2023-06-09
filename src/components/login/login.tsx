@@ -42,7 +42,7 @@ function Login(props: Props) {
     if (response?.status !== 200) {
       setErrorMessage("Email ou senha são inválidos")
     } else {
-      console.log("oi2") 
+      setErrorMessage("")
     }
     console.log(JSON.stringify(response, null, 2));
   };

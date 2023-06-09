@@ -70,6 +70,8 @@ function OfferRideForm() {
       carId,
       description,
     };
+
+    console.log(body)
   
     const response = await createRide(body);
   };

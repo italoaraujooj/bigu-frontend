@@ -36,7 +36,7 @@ function CarItems() {
           key={item}
           className="flex items-start justify-between md:h-48 pt-6 pl-8 w-full h-48 bg-white my-2 rounded-lg py-6 px-8"
         >
-          <div className="flex items-start justify-between mb-2">
+          <div className="flex items-start justify-between mb-2 w-full">
             <div className="">
               <Image className="w-10 h-10" src={Car} alt="car" />
               <div className="flex w-full h-32 items-end">
@@ -45,7 +45,7 @@ function CarItems() {
                 <div className="w-2 h-28 bg-light-blue"></div>
               </div>
             </div>
-            <div className="w-3/4 flex-col items-center justify-between space-y-4">
+            <div className="w-full flex-col items-center justify-between space-y-4">
               <div className="flex items-center gap-12">
                 <div className="space-y-2 text-center">
                   <div className="bg-light-blue text-white px-4 py-2 rounded-md font-semibold ">
@@ -92,7 +92,7 @@ function CarItems() {
 function Profile() {
   const formRef = useRef(null);
   const [readOnly, setReadOnly] = useState(true);
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const { user, isAuthenticated, setUser } = useContext(AuthContext);
   const [changePassword, setChangePassord] = useState(false);
   const [save, setSave] = useState(false);
 

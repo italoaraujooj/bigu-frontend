@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import MaleAvatar from "../../assets/avatar.png";
 import Heart from "../../assets/heart.png";
 import HeartFilled from "../../assets/heart-filled.png";
 import Image from "next/image";
 import Button from "../button";
 import Text from "../text";
-import { getAllRidesAvailable } from "@/services/ride";
+import { getAllRides, getAllRidesAvailable } from "@/services/ride";
 import LottieAnimation from "../LottieAnimation";
 import ghost from '../../assets/ghost.json';
 import empty from '../../assets/empty-box.json';
@@ -13,6 +13,8 @@ import { formatarData } from "@/utils/masks";
 import Modal from "../modal";
 import Dropdown from "../dropdown";
 import { fetchUserAddresses } from "@/services/address";
+import { AuthContext } from "@/context/AuthContext";
+import { RideContext } from "@/context/RideContext";
 
 function Ride() {
   const [userAddress, setUserAddresses] = React.useState([])
@@ -22,23 +24,26 @@ function Ride() {
   const [ridesAvailable, setRidesAvailable] = React.useState([]);
   const [modalOpen, setModalOpen] = React.useState(false);
 
+  const { user } = useContext(AuthContext);
+  const { rides } = useContext(RideContext);
+
   const toggleFavorite = () => setFavorite((prev) => !prev);
   const toggleAskRide = () => setAskRide((prev) => !prev);
+  
+  // useEffect(() => {
+  //   async function loadData() {
+  //     try {
+  //       const response = await getAllRidesAvailable();
+  //       // @ts-ignore
+  //         const dadosDaApi = response.data;
+  //       setRidesAvailable(dadosDaApi);
+  //     } catch (error) {
+  //       console.error('Erro ao buscar os dados:', error);
+  //     }
+  //   }
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const response = await getAllRidesAvailable();
-        // @ts-ignore
-          const dadosDaApi = response.data;
-        setRidesAvailable(dadosDaApi);
-      } catch (error) {
-        console.error('Erro ao buscar os dados:', error);
-      }
-    }
-
-    loadData();
-  }, []);
+  //   loadData();
+  // }, []);
 
   useEffect(() => {
     fetchUserAddresses().then((data) => {
@@ -57,7 +62,9 @@ return (
       </h2>
 
       <div className="space-y-4">
-        {!!ridesAvailable.length ? ridesAvailable.map((item : any) => (
+        {!!rides.length ? rides.map((item : any) => (
+           (item.driver.userId !== user?.userId) && (
+
           <div
             key={item}
             className="w-full h-14 bg-white rounded-xl px-6 py-4 transition-height duration-500 ease-in-out overflow-hidden	space-y-4 hover:h-64 sm:h-20"
@@ -123,6 +130,7 @@ return (
               </div>
             </div>
           </div>
+           )
         )) : (
           <div className="w-full flex items-center justify-center">
             <div className="w-64 h-64 ">
