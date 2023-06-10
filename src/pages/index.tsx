@@ -9,6 +9,8 @@ import Logo from "../assets/car-secondary.png";
 import Menu from "../assets/Menu.png";
 import { useState } from "react";
 import LottieAnimation from "@/components/LottieAnimation";
+import { parseCookies } from "nookies";
+import { GetServerSideProps } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -93,3 +95,50 @@ export default function Home() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<{data: any}> = async (context) => {
+  // fetching data here
+  // Return the data as props
+  const data = [] as any;
+
+    const cookies = parseCookies(context);
+  console.log(cookies);
+  // Verifique se o token JWT está presente nos cookies
+  const token = cookies.token;
+  if (token) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      data
+    },
+  };
+};
+
+// export async function getServerSideProps(context: any) {
+//   // Obtenha os cookies da requisição
+//   const cookies = parseCookies(context);
+
+//   // Verifique se o token JWT está presente nos cookies
+//   const token = cookies.token;
+//   if (token) {
+//     return {
+//       redirect: {
+//         destination: '/dashboard',
+//         permanent: false,
+//       },
+//     };
+//   }
+
+//   return {
+//     props: {
+
+//     }
+//   }
+// }
