@@ -24,7 +24,6 @@ export async function createCar(car: Car) {
 export async function getUserCars(): Promise<Car[]> {
   try {
     const response = await api.get("/api/v1/cars");
-
     return response.data as Car[];
   } catch (error: any) {
     handleError(error);

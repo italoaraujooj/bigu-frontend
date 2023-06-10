@@ -36,7 +36,7 @@ function CarItems() {
           key={item}
           className="flex items-start justify-between md:h-48 pt-6 pl-8 w-full h-48 bg-white my-2 rounded-lg py-6 px-8"
         >
-          <div className="flex items-start justify-between mb-2">
+          <div className="flex items-start justify-between mb-2 w-full">
             <div className="">
               <Image className="w-10 h-10" src={Car} alt="car" />
               <div className="flex w-full h-32 items-end">
@@ -45,7 +45,7 @@ function CarItems() {
                 <div className="w-2 h-28 bg-light-blue"></div>
               </div>
             </div>
-            <div className="w-3/4 flex-col items-center justify-between space-y-4">
+            <div className="w-full flex-col items-center justify-between space-y-4">
               <div className="flex items-center gap-12">
                 <div className="space-y-2 text-center">
                   <div className="bg-light-blue text-white px-4 py-2 rounded-md font-semibold ">
@@ -92,7 +92,7 @@ function CarItems() {
 function Profile() {
   const formRef = useRef(null);
   const [readOnly, setReadOnly] = useState(true);
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const { user, isAuthenticated, setUser } = useContext(AuthContext);
   const [changePassword, setChangePassord] = useState(false);
   const [save, setSave] = useState(false);
 
@@ -153,7 +153,6 @@ function Profile() {
                   </div>
                 </div>
               </div>
-              {/* <Button label="Salvar" onClick={editSubmit} size="md" color="green" shape="square" /> */}
             </div>
 
             <div className="w-full flex flex-col md:flex-row gap-12">
@@ -205,7 +204,6 @@ function Profile() {
               </div>
 
               <div className="w-full h-1 bg-blackLine md:w-1 md:h-[32.5rem]"></div>
-              {/* <div className="w-full border border-solid border-blackLine xl:h-[32.5rem] xl:w-0"></div> */}
 
               <div className="w-full flex flex-col md:w-1/2 gap-4">
                 <div className="w-full flex items-center justify-between flex-row gap-5">
@@ -264,7 +262,6 @@ function Profile() {
                   </h1>
                   <Carousel profile />
                 </div>
-                {/* <Carousel profile={true}/> */}
                 <div className="flex gap-7">
                   <Button
                     label="Alterar senha"
@@ -320,23 +317,7 @@ function Profile() {
                       type="text"
                       placeholder="*********"
                     />
-                    <p className=" text-gray">Esqueci minha senha</p>
-                    <div className="flex gap-2">
-                      <Button
-                        label="Cancelar"
-                        size="base"
-                        className="uppercase font-semibold px-3 lg:px-6"
-                        color="red"
-                        onClick={handleCloseChangePassword}
-                      />
-                      <Button
-                        label="Confirmar"
-                        size="base"
-                        className="uppercase font-semibold px-3 lg:px-6"
-                        color="green"
-                        type="submit"
-                      />
-                    </div>
+                    <p className=" text-gray cursor-pointer" onClick={() => {Router.push("/recover-password")}}>Esqueci minha senha</p>
                   </div>
                 </form>
               </Modal>

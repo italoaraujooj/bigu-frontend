@@ -2,6 +2,8 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { parseCookies, destroyCookie } from "nookies";
 
+const baseURL = process.env.API_URL || '';
+
 export const api = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {'Accept': 'application/json'}

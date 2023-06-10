@@ -7,6 +7,7 @@ type SignUpRequestData = {
     fullName:string,
     email:string,
     phoneNumber:string,
+    sex: string,
     password:string
 }
 
@@ -40,8 +41,7 @@ export async function logOut(){
 }
 
 export async function getUser(){
-  // const token = localStorage.getItem("bigu-token")
-  return await api.get('/api/v1/users/self',)
+  return await api.get('/api/v1/users/self')
 }
 
 export async function forgotPasswordRequest(email: string){

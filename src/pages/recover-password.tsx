@@ -8,6 +8,7 @@ import { Form } from '@unform/web';
 import React, { useRef, useState } from 'react';
 import success from '../assets/message_sent.json';
 import clsx from 'clsx';
+import Router from 'next/router';
 
 interface RecoverPasswordFormState {
   email: string;
@@ -32,11 +33,11 @@ export default function RecoverPassword() {
       <Form onSubmit={handleSubmit} ref={formRef} className={clsx(`w-96 drop-shadow-md bg-white rounded-md flex flex-col justify-center py-8 px-12`, successRequest && "hidden")}>
         <Text label="Recuperar senha" size="xl" weight="bold" className="text-center self-start uppercase" color="dark" />
         <br />
-        <Input name="email" label="Email" placeholder="Digite seu email" sizing='adjustable' type='email' className="w-full" />
+        <Input name="email" label="Email" placeholder="Digite seu email" sizing='adjustable' type='email' className="w-full" required />
         <br />
         <section className="flex items-center justify-between">
-          <CaretCircleLeft size={24} weight="bold" color="#FFB400" className="cursor-pointer"/>
-          <Button label="Recuperar senha" size="sm" color="yellow" shape="square" className="self-end" />
+          <CaretCircleLeft size={24} weight="bold" color="#FFB400" className="cursor-pointer" onClick={ () => {Router.back()}}/>
+          <Button label="Recuperar senha" size="sm" color="yellow" shape="square" className="self-end" type="submit" />
         </section>
       </Form>
       { 

@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { parseCookies } from "nookies";
-import { getAllRides, getHistoryRide } from "@/services/ride";
+import { getAllRides, getHistoryRide, getAllRidesAvailable } from "@/services/ride";
 
 type RideContextType = {
   rides: any;
@@ -15,7 +15,9 @@ export function RideProvider({ children }: any) {
   useEffect(() => {
     const { "nextauth.token": token } = parseCookies();
     if (token) {
-      getAllRides().then((data) => setRides(data?.data?.rides));
+      getAllRidesAvailable().then((data) =>{
+      console.log(data) 
+      setRides(data?.data)});
       getHistoryRide().then((data) => setHistory(data?.data));
     }
   }, []);

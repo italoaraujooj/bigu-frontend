@@ -24,8 +24,6 @@ function Dashboard({ cars }: any) {
   const { user, logOu } = useContext(AuthContext);
   const { rides, history } = useContext(RideContext)
   const [drawer, setDrawer] = React.useState(false);
-  console.log('historico');
-  console.log(history);
   const openDrawer = () => {
     setDrawer(true);
   };
@@ -48,9 +46,9 @@ function Dashboard({ cars }: any) {
   return (
     <div className="relative w-full my-16" onClick={handleOutsideClick}>
       <div className=" max-w-[80%] mx-auto flex flex-col gap-9">
-        <header className="flex justify-between items-center px-6">
+        <header className="flex justify-between items-center">
           <div className="flex gap-4 items-center">
-            <Image className=" w-20 h-20" src={Foto} alt="foto" />
+            <Image className="w-12 h-12" src={Foto} alt="foto" />
             <Link href="/profile">
               <Text
                 label="Ver perfil"
@@ -77,13 +75,6 @@ function Dashboard({ cars }: any) {
                 shape="square"
               />
             </Link>
-            {/* <Button
-              label="Sair"
-              onClick={handleLogout}
-              size="md"
-              color="green"
-              shape="square"
-            /> */}
             <span className="flex items-center gap-2 hover:text-stone-400 cursor-pointer hover:underline" onClick={handleLogout}>
               <Text label="Sair" size="md" color="gray" className="cursor-pointer hover:hover:text-stone-400" />
               <SignOut size={36} color="gray" className="" />
@@ -114,7 +105,7 @@ function Dashboard({ cars }: any) {
             </div>
           )}
         </header>
-        <div className="flex justify-between items-center px-6">
+        <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="flex gap-1">
               <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
@@ -127,9 +118,9 @@ function Dashboard({ cars }: any) {
             </div>
           </div>
         </div>
-        <div className="flex justify-between">
+        <div className="flex flex-col justify-between gap-2 md:gap-4 lg:flex-row">
           <History races={history} />
-          <div className=" h-96 border-r border-solid border-warmGray-700"></div>
+          <div className="border-solid border-[1px] border-warmGray-700"></div>
           <Ride />
         </div>
       </div>

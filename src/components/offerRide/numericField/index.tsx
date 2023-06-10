@@ -47,7 +47,7 @@ const NumericField = (props: Props) => {
 
   return (
     <>
-      <label className="font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase mb-2">
+      <label className="font-['Poppins'] text-[#616161] font-bold text-xs md:text-md uppercase mb-2">
         VAGAS DISPONÍVEIS
       </label>
       <div className="relative w-full h-14 px-5 text-sm bg-extralight rounded-lg flex items-center justify-center overflow-hidden">

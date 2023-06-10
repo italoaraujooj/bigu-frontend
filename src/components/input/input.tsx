@@ -19,8 +19,12 @@ interface Props {
   value?: string | number;
   mask?: (value: string) => string;
   className?: string;
+  required?:boolean
   validate?: (value: string) => string | undefined;
-}
+};
+
+// type InputProps = JSX.IntrinsicElements["input"] & Props;
+
 
 export default function Input(props: Props) {
   const {
@@ -34,6 +38,7 @@ export default function Input(props: Props) {
     readOnly,
     visibility,
     value,
+    required,
     mask,
     className,
     validate,
@@ -117,6 +122,7 @@ export default function Input(props: Props) {
         placeholder={placeholder}
         readOnly={readOnly}
         value={value}
+        required={required}
         onChange={handleChange}
         onBlur={handleBlur}
       />

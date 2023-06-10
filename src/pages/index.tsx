@@ -7,7 +7,7 @@ import Login from "@/components/login/login";
 import Image from "next/image";
 import Logo from "../assets/car-secondary.png";
 import Menu from "../assets/Menu.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LottieAnimation from "@/components/LottieAnimation";
 import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";
@@ -20,6 +20,7 @@ export default function Home() {
 
   const handleOpenLogin = () => {
     setShowLogin(true);
+    setShowRegister(false);
   };
 
   const handleCloseLogin = () => {
@@ -28,6 +29,7 @@ export default function Home() {
 
   const handleOpenRegister = () => {
     setShowRegister(true);
+    setShowLogin(false);
   };
 
   const handleCloseRegister = () => {

@@ -9,14 +9,17 @@ import Router from "next/router"
 import { encryptPassword } from "@/utils/validate";
 import { AuthContext } from "@/context/AuthContext";
 import clsx from "clsx";
+import Radio from "../radio";
 
 
 interface UserFormState {
     name: string;
     email: string;
     telephone: string;
+    sex: string;
     password: string;
-    confirmPassowrd: string
+    confirmPassowrd: string;
+    
 }
 
 type Props = {
@@ -33,6 +36,7 @@ function Register(props: Props){
           fullName: data.name,
           email: data.email,
           phoneNumber: data.telephone,
+          sex: data.sex,
           password: data.password,
           role: 'USER',
           userType: 'RIDER'
@@ -87,6 +91,12 @@ function Register(props: Props){
                 type="tel"
                 placeholder="(83)999999999"
                 readOnly={false}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Radio
+                name="sex"
+                options={[{ id: "H", label: "Homem" }, { id: "M", label: "Mulher" }]}
               />
             </div>
             <div className="flex flex-col gap-2">

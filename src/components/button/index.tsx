@@ -4,6 +4,7 @@ import React from "react";
 type ButtonType = "submit" | "button" | "reset";
 type ButtonColor = "yellow" | "green" | "dark-blue" | "light-blue" | "red";
 type ButtonSize = "sm" | "base" | "md" | "lg" | "res";
+type ButtonText = "white" | "black";
 
 type Props = {
   label: string;
@@ -12,6 +13,7 @@ type Props = {
   shape?: "rounded" | "square";
   size: ButtonSize;
   color: ButtonColor;
+  text?: ButtonText;
 } & React.ComponentProps<"button">;
 
 const Button = (props: Props) => {
@@ -22,6 +24,7 @@ const Button = (props: Props) => {
     shape = "square",
     size,
     color,
+    text,
     className,
   } = props;
 
@@ -44,6 +47,10 @@ const Button = (props: Props) => {
       rounded: "rounded-full",
       square: "rounded-lg",
     },
+    text: {
+      white: "text-white",
+      black: "text-black"
+    }
   };
 
   return (
@@ -52,8 +59,8 @@ const Button = (props: Props) => {
         styles.sizes[size],
         styles.colors[color],
         styles.shapes[shape],
+        styles.text[text],
         "font-bold",
-        "text-white",
         className,
       ])}
       type={type}
