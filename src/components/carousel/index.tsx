@@ -5,6 +5,8 @@ import clsx from "clsx";
 import Image from "next/image";
 import Text from "../text";
 import SportCar from "../../assets/sport-car.png"
+import Modal from "../modal";
+import Input from "../input/input";
 
 type Props = {
   profile?: boolean
@@ -121,6 +123,7 @@ const Carousel = (props: Props) => {
                   <p>Placa</p>
                 </div>
               </div>
+              
             </div>
           ))}
       </div>

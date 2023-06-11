@@ -10,6 +10,9 @@ import { AuthContext } from "@/context/AuthContext";
 import clsx from "clsx";
 import Modal from "../modal";
 import Router from "next/router";
+import { RequestContext } from "@/context/RequestContext";
+import LottieAnimation from "../LottieAnimation";
+import CarLoading from "../../assets/Car.json";
 
 interface UserLoginState {
   email: string;
@@ -30,17 +33,22 @@ function Login(props: Props) {
   const { signIn } = useContext(AuthContext);
   const { visible, handleClose } = props;
   const [errorMessage, setErrorMessage] = useState("");
-  
+  const { loading, inProgress, done } = useContext(RequestContext);
+
   const handleSubmit: SubmitHandler<UserLoginState> = async (data) => {
     const user = {
       email: data.email,
       password: data.password,
     };
 
+    inProgress();
+
     const response = await signIn(user);
 
+    done();
+    
     if (response?.status !== 200) {
-      setErrorMessage("Email ou senha são inválidos")
+      setErrorMessage("dados inválidos, tente novamente")
     } else {
       setErrorMessage("")
     }
@@ -52,6 +60,8 @@ function Login(props: Props) {
     Router.push("/recover-password")
 
   }
+  // const { loading } = RequestContext();
+
 
   return (
     <div
@@ -103,11 +113,14 @@ function Login(props: Props) {
               required
             />
           </div>
-          <span className="text-sm text-gray cursor-pointer self-end" onClick={handleRecoveryPassword}>Esqueci minha senha</span>
+          <span className="text-sm text-gray cursor-pointer self-end hover:underline" onClick={handleRecoveryPassword}>Esqueci minha senha</span>
           <Button label="Entrar" size="lg" color="yellow" shape="square" type="submit" />
-          {errorMessage && <div className="bg-red">{`!${errorMessage}!`}</div>}
+          {errorMessage && <div className="text-[#dc2626]">{`${errorMessage}!`}</div>}
         </div>
       </Form>
+      {<Modal isOpen={loading} onClose={() => {}} noActions transparent>
+          <div className="w-72 h-72"><LottieAnimation data={CarLoading}  /></div>
+        </Modal> }
     </div>
   );
 }

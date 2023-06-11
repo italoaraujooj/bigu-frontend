@@ -1,5 +1,6 @@
 import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
+import { CreateCarFormState } from "@/utils/types";
 
 type Car = {
   id: number;
@@ -11,7 +12,15 @@ type Car = {
   plate: string;
 };
 
-export async function createCar(car: Car) {
+// {
+//   "brand": "string",
+//   "model": "string",
+//   "modelYear": "2023",
+//   "color": "string",
+//   "plate": "KGU7E07"
+// }
+
+export async function createCar(car: CreateCarFormState) {
   try {
     const response = await api.post("/api/v1/cars", car);
 

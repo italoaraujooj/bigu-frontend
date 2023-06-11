@@ -130,12 +130,13 @@ function Register(props: Props){
               color="yellow"
               shape="square"
               type="submit" 
+              loading={true}
             />
             <div>
-              <p className="text-xs md:text-sm flex justify-center">
+              <p className="text-xs md:text-sm flex justify-center text-[#78716c]">
                 Ao se inscrever, você concorda com nossos
               </p>
-              <p className="text-xs md:text-sm flex justify-center">
+              <p className="text-xs md:text-sm flex justify-center text-[#78716c]">
                 Termos de Uso e com a Política de Privacidade.
               </p>
             </div>

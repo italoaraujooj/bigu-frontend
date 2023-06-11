@@ -5,7 +5,7 @@ import Star from "../assets/star.png";
 import Image from "next/image";
 import Input from "../components/input/input";
 import { Form } from "@unform/web";
-import Carousel from "@/components/offerRide/carousel";
+import Carousel from "@/components/profile/carousel";
 import Car from "../assets/sport-car.png";
 import Text from "@/components/text";
 import Trash from "../assets/trash.png";
@@ -15,9 +15,12 @@ import { AuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import Router from "next/router";
 import withPrivateRoute from "@/routes/PrivateRoute";
-import { ArrowCircleLeft } from "@phosphor-icons/react";
+import { ArrowCircleLeft, ArrowRight, CaretRight } from "@phosphor-icons/react";
 import Modal from "@/components/modal";
 import { getUser } from "@/services/auth";
+import { createCar } from "@/services/car";
+import { FormHandles, SubmitHandler } from "@unform/core";
+import { CreateCarFormState } from "@/utils/types";
 
 type User = {
   fullName: string;
@@ -91,22 +94,35 @@ function CarItems() {
 
 function Profile() {
   const formRef = useRef(null);
+  const formRefCar = useRef<FormHandles>(null);
+
   const [readOnly, setReadOnly] = useState(true);
   const { user, isAuthenticated, setUser } = useContext(AuthContext);
   const [changePassword, setChangePassord] = useState(false);
   const [save, setSave] = useState(false);
+  const [modalCar, setModalCar] = useState(false);
 
+  const toggleModalCar = () => setModalCar((prev) => !prev);
   const handleOpenChangePassword = () => setChangePassord(true);
-  const handleCloseChangePassword  = () => setChangePassord(false);
+  const handleCloseChangePassword = () => setChangePassord(false);
 
   const handleOpenSave = () => setSave(true);
-  const handleCloseSave  = () => setSave(false);
+  const handleCloseSave = () => setSave(false);
 
   function handleSubmit() {}
 
   function editSubmit() {
     setReadOnly((prev) => !prev);
   }
+
+  const handleCreateCar: SubmitHandler<CreateCarFormState> = async (data) => {
+    console.log(data);
+    const response = await createCar(data);
+
+    console.log(response);
+  };
+
+  console.log(user);
 
   return (
     <div className="flex w-full items-center justify-center my-12">
@@ -127,7 +143,7 @@ function Profile() {
         </div>
         <div className="w-full h-fit flex items-center justify-center">
           <Form
-            className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-7xl"
+            className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl"
             onSubmit={handleOpenSave}
             initialData={{
               name: user?.fullName,
@@ -186,7 +202,7 @@ function Profile() {
                   color="extralight"
                   className="w-full  md:h-16 md:text-lg"
                   type="text"
-                  placeholder="(83)999999999"
+                  placeholder="(83) 9 9999-9999"
                   readOnly={readOnly}
                   visibility="visible"
                 />
@@ -197,7 +213,7 @@ function Profile() {
                   color="extralight"
                   className="w-full  md:h-16 md:text-lg"
                   type="text"
-                  placeholder="*********"
+                  placeholder="120110432"
                   readOnly={readOnly}
                   visibility="visible"
                 />
@@ -207,7 +223,7 @@ function Profile() {
 
               <div className="w-full flex flex-col md:w-1/2 gap-4">
                 <div className="w-full flex items-center justify-between flex-row gap-5">
-                  <div className="w-full">
+                  {/* <div className="w-full">
                     <Input
                       label="Endereço (rua)"
                       name="rua"
@@ -215,7 +231,7 @@ function Profile() {
                       color="extralight"
                       className="w-full md:h-16 md:text-lg"
                       type="text"
-                      placeholder="*********"
+                      placeholder="Av. Floriano Peixoto"
                       readOnly={readOnly}
                       visibility="visible"
                     />
@@ -227,7 +243,7 @@ function Profile() {
                     color="extralight"
                     className="md:h-16 md:text-lg"
                     type="text"
-                    placeholder="*********"
+                    placeholder="1345"
                     readOnly={readOnly}
                     visibility="visible"
                   />
@@ -240,7 +256,7 @@ function Profile() {
                     color="extralight"
                     className="w-1/2 md:h-16 md:text-lg"
                     type="text"
-                    placeholder="*********"
+                    placeholder="43432-321"
                     readOnly={readOnly}
                   />
                   <div className="w-full">
@@ -251,16 +267,23 @@ function Profile() {
                       color="extralight"
                       className="md:h-16 md:text-lg"
                       type="text"
-                      placeholder="*********"
+                      placeholder="Centenário"
                       readOnly={readOnly}
                     />
-                  </div>
+                  </div> */}
+                  <Link className="w-full py-1 cursor-pointer group" href='/addresses'>
+                    <div className="flex items-center justify-between">
+                      <Text label="Ver endereços" size="md" weight="bold" className="uppercase"/>
+                      <CaretRight weight="bold" color="white" /> 
+                    </div>
+                    <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
+                  </Link>
                 </div>
-                <div className="w-full flex flex-col items-center justify-center">
+                <div className="w-full flex flex-col justify-center">
                   <h1 className="text-2xl text-white font-bold mb-2">
                     Meus veículos
                   </h1>
-                  <Carousel profile />
+                  <Carousel profile add={toggleModalCar} />
                 </div>
                 <div className="flex gap-7">
                   <Button
@@ -285,7 +308,10 @@ function Profile() {
               </div>
             </div>
             {changePassword && (
-              <Modal isOpen={changePassword} onClose={handleCloseChangePassword}>
+              <Modal
+                isOpen={changePassword}
+                onClose={handleCloseChangePassword}
+              >
                 <form>
                   <div className=" bg-white rounded-lg p-3 flex flex-col gap-4 justify-center items-center">
                     <h2 className=" text-2xl font-semibold">Alterar senha</h2>
@@ -317,17 +343,82 @@ function Profile() {
                       type="text"
                       placeholder="*********"
                     />
-                    <p className=" text-gray cursor-pointer" onClick={() => {Router.push("/recover-password")}}>Esqueci minha senha</p>
+                    <p
+                      className=" text-gray cursor-pointer"
+                      onClick={() => {
+                        Router.push("/recover-password");
+                      }}
+                    >
+                      Esqueci minha senha
+                    </p>
                   </div>
                 </form>
               </Modal>
             )}
-            {
-              save && 
+            <Modal
+              isOpen={modalCar}
+              onClose={toggleModalCar}
+              // onSubmit={handleCreateCar}
+              noActions
+            >
+                <Text label="Adicionar carro" color="dark" size="lg" weight="bold" />
+              <Form onSubmit={handleCreateCar} ref={formRefCar} className="space-y-2">
+                <br />
+                <Input
+                  name="brand"
+                  label="Marca"
+                  placeholder="Chevrolet"
+                  sizing="adjustable"
+                />
+                <Input
+                  name="model"
+                  label="Modelo"
+                  placeholder="Onix"
+                  sizing="adjustable"
+                />
+                <Input
+                  name="modelYear"
+                  label="Ano"
+                  placeholder="2023"
+                  sizing="adjustable"
+                />
+                <Input
+                  name="color"
+                  label="Cor"
+                  placeholder="Prata"
+                  sizing="adjustable"
+                />
+                <Input
+                  name="plate"
+                  label="Placa"
+                  placeholder="XKG432"
+                  sizing="adjustable"
+                />
+                <section className="flex items-center gap-4 mt-12">
+                  <Button
+                    label="Cancelar"
+                    size="sm"
+                    className="uppercase font-semibold px-3 lg:px-6"
+                    color="red"
+                    onClick={toggleModalCar}
+                  />
+                  <Button
+                    label="Confirmar"
+                    size="sm"
+                    className="uppercase font-semibold px-3 lg:px-6"
+                    color="green"
+                    type="submit"
+                  />
+                </section>
+              </Form>
+            </Modal>
+            {save && (
               <Modal isOpen={save} onClose={handleCloseSave}>
                 <form>
                   <div className=" bg-white rounded-lg p-3 flex flex-col gap-4 justify-center items-center">
-                    <h2 className=" text-2xl font-semibold">Confirmar modificações</h2>
+                    <h2 className=" text-2xl font-semibold">
+                      Confirmar modificações
+                    </h2>
                     <div className="flex gap-2">
                       <Button
                         label="Cancelar"
@@ -347,7 +438,7 @@ function Profile() {
                   </div>
                 </form>
               </Modal>
-            }
+            )}
           </Form>
         </div>
       </div>

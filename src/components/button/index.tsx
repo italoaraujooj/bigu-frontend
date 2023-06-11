@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React from "react";
 
 type ButtonType = "submit" | "button" | "reset";
-type ButtonColor = "yellow" | "green" | "dark-blue" | "light-blue" | "red";
+type ButtonColor = "yellow" | "green" | "dark-blue" | "light-blue" | "red" ;
 type ButtonSize = "sm" | "base" | "md" | "lg" | "res";
 type ButtonText = "white" | "black";
 
@@ -14,6 +14,7 @@ type Props = {
   size: ButtonSize;
   color: ButtonColor;
   text?: ButtonText;
+  loading?: boolean;
 } & React.ComponentProps<"button">;
 
 const Button = (props: Props) => {
@@ -24,7 +25,8 @@ const Button = (props: Props) => {
     shape = "square",
     size,
     color,
-    text,
+    text = "white",
+    loading,
     className,
   } = props;
 
@@ -66,7 +68,8 @@ const Button = (props: Props) => {
       type={type}
       onClick={onClick}
     >
-      {label}
+      {loading ? <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
+      </svg> : label}
     </button>
   );
 };

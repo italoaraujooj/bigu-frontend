@@ -12,6 +12,7 @@ import { getUserCars } from "@/services/car";
 
 type Props = {
   profile?: boolean;
+  add: any;
 };
 
 // interface CarsGarageProps {
@@ -39,22 +40,21 @@ const Carousel = (props: Props) => {
   //   },
   // ] as CarsGarageProps[];
 
-
   const [currentIndex, setCurrentIndex] = React.useState(0);
-  const [selectedCar, setSelectedCar] = React.useState(1);
+  const [selectedCar, setSelectedCar] = React.useState(0);
   const [porcentage, setPorcentage] = React.useState(0);
   const [vacancies, setVacancies] = React.useState(0);
   const [items, setItems] = React.useState([] as any);
-  console.log(items)
-  
+  console.log(items);
+
   useEffect(() => {
     const loadData = async () => {
-      getUserCars().then(response => {
-        setItems(response)
-      })
-    }
+      getUserCars().then((response) => {
+        setItems(response);
+      });
+    };
     loadData();
-  },[])
+  }, []);
 
   const toggleCar = (index: number) => {
     setSelectedCar(index);
@@ -82,20 +82,31 @@ const Carousel = (props: Props) => {
       {
         className: `translate-x-[-112.5%]`,
       },
+      {
+        className: `translate-x-[-225%]`,
+      },
+      {
+        className: `translate-x-[-337.5%]`,
+      },
     ];
-    return props.profile ? positionsLg[currentIndex].className : positions[currentIndex].className;
+    return props.profile
+      ? positionsLg[currentIndex].className
+      : positions[currentIndex].className;
   }, [currentIndex, props?.profile]);
-  
 
+  console.log(currentIndex);
   return (
     <div className="w-full">
       <div
         onMouseLeave={() => goToIndex(selectedCar)}
-        className={clsx(`w-full flex items-center overflow-hidden space-x-12`, props.profile && "w-96")}
+        className={clsx(
+          `w-full flex items-center overflow-hidden space-x-12`,
+          props.profile && "w-96"
+        )}
       >
         {!!items &&
           !props.profile &&
-          items?.map(({ id, model, car, }, index) => (
+          items?.map(({ id, model, car }, index) => (
             <div
               key={id}
               className={clsx(
@@ -118,7 +129,10 @@ const Carousel = (props: Props) => {
                   weight="medium"
                   className="text-sm lg:text-md"
                 />
-                <button type="button" className="h-12 font-family bg-green rounded-lg text-white font-semibold text-sm lg:text-base px-4 lg:px-6 flex items-center justify-between gap-3 lg:gap-6 uppercase tracking-tight hover:bg-hover-green">
+                <button
+                  type="button"
+                  className="h-12 font-family bg-green rounded-lg text-white font-semibold text-sm lg:text-base px-4 lg:px-6 flex items-center justify-between gap-3 lg:gap-6 uppercase tracking-tight hover:bg-hover-green"
+                >
                   <div
                     className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center"
                     onClick={() => toggleCar(index)}
@@ -149,7 +163,7 @@ const Carousel = (props: Props) => {
             >
               <div
                 key={id}
-                className="flex items-start justify-between md:h-48 pt-6 pl-8 w-96 h-48 bg-white my-2 rounded-lg py-6 px-8"
+                className="flex items-start justify-between md:h-48 pt-6 pl-8 h-48 bg-white my-2 rounded-lg py-6 px-8"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="">
@@ -157,7 +171,7 @@ const Carousel = (props: Props) => {
                     <div className="flex w-full h-32 items-end">
                       <div className="w-2 h-20 bg-orange"></div>
                       <div className="w-2 h-24 bg-yellow"></div>
-                      <div className="w-2 h-28 bg-light-blue"></div>
+                      <div className="w-2 h-28 bg-light-blue"></div> 
                     </div>
                   </div>
                   <div className="w-3/4 flex-col items-center justify-between space-y-4">
@@ -183,26 +197,27 @@ const Carousel = (props: Props) => {
                         />
                       </div>{" "}
                     </div>
-                    <div className="flex items-end justify-between">
+                    <div className="w-full flex items-end justify-between gap-16">
                       <div className="w-20 space-y-2 text-center">
                         <div className="bg-orange text-white px-4 py-2 rounded-md font-semibold ">
                           Placa
                         </div>
-                        <Text label={plate}color="gray" />
-                      </div>{" "}
+                        <Text label={plate} color="gray" />
+                      </div>
                       <div className="flex items-center justify-end gap-4 mb-2">
                         <Image
-                          className="w-6 h-6"
+                          className="w-6 h-6 cursor-pointer"
                           src={Plus}
                           alt="add button car"
+                          onClick={props?.add}
                         />
                         <Image
-                          className="w-6 h-6"
+                          className="w-6 h-6 cursor-pointer"
                           src={Edit}
                           alt="edit button car"
                         />
                         <Image
-                          className="w-6 h-6"
+                          className="w-6 h-6 cursor-pointer"
                           src={Trash}
                           alt="delete button car"
                         />
@@ -214,17 +229,19 @@ const Carousel = (props: Props) => {
             </div>
           ))}
       </div>
-      <div className="w-full flex items-center justify-center space-x-2 my-4">
-        {items?.map((_, index) => (
-          <button
-            key={index}
-            className="w-4 h-4 bg-gray rounded-full"
-            onClick={() => goToIndex(index)}
-            type="button"
-          ></button>
-        ))}
-        {/* <button className="w-4 h-4 bg-gray rounded-full" onClick={prevItem}></button> */}
-      </div>
+      {items.length > 1 && (
+        <div className="w-full flex items-center justify-center space-x-2 my-4">
+          {items?.map((_, index) => (
+            <button
+              key={index}
+              className="w-4 h-4 bg-gray rounded-full"
+              onClick={() => goToIndex(index)}
+              type="button"
+            ></button>
+          ))}
+          {/* <button className="w-4 h-4 bg-gray rounded-full" onClick={prevItem}></button> */}
+        </div>
+      )}
     </div>
   );
 };

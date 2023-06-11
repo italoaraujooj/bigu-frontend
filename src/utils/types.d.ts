@@ -7,7 +7,14 @@ export interface OfferRideFormState {
   estimated_value: number;
 }
 
-type InputType = "text" | "email" | "password" | "tel" | "file" | "search" | "date";
+type InputType =
+  | "text"
+  | "email"
+  | "password"
+  | "tel"
+  | "file"
+  | "search"
+  | "date";
 type InputColor = "light" | "extralight";
 type InputSize = "sm" | "adjustable";
 
@@ -61,6 +68,25 @@ type DataProps = {
   token: string;
 };
 
-export interface SignInResponse { 
-  data: DataProps
+export interface SignInResponse {
+  data: DataProps;
+}
+
+export interface CreateCarFormState {
+  brand: string;
+  model: string;
+  modelYear: string;
+  color: string;
+  plate: string;
+}
+
+export interface AddressFormState {
+  nickname: string;
+  postalCode: string;
+  state: string;
+  city: string;
+  district: string;
+  street: string;
+  number: string;
+  complement: string;
 }
