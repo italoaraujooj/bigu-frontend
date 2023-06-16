@@ -5,7 +5,7 @@ import HeartFilled from "../../assets/heart-filled.png";
 import Image from "next/image";
 import Button from "../button";
 import Text from "../text";
-import { getAllRides, getAllRidesAvailable } from "@/services/ride";
+import { getAllRides, getAllRidesAvailable, requestRide } from "@/services/ride";
 import LottieAnimation from "../LottieAnimation";
 import ghost from '../../assets/ghost.json';
 import empty from '../../assets/empty-box.json';
@@ -15,14 +15,16 @@ import Dropdown from "../dropdown";
 import { fetchUserAddresses } from "@/services/address";
 import { AuthContext } from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
+import Router from "next/router";
 
 function Ride() {
   const [userAddress, setUserAddresses] = React.useState([])
-  const [userAddressesSelected, setUserAddressesSelected] = React.useState({});
+  const [userAddressesSelected, setUserAddressesSelected] = React.useState({} as any);
   const [favorite, setFavorite] = React.useState(false);
   const [askRide, setAskRide] = React.useState(false);
   const [ridesAvailable, setRidesAvailable] = React.useState([]);
   const [modalOpen, setModalOpen] = React.useState(false);
+  const [rideIdSelected, setRideIdSelected] = React.useState({})
 
   const { user } = useContext(AuthContext);
   const { rides } = useContext(RideContext);
@@ -30,30 +32,38 @@ function Ride() {
   const toggleFavorite = () => setFavorite((prev) => !prev);
   const toggleAskRide = () => setAskRide((prev) => !prev);
   
-  // useEffect(() => {
-  //   async function loadData() {
-  //     try {
-  //       const response = await getAllRidesAvailable();
-  //       // @ts-ignore
-  //         const dadosDaApi = response.data;
-  //       setRidesAvailable(dadosDaApi);
-  //     } catch (error) {
-  //       console.error('Erro ao buscar os dados:', error);
-  //     }
-  //   }
-
-  //   loadData();
-  // }, []);
-
+  console.log(rides)
   useEffect(() => {
     fetchUserAddresses().then((data) => {
       const addressesFormated = data?.data.map((address: any) => ({
         label: address.nickname,
-        value: address.addressId,
+        value: address.id,
       }));
       setUserAddresses(addressesFormated);
     });
   }, [askRide])
+
+  const handleAskRide = (rideId: number) => {
+    setModalOpen(prev => !prev)
+    setRideIdSelected(rideId)
+  }
+
+  const submitRide = async () => {
+    console.log(userAddressesSelected)
+
+    try{
+      const response = await requestRide({
+        addressId: Number(userAddressesSelected.value),
+        rideId: Number(rideIdSelected)
+      })
+      if(response?.status == 200){
+        setAskRide((prev) => !prev)
+        setModalOpen((prev) => !prev)
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
 
 return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-6 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
@@ -95,7 +105,7 @@ return (
                   label={
                     !askRide ? "Pedir carona" : "Aguardando confirmação..."
                   }
-                  onClick={() => setModalOpen(prev => !prev)}
+                  onClick={() => handleAskRide(item.id)}
                   size="sm"
                   color="green"
                   shape="square"
@@ -143,17 +153,18 @@ return (
 
       <footer className="pt-4">
         {/* {!!races?.length && ( */}
-        <Text
+        <p className=" text-gray text-base self-start hover:text-stone-400 cursor-pointer font-[Poppins]" onClick={() => Router.push("/availableRides")}>Ver mais</p>
+        {/* <Text
           label="Ver mais"
           className="self-start cursor-pointer hover:text-stone-400"
           color="gray"
           size="md"
-        />
+        /> */}
         {/* )}       */}
       </footer>
-      {/* <Modal isOpen={modalOpen} onClose={() => setModalOpen(prev => !prev)}>
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(prev => !prev)} onSubmit={submitRide}>
         <Dropdown label="Selecione o ponto de partida" options={userAddress} onSelectOption={setUserAddressesSelected}/>
-      </Modal> */}
+      </Modal>
     </div>
   );
 }

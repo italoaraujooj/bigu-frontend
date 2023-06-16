@@ -223,54 +223,6 @@ function Profile() {
 
               <div className="w-full flex flex-col md:w-1/2 gap-4">
                 <div className="w-full flex items-center justify-between flex-row gap-5">
-                  {/* <div className="w-full">
-                    <Input
-                      label="Endereço (rua)"
-                      name="rua"
-                      sizing="adjustable"
-                      color="extralight"
-                      className="w-full md:h-16 md:text-lg"
-                      type="text"
-                      placeholder="Av. Floriano Peixoto"
-                      readOnly={readOnly}
-                      visibility="visible"
-                    />
-                  </div>
-                  <Input
-                    label="Número"
-                    name="numero"
-                    sizing="xs"
-                    color="extralight"
-                    className="md:h-16 md:text-lg"
-                    type="text"
-                    placeholder="1345"
-                    readOnly={readOnly}
-                    visibility="visible"
-                  />
-                </div>
-                <div className="w-full flex flex-col md:flex-row gap-5">
-                  <Input
-                    label="CEP"
-                    name="cep"
-                    sizing="adjustable"
-                    color="extralight"
-                    className="w-1/2 md:h-16 md:text-lg"
-                    type="text"
-                    placeholder="43432-321"
-                    readOnly={readOnly}
-                  />
-                  <div className="w-full">
-                    <Input
-                      label="Bairro"
-                      name="bairro"
-                      sizing="adjustable"
-                      color="extralight"
-                      className="md:h-16 md:text-lg"
-                      type="text"
-                      placeholder="Centenário"
-                      readOnly={readOnly}
-                    />
-                  </div> */}
                   <Link className="w-full py-1 cursor-pointer group" href='/addresses'>
                     <div className="flex items-center justify-between">
                       <Text label="Ver endereços" size="md" weight="bold" className="uppercase"/>
@@ -408,6 +360,7 @@ function Profile() {
                     className="uppercase font-semibold px-3 lg:px-6"
                     color="green"
                     type="submit"
+                    onClick={() => Router.reload()}
                   />
                 </section>
               </Form>

@@ -19,6 +19,7 @@ import { createRide } from "@/services/ride";
 import useFields from "@/hooks/useFields";
 import { getUserCars } from "@/services/car";
 import { fetchUfcgAddresses, fetchUserAddresses } from "@/services/address";
+import  Router  from "next/router";
 
 function OfferRideForm() {
   const { createFields } = useFields();
@@ -51,14 +52,14 @@ function OfferRideForm() {
   
     const startAddressId = checked ? userAddressesSelected?.value : ufcgAddressesSelected?.value;
     const destinationAddressId = checked ? ufcgAddressesSelected?.value : userAddressesSelected?.value;
-  
+    console.log(onlyWomanChecked)
     const dateTime = formatDateTime(date, hours);
     const numSeats = vacancies + 1;
-    const price = estimated_value;
+    const price = Number(String(estimated_value).split(" ")[1].replace(",","."))
     const toWomen = onlyWomanChecked;
     const carId = 1;
     const description = "any description";
-  
+    
     const body = {
       goingToCollege: value === "going" && checked,
       startAddressId,
@@ -74,6 +75,9 @@ function OfferRideForm() {
     console.log(body)
   
     const response = await createRide(body);
+    if(response?.status == 200){
+      Router.push("/dashboard")
+    }
   };
   
   React.useEffect(() => {
