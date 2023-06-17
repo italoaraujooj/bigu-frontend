@@ -95,7 +95,7 @@ function Ride() {
                       } está saindo do ${item.start.district}...`}
                       color="dark"
                       size="md"
-                      className=" tracking-wide"
+                      className="tracking-wide text-sm md:text-md "
                     />
                   </div>
                   <div className="space-y-2">

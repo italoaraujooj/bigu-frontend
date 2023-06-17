@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { useContext } from "react";
 import Button from "../button";
 import Text from "../text";
-import { SignOut } from "@phosphor-icons/react";
+import { List, SignOut } from "@phosphor-icons/react";
 import Drawer from "../drawer";
 import useDrawer from "@/hooks/useDrawer";
 import { RideContext } from "@/context/RideContext";
@@ -32,12 +32,14 @@ export default function Header() {
           />
         </Link>
       </div>
-      <Image
-        className=" w-9 h-6 md:hidden cursor-pointer"
+      <List size={32} color="gray" className="md:hidden cursor-pointer" onClick={toggleDrawer}/>
+
+      {/* <Image
+        
         src={Menu}
         alt="menu"
         onClick={toggleDrawer}
-      />
+      /> */}
       <div className="hidden md:flex md:gap-5">
         <Link href="/offer-ride" className="text-gray">
           <Button
