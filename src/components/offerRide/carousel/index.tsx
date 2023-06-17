@@ -106,7 +106,7 @@ const Carousel = (props: Props) => {
       >
         {!!items &&
           !props.profile &&
-          items?.map(({ id, model, car }, index) => (
+          items?.map(({ id, model, car } , index) => (
             <div
               key={id}
               className={clsx(
