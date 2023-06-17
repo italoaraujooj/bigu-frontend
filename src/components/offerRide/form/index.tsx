@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {useContext, useRef, useState} from "react";
 import { Form } from "@unform/web";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import {
@@ -20,10 +20,12 @@ import useFields from "@/hooks/useFields";
 import { getUserCars } from "@/services/car";
 import { fetchUfcgAddresses, fetchUserAddresses } from "@/services/address";
 import  Router  from "next/router";
+import {AuthContext} from "@/context/AuthContext";
 
 function OfferRideForm() {
   const { createFields } = useFields();
 
+  const { user, isAuthenticated, setUser } = useContext(AuthContext);
   const formRef = useRef<FormHandles>(null);
   const [checkboxes, setCheckboxes] = useState(checkboxesOptions);
   const [ufcgAddresses, setUfcgAddresses] = useState([]);
@@ -32,6 +34,7 @@ function OfferRideForm() {
   const [userAddressesSelected, setUserAddressesSelected] = useState({} as any);
   const [vacancies, setVacancies] = useState(0);
   const [onlyWomanChecked, setOnlyWomanChecked] = useState(true);
+  const [selectedCar, setSelectedCar] = useState(null);
 
   const handleCheckboxChange = (checkboxId: number) => {
     const updatedCheckboxes = checkboxes.map((checkbox) => {
@@ -49,15 +52,13 @@ function OfferRideForm() {
     const checkboxSelected = checkboxes[0];
     const { date, hours, estimated_value } = data;
     const { checked, value } = checkboxSelected!;
-  
     const startAddressId = checked ? userAddressesSelected?.value : ufcgAddressesSelected?.value;
     const destinationAddressId = checked ? ufcgAddressesSelected?.value : userAddressesSelected?.value;
-    console.log(onlyWomanChecked)
     const dateTime = formatDateTime(date, hours);
     const numSeats = vacancies + 1;
     const price = Number(String(estimated_value).split(" ")[1].replace(",","."))
     const toWomen = onlyWomanChecked;
-    const carId = 1;
+    const carId = selectedCar;
     const description = "any description";
     
     const body = {
@@ -72,8 +73,6 @@ function OfferRideForm() {
       description,
     };
 
-    console.log(body)
-  
     const response = await createRide(body);
     if(response?.status == 200){
       Router.push("/dashboard")
@@ -81,7 +80,6 @@ function OfferRideForm() {
   };
   
   React.useEffect(() => {
-    getUserCars().then((data) => console.log(data));
     fetchUserAddresses().then((data) => {
       const addressesFormated = data?.data.map((address: any) => ({
         label: address?.nickname,
@@ -155,14 +153,14 @@ function OfferRideForm() {
             />
           </div>
         </div>
-        <div>
+        { user?.sex === "F" && <div>
           <Checkbox
             label="oferecer carona apenas para as mulheres"
             checked={onlyWomanChecked}
             onChange={() => setOnlyWomanChecked((prev) => !prev)}
             className="my-4 mb-6"
           />
-        </div>
+        </div> }
       </div>
       <div className="w-full lg:w-1/2 space-y-7">
         <div>
@@ -172,7 +170,7 @@ function OfferRideForm() {
             className="mb-4"
             weight="bold"
           />
-          <Carousel add={() => {}} />
+          <Carousel add={() => {}} carSelected={selectedCar} setCarSelected={setSelectedCar}/>
         </div>
 
         <TextArea

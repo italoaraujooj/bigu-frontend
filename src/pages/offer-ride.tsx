@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { Text, Form } from '@/components';
 import { AuthContext } from "@/context/AuthContext";
-import Woman from "../assets/woman.png";
+// @ts-ignore
+import Woman from '../assets/woman.png';
 import Image from "next/image";
 
 type Props = {};
@@ -15,7 +16,6 @@ const OfferRide = ({ cars, addresses }: any) => {
         <header className="flex gap-4 items-center">
           <Image className="w-14 h-14" src={Woman} alt="woman-avatar" />
           <h1 className=" font-bold text-xl text-white">{`Ola, ${user?.fullName}!`}</h1>
-          {/* <Text label={`Ola, ${user?.fullName}!`} size="lg" weight="bold" /> */}
         </header>
         <Form />
       </div>

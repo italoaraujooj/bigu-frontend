@@ -13,39 +13,22 @@ import { getUserCars } from "@/services/car";
 type Props = {
   profile?: boolean;
   add: any;
+  setCarSelected: any; // refactor
+  carSelected: any
 };
 
-// interface CarsGarageProps {
-//   car: typeof Car;
-//   id: number;
-//   userId: number;
-//   brand: string;
-//   model: string;
-//   model_year: number;
-//   color: string;
-//   plate: string;
-// }
+interface CarProps {
+  carId: number;
+  model: string
+  color: string;
+  plate: string;
+}
 
 const Carousel = (props: Props) => {
-  // const items = [
-  //   {
-  //     id: 1,
-  //     model: "COROLLA PRATA",
-  //     car: Car,
-  //   },
-  //   {
-  //     id: 2,
-  //     model: "GOLF BRANCO",
-  //     car: CarSecondary,
-  //   },
-  // ] as CarsGarageProps[];
-
+  const { carSelected, setCarSelected } = props;
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [selectedCar, setSelectedCar] = React.useState(0);
-  const [porcentage, setPorcentage] = React.useState(0);
-  const [vacancies, setVacancies] = React.useState(0);
   const [items, setItems] = React.useState([] as any);
-  console.log(items);
 
   useEffect(() => {
     const loadData = async () => {
@@ -56,13 +39,17 @@ const Carousel = (props: Props) => {
     loadData();
   }, []);
 
-  const toggleCar = (index: number) => {
+  useEffect(() => {
+    toggleCar(0, items[0]?.carId);
+  }, [items]);
+
+  const toggleCar = (index: number, id: number) => {
     setSelectedCar(index);
+    setCarSelected(id);
   };
 
   const goToIndex = (index: number) => {
     setCurrentIndex(index);
-    // setPorcentage(index * 110.5);
   };
 
   const memoizedPosition = React.useMemo(() => {
@@ -90,11 +77,10 @@ const Carousel = (props: Props) => {
       },
     ];
     return props.profile
-      ? positionsLg[currentIndex].className
-      : positions[currentIndex].className;
+      ? positionsLg[currentIndex]?.className
+      : positions[currentIndex]?.className;
   }, [currentIndex, props?.profile]);
 
-  console.log(currentIndex);
   return (
     <div className="w-full">
       <div
@@ -106,9 +92,9 @@ const Carousel = (props: Props) => {
       >
         {!!items &&
           !props.profile &&
-          items?.map(({ id, model, car }, index) => (
+          items?.map(({ carId, model }: CarProps, index: number) => (
             <div
-              key={id}
+              key={carId}
               className={clsx(
                 "w-full shrink-0",
                 "transform-gpu",
@@ -119,7 +105,7 @@ const Carousel = (props: Props) => {
               <div className="w-full h-20 bg-extralight px-6 rounded-lg flex items-center justify-between ">
                 <Image
                   className="w-10 h-10 lg:w-12 lg:h-12"
-                  src={car}
+                  src={Car}
                   alt="car"
                 />
                 <Text
@@ -135,7 +121,7 @@ const Carousel = (props: Props) => {
                 >
                   <div
                     className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center"
-                    onClick={() => toggleCar(index)}
+                    onClick={() => toggleCar(index, carId)}
                   >
                     {selectedCar === index && (
                       <span className="relative flex h-3 w-3">
@@ -151,9 +137,9 @@ const Carousel = (props: Props) => {
           ))}
 
         {!!props.profile &&
-          items?.map(({ id, model, car, color, plate }, index) => (
+          items?.map(({ carId, model, color, plate }: CarProps, index: number) => (
             <div
-              key={id}
+              key={carId}
               className={clsx(
                 "w-full shrink-0",
                 "transform-gpu",
@@ -162,7 +148,7 @@ const Carousel = (props: Props) => {
               )}
             >
               <div
-                key={id}
+                key={carId}
                 className="flex items-start justify-between md:h-48 pt-6 pl-8 h-48 bg-white my-2 rounded-lg py-6 px-8"
               >
                 <div className="flex items-start justify-between mb-2">
@@ -231,7 +217,7 @@ const Carousel = (props: Props) => {
       </div>
       {items.length > 1 && (
         <div className="w-full flex items-center justify-center space-x-2 my-4">
-          {items?.map((_, index) => (
+          {items?.map((_: any, index: number) => (
             <button
               key={index}
               className="w-4 h-4 bg-gray rounded-full"
@@ -239,7 +225,6 @@ const Carousel = (props: Props) => {
               type="button"
             ></button>
           ))}
-          {/* <button className="w-4 h-4 bg-gray rounded-full" onClick={prevItem}></button> */}
         </div>
       )}
     </div>

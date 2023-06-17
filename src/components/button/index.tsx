@@ -15,6 +15,7 @@ type Props = {
   color: ButtonColor;
   text?: ButtonText;
   loading?: boolean;
+  disabled?: boolean;
 } & React.ComponentProps<"button">;
 
 const Button = (props: Props) => {
@@ -28,6 +29,7 @@ const Button = (props: Props) => {
     text = "white",
     loading,
     className,
+    disabled
   } = props;
 
   const styles = {
@@ -67,6 +69,7 @@ const Button = (props: Props) => {
       ])}
       type={type}
       onClick={onClick}
+      disabled={disabled}
     >
       {loading ? <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
       </svg> : label}

@@ -104,7 +104,6 @@ export const getServerSideProps: GetServerSideProps<{data: any}> = async (contex
   const data = [] as any;
 
     const cookies = parseCookies(context);
-  console.log(cookies);
   // Verifique se o token JWT está presente nos cookies
   const token = cookies.token;
   if (token) {

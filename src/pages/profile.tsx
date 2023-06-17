@@ -116,13 +116,8 @@ function Profile() {
   }
 
   const handleCreateCar: SubmitHandler<CreateCarFormState> = async (data) => {
-    console.log(data);
     const response = await createCar(data);
-
-    console.log(response);
   };
-
-  console.log(user);
 
   return (
     <div className="flex w-full items-center justify-center my-12">
@@ -150,6 +145,7 @@ function Profile() {
               email: user?.email,
               telephone: user?.phoneNumber,
             }}
+
             ref={formRef}
           >
             <div className="flex justify-between items-center">
@@ -183,6 +179,7 @@ function Profile() {
                   placeholder="Exemplo Alves"
                   readOnly={readOnly}
                   visibility="visible"
+                  value={user?.fullname}
                 />
                 <Input
                   label="Email"

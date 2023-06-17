@@ -20,7 +20,6 @@ export default function RecoverPassword() {
   // const { fieldName, defaultValue, registerField, error } = useField("email");
 
   const handleSubmit: SubmitHandler<RecoverPasswordFormState> = async ({ email }) => {
-    console.log(email);
     const res = await forgotPasswordRequest(email);
 
     if (res?.status === 200) {

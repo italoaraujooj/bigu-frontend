@@ -52,7 +52,6 @@ function Login(props: Props) {
     } else {
       setErrorMessage("")
     }
-    console.log(JSON.stringify(response, null, 2));
   };
 
   const handleRecoveryPassword = () => {

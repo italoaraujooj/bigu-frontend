@@ -36,8 +36,6 @@ const Carousel = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    console.log('mudou');
-    console.log(needUpdate);
     if (needUpdate) {
       const loadData = async () => {
         getUserCars().then((response) => {

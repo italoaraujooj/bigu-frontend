@@ -8,37 +8,46 @@ import Button from "@/components/button";
 import { AuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import History from "@/components/history";
-import { getToken } from "@/utils/cookies";
 import { GetServerSideProps } from "next";
-import { getUser } from "@/services/auth";
-import { hasCookie } from "cookies-next";
 import { parseCookies } from "nookies";
 import Text from "@/components/text";
 import { RideContext } from "@/context/RideContext";
 import { SignOut } from "@phosphor-icons/react";
+import { Car, getUserCars } from "@/services/car";
+import { X } from "@phosphor-icons/react";
+import clsx from "clsx";
+import Router from "next/router";
+import Drawer from "@/components/drawer";
+import useDrawer from "@/hooks/useDrawer";
 
-function Dashboard({ cars }: any) {
-  const { user, logOu } = useContext(AuthContext);
-  const { rides, history } = useContext(RideContext)
+function Dashboard() {
+  const { user, logout } = useContext(AuthContext);
+  const { history } = useContext(RideContext);
+  const {
+    drawerIsOpen,
+    toggleDrawer,
+    handleLogout,
+    handleNavigateToOfferRide,
+  } = useDrawer();
+
   const [drawer, setDrawer] = React.useState(false);
-  const openDrawer = () => {
-    setDrawer(true);
-  };
+  const [cars, setCars] = React.useState<Car[]>([]);
 
   const handleOutsideClick = (event: any) => {
-    // Verifica se o clique ocorreu fora do drawer
     if (drawer && !event.target.closest("#drawer")) {
       setDrawer(false);
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await logOu();
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  useEffect(() => {
+    const loadData = async () => {
+      getUserCars().then((response) => {
+        setCars(response);
+      });
+    };
+
+    loadData();
+  }, []);
 
   return (
     <div className="relative w-full my-16" onClick={handleOutsideClick}>
@@ -56,51 +65,41 @@ function Dashboard({ cars }: any) {
             </Link>
           </div>
           <Image
-            className=" w-9 h-6 md:hidden"
+            className=" w-9 h-6 md:hidden cursor-pointer"
             src={Menu}
             alt="menu"
-            onClick={openDrawer}
+            onClick={toggleDrawer}
           />
           <div className="hidden md:flex md:gap-5">
             <Link href="/offer-ride" className="text-gray">
               <Button
                 label="Oferecer carona"
-                onClick={() => {}}
                 size="base"
                 color="green"
                 className="uppercase"
                 shape="square"
+                disabled={!cars.length}
               />
             </Link>
-            <span className="flex items-center gap-2 hover:text-stone-400 cursor-pointer hover:underline" onClick={handleLogout}>
-              <Text label="Sair" size="md" color="gray" className="cursor-pointer hover:hover:text-stone-400" />
+            <span
+              className="flex items-center gap-2 hover:text-stone-400 cursor-pointer hover:underline"
+              onClick={handleLogout}
+            >
+              <Text
+                label="Sair"
+                size="md"
+                color="gray"
+                className="cursor-pointer hover:hover:text-stone-400"
+              />
               <SignOut size={36} color="gray" className="" />
             </span>
-
           </div>
-          {drawer && (
-            <div
-              id="drawer"
-              className="bg-white w-1/2 fixed top-0 right-0 h-44 rounded flex justify-center items-center"
-            >
-              <div className="flex flex-col p-5 justify-center items-center gap-5 ">
-                <Button
-                  label="Oferecer carona"
-                  onClick={() => {}}
-                  size="res"
-                  color="yellow"
-                  shape="square"
-                />
-                <Button
-                  label="Sair"
-                  onClick={handleLogout}
-                  size="res"
-                  color="yellow"
-                  shape="square"
-                />
-              </div>
-            </div>
-          )}
+          <Drawer
+            drawerIsOpen={drawerIsOpen}
+            toggleDrawer={toggleDrawer}
+            handleNavigateToOfferRide={handleNavigateToOfferRide}
+            handleLogout={handleLogout}
+          />
         </header>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -115,7 +114,7 @@ function Dashboard({ cars }: any) {
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-between gap-2 md:gap-4 lg:flex-row">
+        <div className="flex flex-col justify-between gap-2 sm:gap-12 lg:gap-12 lg:flex-row">
           <History races={history} />
           <div className="border-solid border-[1px] border-warmGray-700"></div>
           <Ride />
@@ -137,30 +136,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  // const isAuthenticated = getToken();// Lógica para verificar autenticação
-  // if (!hasCookie("token")) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-
-  //   const data = await getUser();
-  //   console.log(data);
-  // } catch (err) {
-  //   console.log(err);
-  // }
-
-  // const cars = await fetchUserCars();
-  // const addresses = await fetchUserAddresses();
-
   return {
-    props: {
-      // cars: [],
-      // addresses: [],
-    },
+    props: {},
   };
 };
 
