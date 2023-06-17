@@ -86,7 +86,7 @@ const Carousel = (props: Props) => {
       <div
         onMouseLeave={() => goToIndex(selectedCar)}
         className={clsx(
-          `w-full flex items-center overflow-hidden space-x-12`,
+          `w-full  flex items-center overflow-hidden space-x-12`,
           props.profile && "w-96"
         )}
       >

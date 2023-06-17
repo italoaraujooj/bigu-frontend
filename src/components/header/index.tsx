@@ -10,9 +10,7 @@ import Drawer from "../drawer";
 import useDrawer from "@/hooks/useDrawer";
 import { RideContext } from "@/context/RideContext";
 
-type Props = {};
-
-export default function Header({}: Props) {
+export default function Header() {
   const {
     drawerIsOpen,
     toggleDrawer,
