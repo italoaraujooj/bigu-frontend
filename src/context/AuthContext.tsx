@@ -4,9 +4,11 @@ import {
   signUpRequest,
   logOut as exit,
 } from "@/services/auth";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { RequestContext } from "./RequestContext";
+import { fakeDelay } from "@/utils/delay";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -39,19 +41,11 @@ export const AuthContext = createContext({} as AuthContextType);
 export function AuthProvider({ children }: any) {
   const [user, setUser] = useState(null as any);
   const isAuthenticated = !!user;
+  const { inProgress, done } = useContext(RequestContext);
 
-  useEffect(() => {
-    const { "nextauth.token": token } = parseCookies();
-    if (token) {
-      getUser().then((data) => {
-        setUser(data.data);
-      });
-    }
-  }, []);
-
-  async function signIn({ email, password }: SignInData) {
+  async function signIn(credentials: SignInData) {
     try {
-      const response: any = await signInRequest({ email, password });
+      const response: any = await signInRequest(credentials);
       if (response.status === 200) {
         setCookie(undefined, "nextauth.token", response?.data?.token, {
           maxAge: 8600,
@@ -65,21 +59,9 @@ export function AuthProvider({ children }: any) {
     }
   }
 
-  async function signUp({
-    fullName,
-    email,
-    phoneNumber,
-    sex,
-    password,
-  }: SignUpData) {
+  async function signUp(credentials: SignUpData) {
     try {
-      const response = await signUpRequest({
-        fullName,
-        email,
-        phoneNumber,
-        sex,
-        password,
-      });
+      const response = await signUpRequest(credentials);
       if (response) {
         setCookie(undefined, "nextauth.token", response?.data?.token, {
           maxAge: 8600,
@@ -99,6 +81,31 @@ export function AuthProvider({ children }: any) {
     destroyCookie(null, "nextauth.token");
     setUser(null);
   }
+
+  const getUserData = async () => {
+    try {
+      inProgress();
+      const response = await getUser();
+
+      await fakeDelay(500);
+
+      done();
+
+      setUser(response.data);
+    } catch (err) {
+
+    }
+  }
+
+  useEffect(() => {
+    const { "nextauth.token": token } = parseCookies();
+    if (token) {
+      // getUser().then((data) => {
+      //   setUser(data.data);
+      // });
+      getUserData();
+    }
+  }, []);
 
   return (
     <AuthContext.Provider

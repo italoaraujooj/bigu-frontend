@@ -9,21 +9,32 @@ import Ride from "@/components/ride";
 import { AuthContext } from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
 import Star from "../assets/star.png";
+import { RequestContext } from "@/context/RequestContext";
 
 function Dashboard() {
   const { user } = useContext(AuthContext);
   const { history } = useContext(RideContext);
+  const { loading } = useContext(RequestContext);
 
   const renderGreeting = () => {
     return (
       <div className="flex gap-1">
-        <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
-          {`Olá, ${user?.fullName}`}
-        </h1>
-        <div className="flex items-center gap-2 pt-2">
-          <Image className="w-3 h-3" src={Star} alt="estrela" />
-          <span className="text-gray text-[0.725rem]">5.0</span>
-        </div>
+        {loading ? (
+          <div className="flex items-center gap-4">
+            <div className="animate-pulse rounded-md bg-slate-700 h-14 w-80"></div>
+            <div className="animate-pulse rounded-md bg-slate-700 h-14 w-16"></div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
+              {`Olá, ${user?.fullName}`}
+            </h1>
+            <div className="flex items-center gap-2 pt-2">
+              <Image className="w-3 h-3" src={Star} alt="estrela" />
+              <span className="text-gray text-[0.725rem]">5.0</span>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
