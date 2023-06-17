@@ -168,7 +168,7 @@ function OfferRideForm() {
             className="mb-4"
             weight="bold"
           />
-          <Carousel />
+          <Carousel add={() => {}} />
         </div>
 
         <TextArea
