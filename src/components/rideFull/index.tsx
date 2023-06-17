@@ -33,8 +33,8 @@ function RideFull(props: RideProps){
     
   return (
     <div>
-      <div className="bg-light-white w-[20.625rem] h-44 rounded-xl flex p-2 flex-col gap-4 justify-around md:w-[40rem] md:h-56 md:gap-0 md:p-3 xl:w-[60rem] xl:h-64 xl:px-8 xl:justify-between">
-        <div className="flex justify-between">
+      <div className="bg-light-white w-[100%] h-44 rounded-xl flex p-2 flex-col gap-4 justify-around md:w-[40rem] md:h-56 md:gap-0 md:p-3 xl:w-[60rem] xl:h-64 xl:px-8 xl:justify-between">
+        <div className="flex justify-around">
           <div className="flex gap-2">
             <Image className=" w-12 h-12" src={Avatar} alt="foto" />
             <div className="flex flex-col gap-1 mt-2">
@@ -58,7 +58,7 @@ function RideFull(props: RideProps){
           </div>
         </div>
 
-        <div className="flex justify-between md:items-center">
+        <div className="flex justify-around md:items-center">
           <div className="flex flex-col gap-3 xl:gap-5">
             <div className="flex gap-2">
               <Image className=" w-4 h-4 md:w-6 md:h-6" src={Origin} alt="origem" />

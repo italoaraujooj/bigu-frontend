@@ -63,3 +63,12 @@ export const getAllRidesAvailable = async () => {
     console.log(err);
   }
 }
+
+export const requestRide = async (body: any) => {
+  try {
+    const response = api.put('/api/v1/rides/request-ride', body);
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}

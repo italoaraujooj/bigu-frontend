@@ -16,6 +16,7 @@ export function RideProvider({ children }: any) {
     const { "nextauth.token": token } = parseCookies();
     if (token) {
       getAllRidesAvailable().then((data) =>{
+      console.log('contextride')  
       console.log(data) 
       setRides(data?.data)});
       getHistoryRide().then((data) => setHistory(data?.data));
