@@ -2,7 +2,7 @@ import Menu from "../../assets/Menu.png";
 import Foto from "../../assets/woman.png";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Button from "../button";
 import Text from "../text";
 import { List, SignOut } from "@phosphor-icons/react";
@@ -17,7 +17,13 @@ export default function Header() {
     handleLogout,
     handleNavigateToOfferRide,
   } = useDrawer();
+
   const { cars } = useContext(RideContext);
+  const [carsUser, setCarsUser] = useState([] as any)
+
+  useEffect(() => {
+    setCarsUser(cars);
+  }, [cars]);
 
   return (
     <header className="flex justify-between items-center">
@@ -34,12 +40,6 @@ export default function Header() {
       </div>
       <List size={32} color="gray" className="md:hidden cursor-pointer" onClick={toggleDrawer}/>
 
-      {/* <Image
-        
-        src={Menu}
-        alt="menu"
-        onClick={toggleDrawer}
-      /> */}
       <div className="hidden md:flex md:gap-5">
         <Link href="/offer-ride" className="text-gray">
           <Button

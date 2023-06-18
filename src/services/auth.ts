@@ -1,7 +1,7 @@
 import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
 import axios, { AxiosResponse } from "axios";
-import { SignInResponse } from "@/utils/types";
+import { ChangePassword, SignInResponse } from "@/utils/types";
 
 type SignUpRequestData = {
     fullName:string,
@@ -49,6 +49,15 @@ export async function forgotPasswordRequest(email: string){
     const res = await api.post('/api/v1/auth/forgot-password', {email});
     return res;
   }catch (error: any){
+    handleError(error)
+  }
+}
+
+export async function changePasswordRequest(credentials: ChangePassword){
+  try{
+    console.log(credentials)
+    return await api.put(`/api/v1/auth/edit-password?actualPassword=${credentials.actualPassword}`, credentials)
+  }catch(error: any){
     handleError(error)
   }
 }

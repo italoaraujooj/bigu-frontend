@@ -26,13 +26,15 @@ export function RideProvider({ children }: any) {
   }, []);
 
   useEffect(() => {
-    const loadData = async () => {
-      getUserCars().then((response) => {
-        setCars(response);
-      });
-    };
-
-    loadData();
+    const { "nextauth.token": token } = parseCookies();
+    if (token) {
+      const loadData = async () => {
+        getUserCars().then((response) => {
+          setCars(response);
+        });
+      };
+      loadData();
+    }
   }, []);
 
   return (
