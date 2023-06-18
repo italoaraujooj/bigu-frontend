@@ -23,12 +23,6 @@ function AvailableRides(){
           <div className="w-full flex gap-1 justify-start">
             <ArrowCircleLeft size={32}/>
             <p className="cursor-pointer hover:text-stone-400 text-gray text-xl font-[Poppins]" onClick={() => Router.push("/dashboard")}>Voltar para tela inicial</p>
-            {/* <Text
-              label="Voltar para tela inicial"
-              className=" cursor-pointer hover:text-stone-400 "
-              color="gray"
-              size="xl"
-            /> */}
           </div>
           <div className=" w-full flex flex-col bg-container rounded-lg p-4 gap-3">
             <div className="flex gap-2">
@@ -46,8 +40,6 @@ function AvailableRides(){
               <Button label="Pesquisar" size="res" color="yellow" shape="square" text="black" />
               <Button label="Filtrar" size="res" color="yellow" shape="square" text="black" />
             </div>
-            
-
             
             {!!ridesWithDriver.length ? 
              ridesWithDriver.map((item: any, index: number) => (

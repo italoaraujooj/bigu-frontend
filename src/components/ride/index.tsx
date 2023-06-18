@@ -99,7 +99,7 @@ function Ride() {
                       } está saindo do ${item.start.district}...`}
                       color="dark"
                       size="md"
-                      className="tracking-wide text-sm md:text-md "
+                      className="tracking-wide text-sm md:text-md xl:text-lg "
                     />
                   </div>
                   <div className="space-y-2">

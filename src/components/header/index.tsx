@@ -48,7 +48,7 @@ export default function Header() {
             color="green"
             className="uppercase"
             shape="square"
-            disabled={!cars.length}
+            disabled={carsUser.length === 0}
           />
         </Link>
         <span

@@ -73,6 +73,8 @@ function OfferRideForm() {
       description,
     };
 
+    console.log(body)
+
     const response = await createRide(body);
     if(response?.status == 200){
       Router.push("/dashboard")

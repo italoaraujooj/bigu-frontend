@@ -23,6 +23,7 @@ import { FormHandles, SubmitHandler } from "@unform/core";
 import { ChangePassword, CreateCarFormState } from "@/utils/types";
 import NotificationContext from "@/context/NotificationContext";
 import Notification from "@/components/notification";
+import React from "react";
 
 function Profile() {
   const formRef = useRef<FormHandles>(null);
@@ -36,6 +37,9 @@ function Profile() {
   const [changePassword, setChangePassord] = useState(false);
   const [save, setSave] = useState(false);
   const [modalCar, setModalCar] = useState(false);
+
+  const [needUpdate, setNeedUpdate] = React.useState(false);
+  const toggleNeedUpdate = () => setNeedUpdate(prev => !prev);
 
   const toggleModalCar = () => setModalCar((prev) => !prev);
   const handleOpenChangePassword = () => setChangePassord(true);
@@ -52,6 +56,7 @@ function Profile() {
     try{
       const response: any = await createCar(data);
       if(response.status === 200){
+        toggleNeedUpdate();
         handleCreateCarNotification("success", "O carro foi criado com sucesso");
       }
     }catch(err){
@@ -193,7 +198,7 @@ function Profile() {
                   <h1 className="text-2xl text-white font-bold mb-2">
                     Meus veículos
                   </h1>
-                  <Carousel profile add={toggleModalCar} />
+                  <Carousel profile add={toggleModalCar} needUpdate={needUpdate} toggleNeedUpdate={toggleNeedUpdate}/>
                 </div>
                 <div className="flex gap-7">
                   <Button

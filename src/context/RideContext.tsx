@@ -19,8 +19,7 @@ export function RideProvider({ children }: any) {
   useEffect(() => {
     const { "nextauth.token": token } = parseCookies();
     if (token) {
-      getAllRidesAvailable().then((data) =>{
-      setRides(data?.data)});
+      getAllRidesAvailable().then((data) =>setRides(data?.data));
       getHistoryRide().then((data) => setHistory(data?.data));
     }
   }, []);
