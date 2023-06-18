@@ -4,10 +4,13 @@ import { getUserCars } from "@/services/car";
 import { Actions, Attribute, Bar, Navigation } from "./components";
 import Image from "next/image";
 import Plus from "../../../assets/plus-green.png"
+import { fakeDelay } from "@/utils/delay";
 
 type Props = {
   profile?: boolean;
   add: any;
+  needUpdate: boolean;
+  toggleNeedUpdate: () => void
 };
 
 type CarProps = {
@@ -22,9 +25,7 @@ const Carousel = (props: Props) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [selectedCar, setSelectedCar] = React.useState(0);
   const [items, setItems] = React.useState([] as any);
-  const [needUpdate, setNeedUpdate] = React.useState(false);
-
-  const toggleNeedUpdate = () => setNeedUpdate(prev => !prev);
+  
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,7 +37,7 @@ const Carousel = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    if (needUpdate) {
+    if (props.needUpdate) {
       const loadData = async () => {
         getUserCars().then((response) => {
           setItems(response);
@@ -44,9 +45,9 @@ const Carousel = (props: Props) => {
       };
       loadData();
 
-      toggleNeedUpdate();
+      props.toggleNeedUpdate();
     }
-  }, [needUpdate])
+  }, [props.needUpdate])
 
   const toggleCar = (index: number) => {
     setSelectedCar(index);
@@ -115,7 +116,7 @@ const Carousel = (props: Props) => {
                         add={props.add}
                         edit={() => {}}
                         remove={() => {}}
-                        finished={toggleNeedUpdate}
+                        finished={props.toggleNeedUpdate}
                       />
                     </div>
                   </div>

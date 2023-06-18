@@ -6,7 +6,7 @@ import clsx from "clsx";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit?: () => void;
+  onSubmit?: () => any;
   noActions?: boolean;
   transparent?: boolean;
   children: React.ReactNode;

@@ -23,8 +23,7 @@ export type Car = {
 export async function createCar(car: CreateCarFormState) {
   try {
     const response = await api.post("/api/v1/cars", car);
-
-    return response.data as Car;
+    return response;
   } catch (error: any) {
     handleError(error);
   }

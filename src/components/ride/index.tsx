@@ -39,6 +39,10 @@ function Ride() {
   const toggleAskRide = () => setAskRide((prev) => !prev);
 
   useEffect(() => {
+    setRidesAvailable(rides)
+  }, [rides]);  
+
+  useEffect(() => {
     fetchUserAddresses().then((data) => {
       const addressesFormated = data?.data.map((address: any) => ({
         label: address.nickname,
@@ -75,8 +79,8 @@ function Ride() {
       </h2>
 
       <div className="space-y-4">
-        {!!rides.length ? (
-          rides.map(
+        {!!ridesAvailable.length ? (
+          ridesAvailable.map(
             (item: any) =>
               item.driver.userId !== user?.userId && (
                 <div
@@ -95,7 +99,7 @@ function Ride() {
                       } está saindo do ${item.start.district}...`}
                       color="dark"
                       size="md"
-                      className="tracking-wide text-sm md:text-md "
+                      className="tracking-wide text-sm md:text-md xl:text-lg "
                     />
                   </div>
                   <div className="space-y-2">
@@ -162,7 +166,6 @@ function Ride() {
         ) : (
           <div className="w-full flex items-center justify-center">
             <div className="w-64 h-64 ">
-              {/* <Text label="Não há nada por aqui..." size="xl"  /> */}
               <LottieAnimation data={ghost} />
             </div>
           </div>
@@ -170,20 +173,12 @@ function Ride() {
       </div>
 
       <footer className="pt-4">
-        {/* {!!races?.length && ( */}
         <p
           className=" text-gray text-base self-start hover:text-stone-400 cursor-pointer font-[Poppins]"
           onClick={() => Router.push("/availableRides")}
         >
           Ver mais
         </p>
-        {/* <Text
-          label="Ver mais"
-          className="self-start cursor-pointer hover:text-stone-400"
-          color="gray"
-          size="md"
-        /> */}
-        {/* )}       */}
       </footer>
       <Modal
         isOpen={modalOpen}

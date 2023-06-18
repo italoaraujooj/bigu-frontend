@@ -19,20 +19,21 @@ export function RideProvider({ children }: any) {
   useEffect(() => {
     const { "nextauth.token": token } = parseCookies();
     if (token) {
-      getAllRidesAvailable().then((data) =>{
-      setRides(data?.data)});
+      getAllRidesAvailable().then((data) =>setRides(data?.data));
       getHistoryRide().then((data) => setHistory(data?.data));
     }
   }, []);
 
   useEffect(() => {
-    const loadData = async () => {
-      getUserCars().then((response) => {
-        setCars(response);
-      });
-    };
-
-    loadData();
+    const { "nextauth.token": token } = parseCookies();
+    if (token) {
+      const loadData = async () => {
+        getUserCars().then((response) => {
+          setCars(response);
+        });
+      };
+      loadData();
+    }
   }, []);
 
   return (

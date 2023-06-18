@@ -90,3 +90,9 @@ export interface AddressFormState {
   number: string;
   complement: string;
 }
+
+export interface ChangePassword {
+  actualPassword: string;
+  newPassword: string;
+  newPasswordConfirmation: string;
+}
