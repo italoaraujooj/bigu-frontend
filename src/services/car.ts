@@ -1,7 +1,8 @@
 import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
+import { CreateCarFormState } from "@/utils/types";
 
-type Car = {
+export type Car = {
   id: number;
   userId: number;
   brand: string;
@@ -11,7 +12,15 @@ type Car = {
   plate: string;
 };
 
-export async function createCar(car: Car) {
+// {
+//   "brand": "string",
+//   "model": "string",
+//   "modelYear": "2023",
+//   "color": "string",
+//   "plate": "KGU7E07"
+// }
+
+export async function createCar(car: CreateCarFormState) {
   try {
     const response = await api.post("/api/v1/cars", car);
 
@@ -24,7 +33,6 @@ export async function createCar(car: Car) {
 export async function getUserCars(): Promise<Car[]> {
   try {
     const response = await api.get("/api/v1/cars");
-
     return response.data as Car[];
   } catch (error: any) {
     handleError(error);

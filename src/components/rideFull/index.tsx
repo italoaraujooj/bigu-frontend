@@ -14,23 +14,32 @@ import Plus from "../../assets/PlusCircle.png"
 import Map from "../../assets/map.png"
 import X from "../../assets/X.png"
 
-function RideFull(){
+interface RideProps {
+  userName: string,
+  start: string,
+  destination: string,
+  numSeats: number,
+  model: string,
+  plate: string,
+  color: string
+}
+
+function RideFull(props: RideProps){
   const [showModal, setShowModal] = useState(false);
   
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
-
     
   return (
     <div>
-      <div className="bg-light-white w-[20.625rem] h-44 rounded-xl flex p-2 flex-col gap-4 justify-around md:w-[40rem] md:h-56 md:gap-0 md:p-3 xl:w-[60rem] xl:h-64 xl:px-8 xl:justify-between">
-        <div className="flex justify-between">
+      <div className="bg-light-white w-[100%] h-44 rounded-xl flex p-2 flex-col gap-4 justify-around md:w-[40rem] md:h-56 md:gap-0 md:p-3 xl:w-[60rem] xl:h-64 xl:px-8 xl:justify-between">
+        <div className="flex justify-around">
           <div className="flex gap-2">
             <Image className=" w-12 h-12" src={Avatar} alt="foto" />
             <div className="flex flex-col gap-1 mt-2">
               <div className="flex gap-3 items-center">
                 <h1 className="font-bold text-2xl text-black font-['Poppins'] md:text-3xl">
-                  Carlos
+                  {props.userName.split(" ")[0]}
                 </h1>
                 <Image className=" w-5 h-5" src={Star} alt="estrela" />
                 <span className=" text-gray text-xs">5.0</span>
@@ -38,7 +47,7 @@ function RideFull(){
               <div className="flex gap-2 md:gap-4">
                 <Image src={Car} alt="carro" />
                 <span className="text-xs md:text-base">
-                  Corolla Prata - <strong>Placa X8X1543</strong>
+                  {props.model} - <strong>Placa {props.plate}</strong>
                 </span>
               </div>
             </div>
@@ -48,19 +57,19 @@ function RideFull(){
           </div>
         </div>
 
-        <div className="flex justify-between md:items-center">
+        <div className="flex justify-around md:items-center">
           <div className="flex flex-col gap-3 xl:gap-5">
             <div className="flex gap-2">
               <Image className=" w-4 h-4 md:w-6 md:h-6" src={Origin} alt="origem" />
               <span className="font-['Poppins'] font-normal text-xs md:text-base xl:text-xl">
-                Alto Branco - UFCG
+                {props.start} - {props.destination}
               </span>
             </div>
 
             <div className="flex gap-2">
               <Image className="w-4 h-4 md:w-6 md:h-6" src={Person} alt="pessoa" />
               <span className="font-['Poppins'] font-normal text-xs md:text-base xl:text-xl">
-                3 Vagas disponíveis
+                {props.numSeats} Vagas disponíveis
               </span>
             </div>
 
@@ -83,7 +92,7 @@ function RideFull(){
             />
             <div className="flex gap-2">
               <Image className=" w-5 h-5" src={Fav} alt="coracao" />
-              <span className="font-['Poppins'] font-normal text-xs">
+              <span className="font-['Poppins'] font-normal text-[10px]">
                 Adicionar aos favoritos
               </span>
             </div>

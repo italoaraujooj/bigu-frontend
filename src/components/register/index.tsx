@@ -9,14 +9,17 @@ import Router from "next/router"
 import { encryptPassword } from "@/utils/validate";
 import { AuthContext } from "@/context/AuthContext";
 import clsx from "clsx";
+import Radio from "../radio";
 
 
 interface UserFormState {
     name: string;
     email: string;
     telephone: string;
+    sex: string;
     password: string;
-    confirmPassowrd: string
+    confirmPassowrd: string;
+    
 }
 
 type Props = {
@@ -33,6 +36,7 @@ function Register(props: Props){
           fullName: data.name,
           email: data.email,
           phoneNumber: data.telephone,
+          sex: data.sex,
           password: data.password,
           role: 'USER',
           userType: 'RIDER'
@@ -90,6 +94,12 @@ function Register(props: Props){
               />
             </div>
             <div className="flex flex-col gap-2">
+              <Radio
+                name="sex"
+                options={[{ id: "H", label: "Homem" }, { id: "M", label: "Mulher" }]}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
               <Input
                 label="Senha:"
                 name="password"
@@ -120,12 +130,13 @@ function Register(props: Props){
               color="yellow"
               shape="square"
               type="submit" 
+              loading={true}
             />
             <div>
-              <p className="text-xs md:text-sm flex justify-center">
+              <p className="text-xs md:text-sm flex justify-center text-[#78716c]">
                 Ao se inscrever, você concorda com nossos
               </p>
-              <p className="text-xs md:text-sm flex justify-center">
+              <p className="text-xs md:text-sm flex justify-center text-[#78716c]">
                 Termos de Uso e com a Política de Privacidade.
               </p>
             </div>

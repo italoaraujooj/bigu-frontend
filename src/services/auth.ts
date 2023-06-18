@@ -7,6 +7,7 @@ type SignUpRequestData = {
     fullName:string,
     email:string,
     phoneNumber:string,
+    sex: string,
     password:string
 }
 
@@ -40,14 +41,13 @@ export async function logOut(){
 }
 
 export async function getUser(){
-  // const token = localStorage.getItem("bigu-token")
-  return await api.get('/api/v1/users/self',)
+  return await api.get('/api/v1/users/self')
 }
 
 export async function forgotPasswordRequest(email: string){
   try{
-    console.log("forgot")
-    await axios.post('http://localhost:8080/api/v1/auth/forgot-password')
+    const res = await api.post('/api/v1/auth/forgot-password', {email});
+    return res;
   }catch (error: any){
     handleError(error)
   }

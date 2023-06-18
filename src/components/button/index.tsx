@@ -2,8 +2,9 @@ import clsx from "clsx";
 import React from "react";
 
 type ButtonType = "submit" | "button" | "reset";
-type ButtonColor = "yellow" | "green" | "dark-blue" | "light-blue" | "red";
+type ButtonColor = "yellow" | "green" | "dark-blue" | "light-blue" | "red" ;
 type ButtonSize = "sm" | "base" | "md" | "lg" | "res";
+type ButtonText = "white" | "black";
 
 type Props = {
   label: string;
@@ -12,6 +13,9 @@ type Props = {
   shape?: "rounded" | "square";
   size: ButtonSize;
   color: ButtonColor;
+  text?: ButtonText;
+  loading?: boolean;
+  disabled?: boolean;
 } & React.ComponentProps<"button">;
 
 const Button = (props: Props) => {
@@ -22,7 +26,10 @@ const Button = (props: Props) => {
     shape = "square",
     size,
     color,
+    text = "white",
+    loading,
     className,
+    disabled
   } = props;
 
   const styles = {
@@ -44,6 +51,10 @@ const Button = (props: Props) => {
       rounded: "rounded-full",
       square: "rounded-lg",
     },
+    text: {
+      white: "text-white",
+      black: "text-black"
+    }
   };
 
   return (
@@ -52,14 +63,16 @@ const Button = (props: Props) => {
         styles.sizes[size],
         styles.colors[color],
         styles.shapes[shape],
+        styles.text[text],
         "font-bold",
-        "text-white",
         className,
       ])}
       type={type}
       onClick={onClick}
+      disabled={disabled}
     >
-      {label}
+      {loading ? <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
+      </svg> : label}
     </button>
   );
 };
