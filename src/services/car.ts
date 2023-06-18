@@ -2,7 +2,7 @@ import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
 import { CreateCarFormState } from "@/utils/types";
 
-type Car = {
+export type Car = {
   id: number;
   userId: number;
   brand: string;

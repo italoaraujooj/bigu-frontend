@@ -29,7 +29,6 @@ function RideFull(props: RideProps){
   
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
-  console.log(props)
     
   return (
     <div>

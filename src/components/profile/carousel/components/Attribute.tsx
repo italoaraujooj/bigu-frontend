@@ -10,7 +10,7 @@ type Props = {
 
 export default function Attribute({ label, value, color }: Props) {
   return (
-    <div className="w-20 space-y-2 text-center">
+    <div className="space-y-2 text-center">
       <div className={clsx(`bg-${color}`, 'text-white px-4 py-2 rounded-md font-semibold')}>
         {label}
       </div>

@@ -46,7 +46,6 @@ export async function getUser(){
 
 export async function forgotPasswordRequest(email: string){
   try{
-    console.log("forgot")
     const res = await api.post('/api/v1/auth/forgot-password', {email});
     return res;
   }catch (error: any){

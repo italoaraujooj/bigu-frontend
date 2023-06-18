@@ -36,11 +36,7 @@ function Addresses({}: Props) {
   }, []);
 
   const handleCreateAddress: SubmitHandler<AddressFormState> = async (data) => {
-    // await addressSelected
-    console.log(data);
     const response = await createAddress(data);
-
-    console.log(response);
 
     fetchUserAddresses().then((data) => {
       setUserAddresses(data?.data);
