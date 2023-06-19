@@ -54,6 +54,7 @@ function OfferRideForm() {
     const { checked, value } = checkboxSelected!;
     const startAddressId = checked ? userAddressesSelected?.value : ufcgAddressesSelected?.value;
     const destinationAddressId = checked ? ufcgAddressesSelected?.value : userAddressesSelected?.value;
+
     const dateTime = formatDateTime(date, hours);
     const numSeats = vacancies + 1;
     const price = Number(String(estimated_value).split(" ")[1].replace(",","."))
@@ -120,6 +121,7 @@ function OfferRideForm() {
           />
         </section>
         <Dropdown
+        key={1}
           label="Local de Origem"
           options={checkboxes[0].checked ? userAddresses : ufcgAddresses}
           onSelectOption={(selectedOption) =>
@@ -129,12 +131,13 @@ function OfferRideForm() {
           }
         />
         <Dropdown
+        key={2}
           label="Local de Destino"
           options={checkboxes[0].checked ? ufcgAddresses : userAddresses}
           onSelectOption={(selectedOption) =>
             checkboxes[0].checked
               ? setUfcgAddressesSelected(selectedOption)
-              : setUfcgAddressesSelected(selectedOption)
+              : setUserAddressesSelected(selectedOption)
           }
         />
         {createFields(fieldsLastRow, "w-full flex items-end gap-4 space-y-2")}
