@@ -3,6 +3,11 @@ import Image from "next/image";
 import Back from "../../assets/CaretRight.svg";
 import Button from "../button";
 import Avatar from "../../assets/avatar.png"
+import { RideContext } from "@/context/RideContext";
+import { useContext, useState, useEffect } from "react";
+import { AuthContext } from "@/context/AuthContext";
+import { getCandidates } from "@/services/ride";
+
 type Props = {
     visible: boolean;
     handleClose: () => void;
@@ -10,7 +15,14 @@ type Props = {
 
 function RidesRequests(props: Props) {
     const { visible, handleClose } = props;
-    
+    const { rides } = useContext(RideContext)
+    const { user } = useContext(AuthContext)
+    const [ridesUser, setRidesUser] = useState([]as any);
+
+    useEffect(() => {
+        getCandidates().then((data) => setRidesUser(data?.data))
+    }, [rides]);
+    console.log(ridesUser)
     return (
         <div
             id="login"
@@ -30,42 +42,45 @@ function RidesRequests(props: Props) {
                 <h1 className="font-['Poppins'] font-semibold text-2xl md:text-3xl">
                     Solicitações de carona
                 </h1>
-                <div className="flex justify-between bg-background rounded-lg p-4 bg-stone-200 border border-warmGray-400 border-solid">
-                    <div className="flex flex-col gap-2">
-                        <div className="flex gap-2 items-center">
-                            <Image className="w-8 h-8" src={Avatar} alt='ft'/>
-                            <p className="font-[Poppins] font-medium">
-                                Nome
-                            </p>
+                {ridesUser?.map(
+                    (ride: any, index: number) => (
+                        <div key={index} className="flex justify-between bg-background rounded-lg p-4 bg-stone-200 border border-warmGray-400 border-solid">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex gap-2 items-center">
+                                    <Image className="w-8 h-8" src={Avatar} alt='ft' />
+                                    <p className="font-[Poppins] font-medium">
+                                        
+                                    </p>
+                                </div>
+
+                                <p className="font-[Poppins] font-medium">
+                                    ride
+                                </p>
+
+                                <p className="font-[Poppins] font-medium ">
+                                    Telefone
+                                </p>
+
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Button
+                                    label="Aceitar"
+                                    size="res"
+                                    color="green"
+                                    className="uppercase"
+                                    shape="square"
+
+                                />
+                                <Button
+                                    label="Recusar"
+                                    size="res"
+                                    color="red"
+                                    className="uppercase"
+                                    shape="square"
+                                />
+                            </div>
                         </div>
-
-                        <p className="font-[Poppins] font-medium">
-                            Local
-                        </p>
-
-                        <p className="font-[Poppins] font-medium ">
-                            Telefone
-                        </p>
-
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <Button
-                            label="Aceitar"
-                            size="res"
-                            color="green"
-                            className="uppercase"
-                            shape="square"
-
-                        />
-                        <Button
-                            label="Recusar"
-                            size="res"
-                            color="red"
-                            className="uppercase"
-                            shape="square"
-                        />
-                    </div>
-                </div>
+                    ))}
             </div>
         </div>
     );

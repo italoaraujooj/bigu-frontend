@@ -11,6 +11,7 @@ import { RideContext } from "@/context/RideContext";
 import Star from "../assets/star.png";
 import { RequestContext } from "@/context/RequestContext";
 import RidesRequests from "@/components/requestRides";
+import RidesOffers from "@/components/ridesOffers";
 
 function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -18,9 +19,13 @@ function Dashboard() {
   const { loading } = useContext(RequestContext);
 
   const [showRequests, setShowRequests] = useState(false);
+  const [showRides, setShowRides] = useState(false);
 
   const handleCloseRequests = () => setShowRequests(false);
   const handleOpenRequests = () => setShowRequests(true);
+
+  const handleCloseRides = () => setShowRides(false);
+  const handleOpenRides = () => setShowRides(true);
 
   const renderGreeting = () => {
     return (
@@ -48,7 +53,7 @@ function Dashboard() {
   return (
     <div className="relative w-full my-16">
       <div className="max-w-[80%] mx-auto flex flex-col gap-9">
-        <Header handleOpenRequests={handleOpenRequests} />
+        <Header handleOpenRequests={handleOpenRequests} handleOpenRides={handleOpenRides}/>
         <div className="flex justify-between items-center">
           {renderGreeting()}
         </div>
@@ -59,6 +64,7 @@ function Dashboard() {
         </div>
       </div>
       <RidesRequests handleClose={handleCloseRequests} visible={showRequests} />
+      <RidesOffers handleClose={handleCloseRides} visible={showRides} />
     </div>
   );
 }

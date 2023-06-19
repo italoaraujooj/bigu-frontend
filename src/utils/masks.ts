@@ -6,7 +6,7 @@ export const formatDateRide = (dateTime: string) => {
   const day = dateTimeFormat.getDate();
   const month = dateTimeFormat.getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month;
-  const formattedTime = `${dateTimeFormat.getHours()}:${dateTimeFormat.getMinutes()}`;
+  const formattedTime = `${dateTimeFormat.getHours() - 3}:${dateTimeFormat.getMinutes()}`;
   const formattedDateTime = `${day}/${formattedMonth} às ${formattedTime}`;
 
   return formattedDateTime;
@@ -41,7 +41,7 @@ export const formatarData = (data: string): string =>  {
     resultado = diasSemana[dataRecebida.getDay()];
   }
 
-  const horas = dataRecebida.getHours().toString().padStart(2, "0");
+  const horas = (dataRecebida.getHours() - 3).toString().padStart(2, "0");
   const minutos = dataRecebida.getMinutes().toString().padStart(2, "0");
 
   return `${horas}:${minutos} ${resultado}`;

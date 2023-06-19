@@ -48,6 +48,7 @@ function AvailableRides() {
             ridesWithDriver.map((item: any, index: number) => (
               <div key={index}>
                 <RideFull
+                  id={item.id}
                   userName={item.driver.fullName}
                   start={item.start.district}
                   destination={item.destination.nickname}

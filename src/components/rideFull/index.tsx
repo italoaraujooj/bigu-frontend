@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Modal from "../modal";
 import Avatar from "../../assets/woman.png"
 import Image from "next/image";
@@ -12,8 +12,17 @@ import X from "../../assets/X.png"
 import { formatDateRide, formatarData } from "@/utils/masks";
 import { data } from "autoprefixer";
 import { MapPin, Person, Clock } from "@phosphor-icons/react";
+import React from "react";
+import { AuthContext } from "@/context/AuthContext";
+import { RideContext } from "@/context/RideContext";
+import { fetchUserAddresses } from "@/services/address";
+import { requestRide } from "@/services/ride";
+import Heart from "../../assets/heart.png";
+import HeartFilled from "../../assets/heart-filled.png";
+import Dropdown from "../dropdown";
 
 interface RideProps {
+  id:any,
   userName: string,
   start: string,
   destination: string,
@@ -25,14 +34,59 @@ interface RideProps {
 }
 
 function RideFull(props: RideProps) {
+  const [userAddress, setUserAddresses] = React.useState([]);
+  const [userAddressesSelected, setUserAddressesSelected] = React.useState(
+    {} as any
+  );
+  const [favorite, setFavorite] = React.useState(false);
+  const [askRide, setAskRide] = React.useState(false);
+  const [ridesAvailable, setRidesAvailable] = React.useState([]);
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [rideIdSelected, setRideIdSelected] = React.useState({});
+
+  const { rides } = useContext(RideContext);
   const [showModal, setShowModal] = useState(false);
 
-  console.log(props.dateTime)
-
-  const [date, hour] = props.dateTime?.split('T');
-
+  const toggleFavorite = () => setFavorite((prev) => !prev);
+  const toggleAskRide = () => setAskRide((prev) => !prev);
+  
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
+
+  useEffect(() => {
+    console.log(rides)
+    setRidesAvailable(rides)
+  }, [rides]);  
+
+  useEffect(() => {
+    fetchUserAddresses().then((data) => {
+      const addressesFormated = data?.data.map((address: any) => ({
+        label: address.nickname,
+        value: address.id,
+      }));
+      setUserAddresses(addressesFormated);
+    });
+  }, [askRide]);
+
+  const handleAskRide = (rideId: number) => {
+    setModalOpen((prev) => !prev);
+    setRideIdSelected(rideId);
+  };
+
+  const submitRide = async () => {
+    try {
+      const response = await requestRide({
+        addressId: Number(userAddressesSelected.value),
+        rideId: Number(rideIdSelected),
+      });
+      if (response?.status == 200) {
+        setAskRide((prev) => !prev);
+        setModalOpen((prev) => !prev);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
 
@@ -72,8 +126,11 @@ function RideFull(props: RideProps) {
 
           <div className="flex gap-2 items-center">
             <Person size={24} color="#252525" weight="fill"/>
-            <span className="font-['Poppins'] font-medium text-[10px] sm:text-sm md:text-base">
-              {props.numSeats} Vagas disponíveis
+            <span className="font-['Poppins'] font-normal text-[10px] sm:text-sm md:text-base">
+              {props.numSeats}{" "}
+              {Number(props.numSeats) > 1
+                ? "vagas disponíveis"
+                : "vaga disponível"}{" "}
             </span>
           </div>
 
@@ -87,30 +144,70 @@ function RideFull(props: RideProps) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <Button
-            label="Pedir carona"
-            onClick={() => { }}
-            size="res"
-            color="green"
-            shape="square"
-            className="text-black md:w-48 md:px-8 md:h-14 md:text-lg"
-          />
-          <div className="flex gap-2 items-center">
-            <Image className="w-5 h-5" src={Fav} alt="coracao" />
-            <span className="font-['Poppins'] font-normal text-[10px]">
-              Adicionar aos favoritos
-            </span>
+        <div className="flex gap-4">
+          <div className="flex flex-col gap-1 items-center justify-center w">
+            {!askRide ? (
+              <Button
+                label={
+                  !askRide
+                    ? "Pedir carona"
+                    : "Aguardando confirmação..."
+                }
+                onClick={() => handleAskRide(props.id)}
+                size="sm"
+                color="green"
+                shape="square"
+                className={`font-semibold hover:bg-hover-green`}
+              />
+            ) : (
+              <span className="animate-pulse text-yellow ease-in-out infinite">
+                Aguardando confirmação..
+              </span>
+            )}
+            <div
+              className={`flex items-center gap-2 ${askRide && "translate-x-44 duration-500 ease-out"
+                }`}
+            >
+              <button onClick={toggleFavorite}>
+                {!favorite ? (
+                  <Image className="w-6 h-6" src={Heart} alt="heart" />
+                ) : (
+                  <Image
+                    className="w-6 h-6 transition-transform scale-110"
+                    src={HeartFilled}
+                    alt="heart"
+                  />
+                )}
+              </button>
+              {!askRide && (
+                <p className="font-['Poppins'] text-sm font-normal">
+                  Adicionar aos favoritos
+                </p>
+              )}
+            </div>
           </div>
+
+          <Image className="hidden md:block md:w-40 md:h-32 md:relative bottom-8" src={Map} alt="mapa" />
         </div>
 
-        <Image className="hidden lg:block md:w-40 md:h-32 md:relative bottom-8" src={Map} alt="mapa" />
+        {/* <Image className="hidden lg:block md:w-40 md:h-32 md:relative bottom-8" src={Map} alt="mapa" /> */}
       </div>
       <Modal isOpen={showModal} onClose={handleClose}>
         <div className="w-3/4 bg-white h-2/4 relative rounded-lg p-2 sm:2/4">
           {/* <Image className=" absolute top-2 right-2 cursor-pointer" src={X} alt="sair" onClick={handleClose}/> */}
           {/* dasdfdfdssdf */}
         </div>
+      </Modal>
+      <Modal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen((prev) => !prev)}
+        onSubmit={submitRide}
+      >
+        <Dropdown
+          label="Selecione o ponto de partida"
+          options={userAddress}
+          onSelectOption={setUserAddressesSelected}
+        />
       </Modal>
       
     </div>

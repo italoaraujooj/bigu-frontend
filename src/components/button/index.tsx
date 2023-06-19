@@ -62,7 +62,7 @@ const Button = (props: Props) => {
     <button
       className={clsx([
         styles.sizes[size],
-        styles.colors[color],
+        `${disabled ? styles.colors["blackLine"] : styles.colors[color]}`,
         styles.shapes[shape],
         styles.text[text],
         "font-bold",

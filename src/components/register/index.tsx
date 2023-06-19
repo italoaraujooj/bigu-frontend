@@ -5,12 +5,12 @@ import { SubmitHandler, FormHandles } from '@unform/core'
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
 import Button from "../button";
-import Router from "next/router"
-import { encryptPassword } from "@/utils/validate";
 import { AuthContext } from "@/context/AuthContext";
 import clsx from "clsx";
 import Radio from "../radio";
-
+import NotificationContext from "@/context/NotificationContext";
+import Notification from "../notification";
+import { formatarTelefone } from "@/utils/masks";
 
 interface UserFormState {
     name: string;
@@ -30,19 +30,30 @@ type Props = {
 function Register(props: Props){
     const formRef = useRef<FormHandles>(null)
     const { signUp } = useContext(AuthContext);
+    const {notificationHandler, showNotification} = useContext(NotificationContext)
     const { visible, handleClose } = props;
+    const [sexSelected, setSexSelected] = useState('H');
+
     const handleSubmit: SubmitHandler<UserFormState> = async data => {
+      try {
         const user = {
           fullName: data.name,
           email: data.email,
           phoneNumber: data.telephone,
-          sex: data.sex,
+          sex: sexSelected,
           password: data.password,
           role: 'USER',
           userType: 'RIDER'
         }
         
-        await signUp(user);
+        const res = await signUp(user);
+
+      } catch (err) {
+        notificationHandler('fail', "Ocorreu um problema ao criar a conta");
+        console.log('erro', err);
+      }
+       
+
     }
 
     return (
@@ -52,11 +63,12 @@ function Register(props: Props){
           ref={formRef}
           onSubmit={handleSubmit}
         >
+          {showNotification && <Notification />}
           <Image className="w-10 h-10 cursor-pointer" src={Back} alt="voltar" onClick={handleClose} />
           <h1 className="font-['Poppins'] font-semibold text-2xl md:text-4xl my-2">
             Criar Conta
           </h1>
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-2 sm:gap-5">
             <div className="flex flex-col gap-2">
               <Input
                 label="Nome Completo: "
@@ -91,12 +103,15 @@ function Register(props: Props){
                 type="tel"
                 placeholder="(83)999999999"
                 readOnly={false}
+                maxLength={14}
+                mask={formatarTelefone}
               />
             </div>
             <div className="flex flex-col gap-2">
               <Radio
                 name="sex"
-                options={[{ id: "H", label: "Homem" }, { id: "M", label: "Mulher" }]}
+                options={[{ id: "M", label: "Homem" }, { id: "F", label: "Mulher" }]}
+                onChange={setSexSelected}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -125,7 +140,6 @@ function Register(props: Props){
             </div>
             <Button
               label="Cadastrar"
-              onClick={() => {}}
               size="lg"
               color="yellow"
               shape="square"
