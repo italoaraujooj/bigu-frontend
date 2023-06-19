@@ -122,24 +122,25 @@ function Addresses({}: Props) {
         // onSubmit={handleCreateCar}
         noActions
       >
-        <Text label="Adicionar endereço" color="dark" size="lg" weight="bold" />
         <Form
           onSubmit={handleCreateAddress}
           ref={formRef}
-          className="space-y-2"
-          initialData={
-            {
-              "nickname": "Casa",
-              "postalCode": "string",
-              "state": "PB",
-              "city": "Campina Grande",
-              "district": "Centro",
-              "street": "Rua Exemplo",
-              "number": "123",
-              "complement": "Complemento"
-            }
-          }
+          // initialData={
+          //   {
+          //     "nickname": "Casa",
+          //     "postalCode": "string",
+          //     "state": "PB",
+          //     "city": "Campina Grande",
+          //     "district": "Centro",
+          //     "street": "Rua Exemplo",
+          //     "number": "123",
+          //     "complement": "Complemento"
+          //   }
+          // }
+          className="py-12 space-y-2 h-screen overflow-y-scroll	"
         >
+          <Text label="Adicionar endereço" color="dark" size="lg" weight="bold" />
+
           <br />
           <Input
             name="nickname"

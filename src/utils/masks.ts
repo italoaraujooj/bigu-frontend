@@ -116,3 +116,21 @@ export function timeMask(value: any) {
 
   return formattedValue;
 }
+
+export function formatarTelefone(numero: string): string {
+  // Remover caracteres não numéricos
+  const numerosApenas = numero?.replace(/\D/g, '');
+
+  // Verificar se o número tem pelo menos 10 dígitos
+  // if (numerosApenas?.length < 10) {
+  //   return 'Número de telefone inválido.';
+  // }
+
+  // Formatar o número
+  const codigoArea = numerosApenas?.slice(0, 2);
+  const prefixo = numerosApenas?.slice(2, 6);
+  const sufixo = numerosApenas?.slice(6);
+  const telefoneFormatado = `(${codigoArea}) ${prefixo}${sufixo}`;
+
+  return telefoneFormatado;
+}

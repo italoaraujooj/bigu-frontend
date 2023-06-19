@@ -19,10 +19,10 @@ function RidesRequests(props: Props) {
     const { user } = useContext(AuthContext)
     const [ridesUser, setRidesUser] = useState([]as any);
 
-    useEffect(() => {
-        getCandidates().then((data) => setRidesUser(data?.data))
-    }, [rides]);
-    console.log(ridesUser)
+    // useEffect(() => {
+    //     getCandidates().then((data) => setRidesUser(data?.data))
+    // }, [rides]);
+    // console.log(ridesUser)
     return (
         <div
             id="login"

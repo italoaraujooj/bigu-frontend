@@ -21,6 +21,7 @@ interface Props {
   className?: string;
   required?:boolean
   validate?: (value: string) => string | undefined;
+  maxLength?: number;
 };
 
 // type InputProps = JSX.IntrinsicElements["input"] & Props;
@@ -42,6 +43,7 @@ export default function Input(props: Props) {
     mask,
     className,
     validate,
+    maxLength = 100,
   } = props;
 
   const styles = {
@@ -125,6 +127,7 @@ export default function Input(props: Props) {
         required={required}
         onChange={handleChange}
         onBlur={handleBlur}
+        maxLength={maxLength}
       />
       {error && <span>{error}</span>}
     </div>

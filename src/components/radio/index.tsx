@@ -9,9 +9,10 @@ interface Option {
 interface RadioProps {
   name: string;
   options: Option[];
+  onChange: any;
 }
 
-const Radio: React.FC<RadioProps> = ({ name, options }) => {
+const Radio: React.FC<RadioProps> = ({ name, options, onChange }) => {
   const inputRefs = useRef<HTMLInputElement[]>([]);
   const { fieldName, registerField, defaultValue } = useField(name);
 
@@ -40,6 +41,7 @@ const Radio: React.FC<RadioProps> = ({ name, options }) => {
       {options.map((option, index) => (
         <label key={option.id} className=" flex gap-2">
           <input
+            onChange={(event) => onChange(event.target.value)}
             ref={(elRef) => (inputRefs.current[index] = elRef)}
             type="radio"
             name={fieldName}

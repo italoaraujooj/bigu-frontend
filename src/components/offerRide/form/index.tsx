@@ -58,7 +58,7 @@ function OfferRideForm() {
     const dateTime = formatDateTime(date, hours);
     const numSeats = vacancies + 1;
     const price = Number(String(estimated_value).split(" ")[1].replace(",","."))
-    const toWomen = onlyWomanChecked;
+    const toWomen = user?.sex === "F" ? onlyWomanChecked : false;
     const carId = selectedCar;
     const description = "any description";
     
