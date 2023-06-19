@@ -56,7 +56,7 @@ export function AuthProvider({ children }: any) {
         setCookie(undefined, 'nextauth.token', response?.data?.token, {
           maxAge: 8600,
         });
-        setUser(response?.data?.userDTO)
+        setUser(response?.data?.userResponse)
         Router.push("/dashboard");
       }  
       return { data: response?.data, status: response?.status };
