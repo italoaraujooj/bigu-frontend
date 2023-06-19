@@ -12,6 +12,7 @@ import { RideContext } from "@/context/RideContext";
 
 type Props = {
   handleOpenRequests: () => void;
+  handleOpenRides: () => void;
 }
 
 export default function Header( props: Props ) {
@@ -62,6 +63,14 @@ export default function Header( props: Props ) {
           className="uppercase"
           shape="square"
           onClick={props.handleOpenRequests}
+        />
+        <Button
+          label="Caronas oferecidas"
+          size="base"
+          color="green"
+          className="uppercase"
+          shape="square"
+          onClick={props.handleOpenRides}
         />
         <span
           className="flex items-center gap-2 hover:text-stone-400 cursor-pointer hover:underline"

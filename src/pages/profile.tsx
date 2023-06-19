@@ -24,6 +24,7 @@ import { ChangePassword, CreateCarFormState } from "@/utils/types";
 import NotificationContext from "@/context/NotificationContext";
 import Notification from "@/components/notification";
 import React from "react";
+import { RideContext } from "@/context/RideContext";
 
 function Profile() {
   const formRef = useRef<FormHandles>(null);
@@ -32,6 +33,7 @@ function Profile() {
 
   const {notificationHandler, showNotification} = useContext(NotificationContext)
   const { user, isAuthenticated, setUser } = useContext(AuthContext);
+  const { cars, setCars } = useContext(RideContext);
 
   const [readOnly, setReadOnly] = useState(true);
   const [changePassword, setChangePassord] = useState(false);
@@ -56,6 +58,7 @@ function Profile() {
     try{
       const response: any = await createCar(data);
       if(response.status === 200){
+        setCars([...cars, response.data])
         toggleNeedUpdate();
         handleCreateCarNotification("success", "O carro foi criado com sucesso");
       }

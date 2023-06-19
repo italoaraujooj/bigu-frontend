@@ -8,6 +8,7 @@ type RideContextType = {
   rides: any;
   history: any;
   cars: any;
+  setCars: any
 };
 
 export const RideContext = createContext({} as RideContextType);
@@ -58,6 +59,6 @@ export function RideProvider({ children }: any) {
   }, []);
 
   return (
-    <RideContext.Provider value={{ rides, history, cars }}>{children}</RideContext.Provider>
+    <RideContext.Provider value={{ rides, history, cars, setCars }}>{children}</RideContext.Provider>
   );
 }

@@ -30,13 +30,9 @@ function AvailableRides() {
         <div className=" w-full flex flex-col bg-container rounded-lg p-4 gap-3">
           <div className="flex gap-2">
             <Image src={Avatar} alt="avatar" className="w-10 h-10" />
-            <Text
-              label="Olá Joana, pesquise sua carona:"
-              className=" cursor-pointer hover:text-stone-400 "
-              color="white"
-              size="xl"
-              weight="bold"
-            />
+            <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
+              {`Olá, ${user?.fullName} `}
+            </h1>
           </div>
 
           <div className=" w-full flex gap-2 justify-end">
@@ -48,6 +44,7 @@ function AvailableRides() {
             ridesWithDriver.map((item: any, index: number) => (
               <div key={index}>
                 <RideFull
+                  id={item.id}
                   userName={item.driver.fullName}
                   start={item.start.district}
                   destination={item.destination.nickname}

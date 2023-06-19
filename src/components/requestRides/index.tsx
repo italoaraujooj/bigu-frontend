@@ -17,20 +17,12 @@ function RidesRequests(props: Props) {
     const { visible, handleClose } = props;
     const { rides } = useContext(RideContext)
     const { user } = useContext(AuthContext)
-    const [ridesUser, setRidesUser] = useState([]);
+    const [ridesUser, setRidesUser] = useState([]as any);
 
     useEffect(() => {
-        const aux = rides.filter((ride: any) => ride.driver.userId === user?.userId);
-        // const loadCandidates = async () => {
-        //     for(let i = 0; i < aux.length; i++){
-        //         const candidates = await getCandidates(Number(aux[i].id));
-        //         aux[i] = {...aux[i], candidates}
-        //     }
-        // }
-        // loadCandidates();
-        setRidesUser(aux)
-    }, [rides, user]);
-
+        getCandidates().then((data) => setRidesUser(data?.data))
+    }, [rides]);
+    console.log(ridesUser)
     return (
         <div
             id="login"
@@ -62,7 +54,7 @@ function RidesRequests(props: Props) {
                                 </div>
 
                                 <p className="font-[Poppins] font-medium">
-                                    Local
+                                    ride
                                 </p>
 
                                 <p className="font-[Poppins] font-medium ">

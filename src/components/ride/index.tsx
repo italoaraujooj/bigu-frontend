@@ -39,7 +39,6 @@ function Ride() {
   const toggleAskRide = () => setAskRide((prev) => !prev);
 
   useEffect(() => {
-    console.log(rides)
     setRidesAvailable(rides)
   }, [rides]);  
 
@@ -61,6 +60,7 @@ function Ride() {
   const submitRide = async () => {
     try {
       const response = await requestRide({
+        phoneNumber: user.phoneNumber,
         addressId: Number(userAddressesSelected.value),
         rideId: Number(rideIdSelected),
       });
