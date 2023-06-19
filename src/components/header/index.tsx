@@ -23,7 +23,7 @@ export default function Header( props: Props ) {
   } = useDrawer();
 
   const { cars } = useContext(RideContext);
-  const [carsUser, setCarsUser] = useState([] as any)
+  const [carsUser, setCarsUser] = useState([] as any);
 
   useEffect(() => {
     setCarsUser(cars);

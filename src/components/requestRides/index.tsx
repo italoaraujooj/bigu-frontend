@@ -19,11 +19,6 @@ function RidesRequests(props: Props) {
     const { user } = useContext(AuthContext)
     const [ridesUser, setRidesUser] = useState([]);
 
-    // const teste = async () => {
-    //    console.log(await getCandidates(1));
-    // }
-    // teste();
-
     useEffect(() => {
         const aux = rides.filter((ride: any) => ride.driver.userId === user?.userId);
         // const loadCandidates = async () => {
