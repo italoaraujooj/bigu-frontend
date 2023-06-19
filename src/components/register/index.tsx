@@ -9,7 +9,6 @@ import { AuthContext } from "@/context/AuthContext";
 import clsx from "clsx";
 import Radio from "../radio";
 
-
 interface UserFormState {
     name: string;
     email: string;
@@ -54,7 +53,7 @@ function Register(props: Props){
           <h1 className="font-['Poppins'] font-semibold text-2xl md:text-4xl my-2">
             Criar Conta
           </h1>
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-2 sm:gap-5">
             <div className="flex flex-col gap-2">
               <Input
                 label="Nome Completo: "
@@ -127,7 +126,6 @@ function Register(props: Props){
               color="yellow"
               shape="square"
               type="submit" 
-              loading={true}
             />
             <div>
               <p className="text-xs md:text-sm flex justify-center text-[#78716c]">
