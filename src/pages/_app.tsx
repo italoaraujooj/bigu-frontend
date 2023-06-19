@@ -10,13 +10,13 @@ import { NotificationProvider } from "@/context/NotificationContext";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <RequestProvider>
-      <NotificationProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <NotificationProvider>
           <RideProvider>
-            <Component {...pageProps} />
+              <Component {...pageProps} />
           </RideProvider>
-        </AuthProvider>
-      </NotificationProvider>
+        </NotificationProvider>
+      </AuthProvider>
     </RequestProvider>
   );
 }

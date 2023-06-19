@@ -39,6 +39,7 @@ function Ride() {
   const toggleAskRide = () => setAskRide((prev) => !prev);
 
   useEffect(() => {
+    console.log(rides)
     setRidesAvailable(rides)
   }, [rides]);  
 

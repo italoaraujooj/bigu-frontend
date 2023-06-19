@@ -1,6 +1,17 @@
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+export const formatDateRide = (dateTime: string) => {
+  const dateTimeFormat = new Date(dateTime);
+  const day = dateTimeFormat.getDate();
+  const month = dateTimeFormat.getMonth() + 1;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const formattedTime = `${dateTimeFormat.getHours()}:${dateTimeFormat.getMinutes()}`;
+  const formattedDateTime = `${day}/${formattedMonth} às ${formattedTime}`;
+
+  return formattedDateTime;
+}
+
 export const formatDateTime = (date: string, time: string) => {
   const [hour, minute] = time.split(':');
   const dateTimeString = `${date}T${hour.padStart(2, '0')}:${minute.padStart(2, '0')}:00`;

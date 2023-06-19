@@ -5,8 +5,6 @@ import { SubmitHandler, FormHandles } from '@unform/core'
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg"
 import Button from "../button";
-import Router from "next/router"
-import { encryptPassword } from "@/utils/validate";
 import { AuthContext } from "@/context/AuthContext";
 import clsx from "clsx";
 import Radio from "../radio";
@@ -125,7 +123,6 @@ function Register(props: Props){
             </div>
             <Button
               label="Cadastrar"
-              onClick={() => {}}
               size="lg"
               color="yellow"
               shape="square"

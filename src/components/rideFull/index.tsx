@@ -13,6 +13,8 @@ import Fav from "../../assets/heart.png"
 import Plus from "../../assets/PlusCircle.png"
 import Map from "../../assets/map.png"
 import X from "../../assets/X.png"
+import { formatDateRide, formatarData } from "@/utils/masks";
+import { data } from "autoprefixer";
 
 interface RideProps {
   userName: string,
@@ -21,18 +23,23 @@ interface RideProps {
   numSeats: number,
   model: string,
   plate: string,
-  color: string
+  color: string,
+  dateTime: string,
 }
 
 function RideFull(props: RideProps) {
   const [showModal, setShowModal] = useState(false);
+
+  console.log(props.dateTime)
+
+  const [date, hour] = props.dateTime?.split('T');
 
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
 
   return (
 
-    <div className="bg-light-white w-full h-44 rounded-xl flex p-2 flex-col gap-4 sm:p-5 sm:gap-2 md:w-[40rem] md:h-56 md:gap-0 md:p-3">
+    <div className="bg-light-white w-full h-44 rounded-xl flex p-2 flex-col gap-4 sm:p-5 sm:gap-2 md:h-56 md:gap-0 md:p-3">
       <div className="flex justify-between">
         <div className="flex gap-2 sm:gap-4">
           <Image className=" w-12 h-12" src={Avatar} alt="foto" />
@@ -76,7 +83,7 @@ function RideFull(props: RideProps) {
           <div className="flex gap-2">
             <Image className=" w-4 h-4 md:w-6 md:h-6" src={Clock} alt="relogio" />
             <span className="font-['Poppins'] font-normal text-[10px] sm:text-sm md:text-base">
-              Saída às 7 horas
+              {formatDateRide(props.dateTime)}
             </span>
           </div>
         </div>

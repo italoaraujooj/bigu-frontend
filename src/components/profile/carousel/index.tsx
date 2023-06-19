@@ -4,7 +4,6 @@ import { getUserCars } from "@/services/car";
 import { Actions, Attribute, Bar, Navigation } from "./components";
 import Image from "next/image";
 import Plus from "../../../assets/plus-green.png"
-import { fakeDelay } from "@/utils/delay";
 
 type Props = {
   profile?: boolean;

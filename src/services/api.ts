@@ -2,7 +2,8 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { parseCookies, destroyCookie } from "nookies";
 
-const baseURL = process.env.API_URL || 'http://bigu-backend.herokuapp.com/';
+//const baseURL = process.env.API_URL || 'http://bigu-backend.herokuapp.com/';
+const baseURL = process.env.API_URL || 'http://localhost:8080/';
 
 export const api = axios.create({
   baseURL,
