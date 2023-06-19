@@ -130,7 +130,7 @@ function Register(props: Props){
               color="yellow"
               shape="square"
               type="submit" 
-              loading={true}
+              // loading={true}
             />
             <div>
               <p className="text-xs md:text-sm flex justify-center text-[#78716c]">
