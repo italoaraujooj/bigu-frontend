@@ -72,3 +72,13 @@ export const requestRide = async (body: any) => {
     console.log(err);
   }
 }
+
+export const getCandidates = async (id:Number) => {
+  try{
+    const res = api.get(`/api/v1/rides/candidates?${id}`)
+    console.log(res);
+
+  }catch(err){
+    console.log(err)
+  }
+}
