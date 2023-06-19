@@ -41,11 +41,11 @@ function Login(props: Props) {
       password: data.password,
     };
 
-    inProgress();
+    //inProgress();
 
     const response = await signIn(user);
 
-    done();
+    //done();
     
     if (response?.status !== 200) {
       setErrorMessage("dados inválidos, tente novamente")

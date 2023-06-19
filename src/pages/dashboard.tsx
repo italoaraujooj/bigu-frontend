@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import Image from "next/image";
@@ -10,11 +10,17 @@ import { AuthContext } from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
 import Star from "../assets/star.png";
 import { RequestContext } from "@/context/RequestContext";
+import RidesRequests from "@/components/requestRides";
 
 function Dashboard() {
   const { user } = useContext(AuthContext);
   const { history } = useContext(RideContext);
   const { loading } = useContext(RequestContext);
+
+  const [showRequests, setShowRequests] = useState(false);
+
+  const handleCloseRequests = () => setShowRequests(false);
+  const handleOpenRequests = () => setShowRequests(true);
 
   const renderGreeting = () => {
     return (
@@ -42,16 +48,17 @@ function Dashboard() {
   return (
     <div className="relative w-full my-16">
       <div className="max-w-[80%] mx-auto flex flex-col gap-9">
-        <Header />
+        <Header handleOpenRequests={handleOpenRequests} />
         <div className="flex justify-between items-center">
           {renderGreeting()}
         </div>
         <div className="flex flex-col justify-between gap-2 sm:gap-12 lg:gap-12 lg:flex-row">
           <History races={history} />
           <div className="border-solid border-[1px] border-warmGray-700"></div>
-          <Ride />
+          <Ride/>
         </div>
       </div>
+      <RidesRequests handleClose={handleCloseRequests} visible={showRequests} />
     </div>
   );
 }

@@ -10,7 +10,11 @@ import Drawer from "../drawer";
 import useDrawer from "@/hooks/useDrawer";
 import { RideContext } from "@/context/RideContext";
 
-export default function Header() {
+type Props = {
+  handleOpenRequests: () => void;
+}
+
+export default function Header( props: Props ) {
   const {
     drawerIsOpen,
     toggleDrawer,
@@ -51,6 +55,14 @@ export default function Header() {
             disabled={carsUser.length === 0}
           />
         </Link>
+        <Button
+          label="Solicitações de carona"
+          size="base"
+          color="green"
+          className="uppercase"
+          shape="square"
+          onClick={props.handleOpenRequests}
+        />
         <span
           className="flex items-center gap-2 hover:text-stone-400 cursor-pointer hover:underline"
           onClick={handleLogout}

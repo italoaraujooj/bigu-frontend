@@ -16,9 +16,31 @@ export function RideProvider({ children }: any) {
   const [history, setHistory] = useState([] as any);
   const [cars, setCars] = useState<Car[]>([]);
 
+  const { "nextauth.token": token } = parseCookies();
+  useEffect(() => {
+    if (token) {
+      console.log('caiu')
+      getAllRidesAvailable().then((data) =>setRides(data?.data));
+      getHistoryRide().then((data) => setHistory(data?.data));
+    }
+  }, [token]);
+
   useEffect(() => {
     const { "nextauth.token": token } = parseCookies();
     if (token) {
+      const loadData = async () => {
+        getUserCars().then((response) => {
+          setCars(response);
+        });
+      };
+      loadData();
+    }
+  }, [token]);
+
+  useEffect(() => {
+    const { "nextauth.token": token } = parseCookies();
+    if (token) {
+      console.log('caiu')
       getAllRidesAvailable().then((data) =>setRides(data?.data));
       getHistoryRide().then((data) => setHistory(data?.data));
     }
