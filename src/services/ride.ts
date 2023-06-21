@@ -89,3 +89,12 @@ export const answerCandidate = async (body: any) => {
     console.log(err)
   }
 }
+
+export const deleteRide = async (id: number) => {
+  try {
+    const response = api.delete(`/api/v1/rides/delete-ride/${id}`);
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}

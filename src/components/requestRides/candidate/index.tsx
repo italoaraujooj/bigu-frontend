@@ -1,5 +1,5 @@
-import { formatarTelefone } from "@/utils/masks";
-import Button from "../button";
+import { formatarData, formatarTelefone } from "@/utils/masks";
+import Button from "../../button";
 import Image from "next/image";
 import { answerCandidate } from "@/services/ride";
 import { useContext } from "react";
@@ -24,24 +24,25 @@ const CandidateRequest = (props: Props) => {
             const response = await answerCandidate(body)
             if(response?.status === 200){
                 notificationHandler("success", "O usuário foi adicionado a carona com sucesso");
-                const aux = ridesUser
-                const obj = aux.find((item: any) => item.candidateId === ride.candidateId && item.rideId === ride.candidateId);
-                const index = aux.indexOf(obj);
-                if (index > -1) {
-                    aux.splice(index, 1);
-                }
-                setRidesUser(aux)
             }
         }catch(err: any){
-            notificationHandler("fail", "Falha ao rejeitar o usuário");
+            notificationHandler("fail", "Falha ao aceitar o usuário");
             console.log(err)
         }
     }
 
     const handleRejectCandidate = async () => {
-        const body = {...ride, accepted: false};
-        console.log(body)
-        //const response = await answerCandidate(body)
+        try{
+            const body = {...ride, accepted: false};
+            console.log(body)
+            const response = await answerCandidate(body);
+            if(response?.status === 200){
+                notificationHandler("success", "Você rejeitou o usuário para sua carona");
+            }
+        }catch(err: any){
+            notificationHandler("fail", "Falha ao rejeitar o usuário");
+            console.log(err)
+        }
     }
 
     return (
@@ -63,7 +64,7 @@ const CandidateRequest = (props: Props) => {
                 </p>
 
                 <p className="font-[Poppins] font-medium ">
-                    Telefone: {formatarTelefone(ride?.userResponse?.phoneNumber)}
+                    Horário/Dia: {formatarData(ride?.rideResponse?.dateTime)}
                 </p>
 
             </div>

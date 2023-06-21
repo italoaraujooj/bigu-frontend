@@ -1,14 +1,13 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg";
-import Button from "../button";
 import Avatar from "../../assets/avatar.png"
 import { RideContext } from "@/context/RideContext";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { getCandidates } from "@/services/ride";
-import { formatarTelefone } from "@/utils/masks";
-import CandidateRequest from "../candidate";
+import CandidateRequest from "./candidate";
+import { getUserCars } from "@/services/car";
 
 type Props = {
     visible: boolean;
@@ -20,12 +19,16 @@ function RidesRequests(props: Props) {
     const { rides } = useContext(RideContext)
     const { user } = useContext(AuthContext)
     const [ridesUser, setRidesUser] = useState([]as any);
+    const [carsUser, setCarsUser] = useState([] as any)
 
     useEffect(() => {
-        getCandidates().then((data) =>{
-            console.log(data)
-            setRidesUser(data?.data)
-        })
+        getUserCars().then((data) => setCarsUser(data))
+        if(carsUser.length > 0){
+            getCandidates().then((data) =>{
+                console.log(data)
+                setRidesUser(data?.data)
+            })
+        }
     }, [rides]);
 
     return (
@@ -46,10 +49,25 @@ function RidesRequests(props: Props) {
                 <h1 className="font-['Poppins'] font-semibold text-2xl md:text-3xl">
                     Solicitações de carona
                 </h1>
-                {ridesUser?.map(
-                    (ride: any, index: number) => (
-                        <CandidateRequest key={index} ride={ride} avatar={Avatar} setRidesUser={setRidesUser} ridesUser={ridesUser}/>
-                    ))}
+                {ridesUser?.map((ride: any, index: number) => {
+                    // Verificar se ride.userResponse.userId não está presente em nenhum objeto de ride.rideResponse.riders
+                    const isUserNotRider = !ride.rideResponse.riders.some((rider: any) => rider.userId === ride.userResponse.userId);
+
+                    // Renderizar o componente CandidateRequest apenas se isUserNotRider for verdadeiro
+                    if (isUserNotRider) {
+                        return (
+                            <CandidateRequest
+                                key={index}
+                                ride={ride}
+                                avatar={Avatar}
+                                setRidesUser={setRidesUser}
+                                ridesUser={ridesUser}
+                            />
+                        );
+                    }
+
+                    return null; // Retorna null se o ride.userResponse.userId estiver em ride.rideResponse.riders
+                })}
             </div>
         </div>
     );
