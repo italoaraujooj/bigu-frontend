@@ -126,7 +126,7 @@ function Profile() {
                 ></Image>
                 <div className="flex gap-1">
                   <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
-                    {`Olá, ${user?.fullName} `}
+                    {`Olá, ${user?.fullName.split(" ")[0]}`}
                   </h1>
                   <div className="flex items-center gap-2 pt-2">
                     <Image className="w-3 h-3" src={Star} alt="estrela" />

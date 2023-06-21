@@ -79,6 +79,7 @@ function Register(props: Props){
                 type="text"
                 placeholder="Exemplo Alves"
                 readOnly={false}
+                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -91,6 +92,7 @@ function Register(props: Props){
                 type="email"
                 placeholder="seu.nome@ufcg.edu.br"
                 readOnly={false}
+                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -105,6 +107,7 @@ function Register(props: Props){
                 readOnly={false}
                 maxLength={14}
                 mask={formatarTelefone}
+                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -124,6 +127,7 @@ function Register(props: Props){
                 type="password"
                 placeholder="*********"
                 readOnly={false}
+                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -136,6 +140,7 @@ function Register(props: Props){
                 type="password"
                 placeholder="*********"
                 readOnly={false}
+                required
               />
             </div>
             <Button

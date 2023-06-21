@@ -7,8 +7,8 @@ import Button from "../button";
 import Text from "../text";
 import { List, SignOut } from "@phosphor-icons/react";
 import Drawer from "../drawer";
-import useDrawer from "@/hooks/useDrawer";
-import { RideContext } from "@/context/RideContext";
+import useDrawer from "../../hooks/useDrawer"
+import { RideContext } from "../../context/RideContext";
 
 type Props = {
   handleOpenRequests: () => void;
