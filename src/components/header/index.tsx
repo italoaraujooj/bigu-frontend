@@ -43,9 +43,9 @@ export default function Header( props: Props ) {
           />
         </Link>
       </div>
-      <List size={32} color="gray" className="md:hidden cursor-pointer" onClick={toggleDrawer}/>
+      <List size={32} color="gray" className="lg:hidden cursor-pointer" onClick={toggleDrawer}/>
 
-      <div className="hidden md:flex md:gap-5">
+      <div className="hidden lg:flex md:gap-5">
         <Link href="/offer-ride" className="text-gray">
           <Button
             label="Oferecer carona"
