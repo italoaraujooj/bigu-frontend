@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { parseCookies } from "nookies";
-import { getHistoryRide, getAllRidesAvailable } from "@/services/ride";
+import { getHistoryRide, getAllRidesAvailable, createRide } from "@/services/ride";
 import { Car, getUserCars } from "@/services/car";
 import { AuthContext } from "./AuthContext";
 

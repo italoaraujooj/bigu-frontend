@@ -80,3 +80,12 @@ export const getCandidates = async () => {
     console.log(err)
   }
 }
+
+export const answerCandidate = async (body: any) => {
+  try{
+    const response =  api.put("/api/v1/rides/answer-candidate", body)
+    return response;
+  }catch(err){
+    console.log(err)
+  }
+}

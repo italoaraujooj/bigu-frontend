@@ -92,14 +92,14 @@ export function timeMask(value: any) {
 
   // Validações para garantir que as horas e minutos estejam no formato correto
   if (hours !== '') {
-    if (parseInt(hours, 10) > 12) {
-      hours = '12';
+    if (parseInt(hours, 10) >= 24) {
+      hours = '00';
     } else if (hours.length === 1 && parseInt(hours, 10) > 1) {
-      hours = `0${hours}`;
+      hours = `${hours}`;
     } else if (hours.length === 2 && parseInt(hours, 10) === 0) {
       hours = '01';
-    } else if (hours.length === 2 && parseInt(hours, 10) > 12) {
-      hours = '12';
+    } else if (hours.length === 2 && parseInt(hours, 10) >= 24) {
+      hours = '00';
     }
   }
 

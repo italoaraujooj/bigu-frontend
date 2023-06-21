@@ -16,8 +16,6 @@ function AvailableRides() {
   const { rides, history } = useContext(RideContext);
   const { user } = useContext(AuthContext);
 
-  console.log(rides)
-
   const ridesWithDriver = rides.filter((element: any) => element.driver.userId !== user?.userId);
 
   return (
