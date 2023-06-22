@@ -25,13 +25,15 @@ import NotificationContext from "@/context/NotificationContext";
 import Notification from "@/components/notification";
 import React from "react";
 import { RideContext } from "@/context/RideContext";
+import { toast } from "react-toastify";
 
 function Profile() {
   const formRef = useRef<FormHandles>(null);
   const formRefCar = useRef<FormHandles>(null);
   const formRefChangePassword = useRef<FormHandles>(null);
 
-  const {notificationHandler, showNotification} = useContext(NotificationContext)
+  // const {notificationHandler, showNotification} = useContext(NotificationContext)
+  
   const { user, isAuthenticated, setUser } = useContext(AuthContext);
   const { cars, setCars } = useContext(RideContext);
 
@@ -60,10 +62,13 @@ function Profile() {
       if(response.status === 200){
         setCars([...cars, response.data])
         toggleNeedUpdate();
-        handleCreateCarNotification("success", "O carro foi criado com sucesso");
+        // handleCreateCarNotification("success", "O carro foi criado com sucesso");
+        toast.success("Carro criado com sucesso!");
+        toggleModalCar();
+
       }
     }catch(err){
-      handleCreateCarNotification("fail", "Houve um erro na criação do carro");
+      toast.error("Houve um erro na criação do carro");
     }
   };
 
@@ -125,7 +130,7 @@ function Profile() {
                   alt="avatar"
                 ></Image>
                 <div className="flex gap-1">
-                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
+                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
                     {`Olá, ${user?.fullName.split(" ")[0]}`}
                   </h1>
                   <div className="flex items-center gap-2 pt-2">
@@ -380,7 +385,7 @@ function Profile() {
           </Form>
         </Modal>
       )}
-      {showNotification && <Notification/>}
+      <Notification/>
     </div>
   );
 }

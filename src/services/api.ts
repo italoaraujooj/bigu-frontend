@@ -25,7 +25,7 @@ api.interceptors.response.use(
   (error) => {
     // console.log(JSON.stringify(error, null, 2))
     if (error.response.status === 500 || error.response.status === 404 || error.response.status === 403) {
-      destroyCookie(null, 'nextauth.token');
+      // destroyCookie(null, 'nextauth.token');
     // Erro na resposta - manipular o erro ou lançar um novo erro
     // Aqui você pode fazer qualquer manipulação desejada no erro de resposta
     }

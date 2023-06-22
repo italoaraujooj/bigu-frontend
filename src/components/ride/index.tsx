@@ -35,14 +35,14 @@ function Ride() {
   const [rideIdSelected, setRideIdSelected] = React.useState({});
 
   const { user } = useContext(AuthContext);
-  const { rides } = useContext(RideContext);
+  const { rides, setRides } = useContext(RideContext);
 
   const toggleFavorite = () => setFavorite((prev) => !prev);
   const toggleAskRide = () => setAskRide((prev) => !prev);
 
   useEffect(() => {
-    setRidesAvailable(rides)
-  }, [rides]);  
+    setRidesAvailable(rides);
+  }, [rides]);
 
   useEffect(() => {
     fetchUserAddresses().then((data) => {
@@ -75,6 +75,22 @@ function Ride() {
     }
   };
 
+  console.log(user);
+
+  const rideUser = () => ridesAvailable.map((ride: any, i: number) => {
+    ride.riders.map((usr: any, i: number) => {
+      if (usr?.userId === user?.userId) {
+        if (!i) return ride;
+        ride = {...ride, confirmation: true }
+      }
+    })
+
+    return ride;
+  });
+  console.log(rideUser());
+
+  console.log(ridesAvailable);
+
   return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-6 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
       <h2 className="font-['Poppins'] text-xl sm:text-3xl text-white font-bold pb-8">
@@ -83,90 +99,106 @@ function Ride() {
 
       <div className="space-y-4">
         {!!ridesAvailable.length ? (
-          ridesAvailable.map(
-            (item: any) =>
-                          (
-                <div
-                  key={item.id}
-                  className={clsx("w-full h-14", item?.toWomen ? "bg-[#C2BBF0]" : "bg-white", "rounded-xl px-6 py-4 transition-height duration-500 ease-in-out overflow-hidden	space-y-4 hover:h-64 sm:h-20")}
-                >
-                  <div className="flex items-center gap-2">
-                    <Image
-                      className="w-8 h-8 sm:w-12 sm:h-12"
-                      src={MaleAvatar}
-                      alt="male avatar"
-                    />
-                    <Text
-                      label={`${item.driver.userId !== user?.userId ? 
-                        item.driver.fullName.split(" ")[0] : "Você"
-                      } está saindo do ${item.start.district}...`}
-                      color="dark"
-                      size="md"
-                      className="tracking-wide text-sm md:text-md xl:text-lg "
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <p className="font-['Poppins']">
-                      {`${item.car.model} ${item.car.color}`} -{" "}
-                      <strong>{item.car.plate}</strong>
-                    </p>
-                    <p className="font-['Poppins']">
-                      {item.numSeats}{" "}
-                      {Number(item.numSeats) > 1
-                        ? "vagas disponíveis"
-                        : "vaga disponível"}{" "}
-                    </p>
-                    <p className="font-['Poppins']">
-                      <strong>Saída às {formatarData(item.dateTime)}</strong>
-                    </p>
-                  </div>
+          rideUser().map((item: any) => (
+            <div
+              key={item.id}
+              className={clsx(
+                "flex w-full h-16",
+                "bg-white rounded-xl transition-height duration-500 ease-in-out overflow-hidden hover:h-64 sm:h-20 gap-2",
+              )}
+            >
+              <div className={clsx("w-6 h-full", item?.toWomen && "bg-[#f15bb5]", item?.confirmation && 'bg-green')}></div>
+              <div>
+              <div className="flex items-center gap-2 grow px-4 py-4">
+                <Image
+                  className="w-8 h-8 sm:w-12 sm:h-12"
+                  src={MaleAvatar}
+                  alt="male avatar"
+                />
+                <Text
+                  label={`${
+                    item.driver.userId !== user?.userId
+                      ? item.driver.fullName.split(" ")[0]
+                      : "Você"
+                  } está saindo do ${item.start.district}...`}
+                  color="dark"
+                  size="md"
+                  className="tracking-wide text-sm md:text-md xl:text-lg "
+                />
+              </div>
+              <div className="space-y-2 px-4">
+                <p className="font-['Poppins']">
+                  {`${item.car.model} ${item.car.color}`} -{" "}
+                  <strong>{item.car.plate}</strong>
+                </p>
+                <p className="font-['Poppins']">
+                  {item.numSeats}{" "}
+                  {Number(item.numSeats) > 1
+                    ? "vagas disponíveis"
+                    : "vaga disponível"}{" "}
+                </p>
+                <p className="font-['Poppins']">
+                  <strong>Saída às {formatarData(item.dateTime)}</strong>
+                </p>
+              </div>
 
-                  <div className={`flex items-center gap-4`}>
-                    {!askRide ? (
-                      <Button
-                        label={
-                          !askRide
-                            ? "Pedir carona"
-                            : "Aguardando confirmação..."
-                        }
-                        onClick={() => handleAskRide(item.id)}
-                        size="sm"
-                        color="green"
-                        shape="square"
-                        className={item.driver.userId === user?.userId ? "font-semibold" : "font-semibold hover:bg-hover-green"}
-                        disabled={item.driver.userId === user?.userId}
-                      />
-                    ) : (
-                      <span className="animate-pulse text-yellow ease-in-out infinite">
-                        Aguardando confirmação..
-                      </span>
-                    )}
-                    <div
-                      className={`flex items-center gap-2 ${
-                        askRide && "translate-x-36 duration-500 ease-out"
-                      }`}
-                    >
-                      <button onClick={toggleFavorite}>
-                        {!favorite ? (
-                          <Image className="w-6 h-6" src={Heart} alt="heart" />
-                        ) : (
-                          <Image
-                            className="w-6 h-6 transition-transform scale-110"
-                            src={HeartFilled}
-                            alt="heart"
-                          />
-                        )}
-                      </button>
-                      {!askRide && (
-                        <p className="font-['Poppins'] text-sm font-normal">
-                          Adicionar aos favoritos
-                        </p>
-                      )}
-                    </div>
-                  </div>
+              { item?.confirmation ? (
+                <div className="w-full h-24 my-4 px-4">
+                  <Text label="Carona aceita" color="green" weight="bold" size="base" className="uppercase" />
                 </div>
-              )
-          )
+              ) : (
+                <div className={`flex items-center gap-4 px-4 py-4`}>
+                {!askRide ? (
+                  <Button
+                    label={
+                      !askRide ? "Pedir carona" : "Aguardando confirmação..."
+                    }
+                    onClick={() => handleAskRide(item.id)}
+                    size="sm"
+                    color="green"
+                    shape="square"
+                    className={clsx(
+                      item.driver.userId === user?.userId
+                        ? "font-semibold"
+                        : "font-semibold",
+                      !!userAddress.length && "hover:bg-hover-green"
+                    )}
+                    disabled={
+                      item.driver.userId === user?.userId || !userAddress.length
+                    }
+                  />
+                ) : (
+                  <span className="animate-pulse text-yellow ease-in-out infinite">
+                   Aguardando confirmação...
+                  </span>
+                )}
+                <div
+                  className={`flex items-center gap-2 ${
+                    askRide && "translate-x-28 duration-500 ease-out"
+                  }`}
+                >
+                  <button onClick={toggleFavorite}>
+                    {!favorite ? (
+                      <Image className="w-6 h-6" src={Heart} alt="heart" />
+                    ) : (
+                      <Image
+                        className="w-6 h-6 transition-transform scale-110"
+                        src={HeartFilled}
+                        alt="heart"
+                      />
+                    )}
+                  </button>
+                  {!askRide && (
+                    <p className="font-['Poppins'] text-sm font-normal">
+                      Adicionar aos favoritos
+                    </p>
+                  )}
+                </div>
+              </div>
+              )}
+              </div>
+            </div>
+          ))
         ) : (
           <div className="w-full flex items-center justify-center">
             <div className="w-64 h-64 ">

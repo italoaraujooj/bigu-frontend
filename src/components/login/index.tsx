@@ -112,7 +112,7 @@ function Login(props: Props) {
               required
             />
           </div>
-          <span className="text-sm text-gray cursor-pointer self-end hover:underline" onClick={handleRecoveryPassword}>Esqueci minha senha</span>
+          <span className="text-sm text-gray cursor-pointer self-end hover:underline font-[Poppins]" onClick={handleRecoveryPassword}>Esqueci minha senha</span>
           <Button label="Entrar" size="lg" color="yellow" shape="square" type="submit" />
           {errorMessage && <div className="text-[#dc2626]">{`${errorMessage}!`}</div>}
         </div>

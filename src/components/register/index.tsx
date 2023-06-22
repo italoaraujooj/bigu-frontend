@@ -11,6 +11,7 @@ import Radio from "../radio";
 import NotificationContext from "@/context/NotificationContext";
 import Notification from "../notification";
 import { formatarTelefone } from "@/utils/masks";
+import { toast } from "react-toastify";
 
 interface UserFormState {
     name: string;
@@ -48,8 +49,16 @@ function Register(props: Props){
         
         const res = await signUp(user);
 
+        if (res.status === 200) {
+          toast.success("Conta criada com sucesso!");
+        }
+
       } catch (err) {
-        notificationHandler('fail', "Ocorreu um problema ao criar a conta");
+        console.log(err);
+        console.log('sim');
+        toast.error("Erro ao criar conta!");
+
+        toast.error("Ocorreu um problema ao criar a conta");
         console.log('erro', err);
       }
        
@@ -63,7 +72,7 @@ function Register(props: Props){
           ref={formRef}
           onSubmit={handleSubmit}
         >
-          {showNotification && <Notification />}
+          <Notification />
           <Image className="w-10 h-10 cursor-pointer" src={Back} alt="voltar" onClick={handleClose} />
           <h1 className="font-['Poppins'] font-semibold text-2xl md:text-4xl my-2">
             Criar Conta
