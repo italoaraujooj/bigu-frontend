@@ -17,15 +17,20 @@ import { checkboxesOptions, fieldsLastRow } from "@/utils/offer-ride-constants";
 import { formatDateTime, moneyMask } from "@/utils/masks";
 import { createRide } from "@/services/ride";
 import useFields from "@/hooks/useFields";
-import { getUserCars } from "@/services/car";
 import { fetchUfcgAddresses, fetchUserAddresses } from "@/services/address";
 import  Router  from "next/router";
 import {AuthContext} from "@/context/AuthContext";
+import { RideContext } from "@/context/RideContext";
+import NotificationContext from "@/context/NotificationContext";
+import Notification from "@/components/notification";
 
 function OfferRideForm() {
   const { createFields } = useFields();
 
   const { user, isAuthenticated, setUser } = useContext(AuthContext);
+  const { setRides } = useContext(RideContext);
+  const {notificationHandler, showNotification} = useContext(NotificationContext);
+  
   const formRef = useRef<FormHandles>(null);
   const [checkboxes, setCheckboxes] = useState(checkboxesOptions);
   const [ufcgAddresses, setUfcgAddresses] = useState([]);
@@ -61,24 +66,30 @@ function OfferRideForm() {
     const toWomen = user?.sex === "F" ? onlyWomanChecked : false;
     const carId = selectedCar;
     const description = "any description";
-    
-    const body = {
-      goingToCollege: value === "going" && checked,
-      startAddressId,
-      destinationAddressId,
-      dateTime,
-      numSeats,
-      price,
-      toWomen,
-      carId,
-      description,
-    };
-
-    console.log(body)
-
-    const response = await createRide(body);
-    if(response?.status == 200){
-      Router.push("/dashboard")
+    try{
+      const body = {
+        goingToCollege: value === "going" && checked,
+        startAddressId,
+        destinationAddressId,
+        dateTime,
+        numSeats,
+        price,
+        toWomen,
+        carId,
+        description,
+      };
+  
+      console.log(body)
+  
+      const response = await createRide(body);
+      if(response?.status == 200){
+        setRides((previousState: any) => [...previousState, response?.data])
+        Router.push("/dashboard")
+        notificationHandler("success", "A carona foi criada com sucesso")
+      }
+    }catch(err: any){
+      notificationHandler("fail", "Falha ao criar uma carona")
+      console.log(err)
     }
   };
   
@@ -200,6 +211,7 @@ function OfferRideForm() {
           />
         </section>
       </div>
+      {showNotification && <Notification/>}
     </Form>
   );
 }
