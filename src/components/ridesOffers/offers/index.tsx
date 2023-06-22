@@ -5,6 +5,7 @@ import Image from "next/image";
 import NotificationContext from "@/context/NotificationContext";
 import { useContext } from "react";
 import { deleteRide } from "@/services/ride";
+import { toast } from "react-toastify";
 
 type Props = {
     ride: any
@@ -20,9 +21,9 @@ function Offer(props: Props) {
         try{
             const response = await deleteRide(ride.id);
             console.log(response);
-            notificationHandler("success", "A carona foi cancelada com sucesso");
+            toast.success("A carona foi cancelada com sucesso");
         }catch(err: any){
-            notificationHandler("fail", "Falha ao cancelar a carona");
+            toast.error("Falha ao cancelar a carona");
             console.log(err)
         }
     }
@@ -62,7 +63,7 @@ function Offer(props: Props) {
                     onClick={handleDeleteRide}
                 />
             </div>
-            {showNotification && <Notification />}
+            <Notification />
         </div>
     );
 }

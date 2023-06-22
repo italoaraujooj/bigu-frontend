@@ -1,5 +1,9 @@
 import { Button, Input, Modal, Text } from "@/components";
-import { createAddress, deleteAddress, fetchUserAddresses } from "@/services/address";
+import {
+  createAddress,
+  deleteAddress,
+  fetchUserAddresses,
+} from "@/services/address";
 import { AddressFormState } from "@/utils/types";
 import {
   ArrowCircleLeft,
@@ -11,23 +15,26 @@ import {
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 type Props = {};
 
 function Addresses({}: Props) {
   const formRef = React.useRef<FormHandles>(null);
-
+  const router = useRouter();
   const [userAddress, setUserAddresses] = React.useState([]);
   const [modalAddress, setModalAddress] = React.useState(false);
-  const [addressSelected, setAddressSelected] = React.useState(null as any as Number);
+  const [addressSelected, setAddressSelected] = React.useState(
+    null as any as Number
+  );
 
   const toggleModalAddress = (id?: number) => {
     if (id) {
       setAddressSelected(id);
     }
     setModalAddress((prev) => !prev);
-  }
+  };
 
   React.useEffect(() => {
     fetchUserAddresses().then((data) => {
@@ -52,12 +59,21 @@ function Addresses({}: Props) {
     });
   };
 
+  const redirect = () =>
+    router.push({
+      pathname: "dashboard",
+      query: { needUpdate: true },
+    });
+
   return (
     <div className="flex w-full items-center justify-center my-12">
-      <div>
+      <div
+        className="
+"
+      >
         <div>
-          <Link
-            href="/dashboard"
+          <button
+            onClick={redirect}
             className="text-gray flex items-center gap-2 mb-4"
           >
             <ArrowCircleLeft size={32} />
@@ -67,10 +83,10 @@ function Addresses({}: Props) {
               color="gray"
               size="xl"
             />
-          </Link>
+          </button>
         </div>
         <div className="w-full h-fit flex items-center justify-center">
-          <div className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl">
+          <div className="w-[700px] bg-dark max-w-xs rounded-2xl px-6 py-8 flex flex-col sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl">
             <Text
               label="Meus endereços"
               color="gray"
@@ -78,28 +94,34 @@ function Addresses({}: Props) {
               weight="bold"
               className="uppercase"
             />
-            <div className="w-full h-56 overflow-scroll space-y-4">
-              {!userAddress?.length && <Text label="Você ainda não possui endereços cadastrados."  />}
+            <div className="w-full h-56 space-y-4">
+              {!userAddress?.length && (
+                <Text label="Você ainda não possui endereços cadastrados." />
+              )}
               {userAddress?.map((address) => (
                 <>
-                  <div className="w-96 flex items-center bg-white py-4 px-4 justify-between rounded-md">
-                    <MapPin weight="bold" color="gray" />
-                    <Text
-                      label={`${address?.street}, ${address?.number}, ${address?.district}`}
-                      color="gray"
-                      size="md"
-                    />
+                  <div className="w-full flex items-center bg-white py-6 px-4 justify-between rounded-md">
                     <div className="flex items-center gap-2">
+                      <MapPin weight="bold" color="gray" size={24} />
+                      <Text
+                        label={`${address?.street}, ${address?.number}, ${address?.district}`}
+                        color="gray"
+                        size="md"
+                      />
+                    </div>
+                    <div className="flex items-center gap-4">
                       <PencilSimple
                         color="#FFB400"
                         weight="bold"
                         className="cursor-pointer"
+                        size={24}
                       />
                       <TrashSimple
                         color="#dd5035"
                         weight="bold"
                         className="cursor-pointer"
                         onClick={() => handleDeleteAddress(address?.id)}
+                        size={24}
                       />
                     </div>
                   </div>
@@ -139,7 +161,12 @@ function Addresses({}: Props) {
           // }
           className="py-12 space-y-2 h-screen overflow-y-scroll	"
         >
-          <Text label="Adicionar endereço" color="dark" size="lg" weight="bold" />
+          <Text
+            label="Adicionar endereço"
+            color="dark"
+            size="lg"
+            weight="bold"
+          />
 
           <br />
           <Input

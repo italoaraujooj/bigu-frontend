@@ -5,11 +5,12 @@ import {
   logOut as exit,
 } from "@/services/auth";
 import { createContext, useContext, useEffect, useState } from "react";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { RequestContext } from "./RequestContext";
 import { fakeDelay } from "@/utils/delay";
 import NotificationContext from "./NotificationContext";
+import { fetchUserAddresses } from "@/services/address";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -44,7 +45,8 @@ export function AuthProvider({ children }: any) {
   const isAuthenticated = !!user;
   const { inProgress, done } = useContext(RequestContext);
   const {notificationHandler, showNotification} = useContext(NotificationContext)
-
+  const router = useRouter();
+  
   async function signIn(credentials: SignInData) {
     try {
       const response: any = await signInRequest(credentials);
@@ -53,7 +55,7 @@ export function AuthProvider({ children }: any) {
           maxAge: 8600,
         });
         setUser(response?.data?.userResponse);
-        Router.push("/dashboard");
+        router.push("/dashboard");
       }
       return { data: response?.data, status: response?.status };
     } catch (err) {
@@ -69,7 +71,11 @@ export function AuthProvider({ children }: any) {
           maxAge: 8600,
         });
         setUser(response?.data?.userResponse);
-        Router.push("/dashboard");
+        // Router.push("/dashboard", );
+        router.push({
+          pathname: '/dashboard',
+          query: { firstAccess: true }
+      })
       }
       return { data: response?.data, status: response?.status };
     } catch (error) {
@@ -80,7 +86,7 @@ export function AuthProvider({ children }: any) {
 
   async function logout() {
     await exit();
-    Router.push("/");
+    router.push("/");
     destroyCookie(null, "nextauth.token");
     setUser(null);
   }

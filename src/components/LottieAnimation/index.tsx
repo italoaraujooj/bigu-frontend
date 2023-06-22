@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import Lottie from 'lottie-web';
+import clsx from 'clsx';
 // import animationData from '../../assets/ghost.json';
 
-const LottieAnimation = ({ data, loop = true }: any) => {
+const LottieAnimation = ({ data, loop = true, className = "" }: any) => {
   const animationRef = useRef(null);
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const LottieAnimation = ({ data, loop = true }: any) => {
     };
   }, []);
 
-  return <div ref={animationRef} />;
+  return <div ref={animationRef} className={clsx(className)} />;
 };
 
 export default LottieAnimation;
