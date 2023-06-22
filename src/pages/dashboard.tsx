@@ -37,7 +37,7 @@ function Dashboard() {
           </div>
         ) : (
           <div className="flex items-center gap-4">
-            <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
+            <h1 className="font-[Poppins] text-xl font-bold text-white md:text-4xl mr-2">
               {`Olá, ${user?.fullName.split(" ")[0]}`}
             </h1>
             <div className="flex items-center gap-2 pt-2">
