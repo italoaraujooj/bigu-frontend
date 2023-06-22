@@ -4,10 +4,6 @@ import Avatar from "../../assets/woman.png"
 import Image from "next/image";
 import Text from "../text";
 import Star from "../../assets/star.png"
-import Car from "../../assets/car-small.png"
-import Clock from "../../assets/Horario.png"
-import Origin from "../../assets/origin.png"
-import Person from "../../assets/person.png"
 import Button from "../button";
 import Fav from "../../assets/heart.png"
 import Plus from "../../assets/PlusCircle.png"
@@ -15,6 +11,7 @@ import Map from "../../assets/map.png"
 import X from "../../assets/X.png"
 import { formatDateRide, formatarData } from "@/utils/masks";
 import { data } from "autoprefixer";
+import { MapPin, Person, Clock } from "@phosphor-icons/react";
 import React from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
@@ -93,42 +90,42 @@ function RideFull(props: RideProps) {
 
   return (
 
-    <div className="bg-light-white w-full h-44 rounded-xl flex p-2 flex-col gap-4 sm:p-5 sm:gap-2 md:h-56 md:gap-0 md:p-3">
-      <div className="flex justify-between">
-        <div className="flex gap-2 sm:gap-4">
-          <Image className=" w-12 h-12" src={Avatar} alt="foto" />
+    <div className="bg-light-white w-full h-48 rounded-xl flex p-2 flex-col gap-4 sm:p-5 md:h-56 md:gap-0 md:p-3">
+      <div className="flex justify-between py-4 px-6">
+        <div className="flex gap-2 sm:gap-4 items-center">
+          <Image className="w-8 h-8 md:w-12 md:h-12" src={Avatar} alt="foto" />
           <div className="flex flex-col gap-1 mt-2">
             <div className="flex gap-3 items-center">
-              <h1 className="font-bold text-2xl text-black font-['Poppins'] md:text-3xl">
+              <h1 className="font-bold text-2xl text-black font-['Poppins'] sm:text-xl md:text-3xl">
                 {props.userName.split(" ")[0]}
               </h1>
-              <Image className=" w-5 h-5" src={Star} alt="estrela" />
+              <Image className=" w-3 h-3" src={Star} alt="estrela" />
               <span className=" text-gray text-xs">5.0</span>
             </div>
-            <div className="flex gap-2 md:gap-4">
+            {/* <div className="flex gap-2 md:gap-4">
               <Image src={Car} alt="carro" />
               <span className="text-xs md:text-base">
                 {props.model} - <strong>Placa {props.plate}</strong>
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
-        <div onClick={handleOpen}>
+        {/* <div onClick={handleOpen}>
           <Image className=" w-5 h-5 md:w-7 md:h-7" src={Plus} alt="plus" />
-        </div>
+        </div> */}
       </div>
 
-      <div className="flex justify-between md:items-center">
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-2">
-            <Image className=" w-4 h-4 md:w-6 md:h-6" src={Origin} alt="origem" />
-            <span className="font-['Poppins'] font-normal text-[10px] sm:text-sm md:text-base">
+      <div className="flex justify-between md:items-center px-6">
+        <div className="space-y-2">
+          <div className="flex gap-2 items-center">
+            <MapPin size={24} color="#252525" weight="bold"/>
+            <span className="font-['Poppins'] font-medium text-[10px] sm:text-sm md:text-base">
               {props.start} - {props.destination}
             </span>
           </div>
 
-          <div className="flex gap-2">
-            <Image className="w-4 h-4 md:w-6 md:h-6" src={Person} alt="pessoa" />
+          <div className="flex gap-2 items-center">
+            <Person size={24} color="#252525" weight="fill"/>
             <span className="font-['Poppins'] font-normal text-[10px] sm:text-sm md:text-base">
               {props.numSeats}{" "}
               {Number(props.numSeats) > 1
@@ -137,9 +134,11 @@ function RideFull(props: RideProps) {
             </span>
           </div>
 
-          <div className="flex gap-2">
-            <Image className=" w-4 h-4 md:w-6 md:h-6" src={Clock} alt="relogio" />
-            <span className="font-['Poppins'] font-normal text-[10px] sm:text-sm md:text-base">
+          <div className="flex gap-2 items-center">
+            <Clock size={24} color="#252525" weight="bold" />
+
+
+            <span className="font-['Poppins'] font-medium text-[10px] sm:text-sm md:text-base">
               {formatDateRide(props.dateTime)}
             </span>
           </div>
@@ -191,11 +190,12 @@ function RideFull(props: RideProps) {
           <Image className="hidden md:block md:w-40 md:h-32 md:relative bottom-8" src={Map} alt="mapa" />
         </div>
 
+        {/* <Image className="hidden lg:block md:w-40 md:h-32 md:relative bottom-8" src={Map} alt="mapa" /> */}
       </div>
       <Modal isOpen={showModal} onClose={handleClose}>
         <div className="w-3/4 bg-white h-2/4 relative rounded-lg p-2 sm:2/4">
           {/* <Image className=" absolute top-2 right-2 cursor-pointer" src={X} alt="sair" onClick={handleClose}/> */}
-          dasdfdfdssdf
+          {/* dasdfdfdssdf */}
         </div>
       </Modal>
       <Modal

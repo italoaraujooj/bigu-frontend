@@ -6,6 +6,7 @@ import Image from "next/image";
 import Button from "../button";
 import Text from "../text";
 import {
+  createRide,
   getAllRides,
   getAllRidesAvailable,
   requestRide,
@@ -20,6 +21,7 @@ import { fetchUserAddresses } from "@/services/address";
 import { AuthContext } from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
 import Router from "next/router";
+import clsx from "clsx";
 
 function Ride() {
   const [userAddress, setUserAddresses] = React.useState([]);
@@ -83,10 +85,10 @@ function Ride() {
         {!!ridesAvailable.length ? (
           ridesAvailable.map(
             (item: any) =>
-              item.driver.userId !== user?.userId && (
+                          (
                 <div
                   key={item.id}
-                  className="w-full h-14 bg-white rounded-xl px-6 py-4 transition-height duration-500 ease-in-out overflow-hidden	space-y-4 hover:h-64 sm:h-20"
+                  className={clsx("w-full h-14", item?.toWomen ? "bg-[#C2BBF0]" : "bg-white", "rounded-xl px-6 py-4 transition-height duration-500 ease-in-out overflow-hidden	space-y-4 hover:h-64 sm:h-20")}
                 >
                   <div className="flex items-center gap-2">
                     <Image
@@ -95,8 +97,8 @@ function Ride() {
                       alt="male avatar"
                     />
                     <Text
-                      label={`${
-                        item.driver.fullName.split(" ")[0]
+                      label={`${item.driver.userId !== user?.userId ? 
+                        item.driver.fullName.split(" ")[0] : "Você"
                       } está saindo do ${item.start.district}...`}
                       color="dark"
                       size="md"
@@ -131,7 +133,8 @@ function Ride() {
                         size="sm"
                         color="green"
                         shape="square"
-                        className={`font-semibold hover:bg-hover-green`}
+                        className={item.driver.userId === user?.userId ? "font-semibold" : "font-semibold hover:bg-hover-green"}
+                        disabled={item.driver.userId === user?.userId}
                       />
                     ) : (
                       <span className="animate-pulse text-yellow ease-in-out infinite">
@@ -140,7 +143,7 @@ function Ride() {
                     )}
                     <div
                       className={`flex items-center gap-2 ${
-                        askRide && "translate-x-44 duration-500 ease-out"
+                        askRide && "translate-x-36 duration-500 ease-out"
                       }`}
                     >
                       <button onClick={toggleFavorite}>

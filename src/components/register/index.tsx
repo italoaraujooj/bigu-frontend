@@ -8,6 +8,9 @@ import Button from "../button";
 import { AuthContext } from "@/context/AuthContext";
 import clsx from "clsx";
 import Radio from "../radio";
+import NotificationContext from "@/context/NotificationContext";
+import Notification from "../notification";
+import { formatarTelefone } from "@/utils/masks";
 
 interface UserFormState {
     name: string;
@@ -27,19 +30,30 @@ type Props = {
 function Register(props: Props){
     const formRef = useRef<FormHandles>(null)
     const { signUp } = useContext(AuthContext);
+    const {notificationHandler, showNotification} = useContext(NotificationContext)
     const { visible, handleClose } = props;
+    const [sexSelected, setSexSelected] = useState('H');
+
     const handleSubmit: SubmitHandler<UserFormState> = async data => {
+      try {
         const user = {
           fullName: data.name,
           email: data.email,
           phoneNumber: data.telephone,
-          sex: data.sex,
+          sex: sexSelected,
           password: data.password,
           role: 'USER',
           userType: 'RIDER'
         }
         
-        await signUp(user);
+        const res = await signUp(user);
+
+      } catch (err) {
+        notificationHandler('fail', "Ocorreu um problema ao criar a conta");
+        console.log('erro', err);
+      }
+       
+
     }
 
     return (
@@ -49,6 +63,7 @@ function Register(props: Props){
           ref={formRef}
           onSubmit={handleSubmit}
         >
+          {showNotification && <Notification />}
           <Image className="w-10 h-10 cursor-pointer" src={Back} alt="voltar" onClick={handleClose} />
           <h1 className="font-['Poppins'] font-semibold text-2xl md:text-4xl my-2">
             Criar Conta
@@ -64,6 +79,7 @@ function Register(props: Props){
                 type="text"
                 placeholder="Exemplo Alves"
                 readOnly={false}
+                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -76,6 +92,7 @@ function Register(props: Props){
                 type="email"
                 placeholder="seu.nome@ufcg.edu.br"
                 readOnly={false}
+                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -88,12 +105,16 @@ function Register(props: Props){
                 type="tel"
                 placeholder="(83)999999999"
                 readOnly={false}
+                maxLength={14}
+                mask={formatarTelefone}
+                required
               />
             </div>
             <div className="flex flex-col gap-2">
               <Radio
                 name="sex"
-                options={[{ id: "H", label: "Homem" }, { id: "M", label: "Mulher" }]}
+                options={[{ id: "M", label: "Homem" }, { id: "F", label: "Mulher" }]}
+                onChange={setSexSelected}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -106,6 +127,7 @@ function Register(props: Props){
                 type="password"
                 placeholder="*********"
                 readOnly={false}
+                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -118,6 +140,7 @@ function Register(props: Props){
                 type="password"
                 placeholder="*********"
                 readOnly={false}
+                required
               />
             </div>
             <Button
@@ -126,6 +149,7 @@ function Register(props: Props){
               color="yellow"
               shape="square"
               type="submit" 
+              // loading={true}
             />
             <div>
               <p className="text-xs md:text-sm flex justify-center text-[#78716c]">

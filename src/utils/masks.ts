@@ -92,14 +92,14 @@ export function timeMask(value: any) {
 
   // Validações para garantir que as horas e minutos estejam no formato correto
   if (hours !== '') {
-    if (parseInt(hours, 10) > 12) {
-      hours = '12';
+    if (parseInt(hours, 10) >= 24) {
+      hours = '00';
     } else if (hours.length === 1 && parseInt(hours, 10) > 1) {
-      hours = `0${hours}`;
+      hours = `${hours}`;
     } else if (hours.length === 2 && parseInt(hours, 10) === 0) {
       hours = '01';
-    } else if (hours.length === 2 && parseInt(hours, 10) > 12) {
-      hours = '12';
+    } else if (hours.length === 2 && parseInt(hours, 10) >= 24) {
+      hours = '00';
     }
   }
 
@@ -115,4 +115,22 @@ export function timeMask(value: any) {
   const formattedValue = `${hours}:${minutes}`;
 
   return formattedValue;
+}
+
+export function formatarTelefone(numero: string): string {
+  // Remover caracteres não numéricos
+  const numerosApenas = numero?.replace(/\D/g, '');
+
+  // Verificar se o número tem pelo menos 10 dígitos
+  // if (numerosApenas?.length < 10) {
+  //   return 'Número de telefone inválido.';
+  // }
+
+  // Formatar o número
+  const codigoArea = numerosApenas?.slice(0, 2);
+  const prefixo = numerosApenas?.slice(2, 6);
+  const sufixo = numerosApenas?.slice(6);
+  const telefoneFormatado = `(${codigoArea}) ${prefixo}${sufixo}`;
+
+  return telefoneFormatado;
 }

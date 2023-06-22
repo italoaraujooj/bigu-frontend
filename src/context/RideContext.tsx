@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { parseCookies } from "nookies";
-import { getHistoryRide, getAllRidesAvailable } from "@/services/ride";
+import { getHistoryRide, getAllRidesAvailable, createRide } from "@/services/ride";
 import { Car, getUserCars } from "@/services/car";
 import { AuthContext } from "./AuthContext";
 
@@ -9,6 +9,7 @@ type RideContextType = {
   history: any;
   cars: any;
   setCars: any
+  setRides: any
 };
 
 export const RideContext = createContext({} as RideContextType);
@@ -59,6 +60,6 @@ export function RideProvider({ children }: any) {
   }, []);
 
   return (
-    <RideContext.Provider value={{ rides, history, cars, setCars }}>{children}</RideContext.Provider>
+    <RideContext.Provider value={{ rides, history, cars, setCars, setRides }}>{children}</RideContext.Provider>
   );
 }

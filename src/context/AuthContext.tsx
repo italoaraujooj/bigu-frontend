@@ -9,6 +9,7 @@ import Router from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { RequestContext } from "./RequestContext";
 import { fakeDelay } from "@/utils/delay";
+import NotificationContext from "./NotificationContext";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -42,6 +43,7 @@ export function AuthProvider({ children }: any) {
   const [user, setUser] = useState(null as any);
   const isAuthenticated = !!user;
   const { inProgress, done } = useContext(RequestContext);
+  const {notificationHandler, showNotification} = useContext(NotificationContext)
 
   async function signIn(credentials: SignInData) {
     try {
@@ -71,6 +73,7 @@ export function AuthProvider({ children }: any) {
       }
       return { data: response?.data, status: response?.status };
     } catch (error) {
+      notificationHandler('fail', 'Ocorreu um erro ao criar a conta');
       console.log(error);
     }
   }

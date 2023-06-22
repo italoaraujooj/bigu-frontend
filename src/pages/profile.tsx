@@ -126,7 +126,7 @@ function Profile() {
                 ></Image>
                 <div className="flex gap-1">
                   <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
-                    {`Olá, ${user?.fullName} `}
+                    {`Olá, ${user?.fullName.split(" ")[0]}`}
                   </h1>
                   <div className="flex items-center gap-2 pt-2">
                     <Image className="w-3 h-3" src={Star} alt="estrela" />
@@ -237,30 +237,35 @@ function Profile() {
                   label="Marca"
                   placeholder="Chevrolet"
                   sizing="adjustable"
+                  color="extralight"
                 />
                 <Input
                   name="model"
                   label="Modelo"
                   placeholder="Onix"
                   sizing="adjustable"
+                  color="extralight"
                 />
                 <Input
                   name="modelYear"
                   label="Ano"
                   placeholder="2023"
                   sizing="adjustable"
+                  color="extralight"
                 />
                 <Input
                   name="color"
                   label="Cor"
                   placeholder="Prata"
                   sizing="adjustable"
+                  color="extralight"
                 />
                 <Input
                   name="plate"
                   label="Placa"
                   placeholder="XKG432"
                   sizing="adjustable"
+                  color="extralight"
                 />
                 <section className="flex items-center gap-4 mt-12">
                   <Button
@@ -323,7 +328,7 @@ function Profile() {
                 label="Senha atual: "
                 name="actualPassword"
                 sizing="sm"
-                color="light"
+                color="extralight"
                 className="md:h-16 md:text-lg"
                 type="password"
                 placeholder="*********"
@@ -333,7 +338,7 @@ function Profile() {
                 label="Nova senha: "
                 name="newPassword"
                 sizing="sm"
-                color="light"
+                color="extralight"
                 className="md:h-16 md:text-lg"
                 type="password"
                 placeholder="*********"
@@ -342,7 +347,7 @@ function Profile() {
                 label="Confirmar senha: "
                 name="newPasswordConfirmation"
                 sizing="sm"
-                color="light"
+                color="extralight"
                 className="md:h-16 md:text-lg"
                 type="password"
                 placeholder="*********"
