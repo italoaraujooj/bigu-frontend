@@ -130,7 +130,7 @@ function Profile() {
                   alt="avatar"
                 ></Image>
                 <div className="flex gap-1">
-                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
+                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
                     {`Olá, ${user?.fullName.split(" ")[0]}`}
                   </h1>
                   <div className="flex items-center gap-2 pt-2">
@@ -203,7 +203,7 @@ function Profile() {
                   </Link>
                 </div>
                 <div className="w-full flex flex-col justify-center">
-                  <h1 className="text-2xl text-white font-bold mb-2">
+                  <h1 className="text-2xl text-white font-bold mb-2 font-[Poppins]">
                     Meus veículos
                   </h1>
                   <Carousel profile add={toggleModalCar} needUpdate={needUpdate} toggleNeedUpdate={toggleNeedUpdate}/>

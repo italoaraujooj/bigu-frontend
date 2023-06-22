@@ -1,7 +1,6 @@
 import Button from "@/components/button";
 import { formatarData, formatarTelefone } from "@/utils/masks";
 import Notification from "@/components/notification";
-import Image from "next/image";
 import NotificationContext from "@/context/NotificationContext";
 import { useContext } from "react";
 import { deleteRide } from "@/services/ride";

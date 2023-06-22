@@ -66,6 +66,7 @@ const Button = (props: Props) => {
         styles.shapes[shape],
         styles.text[text],
         "font-bold",
+        "font-[Poppins]",
         className,
       ])}
       type={type}

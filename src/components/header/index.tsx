@@ -26,10 +26,12 @@ export default function Header(props: Props) {
 
   const { cars, userAddress: address } = useContext(RideContext);
   const [carsUser, setCarsUser] = useState([] as any);
+  const [addressUser, setAddressUser] = useState([] as any);
 
   useEffect(() => {
+    setAddressUser(address);
     setCarsUser(cars);
-  }, [cars]);
+  }, [cars, address]);
 
   return (
     <header className="flex justify-between items-center">
