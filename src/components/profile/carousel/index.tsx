@@ -125,7 +125,7 @@ const Carousel = (props: Props) => {
           ))
         : 
         <div className="w-full bg-white flex flex-col gap-5 rounded-lg justify-center items-center mx-auto py-3 md:px-1">
-          <p className="text-xs md:text-sm text-gray">Você não possui nenhum veículo cadastrado</p>
+          <p className="text-xs md:text-sm text-gray font-[Poppins]">Você não possui nenhum veículo cadastrado</p>
           <Image src={Plus} alt="add" className="w-8 h-8 cursor-pointer" onClick={props.add}/>
         </div>}
       </div>

@@ -198,7 +198,7 @@ function Profile() {
                   </Link>
                 </div>
                 <div className="w-full flex flex-col justify-center">
-                  <h1 className="text-2xl text-white font-bold mb-2">
+                  <h1 className="text-2xl text-white font-bold mb-2 font-[Poppins]">
                     Meus veículos
                   </h1>
                   <Carousel profile add={toggleModalCar} needUpdate={needUpdate} toggleNeedUpdate={toggleNeedUpdate}/>
