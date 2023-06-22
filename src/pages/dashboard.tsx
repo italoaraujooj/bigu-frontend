@@ -40,7 +40,7 @@ function Dashboard() {
   const renderGreeting = () => {
     return (
       <div className="flex gap-1">
-        {loading ? !user (
+        {loading ? (
           <div className="flex items-center gap-4">
             <div className="animate-pulse rounded-md bg-slate-700 h-14 w-80"></div>
             <div className="animate-pulse rounded-md bg-slate-700 h-14 w-16"></div>

@@ -9,6 +9,7 @@ import Text from "@/components/text";
 
 type Props = {
   ride: any;
+  handleClose: any;
 };
 
 function Offer(props: Props) {
@@ -22,8 +23,10 @@ function Offer(props: Props) {
       const response = await deleteRide(ride.id);
       console.log(response);
       toast.success("A carona foi cancelada com sucesso");
+      props.handleClose();
     } catch (err: any) {
       toast.error("Falha ao cancelar a carona");
+      props.handleClose();
       console.log(err);
     }
   };

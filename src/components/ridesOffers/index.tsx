@@ -44,6 +44,7 @@ function RidesOffers(props: Props) {
                             <Offer
                                 key={index}
                                 ride={ride}
+                                handleClose={handleClose}
                             />
                         );
                     }
