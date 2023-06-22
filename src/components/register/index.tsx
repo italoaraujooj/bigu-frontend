@@ -56,9 +56,9 @@ function Register(props: Props){
       } catch (err) {
         console.log(err);
         console.log('sim');
-        toast.error("Erro ao criar conta!");
+        // toast.error("Erro ao criar conta!");
 
-        toast.error("Ocorreu um problema ao criar a conta");
+        toast.error("Ocorreu um problema ao criar a conta.");
         console.log('erro', err);
       }
        
