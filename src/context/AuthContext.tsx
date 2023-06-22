@@ -85,10 +85,10 @@ export function AuthProvider({ children }: any) {
   }
 
   async function logout() {
-    await exit();
     router.push("/");
     destroyCookie(null, "nextauth.token");
     setUser(null);
+    await exit();
   }
 
   const getUserData = async () => {
