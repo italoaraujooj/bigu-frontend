@@ -23,12 +23,15 @@ export default function Header( props: Props ) {
     handleNavigateToOfferRide,
   } = useDrawer();
 
-  const { cars } = useContext(RideContext);
+  const { cars, address } = useContext(RideContext);
+  
   const [carsUser, setCarsUser] = useState([] as any);
+  const [addressUser, setAddressUser] = useState([] as any);
 
   useEffect(() => {
+    setAddressUser(address);
     setCarsUser(cars);
-  }, [cars]);
+  }, [cars, address]);
 
   return (
     <header className="flex justify-between items-center">

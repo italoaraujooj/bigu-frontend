@@ -125,7 +125,7 @@ function Profile() {
                   alt="avatar"
                 ></Image>
                 <div className="flex gap-1">
-                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2">
+                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
                     {`Olá, ${user?.fullName.split(" ")[0]}`}
                   </h1>
                   <div className="flex items-center gap-2 pt-2">

@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg";
 import { RideContext } from "@/context/RideContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import Offer from "./offers";
 
@@ -16,8 +16,7 @@ function RidesOffers(props: Props) {
     const { rides } = useContext(RideContext);
     const { user } = useContext(AuthContext);
 
-    console.log(rides)
-    console.log(user)
+
 
     return (
         <div
@@ -40,10 +39,9 @@ function RidesOffers(props: Props) {
                 </h1>
 
                 {rides?.map((ride: any, index: number) => {
-                    // Verificar se ride.userResponse.userId não está presente em nenhum objeto de ride.rideResponse.riders
+                    
                     const isDriver = ride.driver.userId === user?.userId;
 
-                    // Renderizar o componente CandidateRequest apenas se isUserNotRider for verdadeiro
                     if (isDriver) {
                         return (
                             <Offer
@@ -53,7 +51,7 @@ function RidesOffers(props: Props) {
                         );
                     }
 
-                    return null; // Retorna null se o ride.userResponse.userId estiver em ride.rideResponse.riders
+                    return null; 
                 })}
             </div>
         </div>
