@@ -5,6 +5,7 @@ import { RideContext } from "@/context/RideContext";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import Offer from "./offers";
+import { CaretRight } from "@phosphor-icons/react";
 
 type Props = {
     visible: boolean;
@@ -24,18 +25,14 @@ function RidesOffers(props: Props) {
             id="login"
             className={clsx(
                 "transition ease-in-out delay-150 duration-500",
-                `flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 px-5 top-0 lg:right-0 lg:max-w-[30.125rem]`,
+                `flex justify-center items-start h-screen fixed bg-[#1a1a1a] w-[100%] overflow-y-scroll pt-3 px-5 top-0 lg:right-0 lg:max-w-[38rem]`,
                 visible ? "translate-x-0" : "translate-x-full"
             )}
         >
             <div className="flex flex-col justify-between gap-4">
-                <Image
-                    className="w-10 h-10 cursor-pointer"
-                    src={Back}
-                    alt="voltar"
-                    onClick={handleClose}
-                />
-                <h1 className="font-['Poppins'] font-semibold text-xl md:text-2xl">
+                <CaretRight size={32} color="white" onClick={handleClose} className="cursor-pointer my-4" weight="bold"/>
+
+                <h1 className="font-['Poppins'] font-semibold text-2xl md:text-3xl text-white my-2">
                     Caronas oferecidas por você
                 </h1>
 

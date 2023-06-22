@@ -74,16 +74,16 @@ function Dashboard() {
     "Sua conta foi criada com sucesso!",
     "Viu como foi fácil?",
     "Espere um instante",
-    "Tudo pronto. Seja bem-vindo!"
+    "Tudo pronto. Seja bem-vindo!",
   ]);
 
-  const positions = ["-0px", "-100px", "-200px", "-300px", ''];
+  const positions = ["-0px", "-100px", "-200px", "-300px", ""];
 
   const [p, setP] = useState(0);
 
   useEffect(() => {
     async function t() {
-      console.log();
+      console.log("entrou");
       await fakeDelay(2000);
       setP(1);
       await fakeDelay(2000);
@@ -101,7 +101,8 @@ function Dashboard() {
     if (p === 4) {
       setFirstDashboardAccess(false);
     }
-  }, [p])
+    console.log("oi");
+  }, [p]);
 
   const firstAccess = () => {
     return (
@@ -113,7 +114,7 @@ function Dashboard() {
               label={ms}
               size="5xl"
               className={clsx(
-                `transition translate-y-[${positions[p]}] ease-in-out duration-1000`
+                `transition translate-y-[${positions[p]}] ease-in-out duration-1000`,
               )}
             />
           ))}
