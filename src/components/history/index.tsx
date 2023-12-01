@@ -4,6 +4,8 @@ import Image from "next/image";
 import Text from "../text";
 import clsx from "clsx";
 import { formatarDate } from "@/utils/masks";
+import LottieAnimation from "../LottieAnimation";
+import ghost from "../../assets/ghost.json";
 
 interface RacesHistory {
   id: number;
@@ -12,6 +14,7 @@ interface RacesHistory {
   date: string;
   status: string;
 }
+
 function History({ races }: { races: any[] }) {
   return (
     <div className="bg-dark w-full h-fit rounded-lg py-6 px-6 mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
@@ -20,17 +23,16 @@ function History({ races }: { races: any[] }) {
       </h2>
       <div
         className={clsx(
-          `w-full flex flex-col gap-3 overflow-y-scroll`,
+          `w-full flex flex-col gap-3`,
           races?.length ? "h-80" : "h-fit"
         )}
       >
         {!races?.length && (
-          <Text
-            label="Nenhuma carona registrada"
-            size="xl"
-            color="gray"
-            className="text-center"
-          />
+          <div className="w-full flex items-center justify-center">
+            <div className="w-64 h-64 ">
+              <LottieAnimation data={ghost} />
+            </div>
+          </div>
         )}
         {races?.map((race: RacesHistory) => (
           <div
@@ -38,15 +40,15 @@ function History({ races }: { races: any[] }) {
             className="h-24 w-full px-6 py-6 border-light border-2 flex justify-between items-center gap-5 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer transition-colors duration-600"
           >
             <Image src={OK} className="w-7 h-7" alt="race finished status" />
-            <Text label={race?.start?.nickname} color="gray" size="md" />
+            <Text label={race.start.nickname} color="gray" size="md" />
             <div className="w-12 h-1 bg-light" />
-            <Text label={race?.destination?.nickname} color="gray" size="md" />
-            <Text label={formatarDate(race?.dateTime)} color="gray" size="md" />
+            <Text label={race.destination.nickname} color="gray" size="md" />
+            <Text label={formatarDate(race.dateTime)} color="gray" size="md" />
           </div>
         ))}
       </div>
       <br />
-      {!!races?.length && (
+      {!races?.length && (
         <Text label="Ver mais" className="self-start cursor-pointer hover:text-stone-400" color="gray" size="md" />
       )}
     </div>

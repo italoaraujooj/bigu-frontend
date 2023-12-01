@@ -4,7 +4,6 @@ import { api } from "./api";
 export const getAllRides = async () => {
   try {
     const response = api.get('/api/v1/rides');
-    
     return response;
   } catch (err) {
     console.log(err);
@@ -24,6 +23,7 @@ export const getHistoryRide = async () => {
 const offerRide = async (data: OfferRideBody) => {
   try {
     const response = api.post('/api/v1/rides', data);
+    return response;
   } catch (err) {
     console.log(err);
   }
@@ -32,6 +32,7 @@ const offerRide = async (data: OfferRideBody) => {
 const getRideById = async (id: number) => {
   try {
     const response = api.get(`/api/v1/rides/${id}`);
+    return response;
   } catch (err) {
     console.log(err);
   }
@@ -40,6 +41,7 @@ const getRideById = async (id: number) => {
 const getMember = async () => {
   try {
     const response = api.get('/api/v1/rides');
+    return response;
   } catch (err) {
     console.log(err);
   }
@@ -48,7 +50,6 @@ const getMember = async () => {
 export const createRide = async (body: any) => {
   try {
     const response = api.post('/api/v1/rides', body);
-    console.log(response);
     return response;
   } catch (err) {
     console.log(err);
@@ -75,7 +76,8 @@ export const requestRide = async (body: any) => {
 
 export const getCandidates = async () => {
   try{
-    return api.get("/api/v1/rides/candidates")
+    const response = api.get("/api/v1/rides/candidates");
+    return response;
   }catch(err){
     console.log(err)
   }
@@ -83,7 +85,7 @@ export const getCandidates = async () => {
 
 export const answerCandidate = async (body: any) => {
   try{
-    const response =  api.put("/api/v1/rides/answer-candidate", body)
+    const response =  api.put("/api/v1/rides/answer-candidate", body);
     return response;
   }catch(err){
     console.log(err)

@@ -5,12 +5,12 @@ import {
   logOut as exit,
 } from "@/services/auth";
 import { createContext, useContext, useEffect, useState } from "react";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { RequestContext } from "./RequestContext";
 import { fakeDelay } from "@/utils/delay";
 import NotificationContext from "./NotificationContext";
-import { fetchUserAddresses } from "@/services/address";
+import { User } from "@/utils/types";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -32,10 +32,6 @@ type SignUpData = {
   phoneNumber: string;
   sex: string;
   password: string;
-};
-
-type User = {
-  email: string;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -71,7 +67,6 @@ export function AuthProvider({ children }: any) {
           maxAge: 8600,
         });
         setUser(response?.data?.userResponse);
-        // Router.push("/dashboard", );
         router.push({
           pathname: '/dashboard',
           query: { firstAccess: true }
@@ -85,36 +80,32 @@ export function AuthProvider({ children }: any) {
   }
 
   async function logout() {
+    await exit();
     router.push("/");
     destroyCookie(null, "nextauth.token");
-    setUser(null);
-    await exit();
   }
 
-  const getUserData = async () => {
-    try {
-      inProgress();
-      const response = await getUser();
+  // const getUserData = async () => {
+  //   try {
+  //     inProgress();
+  //     const response = await getUser();
 
-      await fakeDelay(500);
+  //     await fakeDelay(500);
 
-      done();
+  //     done();
 
-      setUser(response.data);
-    } catch (err) {
+  //     setUser(response.data);
+  //   } catch (err) {
 
-    }
-  }
+  //   }
+  // }
 
-  useEffect(() => {
-    const { "nextauth.token": token } = parseCookies();
-    if (token) {
-      // getUser().then((data) => {
-      //   setUser(data.data);
-      // });
-      getUserData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   const { "nextauth.token": token } = parseCookies();
+  //   if (token) {
+  //     getUserData();
+  //   }
+  // }, []);
 
   return (
     <AuthContext.Provider

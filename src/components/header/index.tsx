@@ -2,7 +2,6 @@ import Menu from "../../assets/Menu.png";
 import Foto from "../../assets/woman.png";
 import Image from "next/image";
 import React, { useContext, useState, useEffect } from "react";
-import Button from "../button";
 import Text from "../text";
 import { List, SignOut } from "@phosphor-icons/react";
 import Drawer from "../drawer";

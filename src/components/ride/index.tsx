@@ -6,14 +6,10 @@ import Image from "next/image";
 import Button from "../button";
 import Text from "../text";
 import {
-  createRide,
-  getAllRides,
-  getAllRidesAvailable,
   requestRide,
 } from "@/services/ride";
 import LottieAnimation from "../LottieAnimation";
 import ghost from "../../assets/ghost.json";
-import empty from "../../assets/empty-box.json";
 import { formatarData } from "@/utils/masks";
 import Modal from "../modal";
 import Dropdown from "../dropdown";
@@ -22,6 +18,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
 import Router from "next/router";
 import clsx from "clsx";
+import { User } from "@/utils/types";
 
 function Ride() {
   const [userAddress, setUserAddresses] = React.useState([]);
@@ -35,7 +32,7 @@ function Ride() {
   const [rideIdSelected, setRideIdSelected] = React.useState({});
 
   const { user } = useContext(AuthContext);
-  const { rides, setRides } = useContext(RideContext);
+  const { rides } = useContext(RideContext);
 
   const toggleFavorite = () => setFavorite((prev) => !prev);
   const toggleAskRide = () => setAskRide((prev) => !prev);
@@ -75,10 +72,8 @@ function Ride() {
     }
   };
 
-  console.log(user);
-
   const rideUser = () => ridesAvailable.map((ride: any, i: number) => {
-    ride.riders.map((usr: any, i: number) => {
+    ride.riders.map((usr: User, i: number) => {
       if (usr?.userId === user?.userId) {
         if (!i) return ride;
         ride = {...ride, confirmation: true }

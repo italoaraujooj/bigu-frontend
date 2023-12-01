@@ -16,9 +16,7 @@ function RidesOffers(props: Props) {
     const { visible, handleClose } = props;
     const { rides } = useContext(RideContext);
     const { user } = useContext(AuthContext);
-
-
-
+    
     return (
         <div
             id="login"

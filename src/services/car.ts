@@ -12,14 +12,6 @@ export type Car = {
   plate: string;
 };
 
-// {
-//   "brand": "string",
-//   "model": "string",
-//   "modelYear": "2023",
-//   "color": "string",
-//   "plate": "KGU7E07"
-// }
-
 export async function createCar(car: CreateCarFormState) {
   try {
     const response = await api.post("/api/v1/cars", car);

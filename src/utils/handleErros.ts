@@ -7,7 +7,6 @@ export const handleReplaceToLogin = () => {
   }
 
 export const handleError = (error: any) => {
-  console.log(error)
     if (axios.isCancel(error)) {
       console.log("Request canceled");
     }

@@ -96,3 +96,12 @@ export interface ChangePassword {
   newPassword: string;
   newPasswordConfirmation: string;
 }
+
+export interface User {
+  email: string;
+  fullName: string;
+  matricula :null;
+  phoneNumber: string;
+  sex: string;
+  userId: number;
+}

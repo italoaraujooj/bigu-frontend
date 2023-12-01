@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { parseCookies, destroyCookie } from "nookies";
 
-const baseURL = process.env.API_URL || 'http://bigu-backend.herokuapp.com/';
+const baseURL = 'http://localhost:8081';
 
 export const api = axios.create({
   baseURL,
@@ -23,7 +23,6 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    // console.log(JSON.stringify(error, null, 2))
     if (error.response.status === 500 || error.response.status === 404 || error.response.status === 403) {
       // destroyCookie(null, 'nextauth.token');
     // Erro na resposta - manipular o erro ou lançar um novo erro
@@ -47,7 +46,6 @@ api.interceptors.request.use( config => {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
-  // console.log(JSON.stringify(config, null, 2))
   return config
 })
 

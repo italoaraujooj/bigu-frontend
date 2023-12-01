@@ -6,9 +6,9 @@ import { Jeep, SignOut, X } from "@phosphor-icons/react";
 
 type Props = {
   drawerIsOpen: boolean;
-  toggleDrawer: any;
-  handleNavigateToOfferRide: any;
-  handleLogout: any;
+  toggleDrawer: () => void;
+  handleNavigateToOfferRide: () => void;
+  handleLogout: () => void;
 };
 
 export default function Drawer({
@@ -17,12 +17,6 @@ export default function Drawer({
   handleNavigateToOfferRide,
   handleLogout,
 }: Props) {
-  //   const {
-  //     drawerIsOpen,
-  //     toggleDrawer,
-  //     handleNavigateToOfferRide,
-  //     handleLogout,
-  //   } = useDrawer();
 
   return (
     <div

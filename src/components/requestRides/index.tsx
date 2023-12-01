@@ -18,23 +18,6 @@ type Props = {
 function RidesRequests(props: Props) {
     const { visible, handleClose } = props;
     const { ridesUser, setRidesUser} = useContext(RideContext);
-    
-    // const { user } = useContext(AuthContext)
-    // // const [ridesUser, setRidesUser] = useState([]as any);
-    // const [carsUser, setCarsUser] = useState([] as any)
-
-    // useEffect(() => {
-    //     getUserCars().then((data) => setCarsUser(data))
-    //     console.log('ride request');
-    //     console.log(carsUser);
-    //     if(carsUser.length > 0){
-    //         console.log('entrei aqui')
-    //         getCandidates().then((data) =>{
-    //             console.log(data)
-    //             setRidesUser(data?.data)
-    //         })
-    //     }
-    // }, [rides]);
 
     return (
         <div

@@ -78,8 +78,7 @@ function OfferRideForm() {
         carId,
         description,
       };
-  
-      console.log(body)
+
   
       const response = await createRide(body);
       if(response?.status == 200){
@@ -89,7 +88,6 @@ function OfferRideForm() {
       }
     }catch(err: any){
       notificationHandler("fail", "Falha ao criar uma carona")
-      console.log(err)
     }
   };
   

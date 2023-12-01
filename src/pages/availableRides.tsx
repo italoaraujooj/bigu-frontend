@@ -1,7 +1,5 @@
-import { ArrowCircleLeft, Sliders } from "@phosphor-icons/react";
+import { ArrowCircleLeft } from "@phosphor-icons/react";
 import Text from "@/components/text";
-import Avatar from "../assets/avatar.png"
-import Image from "next/image";
 import { Button } from "@/components";
 import { useContext, useState } from "react";
 import { RideContext } from "@/context/RideContext";
@@ -10,10 +8,9 @@ import LottieAnimation from "../components/LottieAnimation";
 import ghost from '../assets/ghost.json';
 import { AuthContext } from "@/context/AuthContext";
 import Router from "next/router";
-import History from "@/components/history";
 
 function AvailableRides() {
-  const { rides, history } = useContext(RideContext);
+  const { rides } = useContext(RideContext);
   const { user } = useContext(AuthContext);
 
   const ridesWithDriver = rides.filter((element: any) => element.driver.userId !== user?.userId);
@@ -27,7 +24,6 @@ function AvailableRides() {
         </div>
         <div className=" w-full flex flex-col bg-container rounded-lg px-12 py-10 gap-3">
           <div className="flex gap-2 items-center">
-            {/* <Image src={Avatar} alt="avatar" className="w-10 h-10" /> */}
             <Text
               label="Caronas disponíveis"
               className=" cursor-pointer hover:text-stone-400 "
@@ -65,7 +61,6 @@ function AvailableRides() {
               </div>
             )
           }
-
         </div>
       </div>
     </div>

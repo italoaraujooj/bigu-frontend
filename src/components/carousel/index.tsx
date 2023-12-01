@@ -5,8 +5,6 @@ import clsx from "clsx";
 import Image from "next/image";
 import Text from "../text";
 import SportCar from "../../assets/sport-car.png";
-import Modal from "../modal";
-import Input from "../input/input";
 
 type Props = {
   profile?: boolean;
@@ -34,9 +32,6 @@ const Carousel = (props: Props) => {
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [selectedCar, setSelectedCar] = React.useState(1);
-  const [porcentage, setPorcentage] = React.useState(0);
-  const [vacancies, setVacancies] = React.useState(0);
-
   const toggleCar = (index: number) => {
     setSelectedCar(index);
   };

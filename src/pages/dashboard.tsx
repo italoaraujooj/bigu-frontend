@@ -46,7 +46,7 @@ function Dashboard() {
             <div className="animate-pulse rounded-md bg-slate-700 h-14 w-16"></div>
           </div>
         ) : (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1">
             <h1 className="font-[Poppins] text-xl font-bold text-white md:text-4xl mr-2">
               {`Olá, ${user?.fullName.split(" ")[0]}`}
             </h1>
@@ -83,7 +83,6 @@ function Dashboard() {
 
   useEffect(() => {
     async function t() {
-      console.log("entrou");
       await fakeDelay(2000);
       setP(1);
       await fakeDelay(2000);
@@ -101,7 +100,6 @@ function Dashboard() {
     if (p === 4) {
       setFirstDashboardAccess(false);
     }
-    console.log("oi");
   }, [p]);
 
   const firstAccess = () => {
@@ -144,9 +142,9 @@ function Dashboard() {
               {renderGreeting()}
             </div>
             <div className="flex flex-col justify-between gap-2 sm:gap-12 lg:gap-12 lg:flex-row">
-              <History races={history} />
-              <div className="border-solid border-[1px] border-warmGray-700"></div>
               <Ride />
+              <div className="border-solid border-[1px] border-warmGray-700"></div>
+              <History races={history} />
             </div>
           </div>
           <RidesRequests

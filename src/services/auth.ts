@@ -55,7 +55,6 @@ export async function forgotPasswordRequest(email: string){
 
 export async function changePasswordRequest(credentials: ChangePassword){
   try{
-    console.log(credentials)
     return await api.put(`/api/v1/auth/edit-password?actualPassword=${credentials.actualPassword}`, credentials)
   }catch(error: any){
     handleError(error)
