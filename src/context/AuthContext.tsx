@@ -1,5 +1,4 @@
 import {
-  getUser,
   signInRequest,
   signUpRequest,
   logOut as exit,
@@ -7,8 +6,6 @@ import {
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
-import { RequestContext } from "./RequestContext";
-import { fakeDelay } from "@/utils/delay";
 import NotificationContext from "./NotificationContext";
 import { User } from "@/utils/types";
 
@@ -37,10 +34,9 @@ type SignUpData = {
 export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: any) {
-  const [user, setUser] = useState(null as any);
+  const [user, setUser] = useState<User | null>(null);
   const isAuthenticated = !!user;
-  const { inProgress, done } = useContext(RequestContext);
-  const {notificationHandler, showNotification} = useContext(NotificationContext)
+  const {notificationHandler} = useContext(NotificationContext)
   const router = useRouter();
   
   async function signIn(credentials: SignInData) {
@@ -84,28 +80,6 @@ export function AuthProvider({ children }: any) {
     router.push("/");
     destroyCookie(null, "nextauth.token");
   }
-
-  // const getUserData = async () => {
-  //   try {
-  //     inProgress();
-  //     const response = await getUser();
-
-  //     await fakeDelay(500);
-
-  //     done();
-
-  //     setUser(response.data);
-  //   } catch (err) {
-
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   const { "nextauth.token": token } = parseCookies();
-  //   if (token) {
-  //     getUserData();
-  //   }
-  // }, []);
 
   return (
     <AuthContext.Provider

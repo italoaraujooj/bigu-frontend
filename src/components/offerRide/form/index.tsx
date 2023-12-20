@@ -15,7 +15,7 @@ import {
 import { OfferRideFormState } from "@/utils/types";
 import { checkboxesOptions, fieldsLastRow } from "@/utils/offer-ride-constants";
 import { formatDateTime, moneyMask } from "@/utils/masks";
-import { createRide } from "@/services/ride";
+import { createRide, getAllRidesAvailable } from "@/services/ride";
 import useFields from "@/hooks/useFields";
 import { fetchUfcgAddresses, fetchUserAddresses } from "@/services/address";
 import  Router  from "next/router";
@@ -27,7 +27,7 @@ import Notification from "@/components/notification";
 function OfferRideForm() {
   const { createFields } = useFields();
 
-  const { user, isAuthenticated, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { setRides } = useContext(RideContext);
   const {notificationHandler, showNotification} = useContext(NotificationContext);
   
@@ -82,7 +82,9 @@ function OfferRideForm() {
   
       const response = await createRide(body);
       if(response?.status == 200){
-        setRides((previousState: any) => [...previousState, response?.data])
+        const allRides = await getAllRidesAvailable()
+        setRides(allRides)
+        
         Router.push("/dashboard")
         notificationHandler("success", "A carona foi criada com sucesso")
       }
