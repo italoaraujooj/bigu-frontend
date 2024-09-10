@@ -71,27 +71,18 @@ function Profile() {
       toast.error("Houve um erro na criação do carro");
     }
   };
-
-  const handleCreateCarNotification = (type:string, message: string) => {
-    toggleModalCar();
-    notificationHandler(type, message)
-  };
   
   const handleChangePassword: SubmitHandler<ChangePassword> = async (data) => {
     try{
       const response: any = await changePasswordRequest(data);
       if(response.status === 200){
-        handleChangePasswordNotification("success", "A senha foi alterada com sucesso")
+        toast.success("A senha foi alterada com sucesso");
+        handleCloseChangePassword();
       }
     }catch(err){
-      handleChangePasswordNotification("fail", "Houve um erro na alteração da senha")
+      toast.error("Houve um erro na alteração da senha");
     }
   };
-  
-  const handleChangePasswordNotification = (type: string, message: string) => {
-    handleCloseChangePassword();
-    notificationHandler(type, message)
-  }
 
   return (
     <div className="flex w-full items-center justify-center my-12">

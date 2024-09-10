@@ -5,7 +5,6 @@ import { SubmitHandler, FormHandles } from "@unform/core";
 import Image from "next/image";
 import Back from "../../assets/CaretRight.svg";
 import Button from "../button";
-import { encryptPassword } from "@/utils/validate";
 import { AuthContext } from "@/context/AuthContext";
 import clsx from "clsx";
 import Modal from "../modal";
@@ -13,14 +12,11 @@ import Router from "next/router";
 import { RequestContext } from "@/context/RequestContext";
 import LottieAnimation from "../LottieAnimation";
 import CarLoading from "../../assets/Car.json";
+import { toast } from "react-toastify";
 
 interface UserLoginState {
   email: string;
   password: string;
-}
-
-interface UserPasswordForgot {
-  email: string;
 }
 
 type Props = {
@@ -41,17 +37,7 @@ function Login(props: Props) {
       password: data.password,
     };
 
-    //inProgress();
-
-    const response = await signIn(user);
-
-    //done();
-    
-    if (response?.status !== 200) {
-      setErrorMessage("dados inválidos, tente novamente")
-    } else {
-      setErrorMessage("")
-    }
+    await signIn(user);
   };
 
   const handleRecoveryPassword = () => {
@@ -59,7 +45,6 @@ function Login(props: Props) {
     Router.push("/recover-password")
 
   }
-  // const { loading } = RequestContext();
 
 
   return (
@@ -114,7 +99,6 @@ function Login(props: Props) {
           </div>
           <span className="text-sm text-gray cursor-pointer self-end hover:underline font-[Poppins]" onClick={handleRecoveryPassword}>Esqueci minha senha</span>
           <Button label="Entrar" size="lg" color="yellow" shape="square" type="submit" />
-          {errorMessage && <div className="text-[#dc2626]">{`${errorMessage}!`}</div>}
         </div>
       </Form>
       {<Modal isOpen={loading} onClose={() => {}} noActions transparent>

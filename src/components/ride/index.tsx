@@ -75,10 +75,9 @@ function Ride() {
     }
   };
 
-  console.log(user);
-
+  console.log(ridesAvailable)
   const rideUser = () => ridesAvailable.map((ride: any, i: number) => {
-    ride.riders.map((usr: any, i: number) => {
+    ride.riders?.map((usr: any, i: number) => {
       if (usr?.userId === user?.userId) {
         if (!i) return ride;
         ride = {...ride, confirmation: true }
@@ -87,9 +86,6 @@ function Ride() {
 
     return ride;
   });
-  console.log(rideUser());
-
-  console.log(ridesAvailable);
 
   return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-6 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">

@@ -23,6 +23,7 @@ import {AuthContext} from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
 import NotificationContext from "@/context/NotificationContext";
 import Notification from "@/components/notification";
+import { toast } from "react-toastify";
 
 function OfferRideForm() {
   const { createFields } = useFields();
@@ -85,11 +86,10 @@ function OfferRideForm() {
       if(response?.status == 200){
         setRides((previousState: any) => [...previousState, response?.data])
         Router.push("/dashboard")
-        notificationHandler("success", "A carona foi criada com sucesso")
+        toast.success("A carona foi criada com sucesso")
       }
     }catch(err: any){
-      notificationHandler("fail", "Falha ao criar uma carona")
-      console.log(err)
+      toast.error(err.message)
     }
   };
   

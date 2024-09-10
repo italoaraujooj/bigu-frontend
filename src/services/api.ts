@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { parseCookies, destroyCookie } from "nookies";
 
-const baseURL = process.env.API_URL || 'http://bigu-backend.herokuapp.com/';
+const baseURL = "http://localhost:8081";
 
 export const api = axios.create({
   baseURL,
@@ -31,12 +31,11 @@ api.interceptors.response.use(
     }
     // Por exemplo, você pode adicionar uma propriedade personalizada ao erro
     error.customProperty = 'Custom Value';
-
     // Ou você pode lançar um novo erro com uma mensagem personalizada
-    throw new Error('Ocorreu um erro na resposta.');
+    throw new Error(error.response.data.errorMessage);
 
     // Se você deseja retornar uma resposta de erro modificada, você pode fazer algo como:
-    // return { ...error.response, customProperty: 'Custom Value' };
+    //return { ...error.response, customProperty: 'Custom Value' };
   }
 );
 

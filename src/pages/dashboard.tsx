@@ -37,6 +37,20 @@ function Dashboard() {
   const handleCloseRides = () => setShowRides(false);
   const handleOpenRides = () => setShowRides(true);
 
+  useEffect(() => {
+
+  }, [])
+
+  useEffect(() => {
+    fetchUserAddresses().then((data) => {
+      const addressesFormated = data?.data.map((address: any) => ({
+        label: address?.nickname,
+        value: address?.id,
+      }));
+      setUserAddresses(addressesFormated);
+    });
+  }, []);
+
   const renderGreeting = () => {
     return (
       <div className="flex gap-1">
@@ -59,16 +73,6 @@ function Dashboard() {
       </div>
     );
   };
-
-  useEffect(() => {
-    fetchUserAddresses().then((data) => {
-      const addressesFormated = data?.data.map((address: any) => ({
-        label: address?.nickname,
-        value: address?.id,
-      }));
-      setUserAddresses(addressesFormated);
-    });
-  }, []);
 
   const [messages, setMessages] = useState([
     "Sua conta foi criada com sucesso!",

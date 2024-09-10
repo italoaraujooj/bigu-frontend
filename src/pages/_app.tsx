@@ -7,6 +7,7 @@ import { RideProvider } from "@/context/RideContext";
 import { RequestProvider } from "@/context/RequestContext";
 import { NotificationProvider } from "@/context/NotificationContext";
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -14,6 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <AuthProvider>
         <NotificationProvider>
           <RideProvider>
+              <ToastContainer/>
               <Component {...pageProps} />
           </RideProvider>
         </NotificationProvider>

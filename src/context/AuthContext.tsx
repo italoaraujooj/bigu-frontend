@@ -11,6 +11,7 @@ import { RequestContext } from "./RequestContext";
 import { fakeDelay } from "@/utils/delay";
 import NotificationContext from "./NotificationContext";
 import { fetchUserAddresses } from "@/services/address";
+import { toast } from "react-toastify";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -48,40 +49,31 @@ export function AuthProvider({ children }: any) {
   const router = useRouter();
   
   async function signIn(credentials: SignInData) {
-    try {
-      const response: any = await signInRequest(credentials);
-      if (response.status === 200) {
-        setCookie(undefined, "nextauth.token", response?.data?.token, {
-          maxAge: 8600,
-        });
-        setUser(response?.data?.userResponse);
-        router.push("/dashboard");
-      }
-      return { data: response?.data, status: response?.status };
-    } catch (err) {
-      console.log(err);
+    const response: any = await signInRequest(credentials);
+    
+    if (response.status === 200) {
+      setCookie(undefined, "nextauth.token", response?.data?.token, {
+        maxAge: 8600,
+      });
+      setUser(response?.data?.userResponse);
+      router.push("/dashboard");
     }
+    return { data: response?.data, status: response?.status };
   }
 
   async function signUp(credentials: SignUpData) {
-    try {
-      const response = await signUpRequest(credentials);
-      if (response) {
-        setCookie(undefined, "nextauth.token", response?.data?.token, {
-          maxAge: 8600,
-        });
-        setUser(response?.data?.userResponse);
-        // Router.push("/dashboard", );
-        router.push({
-          pathname: '/dashboard',
-          query: { firstAccess: true }
-      })
-      }
-      return { data: response?.data, status: response?.status };
-    } catch (error) {
-      notificationHandler('fail', 'Ocorreu um erro ao criar a conta');
-      console.log(error);
+    const response = await signUpRequest(credentials);
+    if (response) {
+      setCookie(undefined, "nextauth.token", response?.data?.token, {
+        maxAge: 8600,
+      });
+      setUser(response?.data?.userResponse);
+      router.push({
+        pathname: '/dashboard',
+        query: { firstAccess: true }
+    })
     }
+    return { data: response?.data, status: response?.status };
   }
 
   async function logout() {

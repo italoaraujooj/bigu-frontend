@@ -17,7 +17,6 @@ interface RecoverPasswordFormState {
 export default function RecoverPassword() {
   const formRef = useRef<FormHandles>(null);
   const [successRequest, setSuccessRequest] = useState(false);
-  // const { fieldName, defaultValue, registerField, error } = useField("email");
 
   const handleSubmit: SubmitHandler<RecoverPasswordFormState> = async ({ email }) => {
     const res = await forgotPasswordRequest(email);

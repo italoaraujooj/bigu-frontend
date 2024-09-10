@@ -11,7 +11,6 @@ import Radio from "../radio";
 import NotificationContext from "@/context/NotificationContext";
 import Notification from "../notification";
 import { formatarTelefone } from "@/utils/masks";
-import { toast } from "react-toastify";
 
 interface UserFormState {
     name: string;
@@ -31,38 +30,21 @@ type Props = {
 function Register(props: Props){
     const formRef = useRef<FormHandles>(null)
     const { signUp } = useContext(AuthContext);
-    const {notificationHandler, showNotification} = useContext(NotificationContext)
     const { visible, handleClose } = props;
     const [sexSelected, setSexSelected] = useState('H');
 
     const handleSubmit: SubmitHandler<UserFormState> = async data => {
-      try {
-        const user = {
-          fullName: data.name,
-          email: data.email,
-          phoneNumber: data.telephone,
-          sex: sexSelected,
-          password: data.password,
-          role: 'USER',
-          userType: 'RIDER'
-        }
-        
-        const res = await signUp(user);
-
-        if (res.status === 200) {
-          toast.success("Conta criada com sucesso!");
-        }
-
-      } catch (err) {
-        console.log(err);
-        console.log('sim');
-        // toast.error("Erro ao criar conta!");
-
-        toast.error("Ocorreu um problema ao criar a conta.");
-        console.log('erro', err);
+      const user = {
+        fullName: data.name,
+        email: data.email,
+        phoneNumber: data.telephone,
+        sex: sexSelected,
+        password: data.password,
+        role: 'USER',
+        userType: 'RIDER'
       }
-       
-
+        
+      await signUp(user);
     }
 
     return (

@@ -1,6 +1,5 @@
 import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
-import axios, { AxiosResponse } from "axios";
 import { ChangePassword, SignInResponse } from "@/utils/types";
 
 type SignUpRequestData = {
@@ -18,7 +17,7 @@ type SignInRequestData = {
 
 export async function signUpRequest(credentials: SignUpRequestData) {
   try{
-    return api.post('/api/v1/auth/register', credentials);
+    return await api.post('/api/v1/auth/register', credentials);
   }catch (error: any){
     handleError(error);
   }
@@ -26,9 +25,9 @@ export async function signUpRequest(credentials: SignUpRequestData) {
 
 export async function signInRequest(credentials: SignInRequestData){
   try{
-    return await api.post('/api/v1/auth/authenticate', credentials)
+    return await api.post('/api/v1/auth/authenticate', credentials);
   }catch (error: any){
-    handleError(error);
+    throw new Error(error)
   }
 }
 
