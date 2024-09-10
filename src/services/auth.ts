@@ -2,6 +2,8 @@ import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
 import { ChangePassword, SignInResponse } from "@/utils/types";
 
+import { toast } from "react-toastify";
+
 type SignUpRequestData = {
     fullName:string,
     email:string,
@@ -19,7 +21,7 @@ export async function signUpRequest(credentials: SignUpRequestData) {
   try{
     return await api.post('/api/v1/auth/register', credentials);
   }catch (error: any){
-    handleError(error);
+    toast.error(error.message)
   }
 }
 
@@ -27,7 +29,7 @@ export async function signInRequest(credentials: SignInRequestData){
   try{
     return await api.post('/api/v1/auth/authenticate', credentials);
   }catch (error: any){
-    throw new Error(error)
+    toast.error(error.message)
   }
 }
 
@@ -35,7 +37,7 @@ export async function logOut(){
   try{
     await api.post('/api/v1/auth/logout')
   }catch (error: any){
-    handleError(error)
+    toast.error(error.message)
   }
 }
 
@@ -48,7 +50,7 @@ export async function forgotPasswordRequest(email: string){
     const res = await api.post('/api/v1/auth/forgot-password', {email});
     return res;
   }catch (error: any){
-    handleError(error)
+    toast.error(error.message)
   }
 }
 
@@ -57,7 +59,7 @@ export async function changePasswordRequest(credentials: ChangePassword){
     console.log(credentials)
     return await api.put(`/api/v1/auth/edit-password?actualPassword=${credentials.actualPassword}`, credentials)
   }catch(error: any){
-    handleError(error)
+    toast.error(error.message)
   }
 }
 

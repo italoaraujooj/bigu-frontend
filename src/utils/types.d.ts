@@ -1,3 +1,13 @@
+export interface User {
+  avgScore: number
+  email: string
+  fullName: string
+  matricula: string
+  phoneNumber: string
+  sex: string
+  userId: number
+}
+
 export interface OfferRideFormState {
   origin_locale: string;
   destination: string;
@@ -81,6 +91,7 @@ export interface CreateCarFormState {
 }
 
 export interface AddressFormState {
+  id: number
   nickname: string;
   postalCode: string;
   state: string;
@@ -95,4 +106,20 @@ export interface ChangePassword {
   actualPassword: string;
   newPassword: string;
   newPasswordConfirmation: string;
+}
+
+export interface Ride {
+  car: Car,
+  dateTime: string
+  description : string
+  destination: AddressFormState
+  driver: User
+  goingToCollege: boolean
+  id: number
+  isOver: boolean
+  numSeats: number
+  price: Float32Array
+  riders: User[]
+  start: AddressFormState
+  toWomen: boolean
 }

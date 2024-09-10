@@ -1,15 +1,14 @@
-import Menu from "../../assets/Menu.png";
 import Foto from "../../assets/woman.png";
 import Image from "next/image";
 import React, { useContext, useState, useEffect } from "react";
-import Button from "../button";
 import Text from "../text";
 import { List, SignOut } from "@phosphor-icons/react";
 import Drawer from "../drawer";
 import useDrawer from "../../hooks/useDrawer";
-import { RideContext } from "../../context/RideContext";
 import Link from "./Link";
 import clsx from "clsx";
+import { getUserCars } from "@/services/car";
+import { Car } from "@/services/car";
 
 type Props = {
   handleOpenRequests: () => void;
@@ -24,14 +23,16 @@ export default function Header(props: Props) {
     handleNavigateToOfferRide,
   } = useDrawer();
 
-  const { cars, userAddress: address } = useContext(RideContext);
-  const [carsUser, setCarsUser] = useState([] as any);
-  const [addressUser, setAddressUser] = useState([] as any);
+  const [carsUser, setCarsUser] = useState<Car[]>([]);
 
   useEffect(() => {
-    setAddressUser(address);
-    setCarsUser(cars);
-  }, [cars, address]);
+    const loadData = async () => {
+      const response = await getUserCars()
+      if(response) setCarsUser(response);
+    }
+
+    loadData();
+  }, []);
 
   return (
     <header className="flex justify-between items-center">
@@ -54,7 +55,7 @@ export default function Header(props: Props) {
         <button className="group transition-all duration-300 ease-in-out">
           <Link
             to="/offer-ride"
-            className={clsx("text-gray text-base uppercase font-medium", (!!carsUser.length) && 'hover:text-[#a8a29e] py-2 text-gray text-base hover:text-[#a8a29e] uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8')}
+            className={clsx("text-gray text-base uppercase font-medium", (!!carsUser.length) && 'py-2 text-gray text-base hover:text-[#a8a29e] uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8')}
             label="Oferecer carona"
             disabled={!carsUser.length}
           />
@@ -71,7 +72,7 @@ export default function Header(props: Props) {
 
         <button onClick={props.handleOpenRides} className="group transition-all duration-300 ease-in-out">
           <Text
-            label="Caronas oferecidas"
+            label="Minhas caronas"
             className="py-2 text-gray hover:text-[#a8a29e] text-base uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8"
             color="gray"
             size="base"

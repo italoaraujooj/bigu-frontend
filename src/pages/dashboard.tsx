@@ -19,37 +19,40 @@ import { Text } from "@/components";
 import { fakeDelay } from "@/utils/delay";
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import { AddressFormState } from "@/utils/types";
+import { getAllRidesAvailable, getHistoryRide } from "@/services/ride";
 
 function Dashboard() {
   const router = useRouter();
   const { firstAccess: first = false } = router.query;
   const { user } = useContext(AuthContext);
-  const { history } = useContext(RideContext);
   const { loading } = useContext(RequestContext);
-
+  const [history, setHistory] = useState([]);
   const [showRequests, setShowRequests] = useState(false);
   const [showRides, setShowRides] = useState(false);
-  const [userAddress, setUserAddresses] = useState([]);
+  const [firstDashboardAccess, setFirstDashboardAccess] = useState(first);
+  const [ridesAvailable, setRidesAvailable] = useState<Ride[]>([]);
+
   const handleCloseRequests = () => setShowRequests(false);
   const handleOpenRequests = () => setShowRequests(true);
-  const [firstDashboardAccess, setFirstDashboardAccess] = useState(first);
-
   const handleCloseRides = () => setShowRides(false);
   const handleOpenRides = () => setShowRides(true);
 
   useEffect(() => {
-
-  }, [])
-
-  useEffect(() => {
-    fetchUserAddresses().then((data) => {
-      const addressesFormated = data?.data.map((address: any) => ({
-        label: address?.nickname,
-        value: address?.id,
-      }));
-      setUserAddresses(addressesFormated);
-    });
+    loadDataHistory();
+    loadDataRidesAvailable();
   }, []);
+  
+  const loadDataHistory = async () => {
+    const responseHistory = await getHistoryRide();
+    setHistory(responseHistory.data);
+  }
+
+  const loadDataRidesAvailable = async () => {
+    const responseAvailable = await getAllRidesAvailable();
+    setRidesAvailable(responseAvailable?.data);
+  }
+
 
   const renderGreeting = () => {
     return (
@@ -105,7 +108,7 @@ function Dashboard() {
     if (p === 4) {
       setFirstDashboardAccess(false);
     }
-    console.log("oi");
+    //console.log("oi");
   }, [p]);
 
   const firstAccess = () => {
@@ -150,14 +153,14 @@ function Dashboard() {
             <div className="flex flex-col justify-between gap-2 sm:gap-12 lg:gap-12 lg:flex-row">
               <History races={history} />
               <div className="border-solid border-[1px] border-warmGray-700"></div>
-              <Ride />
+              <Ride ridesAvailable={ridesAvailable} />
             </div>
           </div>
           <RidesRequests
             handleClose={handleCloseRequests}
             visible={showRequests}
           />
-          <RidesOffers handleClose={handleCloseRides} visible={showRides} />
+          <RidesOffers handleClose={handleCloseRides} visible={showRides} loadDataRidesAvailable={loadDataRidesAvailable}/>
         </>
       )}
     </div>

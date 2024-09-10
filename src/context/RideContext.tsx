@@ -46,7 +46,6 @@ export function RideProvider({ children }: any) {
           setCars(response);
         });
         fetchUserAddresses().then((response) => {
-          console.log(response);
           setUserAddress(response?.data);
         });
       };
@@ -70,7 +69,6 @@ export function RideProvider({ children }: any) {
           setCars(response);
         });
         fetchUserAddresses().then((response) => {
-          console.log(response);
           setUserAddress(response?.data);
         });
       };
@@ -82,26 +80,11 @@ export function RideProvider({ children }: any) {
     if (cars.length > 0) {
       console.log("entrei aqui");
       getCandidates().then((data) => {
-        console.log('!!!!!!!!!!!!!!!!!!')
-        console.log(data);
         setRidesUser(data?.data);
       });
     }
 
   }, [rides]);
-
-  // useEffect(() => {
-  //   const { "nextauth.token": token } = parseCookies();
-  //   if (token) {
-  //     const loadData = async () => {
-  //       fetchUserAddresses().then((response) => {
-  //         console.log(response)
-  //         setUserAddress(response?.data);
-  //       });
-  //     };
-  //     loadData();
-  //   }
-  // }, []);
 
   return (
     <RideContext.Provider

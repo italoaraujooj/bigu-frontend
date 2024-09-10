@@ -1,6 +1,6 @@
-import { handleError } from "@/utils/handleErros";
 import { api } from "./api";
 import { CreateCarFormState } from "@/utils/types";
+import { toast } from "react-toastify";
 
 export type Car = {
   id: number;
@@ -25,17 +25,16 @@ export async function createCar(car: CreateCarFormState) {
     const response = await api.post("/api/v1/cars", car);
     return response;
   } catch (error: any) {
-    handleError(error);
+    toast.error(error.message)
   }
 }
 
-export async function getUserCars(): Promise<Car[]> {
+export async function getUserCars(){
   try {
     const response = await api.get("/api/v1/cars");
     return response.data as Car[];
   } catch (error: any) {
-    handleError(error);
-    throw error;
+    toast.error(error.message)
   }
 }
 
@@ -45,7 +44,6 @@ export async function deleteCar(id: number) {
 
     return response.data;
   } catch (error: any) {
-    handleError(error);
-    throw error;
+    toast.error(error.message)
   }
 }

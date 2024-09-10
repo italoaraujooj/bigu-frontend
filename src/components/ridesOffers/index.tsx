@@ -1,23 +1,49 @@
 import clsx from "clsx";
-import Image from "next/image";
-import Back from "../../assets/CaretRight.svg";
-import { RideContext } from "@/context/RideContext";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import Offer from "./offers";
 import { CaretRight } from "@phosphor-icons/react";
+import { deleteRide, getMyRidesAvailable } from "@/services/ride";
+import { Ride } from "@/utils/types";
+import { toast } from "react-toastify";
 
 type Props = {
     visible: boolean;
     handleClose: () => void;
+    loadDataRidesAvailable: () => void;
 };
 
 function RidesOffers(props: Props) {
-    const { visible, handleClose } = props;
-    const { rides } = useContext(RideContext);
+    const { visible, handleClose, loadDataRidesAvailable } = props;
     const { user } = useContext(AuthContext);
+    const [myRides, setMyRides] = useState<Ride[]>([]);
+    const [shouldFetch, setShouldFetch] = useState<boolean>(true);
 
+    useEffect(() => {
+        const loadData = async () => {
+            if(shouldFetch){
+                const response = await getMyRidesAvailable();
+                setMyRides(response?.data)
+                setShouldFetch(false);
+            }
+        }
+        loadData();
+    }, [shouldFetch])
 
+    const handleDeleteRide = async (ride: Ride) => {
+        try {
+          await deleteRide(ride.id);
+          setShouldFetch(true);
+          loadDataRidesAvailable();
+          
+          toast.success("A carona foi cancelada com sucesso");
+          handleClose();
+        } catch (err: any) {
+          toast.error("Falha ao cancelar a carona");
+          handleClose();
+          console.log(err);
+        }
+      };
 
     return (
         <div
@@ -35,21 +61,15 @@ function RidesOffers(props: Props) {
                     Caronas oferecidas por você
                 </h1>
 
-                {rides?.map((ride: any, index: number) => {
-                    
-                    const isDriver = ride.driver.userId === user?.userId;
-
-                    if (isDriver) {
-                        return (
-                            <Offer
-                                key={index}
-                                ride={ride}
-                                handleClose={handleClose}
-                            />
-                        );
-                    }
-
-                    return null; 
+                {myRides.map((ride: Ride, index: number) => {
+                    return (
+                        <Offer
+                            key={index}
+                            ride={ride}
+                            handleClose={handleClose}
+                            handleDeleteRide={handleDeleteRide}
+                        />
+                    );
                 })}
             </div>
         </div>

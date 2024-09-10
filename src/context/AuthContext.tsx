@@ -9,16 +9,14 @@ import Router, { useRouter } from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { RequestContext } from "./RequestContext";
 import { fakeDelay } from "@/utils/delay";
-import NotificationContext from "./NotificationContext";
-import { fetchUserAddresses } from "@/services/address";
-import { toast } from "react-toastify";
+import { User } from "@/utils/types";
 
 type AuthContextType = {
   isAuthenticated: boolean;
   signIn: (data: SignInData) => Promise<any>;
   signUp: (data: SignUpData) => Promise<any>;
   logout: () => Promise<void>;
-  user: any;
+  user: User | undefined;
   setUser: (user: User) => void;
 };
 
@@ -35,27 +33,22 @@ type SignUpData = {
   password: string;
 };
 
-type User = {
-  email: string;
-};
-
 export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: any) {
-  const [user, setUser] = useState(null as any);
+  const [user, setUser] = useState<User>();
   const isAuthenticated = !!user;
   const { inProgress, done } = useContext(RequestContext);
-  const {notificationHandler, showNotification} = useContext(NotificationContext)
   const router = useRouter();
   
   async function signIn(credentials: SignInData) {
     const response: any = await signInRequest(credentials);
     
-    if (response.status === 200) {
+    if (response && response.status === 200) {
       setCookie(undefined, "nextauth.token", response?.data?.token, {
         maxAge: 8600,
       });
-      setUser(response?.data?.userResponse);
+      setUser(response.data.userResponse);
       router.push("/dashboard");
     }
     return { data: response?.data, status: response?.status };
@@ -63,15 +56,15 @@ export function AuthProvider({ children }: any) {
 
   async function signUp(credentials: SignUpData) {
     const response = await signUpRequest(credentials);
-    if (response) {
+    if (response && response.status === 200) {
       setCookie(undefined, "nextauth.token", response?.data?.token, {
         maxAge: 8600,
       });
-      setUser(response?.data?.userResponse);
+      
       router.push({
         pathname: '/dashboard',
         query: { firstAccess: true }
-    })
+      })
     }
     return { data: response?.data, status: response?.status };
   }
@@ -79,7 +72,7 @@ export function AuthProvider({ children }: any) {
   async function logout() {
     router.push("/");
     destroyCookie(null, "nextauth.token");
-    setUser(null);
+    setUser(undefined);
     await exit();
   }
 

@@ -6,8 +6,6 @@ import Image from "next/image";
 import Button from "../button";
 import Text from "../text";
 import {
-  createRide,
-  getAllRides,
   getAllRidesAvailable,
   requestRide,
 } from "@/services/ride";
@@ -22,39 +20,49 @@ import { AuthContext } from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
 import Router from "next/router";
 import clsx from "clsx";
+import { toast } from "react-toastify";
+import { Car } from "@/services/car";
+import { AddressFormState, User } from "@/utils/types";
+import type { Ride } from "@/utils/types";
 
-function Ride() {
+type Props = {
+  ridesAvailable: Ride[];
+};
+
+function Ride(props: Props) {
+  const { ridesAvailable } = props
   const [userAddress, setUserAddresses] = React.useState([]);
   const [userAddressesSelected, setUserAddressesSelected] = React.useState(
     {} as any
   );
   const [favorite, setFavorite] = React.useState(false);
   const [askRide, setAskRide] = React.useState(false);
-  const [ridesAvailable, setRidesAvailable] = React.useState([]);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [rideIdSelected, setRideIdSelected] = React.useState({});
 
   const { user } = useContext(AuthContext);
-  const { rides, setRides } = useContext(RideContext);
 
   const toggleFavorite = () => setFavorite((prev) => !prev);
   const toggleAskRide = () => setAskRide((prev) => !prev);
 
   useEffect(() => {
-    setRidesAvailable(rides);
-  }, [rides]);
-
-  useEffect(() => {
-    fetchUserAddresses().then((data) => {
-      const addressesFormated = data?.data.map((address: any) => ({
+    const loadData = async () => {
+      const responseAddress = await fetchUserAddresses();
+      const addressesFormated = responseAddress?.data.map((address: any) => ({
         label: address.nickname,
         value: address.id,
       }));
       setUserAddresses(addressesFormated);
-    });
+    }
+    loadData();
   }, [askRide]);
 
   const handleAskRide = (rideId: number) => {
+    const ride = ridesAvailable.find(ride => ride.id === rideId)
+    if(ride?.driver.userId === user?.userId){
+      toast.info("Você já é o motorista dessa carona.")
+      return
+    }
     setModalOpen((prev) => !prev);
     setRideIdSelected(rideId);
   };
@@ -62,7 +70,7 @@ function Ride() {
   const submitRide = async () => {
     try {
       const response = await requestRide({
-        phoneNumber: user.phoneNumber,
+        phoneNumber: user?.phoneNumber,
         addressId: Number(userAddressesSelected.value),
         rideId: Number(rideIdSelected),
       });
@@ -70,23 +78,21 @@ function Ride() {
         setAskRide((prev) => !prev);
         setModalOpen((prev) => !prev);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      toast.error(err.message)
     }
   };
 
-  console.log(ridesAvailable)
-  const rideUser = () => ridesAvailable.map((ride: any, i: number) => {
-    ride.riders?.map((usr: any, i: number) => {
-      if (usr?.userId === user?.userId) {
-        if (!i) return ride;
-        ride = {...ride, confirmation: true }
-      }
-    })
+  // const rideUser = () => ridesAvailable.map((ride: any, i: number) => {
+  //   ride.riders?.map((usr: any, i: number) => {
+  //     if (usr?.userId === user?.userId) {
+  //       if (!i) return ride;
+  //       ride = {...ride, confirmation: true }
+  //     }
+  //   })
 
-    return ride;
-  });
-
+  //   return ride;
+  // });
   return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-6 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
       <h2 className="font-['Poppins'] text-xl sm:text-3xl text-white font-bold pb-8">
@@ -95,7 +101,7 @@ function Ride() {
 
       <div className="space-y-4">
         {!!ridesAvailable.length ? (
-          rideUser().map((item: any) => (
+          ridesAvailable.map((item: any) => (
             <div
               key={item.id}
               className={clsx(
@@ -159,9 +165,6 @@ function Ride() {
                         : "font-semibold",
                       !!userAddress.length && "hover:bg-hover-green"
                     )}
-                    disabled={
-                      item.driver.userId === user?.userId || !userAddress.length
-                    }
                   />
                 ) : (
                   <span className="animate-pulse text-yellow ease-in-out infinite">
