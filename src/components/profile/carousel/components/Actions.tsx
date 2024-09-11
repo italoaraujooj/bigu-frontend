@@ -8,14 +8,12 @@ type Props = {
   add: () => void;
   edit: () => void;
   remove: () => void;
-  finished: () => void;
 };
 
-export default function Actions({ add, edit, remove, finished }: Props) {
+export default function Actions({ add, edit, remove }: Props) {
 
   const makeAction = (action: () => void) => {
     action();
-    finished();
   }
 
   return (

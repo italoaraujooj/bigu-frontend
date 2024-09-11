@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import clsx from "clsx";
-import { getUserCars } from "@/services/car";
+import { Car, getUserCars } from "@/services/car";
 import { Actions, Attribute, Bar, Navigation } from "./components";
 import Image from "next/image";
 import Plus from "../../../assets/plus-green.png"
@@ -8,49 +8,13 @@ import Plus from "../../../assets/plus-green.png"
 type Props = {
   profile?: boolean;
   add: any;
-  needUpdate: boolean;
-  toggleNeedUpdate: () => void
-};
-
-type CarProps = {
-  id: string;
-  model: string;
-  car: string;
-  color: string;
-  plate: string;
+  items: Car[]
 };
 
 const Carousel = (props: Props) => {
+  const {profile, add, items} = props
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [selectedCar, setSelectedCar] = React.useState(0);
-  const [items, setItems] = React.useState([] as any);
-  
-
-  useEffect(() => {
-    const loadData = async () => {
-      getUserCars().then((response) => {
-        setItems(response);
-      });
-    };
-    loadData();
-  }, []);
-
-  useEffect(() => {
-    if (props.needUpdate) {
-      const loadData = async () => {
-        getUserCars().then((response) => {
-          setItems(response);
-        });
-      };
-      loadData();
-
-      props.toggleNeedUpdate();
-    }
-  }, [props.needUpdate])
-
-  const toggleCar = (index: number) => {
-    setSelectedCar(index);
-  };
 
   const goToIndex = (index: number) => {
     setCurrentIndex(index);
@@ -84,7 +48,7 @@ const Carousel = (props: Props) => {
         )}
       >
         {items.length > 0 ?
-          items?.map(({ id, model, color, plate }: CarProps, index: number) => (
+          items?.map(({ id, carModel, color, plate }: Car, index: number) => (
             <div
               key={id}
               className={clsx(
@@ -104,7 +68,7 @@ const Carousel = (props: Props) => {
                     <div className="flex items-center gap-12">
                       <Attribute
                         label="Modelo"
-                        value={model}
+                        value={carModel}
                         color="light-blue"
                       />
                       <Attribute label="Cor" value={color} color="yellow" />
@@ -115,7 +79,6 @@ const Carousel = (props: Props) => {
                         add={props.add}
                         edit={() => {}}
                         remove={() => {}}
-                        finished={props.toggleNeedUpdate}
                       />
                     </div>
                   </div>

@@ -4,7 +4,7 @@ import {
   deleteAddress,
   fetchUserAddresses,
 } from "@/services/address";
-import { AddressFormState } from "@/utils/types";
+import { Address, AddressFormState } from "@/utils/types";
 import {
   ArrowCircleLeft,
   MapPin,
@@ -17,13 +17,14 @@ import { Form } from "@unform/web";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import { toast } from "react-toastify";
 
 type Props = {};
 
 function Addresses({}: Props) {
   const formRef = React.useRef<FormHandles>(null);
   const router = useRouter();
-  const [userAddress, setUserAddresses] = React.useState([]);
+  const [userAddress, setUserAddresses] = React.useState<Address[]>([]);
   const [modalAddress, setModalAddress] = React.useState(false);
   const [addressSelected, setAddressSelected] = React.useState(
     null as any as Number
@@ -43,20 +44,22 @@ function Addresses({}: Props) {
   }, []);
 
   const handleCreateAddress: SubmitHandler<AddressFormState> = async (data) => {
-    const response = await createAddress(data);
-
-    fetchUserAddresses().then((data) => {
-      setUserAddresses(data?.data);
-    });
-
+    const responsePost = await createAddress(data);
+    if(responsePost?.status === 201){
+      toast.success(`O endereço '${data.nome}' foi cadastrado.`)
+      const responseGet = await fetchUserAddresses();
+      setUserAddresses(responseGet?.data)
+    }
     toggleModalAddress();
   };
 
-  const handleDeleteAddress = async (id: number) => {
-    await deleteAddress(id);
-    fetchUserAddresses().then((data) => {
-      setUserAddresses(data?.data);
-    });
+  const handleDeleteAddress = async (address: Address) => {
+    const responseDelete = await deleteAddress(address._id);
+    if(responseDelete?.status === 200){
+      toast.success(`O endereço '${address.nome}' foi removido.`)
+    }
+    const responseGet = await fetchUserAddresses();
+      setUserAddresses(responseGet?.data)
   };
 
   const redirect = () =>
@@ -98,13 +101,13 @@ function Addresses({}: Props) {
               {!userAddress?.length && (
                 <Text label="Você ainda não possui endereços cadastrados." />
               )}
-              {userAddress?.map((address) => (
-                <>
+              {userAddress?.map((address: Address, index: number) => (
+                <div key={index}>
                   <div className="w-full flex items-center bg-white py-6 px-4 justify-between rounded-md">
                     <div className="flex items-center gap-2">
                       <MapPin weight="bold" color="gray" size={24} />
                       <Text
-                        label={`${address?.street}, ${address?.number}, ${address?.district}`}
+                        label={`${address.rua}, ${address.numero}, ${address.bairro}`}
                         color="gray"
                         size="md"
                       />
@@ -120,12 +123,12 @@ function Addresses({}: Props) {
                         color="#dd5035"
                         weight="bold"
                         className="cursor-pointer"
-                        onClick={() => handleDeleteAddress(address?.id)}
+                        onClick={() => handleDeleteAddress(address)}
                         size={24}
                       />
                     </div>
                   </div>
-                </>
+                </div>
               ))}
             </div>
             <Button
@@ -141,24 +144,11 @@ function Addresses({}: Props) {
       <Modal
         isOpen={modalAddress}
         onClose={toggleModalAddress}
-        // onSubmit={handleCreateCar}
         noActions
       >
         <Form
           onSubmit={handleCreateAddress}
           ref={formRef}
-          // initialData={
-          //   {
-          //     "nickname": "Casa",
-          //     "postalCode": "string",
-          //     "state": "PB",
-          //     "city": "Campina Grande",
-          //     "district": "Centro",
-          //     "street": "Rua Exemplo",
-          //     "number": "123",
-          //     "complement": "Complemento"
-          //   }
-          // }
           className="py-12 space-y-2 h-screen overflow-y-scroll	"
         >
           <Text
@@ -170,49 +160,49 @@ function Addresses({}: Props) {
 
           <br />
           <Input
-            name="nickname"
+            name="nome"
             label="Nome"
             placeholder="Casa"
             sizing="adjustable"
           />
           <Input
-            name="postalCode"
+            name="cep"
             label="CEP"
             placeholder="58432-777"
             sizing="adjustable"
           />
           <Input
-            name="city"
+            name="cidade"
             label="Cidade"
             placeholder="Campina Grande"
             sizing="adjustable"
           />
           <Input
-            name="street"
+            name="rua"
             label="Rua"
             placeholder="Rua exemplo"
             sizing="adjustable"
           />
           <Input
-            name="district"
+            name="bairro"
             label="Bairro"
             placeholder="Prata"
             sizing="adjustable"
           />
           <Input
-            name="number"
+            name="numero"
             label="Número"
             placeholder="312"
             sizing="adjustable"
           />
           <Input
-            name="state"
+            name="estado"
             label="Estado"
             placeholder="PB"
             sizing="adjustable"
           />
           <Input
-            name="complement"
+            name="complemento"
             label="Complemento"
             placeholder="-"
             sizing="adjustable"

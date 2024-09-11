@@ -10,11 +10,12 @@ import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { RequestContext } from "./RequestContext";
 import { fakeDelay } from "@/utils/delay";
 import { User } from "@/utils/types";
+import { UserFormState } from "@/components/register";
 
 type AuthContextType = {
   isAuthenticated: boolean;
   signIn: (data: SignInData) => Promise<any>;
-  signUp: (data: SignUpData) => Promise<any>;
+  signUp: (data: UserFormState) => Promise<any>;
   logout: () => Promise<void>;
   user: User | undefined;
   setUser: (user: User) => void;
@@ -22,14 +23,6 @@ type AuthContextType = {
 
 type SignInData = {
   email: string;
-  password: string;
-};
-
-type SignUpData = {
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  sex: string;
   password: string;
 };
 
@@ -42,24 +35,25 @@ export function AuthProvider({ children }: any) {
   const router = useRouter();
   
   async function signIn(credentials: SignInData) {
-    const response: any = await signInRequest(credentials);
+    const response = await signInRequest(credentials);
     
     if (response && response.status === 200) {
       setCookie(undefined, "nextauth.token", response?.data?.token, {
         maxAge: 8600,
       });
-      setUser(response.data.userResponse);
+      setUser(response.data.user);
       router.push("/dashboard");
     }
     return { data: response?.data, status: response?.status };
   }
 
-  async function signUp(credentials: SignUpData) {
+  async function signUp(credentials: UserFormState) {
     const response = await signUpRequest(credentials);
-    if (response && response.status === 200) {
+    if (response && response.status === 201) {
       setCookie(undefined, "nextauth.token", response?.data?.token, {
         maxAge: 8600,
       });
+      setUser(response.data.user);
       
       router.push({
         pathname: '/dashboard',
@@ -94,9 +88,6 @@ export function AuthProvider({ children }: any) {
   useEffect(() => {
     const { "nextauth.token": token } = parseCookies();
     if (token) {
-      // getUser().then((data) => {
-      //   setUser(data.data);
-      // });
       getUserData();
     }
   }, []);

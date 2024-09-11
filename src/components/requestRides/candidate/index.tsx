@@ -71,7 +71,7 @@ console.log(ridesUser);
         <div className="flex gap-2 items-center">
           <Image className="w-12 h-12" src={avatar} alt="ft" />
           <p className="font-[Poppins] font-bold text-lg">
-            {String(ride?.userResponse?.fullName)?.toUpperCase()}
+            {String(ride?.userResponse?.name)?.toUpperCase()}
           </p>
         </div>
 

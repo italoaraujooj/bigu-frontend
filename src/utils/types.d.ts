@@ -1,11 +1,11 @@
 export interface User {
   avgScore: number
   email: string
-  fullName: string
+  name: string
   matricula: string
   phoneNumber: string
   sex: string
-  userId: number
+  _id: number
 }
 
 export interface OfferRideFormState {
@@ -84,22 +84,33 @@ export interface SignInResponse {
 
 export interface CreateCarFormState {
   brand: string;
-  model: string;
+  carModel: string;
   modelYear: string;
   color: string;
   plate: string;
 }
 
 export interface AddressFormState {
-  id: number
-  nickname: string;
-  postalCode: string;
-  state: string;
-  city: string;
-  district: string;
-  street: string;
-  number: string;
-  complement: string;
+  nome: string;
+  rua: string;
+  numero: string;
+  complemento: string;
+  bairro: string;
+  cidade: string;
+  estado: string;
+  cep: string;
+}
+
+export interface Address {
+  _id: string
+  nome: string;
+  rua: string;
+  numero: string;
+  complemento: string;
+  bairro: string;
+  cidade: string;
+  estado: string;
+  cep: string;
 }
 
 export interface ChangePassword {

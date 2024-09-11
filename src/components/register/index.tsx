@@ -12,14 +12,13 @@ import NotificationContext from "@/context/NotificationContext";
 import Notification from "../notification";
 import { formatarTelefone } from "@/utils/masks";
 
-interface UserFormState {
+export interface UserFormState {
     name: string;
     email: string;
-    telephone: string;
+    matricula: string;
+    phoneNumber: string;
     sex: string;
     password: string;
-    confirmPassowrd: string;
-    
 }
 
 type Props = {
@@ -34,14 +33,13 @@ function Register(props: Props){
     const [sexSelected, setSexSelected] = useState('H');
 
     const handleSubmit: SubmitHandler<UserFormState> = async data => {
-      const user = {
-        fullName: data.name,
+      const user: UserFormState = {
+        name: data.name,
         email: data.email,
-        phoneNumber: data.telephone,
+        matricula: data.matricula,
+        phoneNumber: data.phoneNumber,
         sex: sexSelected,
-        password: data.password,
-        role: 'USER',
-        userType: 'RIDER'
+        password: data.password
       }
         
       await signUp(user);
@@ -50,7 +48,7 @@ function Register(props: Props){
     return (
       <div id="register" className={clsx("transition ease-in-out delay-150 duration-500", "flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem] lg:mx-auto", visible ? "translate-x-0" : "translate-x-full")}>
         <Form
-          className="flex flex-col gap-5 justify-center"
+          className="flex flex-col gap-2 justify-center"
           ref={formRef}
           onSubmit={handleSubmit}
         >
@@ -59,7 +57,7 @@ function Register(props: Props){
           <h1 className="font-['Poppins'] font-semibold text-2xl md:text-4xl my-2">
             Criar Conta
           </h1>
-          <div className="flex flex-col gap-2 sm:gap-5">
+          <div className="flex flex-col gap-2 sm:gap-3">
             <div className="flex flex-col gap-2">
               <Input
                 label="Nome Completo: "
@@ -88,8 +86,21 @@ function Register(props: Props){
             </div>
             <div className="flex flex-col gap-2">
               <Input
+                label="Matrícula"
+                name="matricula"
+                sizing="sm"
+                color="extralight"
+                className="md:w-80 md:h-16 md:text-lg"
+                type="text"
+                placeholder="120210382"
+                readOnly={false}
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Input
                 label="Telefone"
-                name="telephone"
+                name="phoneNumber"
                 sizing="sm"
                 color="extralight"
                 className="md:w-80 md:h-16 md:text-lg"

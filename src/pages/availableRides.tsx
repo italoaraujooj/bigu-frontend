@@ -47,7 +47,7 @@ function AvailableRides() {
               <div key={index}>
                 <RideFull
                   id={item.id}
-                  userName={item.driver.fullName}
+                  userName={item.driver.name}
                   start={item.start.district}
                   destination={item.destination.nickname}
                   numSeats={item.numSeats}

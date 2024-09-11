@@ -6,63 +6,54 @@ import Image from "next/image";
 import Input from "../components/input/input";
 import { Form } from "@unform/web";
 import Carousel from "@/components/profile/carousel";
-import Car from "../assets/sport-car.png";
 import Text from "@/components/text";
-import Trash from "../assets/trash.png";
-import Plus from "../assets/plus-green.png";
-import Edit from "../assets/edit.png";
 import { AuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import Router from "next/router";
-import withPrivateRoute from "@/routes/PrivateRoute";
-import { ArrowCircleLeft, ArrowRight, CaretRight } from "@phosphor-icons/react";
+import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react";
 import Modal from "@/components/modal";
 import { changePasswordRequest, getUser } from "@/services/auth";
-import { createCar } from "@/services/car";
+import { createCar, getUserCars } from "@/services/car";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { ChangePassword, CreateCarFormState } from "@/utils/types";
-import NotificationContext from "@/context/NotificationContext";
 import Notification from "@/components/notification";
 import React from "react";
-import { RideContext } from "@/context/RideContext";
 import { toast } from "react-toastify";
+import { Car } from "@/services/car";
 
 function Profile() {
   const formRef = useRef<FormHandles>(null);
   const formRefCar = useRef<FormHandles>(null);
   const formRefChangePassword = useRef<FormHandles>(null);
-
-  // const {notificationHandler, showNotification} = useContext(NotificationContext)
   
-  const { user, isAuthenticated, setUser } = useContext(AuthContext);
-  const { cars, setCars } = useContext(RideContext);
+  const { user } = useContext(AuthContext);
 
   const [readOnly, setReadOnly] = useState(true);
   const [changePassword, setChangePassord] = useState(false);
-  const [save, setSave] = useState(false);
   const [modalCar, setModalCar] = useState(false);
-
-  const [needUpdate, setNeedUpdate] = React.useState(false);
-  const toggleNeedUpdate = () => setNeedUpdate(prev => !prev);
+  const [cars, setCars] = useState<Car[]>([])
 
   const toggleModalCar = () => setModalCar((prev) => !prev);
   const handleOpenChangePassword = () => setChangePassord(true);
   const handleCloseChangePassword = () => setChangePassord(false);
 
-  const handleOpenSave = () => setSave(true);
-  const handleCloseSave = () => setSave(false);
-
   function editSubmit() {
     setReadOnly((prev) => !prev);
   }
 
+  useEffect(() => {
+    const loadCars = async () => {
+      const responseCars: any = await getUserCars();
+      if(responseCars) setCars(responseCars.data)
+    }
+    loadCars();
+  }, [])
+
   const handleCreateCar: SubmitHandler<CreateCarFormState> = async (data) => {
     try{
       const response: any = await createCar(data);
-      if(response.status === 200){
-        setCars([...cars, response.data])
-        toggleNeedUpdate();
-        // handleCreateCarNotification("success", "O carro foi criado com sucesso");
+      if(response.status === 201){
+        setCars(response.data);
         toast.success("Carro criado com sucesso!");
         toggleModalCar();
 
@@ -104,9 +95,9 @@ function Profile() {
         <div className="w-full h-fit flex items-center justify-center">
           <Form
             className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl"
-            onSubmit={handleOpenSave}
+            onSubmit={() => {}}
             initialData={{
-              name: user?.fullName,
+              name: user?.name,
               email: user?.email,
               telephone: user?.phoneNumber,
             }}
@@ -122,7 +113,7 @@ function Profile() {
                 ></Image>
                 <div className="flex gap-1">
                   <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
-                    {`Olá, ${user?.fullName.split(" ")[0]}`}
+                    {`Olá, ${user?.name.split(" ")[0]}`}
                   </h1>
                   <div className="flex items-center gap-2 pt-2">
                     <Image className="w-3 h-3" src={Star} alt="estrela" />
@@ -144,7 +135,7 @@ function Profile() {
                   placeholder="Exemplo Alves"
                   readOnly={readOnly}
                   visibility="visible"
-                  value={user?.fullname}
+                  value={user?.name}
                 />
                 <Input
                   label="Email"
@@ -197,7 +188,7 @@ function Profile() {
                   <h1 className="text-2xl text-white font-bold mb-2 font-[Poppins]">
                     Meus veículos
                   </h1>
-                  <Carousel profile add={toggleModalCar} needUpdate={needUpdate} toggleNeedUpdate={toggleNeedUpdate}/>
+                  <Carousel profile add={toggleModalCar} items={cars}/>
                 </div>
                 <div className="flex gap-7">
                   <Button
@@ -236,7 +227,7 @@ function Profile() {
                   color="extralight"
                 />
                 <Input
-                  name="model"
+                  name="carModel"
                   label="Modelo"
                   placeholder="Onix"
                   sizing="adjustable"
@@ -281,33 +272,6 @@ function Profile() {
                 </section>
               </Form>
             </Modal>
-            {/* {save && (
-              <Modal isOpen={save} onClose={handleCloseSave}>
-                <form>
-                  <div className=" bg-white rounded-lg p-3 flex flex-col gap-4 justify-center items-center">
-                    <h2 className=" text-2xl font-semibold">
-                      Confirmar modificações
-                    </h2>
-                    <div className="flex gap-2">
-                      <Button
-                        label="Cancelar"
-                        size="base"
-                        className="uppercase font-semibold px-3 lg:px-6"
-                        color="red"
-                        onClick={handleCloseSave}
-                      />
-                      <Button
-                        label="Confirmar"
-                        size="base"
-                        className="uppercase font-semibold px-3 lg:px-6"
-                        color="green"
-                        type="submit"
-                      />
-                    </div>
-                  </div>
-                </form>
-              </Modal>
-            )} */}
           </Form>
         </div>
       </div>

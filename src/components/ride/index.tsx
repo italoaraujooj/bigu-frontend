@@ -120,7 +120,7 @@ function Ride(props: Props) {
                 <Text
                   label={`${
                     item.driver.userId !== user?.userId
-                      ? item.driver.fullName.split(" ")[0]
+                      ? item.driver.name.split(" ")[0]
                       : "Você"
                   } está saindo do ${item.start.district}...`}
                   color="dark"

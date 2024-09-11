@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 export const getAllRides = async () => {
   try {
-    const response = api.get('/api/v1/rides');
+    const response = api.get('/rides');
     
     return response;
   } catch (err: any) {
@@ -14,8 +14,7 @@ export const getAllRides = async () => {
 
 export const getHistoryRide = async () => {
   try {
-    const response: any = api.get('/api/v1/rides/history');
-    
+    const response: any = api.get('/users/user/self/history');
     return response;
   } catch (err: any) {
     toast.error(err.message)
@@ -32,7 +31,7 @@ const offerRide = async (data: OfferRideBody) => {
 
 const getRideById = async (id: number) => {
   try {
-    const response = api.get(`/api/v1/rides/${id}`);
+    const response = api.get(`/ride/${id}`);
   } catch (err: any) {
     toast.error(err.message)
   }
@@ -48,7 +47,7 @@ const getMember = async () => {
 
 export const createRide = async (body: any) => {
   try {
-    const response = api.post('/api/v1/rides', body);
+    const response = api.post('ride', body);
     return response;
   } catch (err: any) {
     toast.error(err.message)
@@ -57,7 +56,7 @@ export const createRide = async (body: any) => {
 
 export const getAllRidesAvailable = async () => {
   try {
-    const response = api.get('/api/v1/rides/available');
+    const response = api.get('/rides/available');
     return response;
   } catch (err: any) {
     toast.error(err.message)
@@ -92,7 +91,7 @@ export const answerCandidate = async (body: any) => {
 
 export const deleteRide = async (id: number) => {
   try {
-    const response = api.delete(`/api/v1/rides/delete-ride/${id}`);
+    const response = api.delete(`/rides/ride/${id}`);
     return response;
   } catch (err: any) {
     toast.error(err.message)
@@ -101,7 +100,7 @@ export const deleteRide = async (id: number) => {
 
 export const getMyRidesAvailable = async () => {
   try {
-    const response = api.get('/api/v1/rides/my-rides');
+    const response = api.get('/rides/driver');
     return response;
   } catch (err: any) {
     toast.error(err.message)

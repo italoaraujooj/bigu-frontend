@@ -4,34 +4,34 @@ import { toast } from "react-toastify";
 
 export type Car = {
   id: number;
-  userId: number;
   brand: string;
-  model: string;
-  model_year: number;
+  carModel: string;
+  modelYear: number;
   color: string;
   plate: string;
 };
 
-// {
-//   "brand": "string",
-//   "model": "string",
-//   "modelYear": "2023",
-//   "color": "string",
-//   "plate": "KGU7E07"
-// }
-
-export async function createCar(car: CreateCarFormState) {
+export async function getUserCars(){
   try {
-    const response = await api.post("/api/v1/cars", car);
+    const response = await api.get("/users/user/self/car");
     return response;
   } catch (error: any) {
     toast.error(error.message)
   }
 }
 
-export async function getUserCars(){
+export async function createCar(car: CreateCarFormState) {
   try {
-    const response = await api.get("/api/v1/cars");
+    const response = await api.post("users/user/self/car", car);
+    return response;
+  } catch (error: any) {
+    toast.error(error.message)
+  }
+}
+
+export async function getAllCars(){
+  try {
+    const response = await api.get("/users/user/self/car");
     return response.data as Car[];
   } catch (error: any) {
     toast.error(error.message)
@@ -40,7 +40,7 @@ export async function getUserCars(){
 
 export async function deleteCar(id: number) {
   try {
-    const response = await api.delete(`/api/v1/cars/${id}`);
+    const response = await api.delete(`/cars/${id}`);
 
     return response.data;
   } catch (error: any) {

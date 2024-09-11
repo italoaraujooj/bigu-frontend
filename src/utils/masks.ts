@@ -76,21 +76,23 @@ export function moneyMask(value: any) {
 }
 
 export function timeMask(value: any) {
-  // Remove todos os caracteres não numéricos
+
+  console.log(value)
+  
   const numericValue = value.replace(/[^0-9]/g, '');
 
-  // Verifica se o valor está vazio
+  
   if (numericValue === '') {
     return '';
   }
 
-  // Obtém as duas primeiras posições para as horas
+  
   let hours = numericValue.slice(0, 2);
 
-  // Obtém as duas últimas posições para os minutos
+  
   let minutes = numericValue.slice(2, 4);
 
-  // Validações para garantir que as horas e minutos estejam no formato correto
+  
   if (hours !== '') {
     if (parseInt(hours, 10) >= 24) {
       hours = '00';

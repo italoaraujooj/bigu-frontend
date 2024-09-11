@@ -4,9 +4,10 @@ import { ChangePassword, SignInResponse } from "@/utils/types";
 
 import { toast } from "react-toastify";
 
-type SignUpRequestData = {
-    fullName:string,
+type UserFormState = {
+    name:string,
     email:string,
+    matricula: string,
     phoneNumber:string,
     sex: string,
     password:string
@@ -17,9 +18,9 @@ type SignInRequestData = {
     password:string
 }
 
-export async function signUpRequest(credentials: SignUpRequestData) {
+export async function signUpRequest(credentials: UserFormState) {
   try{
-    return await api.post('/api/v1/auth/register', credentials);
+    return await api.post('/auth/register/user', credentials);
   }catch (error: any){
     toast.error(error.message)
   }
@@ -27,8 +28,9 @@ export async function signUpRequest(credentials: SignUpRequestData) {
 
 export async function signInRequest(credentials: SignInRequestData){
   try{
-    return await api.post('/api/v1/auth/authenticate', credentials);
+    return await api.post('auth/login/user', credentials);
   }catch (error: any){
+    
     toast.error(error.message)
   }
 }
@@ -42,7 +44,7 @@ export async function logOut(){
 }
 
 export async function getUser(){
-  return await api.get('/api/v1/users/self')
+  return await api.get('/users/user/self')
 }
 
 export async function forgotPasswordRequest(email: string){

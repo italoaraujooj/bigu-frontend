@@ -9,6 +9,8 @@ import Link from "./Link";
 import clsx from "clsx";
 import { getUserCars } from "@/services/car";
 import { Car } from "@/services/car";
+import { AddressFormState } from "@/utils/types";
+import { fetchUserAddresses } from "@/services/address";
 
 type Props = {
   handleOpenRequests: () => void;
@@ -24,11 +26,16 @@ export default function Header(props: Props) {
   } = useDrawer();
 
   const [carsUser, setCarsUser] = useState<Car[]>([]);
+  const [userAddresses, setUserAddresses] = useState<AddressFormState[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
-      const response = await getUserCars()
-      if(response) setCarsUser(response);
+      const responseCars = await getUserCars()
+      if(responseCars) setCarsUser(responseCars);
+
+      const responseAddress = await fetchUserAddresses()
+      console.log(responseAddress?.data)
+      if(responseAddress?.data) setUserAddresses(responseAddress?.data);
     }
 
     loadData();
@@ -57,7 +64,7 @@ export default function Header(props: Props) {
             to="/offer-ride"
             className={clsx("text-gray text-base uppercase font-medium", (!!carsUser.length) && 'py-2 text-gray text-base hover:text-[#a8a29e] uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8')}
             label="Oferecer carona"
-            disabled={!carsUser.length}
+            disabled={!carsUser.length || !userAddresses.length}
           />
         </button>
         <button onClick={props.handleOpenRequests} className="group transition-all duration-300 ease-in-out">

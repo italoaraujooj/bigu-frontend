@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { parseCookies, destroyCookie } from "nookies";
 
-const baseURL = "http://localhost:8081";
+const baseURL = "http://localhost:3001";
 
 export const api = axios.create({
   baseURL,
@@ -31,8 +31,9 @@ api.interceptors.response.use(
     }
     // Por exemplo, você pode adicionar uma propriedade personalizada ao erro
     error.customProperty = 'Custom Value';
+    console.log(error)
     // Ou você pode lançar um novo erro com uma mensagem personalizada
-    throw new Error(error.response.data.errorMessage);
+    throw new Error(error.response.data.message);
 
     // Se você deseja retornar uma resposta de erro modificada, você pode fazer algo como:
     //return { ...error.response, customProperty: 'Custom Value' };

@@ -17,7 +17,6 @@ interface RacesHistory {
 
 
 function History({ races }: { races: any[] }) {
-  console.log(races)
   return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-6 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
       <h2 className="font-['Poppins'] text-xl sm:text-3xl text-white font-bold pb-8">
@@ -30,12 +29,6 @@ function History({ races }: { races: any[] }) {
         )}
       >
         {!races?.length && (
-          // <Text
-          //   label="Nenhuma carona registrada"
-          //   size="xl"
-          //   color="gray"
-          //   className="text-center"
-          // />
           <div className="w-full flex items-center justify-center">
             <div className="w-64 h-64 ">
               <LottieAnimation data={ghost} />
