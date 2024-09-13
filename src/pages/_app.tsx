@@ -14,10 +14,10 @@ export default function App({ Component, pageProps }: AppProps) {
     <RequestProvider>
       <AuthProvider>
         <NotificationProvider>
-          <RideProvider>
+          {/* <RideProvider> */}
               <ToastContainer/>
               <Component {...pageProps} />
-          </RideProvider>
+          {/* </RideProvider> */}
         </NotificationProvider>
       </AuthProvider>
     </RequestProvider>

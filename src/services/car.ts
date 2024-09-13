@@ -3,7 +3,7 @@ import { CreateCarFormState } from "@/utils/types";
 import { toast } from "react-toastify";
 
 export type Car = {
-  id: number;
+  _id: string;
   brand: string;
   carModel: string;
   modelYear: number;
@@ -13,7 +13,7 @@ export type Car = {
 
 export async function getUserCars(){
   try {
-    const response = await api.get("/users/user/self/car");
+    const response = await api.get("/cars/user/cars");
     return response;
   } catch (error: any) {
     toast.error(error.message)
@@ -22,7 +22,7 @@ export async function getUserCars(){
 
 export async function createCar(car: CreateCarFormState) {
   try {
-    const response = await api.post("users/user/self/car", car);
+    const response = await api.post("/cars", car);
     return response;
   } catch (error: any) {
     toast.error(error.message)
@@ -31,7 +31,7 @@ export async function createCar(car: CreateCarFormState) {
 
 export async function getAllCars(){
   try {
-    const response = await api.get("/users/user/self/car");
+    const response = await api.get("/cars");
     return response.data as Car[];
   } catch (error: any) {
     toast.error(error.message)

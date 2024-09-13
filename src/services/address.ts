@@ -4,16 +4,7 @@ import { toast } from "react-toastify";
 
 export const fetchUserAddresses = async () => {
   try {
-    const response = await api.get('/users/user/self/address');
-    return response;
-  } catch (err: any) {
-    toast.error(err.message)
-  }
-}
-
-export const fetchUfcgAddresses = async () => {
-  try {
-    const response = await api.get('/api/v1/addresses/get-ufcg');
+    const response = await api.get('addresses/user/addresses');
     return response;
   } catch (err: any) {
     toast.error(err.message)
@@ -22,7 +13,7 @@ export const fetchUfcgAddresses = async () => {
 
 export const deleteAddress= async (id: string) => {
   try {
-    const response = await api.delete(`/users/user/self/address/${id}`);
+    const response = await api.delete(`/addresses/${id}`);
     return response;
   } catch (err: any) {
     toast.error(err.message)
@@ -31,7 +22,7 @@ export const deleteAddress= async (id: string) => {
 
 export const createAddress = async (address: AddressFormState) => {
   try {
-    const response = await api.post('/users/user/self/address', address);
+    const response = await api.post('/addresses', address);
     return response;
   } catch (err: any) {
     toast.error(err.message)

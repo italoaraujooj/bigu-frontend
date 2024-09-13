@@ -1,6 +1,7 @@
 import { OfferRideBody } from "@/utils/types";
 import { api } from "./api";
 import { toast } from "react-toastify";
+import { RideDto } from "@/types/ride";
 
 export const getAllRides = async () => {
   try {
@@ -12,42 +13,19 @@ export const getAllRides = async () => {
   }
 }
 
-export const getHistoryRide = async () => {
+export const getRideHistory = async () => {
   try {
-    const response: any = api.get('/users/user/self/history');
+    const response: any = api.get('/rides/user/history');
     return response;
   } catch (err: any) {
     toast.error(err.message)
   }
 }
 
-const offerRide = async (data: OfferRideBody) => {
-  try {
-    const response = api.post('/api/v1/rides', data);
-  } catch (err: any) {
-    toast.error(err.message)
-  }
-}
 
-const getRideById = async (id: number) => {
+export const createRide = async (body: RideDto) => {
   try {
-    const response = api.get(`/ride/${id}`);
-  } catch (err: any) {
-    toast.error(err.message)
-  }
-}
-
-const getMember = async () => {
-  try {
-    const response = api.get('/api/v1/rides');
-  } catch (err: any) {
-    toast.error(err.message)
-  }
-}
-
-export const createRide = async (body: any) => {
-  try {
-    const response = api.post('ride', body);
+    const response = api.post('rides', body);
     return response;
   } catch (err: any) {
     toast.error(err.message)
@@ -100,7 +78,7 @@ export const deleteRide = async (id: number) => {
 
 export const getMyRidesAvailable = async () => {
   try {
-    const response = api.get('/rides/driver');
+    const response = api.get('/rides/driver/active');
     return response;
   } catch (err: any) {
     toast.error(err.message)

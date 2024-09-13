@@ -65,7 +65,6 @@ export function AuthProvider({ children }: any) {
 
   async function logout() {
     router.push("/");
-    destroyCookie(null, "nextauth.token");
     setUser(undefined);
     await exit();
   }
@@ -79,7 +78,7 @@ export function AuthProvider({ children }: any) {
 
       done();
 
-      setUser(response.data);
+      setUser(response.data.user);
     } catch (err) {
 
     }

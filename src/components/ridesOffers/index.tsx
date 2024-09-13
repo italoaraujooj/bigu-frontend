@@ -15,15 +15,13 @@ type Props = {
 
 function RidesOffers(props: Props) {
     const { visible, handleClose, loadDataRidesAvailable } = props;
-    const { user } = useContext(AuthContext);
     const [myRides, setMyRides] = useState<Ride[]>([]);
     const [shouldFetch, setShouldFetch] = useState<boolean>(true);
-
     useEffect(() => {
         const loadData = async () => {
             if(shouldFetch){
                 const response = await getMyRidesAvailable();
-                setMyRides(response?.data)
+                setMyRides(response?.data.userDriverActivesHistory)
                 setShouldFetch(false);
             }
         }

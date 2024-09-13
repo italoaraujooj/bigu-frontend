@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import { Form } from "@unform/web";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import {
@@ -12,35 +12,65 @@ import {
   NumericField,
   Checkbox,
 } from "@/components";
-import { OfferRideFormState } from "@/utils/types";
+import { Address, OfferRideFormState } from "@/utils/types";
 import { checkboxesOptions, fieldsLastRow } from "@/utils/offer-ride-constants";
 import { formatDateTime, moneyMask } from "@/utils/masks";
-import { createRide } from "@/services/ride";
 import useFields from "@/hooks/useFields";
-import { fetchUfcgAddresses, fetchUserAddresses } from "@/services/address";
-import  Router  from "next/router";
+import { fetchUserAddresses } from "@/services/address";
 import {AuthContext} from "@/context/AuthContext";
-import { RideContext } from "@/context/RideContext";
-import NotificationContext from "@/context/NotificationContext";
-import Notification from "@/components/notification";
 import { toast } from "react-toastify";
+
+interface FormatAddress {
+  value: string
+  label: string
+}
 
 function OfferRideForm() {
   const { createFields } = useFields();
 
-  const { user, isAuthenticated, setUser } = useContext(AuthContext);
-  const { setRides } = useContext(RideContext);
-  const {notificationHandler, showNotification} = useContext(NotificationContext);
+  const { user } = useContext(AuthContext);
   
   const formRef = useRef<FormHandles>(null);
   const [checkboxes, setCheckboxes] = useState(checkboxesOptions);
-  const [ufcgAddresses, setUfcgAddresses] = useState([]);
-  const [userAddresses, setUserAddresses] = useState([]);
-  const [ufcgAddressesSelected, setUfcgAddressesSelected] = useState({} as any);
-  const [userAddressesSelected, setUserAddressesSelected] = useState({} as any);
+  const [userAddresses, setUserAddresses] = useState<FormatAddress[]>([]);
+  const [ufcgAddressesSelected, setUfcgAddressesSelected] = useState<FormatAddress>({} as FormatAddress);
+  const [userAddressesSelected, setUserAddressesSelected] = useState<FormatAddress>({} as FormatAddress);
   const [vacancies, setVacancies] = useState(0);
   const [onlyWomanChecked, setOnlyWomanChecked] = useState(true);
-  const [selectedCar, setSelectedCar] = useState(null);
+  const [selectedCar, setSelectedCar] = useState("");
+
+  const ufcgAddresses = [
+    {
+      value: "66e093bfe2323b4802da45c3",
+      label:"Entrada principal"
+    },
+    {
+      value: "66e09414e2323b4802da45c5",
+      label:"Entrada CEEI"
+    },
+    {
+      value: "66e09431e2323b4802da45c7",
+      label:"Entrada Humanas"
+    },
+    {
+      value: "66e09466e2323b4802da45c9",
+      label:"Entrada CCT"
+    }
+  ]
+
+  useEffect(() => {
+    const loadData = async () => {
+      const responseAddress = await fetchUserAddresses()
+      if(responseAddress?.data){
+        const addressesFormated = responseAddress.data.userAddress.map((address: Address) => ({
+          label: address.nome,
+          value: address._id,
+        }));
+        setUserAddresses(addressesFormated);
+      }
+    }
+    loadData();
+  }, [])
 
   const handleCheckboxChange = (checkboxId: number) => {
     const updatedCheckboxes = checkboxes.map((checkbox) => {
@@ -58,8 +88,8 @@ function OfferRideForm() {
     const checkboxSelected = checkboxes[0];
     const { date, hours, estimated_value } = data;
     const { checked, value } = checkboxSelected!;
-    const startAddressId = checked ? userAddressesSelected?.value : ufcgAddressesSelected?.value;
-    const destinationAddressId = checked ? ufcgAddressesSelected?.value : userAddressesSelected?.value;
+    const startAddress = checked ? userAddressesSelected?.value : ufcgAddressesSelected?.value;
+    const destinationAddress = checked ? ufcgAddressesSelected?.value : userAddressesSelected?.value;
 
     const dateTime = formatDateTime(date, hours);
     const numSeats = vacancies + 1;
@@ -67,48 +97,45 @@ function OfferRideForm() {
     const toWomen = user?.sex === "F" ? onlyWomanChecked : false;
     const carId = selectedCar;
     const description = "any description";
-    try{
-      const body = {
-        goingToCollege: value === "going" && checked,
-        startAddressId,
-        destinationAddressId,
-        dateTime,
-        numSeats,
-        price,
-        toWomen,
-        carId,
-        description,
-      };
+    const body = {
+      driverId: user?._id,
+      startAddress: startAddress,
+      destinationAddress: destinationAddress,
+      numSeats: numSeats,
+      goingToCollege: value === "going" && checked,
+      price: price,
+      scheduledTime: dateTime,
+      car: carId,
+      description: description,
+      toWomen: toWomen,
+    };
+    console.log(body)
+    // try{
+    //   const body = {
+    //     goingToCollege: value === "going" && checked,
+    //     startAddressId,
+    //     destinationAddressId,
+    //     dateTime,
+    //     numSeats,
+    //     price,
+    //     toWomen,
+    //     carId,
+    //     description,
+    //   };
   
-      console.log(body)
+    //   console.log(body)
   
-      const response = await createRide(body);
-      if(response?.status == 200){
-        setRides((previousState: any) => [...previousState, response?.data])
-        Router.push("/dashboard")
-        toast.success("A carona foi criada com sucesso")
-      }
-    }catch(err: any){
-      toast.error(err.message)
-    }
+    //   const response = await createRide(body);
+    //   if(response?.status == 200){
+    //     setRides((previousState: any) => [...previousState, response?.data])
+    //     Router.push("/dashboard")
+    //     toast.success("A carona foi criada com sucesso")
+    //   }
+    // }catch(err: any){
+    //   toast.error(err.message)
+    // }
   };
-  
-  React.useEffect(() => {
-    fetchUserAddresses().then((data) => {
-      const addressesFormated = data?.data.map((address: any) => ({
-        label: address?.nickname,
-        value: address?.id,
-      }));
-      setUserAddresses(addressesFormated);
-    });
-    fetchUfcgAddresses().then((data) => {
-      const addressesFormated = data?.data.map((address: any) => ({
-        label: address?.nickname,
-        value: address?.id,
-      }));
-      setUfcgAddresses(addressesFormated);
-    });
-  }, []);
+
 
   return (
     <Form
@@ -186,7 +213,7 @@ function OfferRideForm() {
             className="mb-4"
             weight="bold"
           />
-          <Carousel add={() => {}} carSelected={selectedCar} setCarSelected={setSelectedCar}/>
+          <Carousel add={() => {}} setCarSelected={setSelectedCar}/>
         </div>
 
         <TextArea
@@ -211,7 +238,6 @@ function OfferRideForm() {
           />
         </section>
       </div>
-      {showNotification && <Notification/>}
     </Form>
   );
 }

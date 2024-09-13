@@ -48,7 +48,7 @@ function Ride(props: Props) {
   useEffect(() => {
     const loadData = async () => {
       const responseAddress = await fetchUserAddresses();
-      const addressesFormated = responseAddress?.data.map((address: any) => ({
+      const addressesFormated = responseAddress?.data.userAddress.map((address: any) => ({
         label: address.nickname,
         value: address.id,
       }));
@@ -119,8 +119,8 @@ function Ride(props: Props) {
                 />
                 <Text
                   label={`${
-                    item.driver.userId !== user?.userId
-                      ? item.driver.name.split(" ")[0]
+                    item.driverId.userId !== user?.userId
+                      ? item.driverId.name.split(" ")[0]
                       : "Você"
                   } está saindo do ${item.start.district}...`}
                   color="dark"
@@ -160,7 +160,7 @@ function Ride(props: Props) {
                     color="green"
                     shape="square"
                     className={clsx(
-                      item.driver.userId === user?.userId
+                      item.driverId.userId === user?.userId
                         ? "font-semibold"
                         : "font-semibold",
                       !!userAddress.length && "hover:bg-hover-green"

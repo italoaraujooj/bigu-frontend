@@ -1,51 +1,40 @@
 import React, { useEffect } from "react";
 import Car from "../../../assets/car.png";
-import CarSecondary from "../../../assets/car-secondary.png";
 import clsx from "clsx";
 import Image from "next/image";
 import Text from "../../text";
-import SportCar from "../../../assets/sport-car.png";
 import Trash from "../../../assets/trash.png";
 import Plus from "../../../assets/plus-green.png";
 import Edit from "../../../assets/edit.png";
-import { getUserCars } from "@/services/car";
+import { Car as CarType, getUserCars } from "@/services/car";
 
 type Props = {
   profile?: boolean;
   add: any;
-  setCarSelected: any; // refactor
-  carSelected: any
+  setCarSelected: React.Dispatch<React.SetStateAction<string>>;
 };
 
-interface CarProps {
-  carId: number;
-  model: string
-  color: string;
-  plate: string;
-}
-
 const Carousel = (props: Props) => {
-  const { carSelected, setCarSelected } = props;
+  const { setCarSelected } = props;
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [selectedCar, setSelectedCar] = React.useState(0);
   const [items, setItems] = React.useState([] as any);
 
   useEffect(() => {
     const loadData = async () => {
-      getUserCars().then((response) => {
-        setItems(response);
-      });
+      const responseCars: any = await getUserCars()
+      if(responseCars) setItems(responseCars.data.userCars);
     };
     loadData();
   }, []);
 
   useEffect(() => {
-    toggleCar(0, items[0]?.carId);
+    toggleCar(0, items[0]?._id);
   }, [items]);
 
-  const toggleCar = (index: number, id: number) => {
+  const toggleCar = (index: number, carId: string) => {
     setSelectedCar(index);
-    setCarSelected(id);
+    setCarSelected(carId);
   };
 
   const goToIndex = (index: number) => {
@@ -53,7 +42,6 @@ const Carousel = (props: Props) => {
   };
 
   const memoizedPosition = React.useMemo(() => {
-    // Cálculo baseado em `position`
     const positions = [
       {
         className: "translate-x-[0%]",
@@ -92,9 +80,9 @@ const Carousel = (props: Props) => {
       >
         {!!items &&
           !props.profile &&
-          items?.map(({ carId, model }: CarProps, index: number) => (
+          items?.map(({ _id, carModel }: CarType, index: number) => (
             <div
-              key={carId}
+              key={index}
               className={clsx(
                 "w-full shrink-0",
                 "transform-gpu",
@@ -109,7 +97,7 @@ const Carousel = (props: Props) => {
                   alt="car"
                 />
                 <Text
-                  label={model}
+                  label={carModel}
                   size="md"
                   color="gray"
                   weight="medium"
@@ -121,7 +109,7 @@ const Carousel = (props: Props) => {
                 >
                   <div
                     className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center"
-                    onClick={() => toggleCar(index, carId)}
+                    onClick={() => toggleCar(index, _id)}
                   >
                     {selectedCar === index && (
                       <span className="relative flex h-3 w-3">
@@ -137,9 +125,9 @@ const Carousel = (props: Props) => {
           ))}
 
         {!!props.profile &&
-          items?.map(({ carId, model, color, plate }: CarProps, index: number) => (
+          items?.map(({ _id, carModel, color, plate }: CarType, index: number) => (
             <div
-              key={carId}
+              key={index}
               className={clsx(
                 "w-full shrink-0",
                 "transform-gpu",
@@ -148,7 +136,6 @@ const Carousel = (props: Props) => {
               )}
             >
               <div
-                key={carId}
                 className="flex items-start justify-between md:h-48 pt-6 pl-8 h-48 bg-white my-2 rounded-lg py-6 px-8"
               >
                 <div className="flex items-start justify-between mb-2">
@@ -167,7 +154,7 @@ const Carousel = (props: Props) => {
                           Modelo
                         </div>
                         <Text
-                          label={model}
+                          label={carModel}
                           color="gray"
                           className="uppercase"
                         />

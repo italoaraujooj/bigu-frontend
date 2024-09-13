@@ -3,6 +3,7 @@ import { api } from "./api";
 import { ChangePassword, SignInResponse } from "@/utils/types";
 
 import { toast } from "react-toastify";
+import { destroyCookie } from "nookies";
 
 type UserFormState = {
     name:string,
@@ -37,7 +38,8 @@ export async function signInRequest(credentials: SignInRequestData){
 
 export async function logOut(){
   try{
-    await api.post('/api/v1/auth/logout')
+    await api.post('auth/logout')
+    destroyCookie(null, "nextauth.token");
   }catch (error: any){
     toast.error(error.message)
   }

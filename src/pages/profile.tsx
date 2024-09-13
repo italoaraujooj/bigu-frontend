@@ -12,7 +12,7 @@ import Link from "next/link";
 import Router from "next/router";
 import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react";
 import Modal from "@/components/modal";
-import { changePasswordRequest, getUser } from "@/services/auth";
+import { changePasswordRequest } from "@/services/auth";
 import { createCar, getUserCars } from "@/services/car";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { ChangePassword, CreateCarFormState } from "@/utils/types";
@@ -44,7 +44,8 @@ function Profile() {
   useEffect(() => {
     const loadCars = async () => {
       const responseCars: any = await getUserCars();
-      if(responseCars) setCars(responseCars.data)
+      console.log(responseCars)
+      if(responseCars) setCars(responseCars.data.userCars)
     }
     loadCars();
   }, [])
@@ -53,12 +54,13 @@ function Profile() {
     try{
       const response: any = await createCar(data);
       if(response.status === 201){
-        setCars(response.data);
-        toast.success("Carro criado com sucesso!");
+        setCars([...cars, response.data.newCar]);
+        toast.success(response.data.message);
         toggleModalCar();
 
       }
     }catch(err){
+      console.log(err)
       toast.error("Houve um erro na criação do carro");
     }
   };

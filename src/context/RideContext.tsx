@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { parseCookies } from "nookies";
 import {
-  getHistoryRide,
+  getRideHistory,
   getAllRidesAvailable,
   createRide,
   getCandidates,
@@ -34,7 +34,7 @@ export function RideProvider({ children }: any) {
   useEffect(() => {
     if (token) {
       getAllRidesAvailable().then((data) => setRides(data?.data));
-      getHistoryRide().then((data) => setHistory(data?.data));
+      getRideHistory().then((data) => setHistory(data?.data));
     }
   }, [token]);
 
@@ -57,7 +57,7 @@ export function RideProvider({ children }: any) {
     const { "nextauth.token": token } = parseCookies();
     if (token) {
       getAllRidesAvailable().then((data) => setRides(data?.data));
-      getHistoryRide().then((data) => setHistory(data?.data));
+      getRideHistory().then((data) => setHistory(data?.data));
     }
   }, []);
 

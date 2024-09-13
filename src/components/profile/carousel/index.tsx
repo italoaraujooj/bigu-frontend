@@ -48,9 +48,9 @@ const Carousel = (props: Props) => {
         )}
       >
         {items.length > 0 ?
-          items?.map(({ id, carModel, color, plate }: Car, index: number) => (
+          items?.map(({ _id, carModel, color, plate }: Car, index: number) => (
             <div
-              key={id}
+              key={index}
               className={clsx(
                 "w-full shrink-0",
                 "transform-gpu",
@@ -59,7 +59,6 @@ const Carousel = (props: Props) => {
               )}
             >
               <div
-                key={id}
                 className="flex items-start justify-between md:h-48 pt-6 pl-8 h-48 bg-white my-2 rounded-lg py-6 px-8"
               >
                 <div className="flex items-start justify-between mb-2">

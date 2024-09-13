@@ -39,7 +39,8 @@ function Addresses({}: Props) {
 
   React.useEffect(() => {
     fetchUserAddresses().then((data) => {
-      setUserAddresses(data?.data);
+      console.log(data)
+      setUserAddresses(data?.data.userAddress);
     });
   }, []);
 
@@ -48,7 +49,7 @@ function Addresses({}: Props) {
     if(responsePost?.status === 201){
       toast.success(`O endereço '${data.nome}' foi cadastrado.`)
       const responseGet = await fetchUserAddresses();
-      setUserAddresses(responseGet?.data)
+      setUserAddresses(responseGet?.data.userAddress)
     }
     toggleModalAddress();
   };
@@ -59,14 +60,11 @@ function Addresses({}: Props) {
       toast.success(`O endereço '${address.nome}' foi removido.`)
     }
     const responseGet = await fetchUserAddresses();
-      setUserAddresses(responseGet?.data)
+      setUserAddresses(responseGet?.data.userAddress)
   };
 
   const redirect = () =>
-    router.push({
-      pathname: "dashboard",
-      query: { needUpdate: true },
-    });
+    router.push("/dashboard");
 
   return (
     <div className="flex w-full items-center justify-center my-12">

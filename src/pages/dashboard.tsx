@@ -20,7 +20,7 @@ import { fakeDelay } from "@/utils/delay";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { AddressFormState } from "@/utils/types";
-import { getAllRidesAvailable, getHistoryRide } from "@/services/ride";
+import { getAllRidesAvailable, getRideHistory } from "@/services/ride";
 
 function Dashboard() {
   const router = useRouter();
@@ -44,13 +44,13 @@ function Dashboard() {
   }, []);
   
   const loadDataHistory = async () => {
-    const responseHistory = await getHistoryRide();
-    setHistory(responseHistory.data);
+    const responseHistory = await getRideHistory();
+    setHistory(responseHistory.data.userHistory);
   }
 
   const loadDataRidesAvailable = async () => {
     const responseAvailable = await getAllRidesAvailable();
-    setRidesAvailable(responseAvailable?.data);
+    setRidesAvailable(responseAvailable?.data.ridesAvailable);
   }
 
 
