@@ -4,8 +4,6 @@ import { AuthContext } from "@/context/AuthContext";
 // @ts-ignore
 import Woman from "../assets/woman.png";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowCircleLeft } from "@phosphor-icons/react";
 
 const OfferRide = () => {
   const { user } = useContext(AuthContext);

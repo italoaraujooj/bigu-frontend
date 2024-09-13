@@ -6,7 +6,6 @@ import {
   Input,
   Button,
   Dropdown,
-  Modal,
   Carousel,
   TextArea,
   NumericField,
@@ -19,6 +18,8 @@ import useFields from "@/hooks/useFields";
 import { fetchUserAddresses } from "@/services/address";
 import {AuthContext} from "@/context/AuthContext";
 import { toast } from "react-toastify";
+import { createRide } from "@/services/ride";
+import Router from "next/router";
 
 interface FormatAddress {
   value: string
@@ -64,7 +65,7 @@ function OfferRideForm() {
       if(responseAddress?.data){
         const addressesFormated = responseAddress.data.userAddress.map((address: Address) => ({
           label: address.nome,
-          value: address._id,
+          value: address.addressId,
         }));
         setUserAddresses(addressesFormated);
       }
@@ -98,7 +99,7 @@ function OfferRideForm() {
     const carId = selectedCar;
     const description = "any description";
     const body = {
-      driverId: user?._id,
+      driver: user?.userId,
       startAddress: startAddress,
       destinationAddress: destinationAddress,
       numSeats: numSeats,
@@ -110,30 +111,15 @@ function OfferRideForm() {
       toWomen: toWomen,
     };
     console.log(body)
-    // try{
-    //   const body = {
-    //     goingToCollege: value === "going" && checked,
-    //     startAddressId,
-    //     destinationAddressId,
-    //     dateTime,
-    //     numSeats,
-    //     price,
-    //     toWomen,
-    //     carId,
-    //     description,
-    //   };
-  
-    //   console.log(body)
-  
-    //   const response = await createRide(body);
-    //   if(response?.status == 200){
-    //     setRides((previousState: any) => [...previousState, response?.data])
-    //     Router.push("/dashboard")
-    //     toast.success("A carona foi criada com sucesso")
-    //   }
-    // }catch(err: any){
-    //   toast.error(err.message)
-    // }
+    try{
+      const response = await createRide(body);
+      if(response?.status == 201){
+        Router.push("/dashboard")
+        toast.success("A carona foi criada com sucesso")
+      }
+    }catch(err: any){
+      toast.error(err.message)
+    }
   };
 
 

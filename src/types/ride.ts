@@ -1,5 +1,5 @@
 export type RideDto = {
-    driverId: number,
+    driver: string,
     startAddress: string,
     destinationAddress: string,
     numSeats: number,

@@ -23,7 +23,7 @@ export const getRideHistory = async () => {
 }
 
 
-export const createRide = async (body: RideDto) => {
+export const createRide = async (body: any) => {
   try {
     const response = api.post('rides', body);
     return response;

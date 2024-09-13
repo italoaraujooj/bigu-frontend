@@ -5,7 +5,7 @@ export interface User {
   matricula: string
   phoneNumber: string
   sex: string
-  _id: number
+  userId: string
 }
 
 export interface OfferRideFormState {
@@ -102,7 +102,7 @@ export interface AddressFormState {
 }
 
 export interface Address {
-  _id: string
+  addressId: string
   nome: string;
   rua: string;
   numero: string;

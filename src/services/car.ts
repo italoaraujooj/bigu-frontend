@@ -3,7 +3,7 @@ import { CreateCarFormState } from "@/utils/types";
 import { toast } from "react-toastify";
 
 export type Car = {
-  _id: string;
+  carId: string;
   brand: string;
   carModel: string;
   modelYear: number;

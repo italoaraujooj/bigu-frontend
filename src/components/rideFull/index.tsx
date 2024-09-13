@@ -61,8 +61,8 @@ function RideFull(props: RideProps) {
   useEffect(() => {
     fetchUserAddresses().then((data) => {
       const addressesFormated = data?.data.map((address: any) => ({
-        label: address.nickname,
-        value: address.id,
+        label: address.nome,
+        value: address.addressId,
       }));
       setUserAddresses(addressesFormated);
     });

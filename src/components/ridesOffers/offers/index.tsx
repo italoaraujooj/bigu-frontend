@@ -6,7 +6,7 @@ import Text from "@/components/text";
 import { Ride } from "@/utils/types";
 
 type Props = {
-  ride: Ride;
+  ride: any;
   handleClose: () => void;
   handleDeleteRide: (ride: Ride) => void;
 };
@@ -24,11 +24,11 @@ function Offer(props: Props) {
         <div className="flex items-center gap-8">
           <div>
             <Text label="Origem:" color="dark" size="base" weight="bold" />
-            <Text label={ride.start.district} color="gray" size="base" />
+            <Text label={ride.startAddress.bairro} color="gray" size="base" />
           </div>
           <div>
             <Text label="Destino:" color="dark" size="base" weight="bold" />
-            <Text label={ride.destination.district} color="gray" size="base" />
+            <Text label={ride.startAddress.bairro} color="gray" size="base" />
           </div>
         </div>
 
@@ -39,7 +39,7 @@ function Offer(props: Props) {
 
           <div>
             <Text label="Data e hora:" color="dark" size="base" weight="bold" />
-            <Text label={formatarData(ride.dateTime)} color="gray" size="base" />
+            <Text label={formatarData(ride.scheduledTime)} color="gray" size="base" />
           </div>
       </div>
       <div className="flex flex-col justify-center gap-2 mt-4">

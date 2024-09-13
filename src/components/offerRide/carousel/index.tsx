@@ -29,7 +29,7 @@ const Carousel = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    toggleCar(0, items[0]?._id);
+    toggleCar(0, items[0]?.carId);
   }, [items]);
 
   const toggleCar = (index: number, carId: string) => {
@@ -72,7 +72,7 @@ const Carousel = (props: Props) => {
   return (
     <div className="w-full">
       <div
-        onMouseLeave={() => goToIndex(selectedCar)}
+        onMouseLeave={() => setTimeout(() => {goToIndex(selectedCar)}, 2 * 1000)}
         className={clsx(
           `w-full  flex items-center overflow-hidden space-x-12`,
           props.profile && "w-96"
@@ -80,9 +80,9 @@ const Carousel = (props: Props) => {
       >
         {!!items &&
           !props.profile &&
-          items?.map(({ _id, carModel }: CarType, index: number) => (
+          items?.map(({ carId, carModel }: CarType, index: number) => (
             <div
-              key={index}
+              key={carId}
               className={clsx(
                 "w-full shrink-0",
                 "transform-gpu",
@@ -109,7 +109,7 @@ const Carousel = (props: Props) => {
                 >
                   <div
                     className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center"
-                    onClick={() => toggleCar(index, _id)}
+                    onClick={() => toggleCar(index, carId)}
                   >
                     {selectedCar === index && (
                       <span className="relative flex h-3 w-3">
@@ -125,7 +125,7 @@ const Carousel = (props: Props) => {
           ))}
 
         {!!props.profile &&
-          items?.map(({ _id, carModel, color, plate }: CarType, index: number) => (
+          items?.map(({ carId, carModel, color, plate }: CarType, index: number) => (
             <div
               key={index}
               className={clsx(

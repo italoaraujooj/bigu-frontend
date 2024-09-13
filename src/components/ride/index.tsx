@@ -49,8 +49,8 @@ function Ride(props: Props) {
     const loadData = async () => {
       const responseAddress = await fetchUserAddresses();
       const addressesFormated = responseAddress?.data.userAddress.map((address: any) => ({
-        label: address.nickname,
-        value: address.id,
+        label: address.nome,
+        value: address.addressId,
       }));
       setUserAddresses(addressesFormated);
     }
@@ -119,10 +119,10 @@ function Ride(props: Props) {
                 />
                 <Text
                   label={`${
-                    item.driverId.userId !== user?.userId
-                      ? item.driverId.name.split(" ")[0]
+                    item.driver.userId !== user?.userId
+                      ? item.driver.name.split(" ")[0]
                       : "Você"
-                  } está saindo do ${item.start.district}...`}
+                  } está saindo do ${item.startAddress.bairro}...`}
                   color="dark"
                   size="md"
                   className="tracking-wide text-sm md:text-md xl:text-lg "
@@ -130,7 +130,7 @@ function Ride(props: Props) {
               </div>
               <div className="space-y-2 px-4">
                 <p className="font-['Poppins']">
-                  {`${item.car.model} ${item.car.color}`} -{" "}
+                  {`${item.car.carModel} ${item.car.color}`} -{" "}
                   <strong>{item.car.plate}</strong>
                 </p>
                 <p className="font-['Poppins']">
@@ -140,7 +140,7 @@ function Ride(props: Props) {
                     : "vaga disponível"}{" "}
                 </p>
                 <p className="font-['Poppins']">
-                  <strong>Saída às {formatarData(item.dateTime)}</strong>
+                  <strong>Saída às {formatarData(item.scheduledTime)}</strong>
                 </p>
               </div>
 
@@ -160,7 +160,7 @@ function Ride(props: Props) {
                     color="green"
                     shape="square"
                     className={clsx(
-                      item.driverId.userId === user?.userId
+                      item.driver.userId === user?.userId
                         ? "font-semibold"
                         : "font-semibold",
                       !!userAddress.length && "hover:bg-hover-green"
