@@ -1,20 +1,24 @@
-import React from "react";
-import OK from "../../assets/finished.png";
-import Image from "next/image";
-import Text from "../text";
-import clsx from "clsx";
 import { formatarDate } from "@/utils/masks";
-import LottieAnimation from "../LottieAnimation";
+import clsx from "clsx";
+import Image from "next/image";
+import OK from "../../assets/finished.png";
 import ghost from "../../assets/ghost.json";
+import LottieAnimation from "../LottieAnimation";
+import Text from "../text";
 
 interface RacesHistory {
   id: number;
   origin_locale: string;
-  destination: string;
   date: string;
   status: string;
+  start: {
+    nickname: string;
+  };
+  destination: {
+    nickname: string;
+  };
+  dateTime: string;
 }
-
 
 function History({ races }: { races: any[] }) {
   return (
@@ -31,6 +35,7 @@ function History({ races }: { races: any[] }) {
         {!races?.length && (
           <div className="w-full flex items-center justify-center">
             <div className="w-64 h-64 ">
+              {/* @ts-ignore */}
               <LottieAnimation data={ghost} />
             </div>
           </div>
@@ -40,21 +45,23 @@ function History({ races }: { races: any[] }) {
             key={race.id}
             className="h-24 w-full px-6 py-6 border-light border-2 flex justify-between items-center gap-5 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer transition-colors duration-600"
           >
+            {/* @ts-ignore */}
             <Image src={OK} className="w-7 h-7" alt="race finished status" />
+            {/* @ts-ignore */}
             <Text label={race?.start?.nickname} color="gray" size="md" />
             <div className="w-12 h-1 bg-light" />
+            {/* @ts-ignore */}
             <Text label={race?.destination?.nickname} color="gray" size="md" />
+            {/* @ts-ignore */}
             <Text label={formatarDate(race?.dateTime)} color="gray" size="md" />
           </div>
         ))}
       </div>
       <footer className="pt-4">
-        <p
-          className=" text-gray text-base self-start hover:text-stone-400 cursor-pointer font-[Poppins]"
-        >
+        <p className=" text-gray text-base self-start hover:text-stone-400 cursor-pointer font-[Poppins]">
           Ver mais
         </p>
-      </footer>  
+      </footer>
     </div>
   );
 }

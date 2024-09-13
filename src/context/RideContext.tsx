@@ -1,14 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { parseCookies } from "nookies";
-import {
-  getRideHistory,
-  getAllRidesAvailable,
-  createRide,
-  getCandidates,
-} from "@/services/ride";
-import { Car, getUserCars } from "@/services/car";
-import { AuthContext } from "./AuthContext";
 import { fetchUserAddresses } from "@/services/address";
+import { Car, getUserCars } from "@/services/car";
+import {
+  getAllRidesAvailable,
+  getCandidates,
+  getRideHistory,
+} from "@/services/ride";
+import { parseCookies } from "nookies";
+import { createContext, useEffect, useState } from "react";
 
 type RideContextType = {
   rides: any;
@@ -43,6 +41,7 @@ export function RideProvider({ children }: any) {
     if (token) {
       const loadData = async () => {
         getUserCars().then((response) => {
+          // @ts-ignore
           setCars(response);
         });
         fetchUserAddresses().then((response) => {
@@ -66,6 +65,7 @@ export function RideProvider({ children }: any) {
     if (token) {
       const loadData = async () => {
         getUserCars().then((response) => {
+          // @ts-ignore
           setCars(response);
         });
         fetchUserAddresses().then((response) => {
@@ -83,10 +83,10 @@ export function RideProvider({ children }: any) {
         setRidesUser(data?.data);
       });
     }
-
   }, [rides]);
 
   return (
+    // @ts-ignore
     <RideContext.Provider
       value={{
         rides,

@@ -102,6 +102,7 @@ export interface AddressFormState {
 }
 
 export interface Address {
+  _id: string;
   addressId: string
   nome: string;
   rua: string;
@@ -122,7 +123,7 @@ export interface ChangePassword {
 export interface Ride {
   car: Car,
   dateTime: string
-  description : string
+  description: string
   destination: AddressFormState
   driver: User
   goingToCollege: boolean

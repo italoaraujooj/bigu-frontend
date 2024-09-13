@@ -1,9 +1,6 @@
 import { AuthContext } from "@/context/AuthContext";
-import { getUser } from "@/services/auth";
-import { getToken } from "@/utils/cookies";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 interface PrivateRouteProps {
   children: React.ReactNode;
@@ -41,7 +38,9 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
 
 const withPrivateRoute = (WrappedComponent: React.ComponentType) => {
   const ComponentWithPrivateRoute: React.FC = () => (
+    // @ts-ignore
     <PrivateRoute>
+      {/* @ts-ignore */}
       <WrappedComponent />
     </PrivateRoute>
   );

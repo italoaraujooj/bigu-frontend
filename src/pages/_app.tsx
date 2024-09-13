@@ -1,22 +1,26 @@
-import "@/styles/reset.css";
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
 import { AuthProvider } from "@/context/AuthContext";
-import { RideProvider } from "@/context/RideContext";
+import "@/styles/globals.css";
+import "@/styles/reset.css";
+import type { AppProps } from "next/app";
 
-import { RequestProvider } from "@/context/RequestContext";
 import { NotificationProvider } from "@/context/NotificationContext";
-import 'react-toastify/dist/ReactToastify.css';
+import { RequestProvider } from "@/context/RequestContext";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
+    // @ts-ignore
     <RequestProvider>
+      {/* @ts-ignore */}
       <AuthProvider>
+        {/* @ts-ignore */}
         <NotificationProvider>
           {/* <RideProvider> */}
-              <ToastContainer/>
-              <Component {...pageProps} />
+          {/* @ts-ignore */}
+          <ToastContainer />
+          {/* @ts-ignore */}
+          <Component {...pageProps} />
           {/* </RideProvider> */}
         </NotificationProvider>
       </AuthProvider>

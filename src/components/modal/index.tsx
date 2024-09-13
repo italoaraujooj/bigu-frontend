@@ -1,7 +1,7 @@
+import clsx from "clsx";
 import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import Button from "../button";
-import clsx from "clsx";
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,7 +12,14 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, noActions, transparent, children }: any) => {
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  noActions,
+  transparent,
+  children,
+}: any) => {
   const modalRoot = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -32,13 +39,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, noActions, tra
 
   return isOpen
     ? ReactDOM.createPortal(
+        // @ts-ignore
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black/70">
-          <div className={clsx("modal py-10 px-12 rounded-md shadow-lg", transparent ? "transparent opacity-3 rounded-full" : "bg-white")}>
+          <div
+            className={clsx(
+              "modal py-10 px-12 rounded-md shadow-lg",
+              transparent ? "transparent opacity-3 rounded-full" : "bg-white"
+            )}
+          >
             <div className="modal-content">
               <main>{children}</main>
               <br />
               {!noActions && (
                 <section className="flex items-center gap-4">
+                  {/* @ts-ignore */}
                   <Button
                     label="Cancelar"
                     size="sm"
@@ -46,6 +60,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, noActions, tra
                     color="red"
                     onClick={onClose}
                   />
+                  {/* @ts-ignore */}
                   <Button
                     label="Confirmar"
                     size="sm"

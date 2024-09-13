@@ -9,12 +9,10 @@ import {
   ArrowCircleLeft,
   MapPin,
   PencilSimple,
-  Trash,
   TrashSimple,
 } from "@phosphor-icons/react";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { toast } from "react-toastify";
@@ -39,32 +37,31 @@ function Addresses({}: Props) {
 
   React.useEffect(() => {
     fetchUserAddresses().then((data) => {
-      console.log(data)
+      console.log(data);
       setUserAddresses(data?.data.userAddress);
     });
   }, []);
 
   const handleCreateAddress: SubmitHandler<AddressFormState> = async (data) => {
     const responsePost = await createAddress(data);
-    if(responsePost?.status === 201){
-      toast.success(`O endereço '${data.nome}' foi cadastrado.`)
+    if (responsePost?.status === 201) {
+      toast.success(`O endereço '${data.nome}' foi cadastrado.`);
       const responseGet = await fetchUserAddresses();
-      setUserAddresses(responseGet?.data.userAddress)
+      setUserAddresses(responseGet?.data.userAddress);
     }
     toggleModalAddress();
   };
 
   const handleDeleteAddress = async (address: Address) => {
     const responseDelete = await deleteAddress(address._id);
-    if(responseDelete?.status === 200){
-      toast.success(`O endereço '${address.nome}' foi removido.`)
+    if (responseDelete?.status === 200) {
+      toast.success(`O endereço '${address.nome}' foi removido.`);
     }
     const responseGet = await fetchUserAddresses();
-      setUserAddresses(responseGet?.data.userAddress)
+    setUserAddresses(responseGet?.data.userAddress);
   };
 
-  const redirect = () =>
-    router.push("/dashboard");
+  const redirect = () => router.push("/dashboard");
 
   return (
     <div className="flex w-full items-center justify-center my-12">
@@ -77,7 +74,9 @@ function Addresses({}: Props) {
             onClick={redirect}
             className="text-gray flex items-center gap-2 mb-4"
           >
+            {/* @ts-ignore */}
             <ArrowCircleLeft size={32} />
+            {/* @ts-ignore */}
             <Text
               label="Voltar para tela inicial"
               className=" cursor-pointer hover:text-stone-400 "
@@ -88,6 +87,7 @@ function Addresses({}: Props) {
         </div>
         <div className="w-full h-fit flex items-center justify-center">
           <div className="w-[700px] bg-dark max-w-xs rounded-2xl px-6 py-8 flex flex-col sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl">
+            {/* @ts-ignore */}
             <Text
               label="Meus endereços"
               color="gray"
@@ -97,13 +97,16 @@ function Addresses({}: Props) {
             />
             <div className="w-full h-56 space-y-4">
               {!userAddress?.length && (
+                // @ts-ignore
                 <Text label="Você ainda não possui endereços cadastrados." />
               )}
               {userAddress?.map((address: Address, index: number) => (
                 <div key={index}>
                   <div className="w-full flex items-center bg-white py-6 px-4 justify-between rounded-md">
                     <div className="flex items-center gap-2">
+                      {/* @ts-ignore */}
                       <MapPin weight="bold" color="gray" size={24} />
+                      {/* @ts-ignore */}
                       <Text
                         label={`${address.rua}, ${address.numero}, ${address.bairro}`}
                         color="gray"
@@ -111,12 +114,14 @@ function Addresses({}: Props) {
                       />
                     </div>
                     <div className="flex items-center gap-4">
+                      {/* @ts-ignore */}
                       <PencilSimple
                         color="#FFB400"
                         weight="bold"
                         className="cursor-pointer"
                         size={24}
                       />
+                      {/* @ts-ignore */}
                       <TrashSimple
                         color="#dd5035"
                         weight="bold"
@@ -129,26 +134,27 @@ function Addresses({}: Props) {
                 </div>
               ))}
             </div>
+            {/* @ts-ignore */}
             <Button
               label="Adicionar endereço"
               size="base"
               color="green"
               className="uppercase font-semibold px-3 lg:px-6 text-xs self-end"
+              // @ts-ignore
               onClick={toggleModalAddress}
             />
           </div>
         </div>
       </div>
-      <Modal
-        isOpen={modalAddress}
-        onClose={toggleModalAddress}
-        noActions
-      >
+      {/* @ts-ignore */}
+      <Modal isOpen={modalAddress} onClose={toggleModalAddress} noActions>
+        {/* @ts-ignore */}
         <Form
           onSubmit={handleCreateAddress}
           ref={formRef}
           className="py-12 space-y-2 h-screen overflow-y-scroll	"
         >
+          {/* @ts-ignore */}
           <Text
             label="Adicionar endereço"
             color="dark"
@@ -157,48 +163,56 @@ function Addresses({}: Props) {
           />
 
           <br />
+          {/* @ts-ignore */}
           <Input
             name="nome"
             label="Nome"
             placeholder="Casa"
             sizing="adjustable"
           />
+          {/* @ts-ignore */}
           <Input
             name="cep"
             label="CEP"
             placeholder="58432-777"
             sizing="adjustable"
           />
+          {/* @ts-ignore */}
           <Input
             name="cidade"
             label="Cidade"
             placeholder="Campina Grande"
             sizing="adjustable"
           />
+          {/* @ts-ignore */}
           <Input
             name="rua"
             label="Rua"
             placeholder="Rua exemplo"
             sizing="adjustable"
           />
+          {/* @ts-ignore */}
           <Input
             name="bairro"
             label="Bairro"
             placeholder="Prata"
             sizing="adjustable"
           />
+          {/* @ts-ignore */}
           <Input
             name="numero"
             label="Número"
             placeholder="312"
             sizing="adjustable"
           />
+          {/* @ts-ignore */}
           <Input
             name="estado"
             label="Estado"
             placeholder="PB"
             sizing="adjustable"
           />
+          {/* @ts-ignore */}
           <Input
             name="complemento"
             label="Complemento"
@@ -206,13 +220,16 @@ function Addresses({}: Props) {
             sizing="adjustable"
           />
           <section className="flex items-center gap-4 mt-12">
+            {/* @ts-ignore */}
             <Button
               label="Cancelar"
               size="sm"
               className="uppercase font-semibold px-3 lg:px-6"
               color="red"
+              // @ts-ignore
               onClick={toggleModalAddress}
             />
+            {/* @ts-ignore */}
             <Button
               label="Confirmar"
               size="sm"

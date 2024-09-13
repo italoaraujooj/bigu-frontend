@@ -1,8 +1,9 @@
-import { api } from "./api";
 import { CreateCarFormState } from "@/utils/types";
 import { toast } from "react-toastify";
+import { api } from "./api";
 
 export type Car = {
+  _id: string;
   carId: string;
   brand: string;
   carModel: string;
@@ -11,7 +12,7 @@ export type Car = {
   plate: string;
 };
 
-export async function getUserCars(){
+export async function getUserCars() {
   try {
     const response = await api.get("/cars/user/cars");
     return response;
@@ -29,7 +30,7 @@ export async function createCar(car: CreateCarFormState) {
   }
 }
 
-export async function getAllCars(){
+export async function getAllCars() {
   try {
     const response = await api.get("/cars");
     return response.data as Car[];
