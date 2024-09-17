@@ -4,35 +4,51 @@ import { useField } from "@unform/core";
 
 type InputType = "text" | "email" | "password" | "tel" | "file" | "search" | "date";
 type InputColor = "light" | "extralight";
-type InputSize = "sm" | "adjustable";
+type InputSize = "sm" | "adjustable" | "xs";
 
 interface Props {
   name: string;
-  label: string;
-  type: InputType;
-  color: InputColor;
+  label?: string;
+  type?: InputType;
+  color?: InputColor;
   sizing: InputSize;
   placeholder: string;
   shape?: "rounded" | "square";
+  readOnly?: boolean;
+  visibility?: string;
+  value?: string | number;
+  mask?: (value: string) => string;
   className?: string;
+  required?:boolean
+  validate?: (value: string) => string | undefined;
+  maxLength?: number;
 };
 
 // type InputProps = JSX.IntrinsicElements["input"] & Props;
+
 
 export default function Input(props: Props) {
   const {
     name,
     label,
-    type,
+    type = "text",
     sizing,
-    color,
+    color = "extralight",
     shape = "rounded",
     placeholder,
+    readOnly,
+    visibility,
+    value,
+    required,
+    mask,
     className,
+    validate,
+    maxLength = 100,
   } = props;
 
   const styles = {
     sizes: {
+      xs: "w-24 h-14 px-5 text-sm",
       sm: "w-80 h-14 px-5 text-sm",
       adjustable: 'w-full h-14 px-5 text-sm'
     },
@@ -43,7 +59,7 @@ export default function Input(props: Props) {
     colors: {
       light: "bg-light",
       extralight: "bg-extralight",
-    },
+    }
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -65,8 +81,22 @@ export default function Input(props: Props) {
     });
   }, [fieldName, registerField]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const maskedValue = mask ? mask(value) : value;
+
+    inputRef.current!.value = maskedValue;
+  };
+
+  const handleBlur = () => {
+    const inputValue = inputRef.current!.value;
+    const error = validate ? validate(inputValue) : undefined;
+
+    // TODO: Handle the error state and display the error message accordingly
+  };
+
   return (
-    <div className="flex flex-col">
+    <div className={clsx(["flex flex-col", visibility])}>
       {label && (
         <label
           className="font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase"
@@ -92,6 +122,12 @@ export default function Input(props: Props) {
         defaultValue={defaultValue}
         type={type}
         placeholder={placeholder}
+        readOnly={readOnly}
+        value={value}
+        required={required}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        maxLength={maxLength}
       />
       {error && <span>{error}</span>}
     </div>

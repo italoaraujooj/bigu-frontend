@@ -5,5 +5,9 @@
 @tailwind utilities;
 
 body {
-  background-color: #111111f5;
+  background-color: #121212f5;
+}
+
+.metade-circulo {
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%); /* Define a forma do círculo pela metade */
 }

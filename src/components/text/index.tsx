@@ -3,8 +3,8 @@ import React from "react";
 
 type Props = {
   label: string;
-  size?: "sm" | "md" | "lg" | "6xl";
-  color?: "white" | "dark" | "gray" | "red" | "green";
+  size?: "xs" | "sm" | "md" | "base" | "lg" | "xl" | "5xl" | "6xl" | "2xl";
+  color?: "white" | "dark" | "gray" | "red" | "green" | "black";
   weight?: "normal" | "medium" | "bold";
   className?: string;
 };
@@ -14,10 +14,15 @@ const Text = (props: Props) => {
 
   const styles = {
     sizes: {
+      base: 'text-base',
+      xs: "text-xs",
       sm: "text-sm", // normal text (p)
       md: "text-md", // subtitle
-      lg: "text-3xl font-bold", // title
-      '6xl': "text-6xl"
+      xl: "text-xl",
+      lg: "text-3xl font-bold",
+      '2xl': "text-2xl", // title
+      '5xl': "text-5xl leading-normal			", // title
+      '6xl': "text-6xl "
     },
     weight: {
       normal: "font-normal",
@@ -30,6 +35,7 @@ const Text = (props: Props) => {
       gray: "text-gray",
       red: "text-red-500",
       green: "text-green",
+      black: "text-black"
     },
   };
   return (

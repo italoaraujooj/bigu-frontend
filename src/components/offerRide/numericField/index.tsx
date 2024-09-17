@@ -4,10 +4,13 @@ import Plus from "../../../assets/plus.png";
 import Minus from "../../../assets/minus.png";
 import clsx from "clsx";
 
-type Props = {};
+type Props = {
+  vacancies: number;
+  setVacancies: React.Dispatch<React.SetStateAction<number>>;
+};
 
 const NumericField = (props: Props) => {
-  const [vacancies, setVacancies] = React.useState(0);
+  const { vacancies, setVacancies } = props;
 
   const vacanciesUp = () =>
     setVacancies((prev) => {
@@ -44,13 +47,14 @@ const NumericField = (props: Props) => {
 
   return (
     <>
-      <label className="font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase mb-2">
+      <label className="font-['Poppins'] text-[#616161] font-bold text-xs md:text-md uppercase mb-2">
         VAGAS DISPONÍVEIS
       </label>
       <div className="relative w-full h-14 px-5 text-sm bg-extralight rounded-lg flex items-center justify-center overflow-hidden">
         <button
           onClick={vacanciesDown}
           className="w-full h-full cursor-pointer"
+          type="button"
         >
           <Image
             className="absolute inset-y-3 right-0 w-8 h-8 left-6 cursor-pointer"
@@ -72,7 +76,7 @@ const NumericField = (props: Props) => {
             </p>
           ))}
         </div>
-        <button onClick={vacanciesUp}>
+        <button onClick={vacanciesUp} type="button">
           <Image
             className="absolute inset-y-3 w-8 h-8 right-6 cursor-pointer "
             src={Plus}
