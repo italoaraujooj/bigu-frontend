@@ -51,7 +51,7 @@ const CandidateRequest = (props: Props) => {
   console.log(candidate)
 
   return (
-    <div className="w-[500px] bg-white  rounded-lg px-10 py-6 bg-stone-200 shadow-xl ">
+    <div className="w-[500px] bg-white  rounded-lg px-10 py-6 shadow-xl ">
       <div className="flex flex-col gap-4">
         <div className="flex gap-2 items-center">
           <Image className="w-12 h-12" src={avatar} alt="ft" />

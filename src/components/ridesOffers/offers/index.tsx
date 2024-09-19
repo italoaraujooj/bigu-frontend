@@ -34,14 +34,14 @@ function Offer(props: Props) {
         </div>
 
         <div>
-            <Text label="Vagas:" color="dark" size="base" weight="bold" />
-            <Text label={Number(ride.numSeats - ride.members.length) != 1 ? ride.numSeats + " vagas disponíveis" : ride.numSeats + " vaga disponível"} color="gray" size="base" />
-          </div>
+          <Text label="Vagas:" color="dark" size="base" weight="bold" />
+          <Text label={Number(ride.numSeats - ride.members.length) != 1 ? ride.numSeats + " vagas disponíveis" : ride.numSeats + " vaga disponível"} color="gray" size="base" />
+        </div>
 
-          <div>
-            <Text label="Data e hora:" color="dark" size="base" weight="bold" />
-            <Text label={formatarData(ride.scheduledTime)} color="gray" size="base" />
-          </div>
+        <div>
+          <Text label="Data e hora:" color="dark" size="base" weight="bold" />
+          <Text label={formatarData(ride.scheduledTime)} color="gray" size="base" />
+        </div>
       </div>
       <div className="flex flex-col justify-center gap-2 mt-4">
         <Button
