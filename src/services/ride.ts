@@ -67,7 +67,7 @@ export const answerCandidate = async (body: any, rideId: string, candidateId: st
   }
 }
 
-export const deleteRide = async (id: number) => {
+export const deleteRide = async (id: string) => {
   try {
     const response = api.delete(`/rides/ride/${id}`);
     return response;
