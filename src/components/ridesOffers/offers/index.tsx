@@ -4,11 +4,12 @@ import { deleteRide } from "@/services/ride";
 import { toast } from "react-toastify";
 import Text from "@/components/text";
 import { Ride } from "@/utils/types";
+import { RideResponseDTO } from "@/types/ride";
 
 type Props = {
-  ride: any;
+  ride: RideResponseDTO;
   handleClose: () => void;
-  handleDeleteRide: (ride: Ride) => void;
+  handleDeleteRide: (ride: RideResponseDTO) => void;
 };
 
 function Offer(props: Props) {
@@ -19,7 +20,7 @@ function Offer(props: Props) {
   };
 
   return (
-    <div className="w-[400px] rounded-lg px-10 py-6 bg-stone-200 shadow-xl ">
+    <div className="w-[400px] rounded-lg px-10 py-6 bg-white shadow-xl ">
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-8">
           <div>
@@ -28,13 +29,13 @@ function Offer(props: Props) {
           </div>
           <div>
             <Text label="Destino:" color="dark" size="base" weight="bold" />
-            <Text label={ride.startAddress.bairro} color="gray" size="base" />
+            <Text label={ride.destinationAddress.bairro} color="gray" size="base" />
           </div>
         </div>
 
         <div>
-            <Text label="Vagas disponíveis:" color="dark" size="base" weight="bold" />
-            <Text label={Number(ride.numSeats) > 1 ? ride.numSeats + " vagas disponíveis" : ride.numSeats + " vaga disponível"} color="gray" size="base" />
+            <Text label="Vagas:" color="dark" size="base" weight="bold" />
+            <Text label={Number(ride.numSeats - ride.members.length) != 1 ? ride.numSeats + " vagas disponíveis" : ride.numSeats + " vaga disponível"} color="gray" size="base" />
           </div>
 
           <div>

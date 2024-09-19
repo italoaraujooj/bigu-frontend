@@ -6,6 +6,7 @@ import { CaretRight } from "@phosphor-icons/react";
 import { deleteRide, getMyRidesAvailable } from "@/services/ride";
 import { Ride } from "@/utils/types";
 import { toast } from "react-toastify";
+import { RideResponseDTO } from "@/types/ride";
 
 type Props = {
     visible: boolean;
@@ -15,7 +16,7 @@ type Props = {
 
 function RidesOffers(props: Props) {
     const { visible, handleClose, loadDataRidesAvailable } = props;
-    const [myRides, setMyRides] = useState<Ride[]>([]);
+    const [myRides, setMyRides] = useState<RideResponseDTO[]>([]);
     const [shouldFetch, setShouldFetch] = useState<boolean>(true);
     useEffect(() => {
         const loadData = async () => {
@@ -28,9 +29,9 @@ function RidesOffers(props: Props) {
         loadData();
     }, [shouldFetch])
 
-    const handleDeleteRide = async (ride: Ride) => {
+    const handleDeleteRide = async (ride: RideResponseDTO) => {
         try {
-          await deleteRide(ride.id);
+          await deleteRide(ride.rideId);
           setShouldFetch(true);
           loadDataRidesAvailable();
           
@@ -59,7 +60,7 @@ function RidesOffers(props: Props) {
                     Caronas oferecidas por você
                 </h1>
 
-                {myRides.map((ride: Ride, index: number) => {
+                {myRides.map((ride: RideResponseDTO, index: number) => {
                     return (
                         <Offer
                             key={index}
