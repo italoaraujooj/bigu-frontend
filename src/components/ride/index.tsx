@@ -24,9 +24,10 @@ import { toast } from "react-toastify";
 import { Car } from "@/services/car";
 import { AddressFormState, User } from "@/utils/types";
 import type { Ride } from "@/utils/types";
+import { RequestRide, RideResponseDTO } from "@/types/ride";
 
 type Props = {
-  ridesAvailable: Ride[];
+  ridesAvailable: RideResponseDTO[];
 };
 
 function Ride(props: Props) {
@@ -57,8 +58,8 @@ function Ride(props: Props) {
     loadData();
   }, [askRide]);
 
-  const handleAskRide = (rideId: number) => {
-    const ride = ridesAvailable.find(ride => ride.id === rideId)
+  const handleAskRide = (rideId: string) => {
+    const ride = ridesAvailable.find(ride => ride.rideId === rideId)
     if(ride?.driver.userId === user?.userId){
       toast.info("Você já é o motorista dessa carona.")
       return
@@ -70,29 +71,19 @@ function Ride(props: Props) {
   const submitRide = async () => {
     try {
       const response = await requestRide({
-        phoneNumber: user?.phoneNumber,
-        addressId: Number(userAddressesSelected.value),
-        rideId: Number(rideIdSelected),
-      });
+        addressId: userAddressesSelected.value,
+        rideId: rideIdSelected,
+      } as RequestRide);
       if (response?.status == 200) {
         setAskRide((prev) => !prev);
         setModalOpen((prev) => !prev);
+        toast.success("Solicitação enviada. Aguarde a resposta do motorista.")
       }
     } catch (err: any) {
       toast.error(err.message)
     }
   };
 
-  // const rideUser = () => ridesAvailable.map((ride: any, i: number) => {
-  //   ride.riders?.map((usr: any, i: number) => {
-  //     if (usr?.userId === user?.userId) {
-  //       if (!i) return ride;
-  //       ride = {...ride, confirmation: true }
-  //     }
-  //   })
-
-  //   return ride;
-  // });
   return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-6 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
       <h2 className="font-['Poppins'] text-xl sm:text-3xl text-white font-bold pb-8">
@@ -101,15 +92,15 @@ function Ride(props: Props) {
 
       <div className="space-y-4">
         {!!ridesAvailable.length ? (
-          ridesAvailable.map((item: any) => (
+          ridesAvailable.map((item: RideResponseDTO) => (
             <div
-              key={item.id}
+              key={item.rideId}
               className={clsx(
                 "flex w-full h-16",
                 "bg-white rounded-xl transition-height duration-500 ease-in-out overflow-hidden hover:h-64 sm:h-20 gap-2",
               )}
             >
-              <div className={clsx("w-6 h-full", item?.toWomen && "bg-[#f15bb5]", item?.confirmation && 'bg-green')}></div>
+              <div className={clsx("w-6 h-full", item.toWomen && "bg-[#f15bb5]", item.members.some((member) => member.userId == user?.userId) && 'bg-green')}></div>
               <div>
               <div className="flex items-center gap-2 grow px-4 py-4">
                 <Image
@@ -144,7 +135,7 @@ function Ride(props: Props) {
                 </p>
               </div>
 
-              { item?.confirmation ? (
+              { item.members.some((membro) => membro.userId == user?.userId) ? (
                 <div className="w-full h-24 my-4 px-4">
                   <Text label="Carona aceita" color="green" weight="bold" size="base" className="uppercase" />
                 </div>
@@ -155,7 +146,7 @@ function Ride(props: Props) {
                     label={
                       !askRide ? "Pedir carona" : "Aguardando confirmação..."
                     }
-                    onClick={() => handleAskRide(item.id)}
+                    onClick={() => handleAskRide(item.rideId)}
                     size="sm"
                     color="green"
                     shape="square"

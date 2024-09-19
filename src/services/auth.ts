@@ -46,7 +46,7 @@ export async function logOut(){
 }
 
 export async function getUser(){
-  return await api.get('/users/user/self')
+  return await api.get('/users/user')
 }
 
 export async function forgotPasswordRequest(email: string){
