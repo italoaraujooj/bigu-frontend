@@ -59,9 +59,13 @@ function Ride(props: Props) {
   }, [askRide]);
 
   const handleAskRide = (rideId: string) => {
+    const userSex = user?.sex;
     const ride = ridesAvailable.find(ride => ride.rideId === rideId)
     if(ride?.driver.userId === user?.userId){
       toast.info("Você já é o motorista dessa carona.")
+      return
+    }else if(ride?.toWomen && userSex == "Masculino"){
+      toast.info("Essa carona é exclusiva para mulheres.")
       return
     }
     setModalOpen((prev) => !prev);
