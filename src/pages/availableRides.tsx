@@ -79,7 +79,7 @@ function AvailableRides() {
                 <div key={index}>
                   <RideFull
                     id={item.rideId}
-                    userName={item.driver.name}
+                    driver={item.driver}
                     start={item.startAddress.bairro}
                     destination={item.destinationAddress.bairro}
                     numSeats={item.numSeats}
@@ -87,6 +87,7 @@ function AvailableRides() {
                     plate={item.car.plate}
                     color={item.car.color}
                     dateTime={item.scheduledTime}
+                    toWoman={item.toWomen}
                   />
                 </div>
               ))

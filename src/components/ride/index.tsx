@@ -86,7 +86,6 @@ function Ride(props: Props) {
       toast.error(err.message)
     }
   };
-  console.log(ridesAvailable)
 
   return (
     <div className="bg-dark w-full rounded-lg p-2 flex flex-col mx-auto max-w-[800px] lg:mx-0 lg:w-full sm:py-4 sm:px-8">

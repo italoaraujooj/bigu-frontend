@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Modal from "../modal";
 import Avatar from "../../assets/woman.png"
 import Image from "next/image";
@@ -10,13 +10,14 @@ import { MapPin, Person, Clock } from "@phosphor-icons/react";
 import React from "react";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
-import { AddressResponseDTO, RequestRide } from "@/types/ride";
+import { AddressResponseDTO, RequestRide, UserResponseDTO } from "@/types/ride";
 import { toast } from "react-toastify";
 import Dropdown from "../dropdown";
+import { AuthContext } from "@/context/AuthContext";
 
 interface RideProps {
   id:string,
-  userName: string,
+  driver: UserResponseDTO,
   start: string,
   destination: string,
   numSeats: number,
@@ -24,9 +25,11 @@ interface RideProps {
   plate: string,
   color: string,
   dateTime: string,
+  toWoman: boolean
 }
 
 function RideFull(props: RideProps) {
+  const { user } = useContext(AuthContext)
   const [userAddress, setUserAddresses] = React.useState([]);
   const [userAddressesSelected, setUserAddressesSelected] = React.useState(
     {} as any
@@ -46,6 +49,14 @@ function RideFull(props: RideProps) {
   }, [askRide]);
 
   const handleAskRide = (rideId: string) => {
+    const userSex = user?.sex;
+    if(props.driver.userId === user?.userId){
+      toast.info("Você já é o motorista dessa carona.")
+      return
+    }else if(props.toWoman && userSex == "Masculino"){
+      toast.info("Essa carona é exclusiva para mulheres.")
+      return
+    }
     setModalOpen((prev) => !prev);
     setRideIdSelected(rideId);
   };
@@ -59,9 +70,10 @@ function RideFull(props: RideProps) {
       if (response?.status == 200) {
         setAskRide((prev) => !prev);
         setModalOpen((prev) => !prev);
+        toast.success("Solicitação enviada. Aguarde a resposta do motorista.")
       }
-    } catch (err) {
-      toast.error("Ocorreu algum erro ao solicitar essa carona.")
+    } catch (err: any) {
+      toast.error(err.message)
     }
   };
 
@@ -74,7 +86,7 @@ function RideFull(props: RideProps) {
           <div className="flex flex-col gap-1">
             <div className="flex gap-3 items-center">
               <h1 className="font-bold text-black font-['Poppins'] sm:text-2xl md:text-3xl">
-                {props.userName.split(" ")[0]}
+                {props.driver.name.split(" ")[0]}
               </h1>
               <Image className=" w-3 h-3" src={Star} alt="estrela" />
               <span className=" text-gray text-xs">5.0</span>
@@ -84,17 +96,17 @@ function RideFull(props: RideProps) {
       </div>
 
       <div className="flex justify-between md:items-center">
-        <div className="space-y-2 md:space-y-4">
+        <div className="space-y-2 md:space-y-4 lg:space-y-8">
           <div className="flex gap-2 items-center">
             <MapPin size={24} color="#252525" weight="bold"/>
-            <span className="font-['Poppins'] font-medium text-xs sm:text-sm md:text-base">
+            <span className="font-['Poppins'] font-medium text-xs sm:text-sm md:text-base lg:text-xl">
               {props.start} - {props.destination}
             </span>
           </div>
 
           <div className="flex gap-2 items-center">
             <Person size={24} color="#252525" weight="fill"/>
-            <span className="font-['Poppins'] font-normal text-xs sm:text-sm md:text-base">
+            <span className="font-['Poppins'] font-normal text-xs sm:text-sm md:text-base lg:text-xl">
               {props.numSeats}{" "}
               {Number(props.numSeats) > 1
                 ? "vagas disponíveis"
@@ -106,7 +118,7 @@ function RideFull(props: RideProps) {
             <Clock size={24} color="#252525" weight="bold" />
 
 
-            <span className="font-['Poppins'] font-medium text-xs sm:text-sm md:text-base">
+            <span className="font-['Poppins'] font-medium text-xs sm:text-sm md:text-base lg:text-xl">
               {formatDateRide(props.dateTime)}
             </span>
           </div>
