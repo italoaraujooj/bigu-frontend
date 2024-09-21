@@ -43,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black/70">
           <div
             className={clsx(
-              "modal py-10 px-12 rounded-md shadow-lg",
+              "modal w-80 p-8 rounded-md shadow-lg sm:w-full sm:max-w-md",
               transparent ? "transparent opacity-3 rounded-full" : "bg-white"
             )}
           >
@@ -51,20 +51,20 @@ const Modal: React.FC<ModalProps> = ({
               <main>{children}</main>
               <br />
               {!noActions && (
-                <section className="flex items-center gap-4">
+                <section className="flex items-center gap-4 justify-center">
                   {/* @ts-ignore */}
                   <Button
                     label="Cancelar"
-                    size="sm"
-                    className="uppercase font-semibold px-3 lg:px-6"
+                    size="xs"
+                    className="uppercase font-semibold px-3 lg:px-6 md:w-48 md:h-12 md:text-base"
                     color="red"
                     onClick={onClose}
                   />
                   {/* @ts-ignore */}
                   <Button
                     label="Confirmar"
-                    size="sm"
-                    className="uppercase font-semibold px-3 lg:px-6"
+                    size="xs"
+                    className="uppercase font-semibold px-3 lg:px-6 md:w-48 md:h-12 md:text-base"
                     color="green"
                     type={!!onSubmit ? "button" : "submit"}
                     onClick={onSubmit}

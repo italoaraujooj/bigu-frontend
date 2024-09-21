@@ -25,11 +25,10 @@ function Dropdown({ label, options, onSelectOption }: Props) {
   };
 
   return (
-    <div className=" flex flex-col items-start justify-center gap-2">
+    <div className="flex flex-col items-start justify-center gap-2">
       {label && (
         <label
-          className={`font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase`}
-          // htmlFor={fieldName}
+          className={`font-['Poppins'] text-[#616161] font-bold text-xs sm:text-sm md:text-md uppercase`}
         >
           {label}
         </label>

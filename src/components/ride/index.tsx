@@ -157,7 +157,7 @@ function Ride(props: Props) {
                   
                   { item.members.some((membro) => membro.user.userId == user?.userId) ? (
                     <div className="self-end">
-                      <Text label="Carona aceita" color="green" weight="bold" size="xs" className="uppercase" />
+                      <Text label="Carona aceita" color="green" weight="bold" size="xs" className="uppercase sm:text-sm" />
                     </div>
                   ) : (
                     <div className={`self-end`}>
@@ -170,12 +170,7 @@ function Ride(props: Props) {
                         size="xs"
                         color="green"
                         shape="square"
-                        className={clsx(
-                          item.driver.userId === user?.userId
-                            ? "font-semibold"
-                            : "font-semibold",
-                          !!userAddress.length && "hover:bg-hover-green"
-                        )}
+                        className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base"
                       />
                     ) : (
                       <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite">
