@@ -44,7 +44,6 @@ function Profile() {
   useEffect(() => {
     const loadCars = async () => {
       const responseCars: any = await getUserCars();
-      console.log(responseCars)
       if(responseCars) setCars(responseCars.data.userCars)
     }
     loadCars();

@@ -49,7 +49,10 @@ export type CandidateResponseDTO = {
 export type RideResponseDTO = {
     rideId: string,
     driver: UserResponseDTO,
-    members: UserResponseDTO[],
+    members: {
+        user: UserResponseDTO,
+        address: AddressResponseDTO
+    }[],
     candidates: CandidateResponseDTO[],
     startAddress: AddressResponseDTO,
     destinationAddress: AddressResponseDTO,

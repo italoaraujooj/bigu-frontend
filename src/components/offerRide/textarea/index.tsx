@@ -24,7 +24,7 @@ const TextArea = (props: Props) => {
         autoCorrect="on"
         placeholder={placeholder}
         name="ride_description"
-        className="w-full rounded-lg px-6 py-6 my-[0.16rem] placeholder-placeholder"
+        className="w-full rounded-lg px-6 py-6 my-[0.16rem] placeholder-placeholder font-[Poppins]"
       ></textarea>
     </div>
   );
