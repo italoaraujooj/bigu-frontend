@@ -13,13 +13,13 @@ import Router from "next/router";
 import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react";
 import Modal from "@/components/modal";
 import { changePasswordRequest } from "@/services/auth";
-import { createCar, getUserCars } from "@/services/car";
+import { createCar, deleteCar, getUserCars } from "@/services/car";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { ChangePassword, CreateCarFormState } from "@/utils/types";
 import Notification from "@/components/notification";
 import React from "react";
 import { toast } from "react-toastify";
-import { Car } from "@/services/car";
+import { CarResponseDTO } from "@/types/ride";
 
 function Profile() {
   const formRef = useRef<FormHandles>(null);
@@ -31,7 +31,7 @@ function Profile() {
   const [readOnly, setReadOnly] = useState(true);
   const [changePassword, setChangePassord] = useState(false);
   const [modalCar, setModalCar] = useState(false);
-  const [cars, setCars] = useState<Car[]>([])
+  const [cars, setCars] = useState<CarResponseDTO[]>([])
 
   const toggleModalCar = () => setModalCar((prev) => !prev);
   const handleOpenChangePassword = () => setChangePassord(true);
@@ -63,6 +63,21 @@ function Profile() {
       toast.error("Houve um erro na criação do carro");
     }
   };
+
+  const handleDeleteCar = async (id: string): Promise<void> => {
+    try{
+      const response: any = await deleteCar(id);
+      console.log(response)
+      if (response?.status === 200) {
+        const previousCars = cars;
+        const currentCars = previousCars.filter((car:CarResponseDTO) => car.carId !== id)
+        setCars(currentCars)
+        toast.success(`O carro foi removido.`);
+      }
+    }catch(err){
+      toast.error("Houve um erro na remoção do carro");
+    }
+  };
   
   const handleChangePassword: SubmitHandler<ChangePassword> = async (data) => {
     try{
@@ -77,7 +92,7 @@ function Profile() {
   };
 
   return (
-    <div className="flex w-full items-center justify-center my-12">
+    <div className="flex w-full items-center justify-center my-8">
       <div>
         <div>
           <Link
@@ -95,7 +110,7 @@ function Profile() {
         </div>
         <div className="w-full h-fit flex items-center justify-center">
           <Form
-            className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl"
+            className="bg-dark max-w-[360px] p-4 rounded-2xl flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl"
             onSubmit={() => {}}
             initialData={{
               name: user?.name,
@@ -189,7 +204,7 @@ function Profile() {
                   <h1 className="text-2xl text-white font-bold mb-2 font-[Poppins]">
                     Meus veículos
                   </h1>
-                  <Carousel profile add={toggleModalCar} items={cars}/>
+                  <Carousel profile add={toggleModalCar} remove={handleDeleteCar} items={cars}/>
                 </div>
                 <div className="flex gap-7">
                   <Button

@@ -132,7 +132,7 @@ function Ride(props: Props) {
                 <div className="flex flex-row w-full justify-between">
                   <div className="space-y-2 mt-2">
                     <Text
-                      label={`Carro: ${item.car.carModel} ${item.car.color} - ${item.car.plate}`}
+                      label={`${item.car.carModel} ${item.car.color} - ${item.car.plate}`}
                       color="dark"
                       size="md"
                       weight="medium"
@@ -146,7 +146,7 @@ function Ride(props: Props) {
                       className="tracking-wide text-xs md:text-md"
                     />
                     <Text
-                      label="Saída às 12:00"
+                      label="23/09 saída às 12:00"
                       color="dark"
                       size="md"
                       weight="medium"
