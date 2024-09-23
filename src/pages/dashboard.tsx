@@ -56,7 +56,7 @@ function Dashboard() {
   const loadDataRidesAvailable = async () => {
     try{
       const responseAvailable = await getAllRidesAvailable();
-      setRidesAvailable(responseAvailable?.data.ridesAvailable);
+      setRidesAvailable(responseAvailable?.data.availableRides);
     }finally{
       setLoadingStateRides(false);
     }
@@ -98,7 +98,6 @@ function Dashboard() {
 
   useEffect(() => {
     async function t() {
-      console.log("entrou");
       await fakeDelay(2000);
       setP(1);
       await fakeDelay(2000);
@@ -116,7 +115,6 @@ function Dashboard() {
     if (p === 4) {
       setFirstDashboardAccess(false);
     }
-    //console.log("oi");
   }, [p]);
 
   const firstAccess = () => {

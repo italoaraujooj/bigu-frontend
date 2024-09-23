@@ -19,7 +19,7 @@ export const formatDateTime = (date: string, time: string) => {
   return fullDateTime;
 }
 
-export const formatarData = (data: string): string =>  {
+export const formatarData = (data: string): string => {
   const dataAtual = new Date();
   const dataRecebida = new Date(data);
 
@@ -54,22 +54,17 @@ export function formatarDate(data: string): string {
 }
 
 export function moneyMask(value: any) {
-  // Remove todos os caracteres não numéricos
   const numericValue = value.replace(/[^0-9]/g, '');
 
-  // Verifica se o valor está vazio
   if (numericValue === '') {
     return '';
   }
 
-  // Obtém a parte inteira e a parte decimal
   const integerPart = numericValue.slice(0, -2);
   const decimalPart = numericValue.slice(-2);
 
-  // Formata a parte inteira adicionando separadores de milhar
   const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-  // Monta o valor completo com o prefixo "R$" e a parte inteira e decimal
   const formattedValue = `R$ ${formattedIntegerPart},${decimalPart}`;
 
   return formattedValue;
@@ -77,44 +72,28 @@ export function moneyMask(value: any) {
 
 export function timeMask(value: any) {
 
-  console.log(value)
-  
-  const numericValue = value.replace(/[^0-9]/g, '');
+  value = value.replace(/\D/g, "");
 
-  
-  if (numericValue === '') {
-    return '';
+  if (value.length > 3) {
+    value = value.slice(0, 2) + ":" + value.slice(2, 4);
+  } else if (value.length > 1) {
+    value = value.slice(0, 1) + ":" + value.slice(1, 3);
   }
 
-  
-  let hours = numericValue.slice(0, 2);
+  const [hours, minutes] = value.split(":");
 
-  
-  let minutes = numericValue.slice(2, 4);
+  let formattedHours = hours || "";
+  let formattedMinutes = minutes || "";
 
-  
-  if (hours !== '') {
-    if (parseInt(hours, 10) >= 24) {
-      hours = '00';
-    } else if (hours.length === 1 && parseInt(hours, 10) > 1) {
-      hours = `${hours}`;
-    } else if (hours.length === 2 && parseInt(hours, 10) === 0) {
-      hours = '01';
-    } else if (hours.length === 2 && parseInt(hours, 10) >= 24) {
-      hours = '00';
-    }
+  if (formattedHours && parseInt(formattedHours, 10) > 23) {
+    formattedHours = "23";
   }
 
-  if (minutes !== '') {
-    if (parseInt(minutes, 10) > 59) {
-      minutes = '59';
-    } else if (minutes.length === 1 && parseInt(minutes, 10) > 5) {
-      minutes = `0${minutes}`;
-    }
+  if (formattedMinutes && parseInt(formattedMinutes, 10) > 59) {
+    formattedMinutes = "59";
   }
 
-  // Monta o valor completo no formato HH:mm
-  const formattedValue = `${hours}:${minutes}`;
+  const formattedValue = `${formattedHours}${formattedMinutes ? `:${formattedMinutes}` : ""}`;
 
   return formattedValue;
 }

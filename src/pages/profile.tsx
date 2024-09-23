@@ -232,7 +232,7 @@ function Profile() {
               onClose={toggleModalCar}
               noActions
             >
-                <Text label="Adicionar carro" color="dark" size="lg" weight="bold" />
+              <Text label="Adicionar carro" color="dark" size="lg" weight="bold" />
               <Form onSubmit={handleCreateCar} ref={formRefCar} className="space-y-2">
                 <br />
                 <Input
@@ -273,15 +273,15 @@ function Profile() {
                 <section className="flex items-center gap-4 mt-12">
                   <Button
                     label="Cancelar"
-                    size="sm"
-                    className="uppercase font-semibold px-3 lg:px-6"
+                    size="xs"
+                    className="uppercase font-semibold px-3 sm:w-48 sm:h-12 sm:px-8 sm:text-sm lg:px-6"
                     color="red"
                     onClick={toggleModalCar}
                   />
                   <Button
                     label="Confirmar"
-                    size="sm"
-                    className="uppercase font-semibold px-3 lg:px-6"
+                    size="xs"
+                    className="uppercase font-semibold px-3 sm:w-48 sm:h-12 sm:px-8 sm:text-sm lg:px-6"
                     color="green"
                     type="submit"
                   />
@@ -299,13 +299,13 @@ function Profile() {
         >
           <Form onSubmit={handleChangePassword} ref={formRefChangePassword}>
             <div className=" bg-white rounded-lg p-3 flex flex-col gap-4 justify-center items-center">
-              <h2 className=" text-2xl font-semibold">Alterar senha</h2>
+              <h2 className="text-2xl font-semibold font-[Poppins]">Alterar senha</h2>
               <Input
                 label="Senha atual: "
                 name="actualPassword"
-                sizing="sm"
+                sizing="adjustable"
                 color="extralight"
-                className="md:h-16 md:text-lg"
+                className="sm:w-72 md:h-16 md:text-lg"
                 type="password"
                 placeholder="*********"
               />
@@ -313,23 +313,23 @@ function Profile() {
               <Input
                 label="Nova senha: "
                 name="newPassword"
-                sizing="sm"
+                sizing="adjustable"
                 color="extralight"
-                className="md:h-16 md:text-lg"
+                className="sm:w-72 md:h-16 md:text-lg"
                 type="password"
                 placeholder="*********"
               />
               <Input
                 label="Confirmar senha: "
                 name="newPasswordConfirmation"
-                sizing="sm"
+                sizing="adjustable"
                 color="extralight"
-                className="md:h-16 md:text-lg"
+                className="sm:w-72 md:h-16 md:text-lg"
                 type="password"
                 placeholder="*********"
               />
               <p
-                className=" text-gray cursor-pointer"
+                className=" text-gray cursor-pointer font-[Poppins]"
                 onClick={() => {
                   Router.push("/recover-password");
                 }}
@@ -339,14 +339,14 @@ function Profile() {
               <section className="flex items-center gap-4 mt-12">
                   <Button
                     label="Cancelar"
-                    size="sm"
+                    size="xs"
                     className="uppercase font-semibold px-3 lg:px-6"
                     color="red"
                     onClick={handleCloseChangePassword}
                   />
                   <Button
                     label="Confirmar"
-                    size="sm"
+                    size="xs"
                     className="uppercase font-semibold px-3 lg:px-6"
                     color="green"
                     type="submit"

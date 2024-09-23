@@ -207,14 +207,14 @@ function OfferRideForm() {
           placeholder="Detalhe um pouco da sua carona..."
         />
 
-        <section className="w-full flex justify-end gap-8">
-          <Button
+        <section className="w-full flex justify-center gap-8">
+          {/* <Button
             type="button"
             label="salvar rascunho"
             size="base"
             className="uppercase font-semibold px-3 lg:px-6"
             color="dark-blue"
-          />
+          /> */}
           <Button
             label="oferecer carona"
             size="base"

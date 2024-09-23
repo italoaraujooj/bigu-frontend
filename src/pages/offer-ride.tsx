@@ -9,7 +9,7 @@ const OfferRide = () => {
   const { user } = useContext(AuthContext);
   
   return (
-    <div className="flex w-full items-center justify-center my-16">
+    <div className="flex w-full items-center justify-center my-8">
       <div className="">
         <div className="">
           <GoBack />
