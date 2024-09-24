@@ -1,4 +1,4 @@
-import { formatarData, formatarTelefone } from "@/utils/masks";
+import { formatarTelefone } from "@/utils/masks";
 import Button from "../../button";
 import Image from "next/image";
 import { answerCandidate } from "@/services/ride";
@@ -46,9 +46,6 @@ const CandidateRequest = (props: Props) => {
       console.log(err);
     }
   };
-
-  console.log(ride)
-  console.log(candidate)
 
   return (
     <div className="w-[500px] bg-white  rounded-lg px-10 py-6 shadow-xl ">

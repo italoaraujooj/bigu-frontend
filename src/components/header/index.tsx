@@ -36,8 +36,6 @@ export default function Header(props: Props) {
 
       const responseAddress = await fetchUserAddresses()
       if(responseAddress?.data) setUserAddresses(responseAddress?.data.userAddress);
-      console.log(responseCars)
-      console.log(responseAddress?.data)
     }
     loadData();
   }, []);

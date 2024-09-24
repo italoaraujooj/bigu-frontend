@@ -12,7 +12,7 @@ import {
 import LottieAnimation from "../LottieAnimation";
 import ghost from "../../assets/ghost.json";
 import empty from "../../assets/empty-box.json";
-import { formatarData } from "@/utils/masks";
+import { formatarData, moneyMask } from "@/utils/masks";
 import Modal from "../modal";
 import Dropdown from "../dropdown";
 import { fetchUserAddresses } from "@/services/address";
@@ -22,6 +22,7 @@ import clsx from "clsx";
 import { toast } from "react-toastify";
 import type { Ride } from "@/utils/types";
 import { AddressResponseDTO, RequestRide, RideResponseDTO } from "@/types/ride";
+import { FormProvider } from "@unform/core";
 
 type Props = {
   ridesAvailable: RideResponseDTO[];
@@ -107,7 +108,7 @@ function Ride(props: Props) {
               key={item.rideId}
               className={clsx(
                 "flex w-full h-16",
-                "bg-white rounded-xl transition-height duration-500 ease-in-out overflow-hidden hover:h-36 md:hover:h-40 md:h-20",
+                "bg-white rounded-xl transition-height duration-500 ease-in-out overflow-hidden hover:h-40 md:hover:h-44 md:h-20",
               )}
             >
               <div className={clsx("w-4 h-full", item.toWomen && "bg-[#f15bb5]", item.members.some((member) => member.user.userId == user?.userId) && 'bg-green')}></div>
@@ -146,7 +147,14 @@ function Ride(props: Props) {
                       className="tracking-wide text-xs md:text-md"
                     />
                     <Text
-                      label="23/09 saída às 12:00"
+                      label={formatarData(item.scheduledTime)}
+                      color="dark"
+                      size="md"
+                      weight="medium"
+                      className="tracking-wide text-xs md:text-md"
+                    />
+                    <Text
+                      label={`R$ ${String(item.price)}`}
                       color="dark"
                       size="md"
                       weight="medium"

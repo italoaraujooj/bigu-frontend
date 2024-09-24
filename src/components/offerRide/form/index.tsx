@@ -110,7 +110,6 @@ function OfferRideForm() {
       description: description,
       toWomen: toWomen,
     };
-    console.log(body)
     try{
       const response = await createRide(body);
       if(response?.status == 201){
