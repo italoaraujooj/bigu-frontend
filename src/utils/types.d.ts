@@ -15,6 +15,7 @@ export interface OfferRideFormState {
   hour: string;
   available_vacancies: number;
   estimated_value: number;
+  description: string;
 }
 
 type InputType =
@@ -34,9 +35,10 @@ export interface OfferRideField {
   type: InputType;
   color: InputColor;
   sizing: InputSize;
-  placeholder: string;
+  placeholder?: string;
   readOnly: boolean;
   mask?: any;
+  defaultValue?: any;
 }
 
 interface OfferRideFormState {

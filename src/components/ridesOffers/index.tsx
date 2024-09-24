@@ -3,10 +3,11 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import Offer from "./offers";
 import { CaretRight } from "@phosphor-icons/react";
-import { deleteRide, getMyRidesAvailable } from "@/services/ride";
+import { deleteRide, editRide, getMyRidesAvailable } from "@/services/ride";
 import { Ride } from "@/utils/types";
 import { toast } from "react-toastify";
 import { RideResponseDTO } from "@/types/ride";
+import Router from "next/router";
 
 type Props = {
     visible: boolean;
@@ -22,6 +23,7 @@ function RidesOffers(props: Props) {
         const loadData = async () => {
             if(shouldFetch){
                 const response = await getMyRidesAvailable();
+
                 setMyRides(response?.data.userDriverActivesHistory)
                 setShouldFetch(false);
             }
@@ -42,6 +44,10 @@ function RidesOffers(props: Props) {
           handleClose();
           console.log(err);
         }
+    };
+
+    const handleEditRide = async (rideId: string) => {
+        Router.push(`/edit-ride/${rideId}`)
       };
 
     return (
@@ -53,7 +59,7 @@ function RidesOffers(props: Props) {
                 visible ? "translate-x-0" : "translate-x-full"
             )}
         >
-            <div className="flex flex-col justify-between gap-4">
+            <div className="flex flex-col justify-between gap-4 mb-20">
                 <CaretRight size={32} color="white" onClick={handleClose} className="cursor-pointer my-4" weight="bold"/>
 
                 <h1 className="font-['Poppins'] font-semibold text-2xl md:text-3xl text-white my-2">
@@ -67,6 +73,7 @@ function RidesOffers(props: Props) {
                             ride={ride}
                             handleClose={handleClose}
                             handleDeleteRide={handleDeleteRide}
+                            handleEditRide={handleEditRide}
                         />
                     );
                 })}

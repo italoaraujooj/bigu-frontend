@@ -22,10 +22,27 @@ export const getRideHistory = async () => {
   }
 }
 
+export const getRide = async (id: string) => {
+  try {
+    const response: any = api.get(`/rides/ride/${id}`);
+    return response;
+  } catch (err: any) {
+    toast.error(err.message)
+  }
+}
 
 export const createRide = async (body: any) => {
   try {
     const response = api.post('rides', body);
+    return response;
+  } catch (err: any) {
+    toast.error(err.message)
+  }
+}
+
+export const editRide = async (id: string, body: any) => {
+  try {
+    const response = api.patch(`rides/ride/${id}`, body);
     return response;
   } catch (err: any) {
     toast.error(err.message)

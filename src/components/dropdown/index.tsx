@@ -1,6 +1,6 @@
 import React from "react";
 import Text from "../text";
-import { ArrowDown, CaretDown } from "@phosphor-icons/react";
+import { CaretDown } from "@phosphor-icons/react";
 
 interface DropdownOption {
   label: string;
@@ -11,18 +11,27 @@ type Props = {
   label: string;
   options: DropdownOption[];
   onSelectOption: (selectedOption: DropdownOption) => void;
+  selectedOption?: DropdownOption | null; // Adicionar a prop selectedOption
 };
 
-function Dropdown({ label, options, onSelectOption }: Props) {
+function Dropdown({ label, options, onSelectOption, selectedOption: initialSelectedOption }: Props) {
   const [selectedOption, setSelectedOption] =
-    React.useState<DropdownOption | null>(null);
+    React.useState<DropdownOption | null>(initialSelectedOption || null); // Inicializa com a prop recebida
+
   const [isOpen, setIsOpen] = React.useState(false);
- 
+
   const handleSelectOption = (option: DropdownOption) => {
     setSelectedOption(option);
     onSelectOption(option);
     setIsOpen(false);
   };
+
+  // Atualiza o estado se a prop selectedOption mudar externamente
+  React.useEffect(() => {
+    if (initialSelectedOption) {
+      setSelectedOption(initialSelectedOption);
+    }
+  }, [initialSelectedOption]);
 
   return (
     <div className="flex flex-col items-start justify-center gap-2">
@@ -39,7 +48,7 @@ function Dropdown({ label, options, onSelectOption }: Props) {
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          {selectedOption ? (
+          {Object.keys(selectedOption).length > 0 ? (
             <span className="flex items-center justify-between">
               <Text
                 label={selectedOption.label}

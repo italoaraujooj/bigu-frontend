@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { parseCookies, destroyCookie } from "nookies";
 
-const baseURL = "http://localhost:3000";
+const baseURL = "http://localhost:3001";
 
 export const api = axios.create({
   baseURL,

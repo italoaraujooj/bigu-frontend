@@ -22,27 +22,33 @@ const fieldsFirstRow: OfferRideField[] = [
   },
 ]
 
-const fieldsLastRow: OfferRideField[] = [
-  {
-    name:"date",
-    label: "DATA DA CARONA",
-    type: "date",
-    color: "extralight",
-    sizing: "adjustable",
-    placeholder: "",
-    readOnly: false
-  },
-  {
-    name:"hours",
-    label: "HORÁRIO DA SAÍDA",
-    type: "text",
-    color: "extralight",
-    sizing: "adjustable",
-    placeholder: "6:30",
-    readOnly: false,
-    mask: timeMask
-  }
-]
+const fieldsLastRow = (time: any): OfferRideField[] => {
+  console.log(time)
+  return [
+    {
+      name: "date",
+      label: "DATA DA CARONA",
+      type: "date",
+      color: "extralight",
+      sizing: "adjustable",
+      placeholder: "",
+      readOnly: false,
+      defaultValue: time?.split("T")[0],
+    },
+    {
+      name: "hours",
+      label: "HORÁRIO DA SAÍDA",
+      type: "text",
+      color: "extralight",
+      sizing: "adjustable",
+      placeholder: "6:30",
+      readOnly: false,
+      defaultValue: time?.split("T")[1]?.split(":").slice(0, 2).join(":"),
+      mask: timeMask,
+    },
+  ];
+};
+
 
 const checkboxesOptions = [
   {

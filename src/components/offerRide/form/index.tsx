@@ -18,15 +18,22 @@ import useFields from "@/hooks/useFields";
 import { fetchUserAddresses } from "@/services/address";
 import {AuthContext} from "@/context/AuthContext";
 import { toast } from "react-toastify";
-import { createRide } from "@/services/ride";
-import Router from "next/router";
+import { createRide, editRide, getRide } from "@/services/ride";
+import Router, { useRouter } from "next/router";
 
 interface FormatAddress {
   value: string
   label: string
 }
 
-function OfferRideForm() {
+type Props = {
+  rideId?: string;
+}
+
+function OfferRideForm(props: Props) {
+  const { rideId } = props;
+  const [ride, setRide] = useState<any>();
+
   const { createFields } = useFields();
 
   const { user } = useContext(AuthContext);
@@ -39,6 +46,19 @@ function OfferRideForm() {
   const [vacancies, setVacancies] = useState(0);
   const [onlyWomanChecked, setOnlyWomanChecked] = useState(true);
   const [selectedCar, setSelectedCar] = useState("");
+  const [description, setDescription] = useState("");
+  const [scheduledTime, setScheduledTime] = useState("");
+
+// Atualize o estado quando o valor de ride for carregado
+useEffect(() => {
+  if (ride?.scheduledTime) {
+    setScheduledTime(ride.scheduledTime);
+  }
+}, [ride?.scheduledTime]);
+
+// Renderize o campo, seja com o valor ou vazio
+createFields(fieldsLastRow(scheduledTime), "w-full flex items-end gap-4 space-y-2")
+
 
   const ufcgAddresses = [
     {
@@ -73,6 +93,40 @@ function OfferRideForm() {
     loadData();
   }, [])
 
+  useEffect(() => {
+    if (rideId) {
+      const loadData = async () => {
+        const responseRide = await getRide(rideId)
+        if(responseRide?.data){
+          setRide(responseRide?.data?.ride);
+          setDescription(responseRide.data.ride.description);
+          setScheduledTime(responseRide.data.ride.scheduledTime);
+          console.log(scheduledTime)
+          if (!responseRide.data.ride.goingToCollege) {
+            handleCheckboxChange(2)
+          }
+          setVacancies(responseRide.data.ride.numSeats - 1);
+          const startAddressFormated = 
+          {
+            label: responseRide.data.ride.startAddress.nome,
+            value: responseRide.data.ride.startAddress.addressId,
+          };
+          const destinationAddressFormated = ufcgAddresses.find(
+            (address) => address.value === responseRide?.data?.ride?.destinationAddress?.addressId
+          );
+          if(ride?.goingToCollege == true) {
+            setUserAddressesSelected(startAddressFormated);
+            setUfcgAddressesSelected(destinationAddressFormated);
+          } else {
+            setUserAddressesSelected(destinationAddressFormated);
+            setUfcgAddressesSelected(startAddressFormated);
+          }
+        }
+      }
+      loadData();
+    }
+  }, [rideId])
+
   const handleCheckboxChange = (checkboxId: number) => {
     const updatedCheckboxes = checkboxes.map((checkbox) => {
       if (checkbox.id === checkboxId) {
@@ -94,10 +148,10 @@ function OfferRideForm() {
 
     const dateTime = formatDateTime(date, hours);
     const numSeats = vacancies + 1;
-    const price = Number(String(estimated_value).split(" ")[1].replace(",","."))
+    const price = Number(String(estimated_value).split(" ")[1]?.replace(",","."))
     const toWomen = user?.sex === "F" ? onlyWomanChecked : false;
     const carId = selectedCar;
-    const description = "any description";
+    console.log(description)
     const body = {
       driver: user?.userId,
       startAddress: startAddress,
@@ -111,17 +165,28 @@ function OfferRideForm() {
       toWomen: toWomen,
     };
     console.log(body)
-    try{
-      const response = await createRide(body);
-      if(response?.status == 201){
-        Router.push("/dashboard")
-        toast.success("A carona foi criada com sucesso")
+    if (rideId) {
+      try{
+        const response = await editRide(rideId, body);
+        if(response?.status == 200){
+          Router.push("/dashboard")
+          toast.success("A carona foi editada com sucesso")
+        }
+      }catch(err: any){
+        toast.error(err.message)
       }
-    }catch(err: any){
-      toast.error(err.message)
+    } else {
+      try{
+        const response = await createRide(body);
+        if(response?.status == 201){
+          Router.push("/dashboard")
+          toast.success("A carona foi criada com sucesso")
+        }
+      }catch(err: any){
+        toast.error(err.message)
+      }
     }
   };
-
 
   return (
     <Form
@@ -148,6 +213,7 @@ function OfferRideForm() {
         key={1}
           label="Local de Origem"
           options={checkboxes[0].checked ? userAddresses : ufcgAddresses}
+          selectedOption={checkboxes[0].checked ? userAddressesSelected : ufcgAddressesSelected}
           onSelectOption={(selectedOption) =>
             checkboxes[0].checked
               ? setUserAddressesSelected(selectedOption)
@@ -158,13 +224,14 @@ function OfferRideForm() {
         key={2}
           label="Local de Destino"
           options={checkboxes[0].checked ? ufcgAddresses : userAddresses}
+          selectedOption={checkboxes[0].checked ? ufcgAddressesSelected : userAddressesSelected}
           onSelectOption={(selectedOption) =>
             checkboxes[0].checked
               ? setUfcgAddressesSelected(selectedOption)
               : setUserAddressesSelected(selectedOption)
           }
         />
-        {createFields(fieldsLastRow, "w-full flex items-end gap-4 space-y-2")}
+        {createFields(fieldsLastRow(scheduledTime), "w-full flex items-end gap-4 space-y-2")}
         <div className="flex gap-4 items-center space-y-2">
           <div className="w-1/2 lg:w-3/4 flex flex-col ">
             <NumericField vacancies={vacancies} setVacancies={setVacancies} />
@@ -179,6 +246,7 @@ function OfferRideForm() {
               placeholder="R$ 8,90"
               mask={moneyMask}
               readOnly={false}
+              value={ride?.price}
             />
           </div>
         </div>
@@ -205,10 +273,25 @@ function OfferRideForm() {
         <TextArea
           label="Detalhe sua carona"
           placeholder="Detalhe um pouco da sua carona..."
+          onChange={(e) => setDescription(e.target.value)}
+          value={description} // Use value instead of defaultValue
         />
 
-        <section className="w-full flex justify-center gap-8">
-          {/* <Button
+
+        {rideId ? (
+          <section className="w-full flex justify-center gap-8">
+          <Button
+            type="button"
+            label="Editar"
+            size="base"
+            className="uppercase font-semibold px-3 lg:px-6"
+            color="green"
+            type="submit"
+          />
+        </section>
+        ) : (
+          <section className="w-full flex justify-end gap-8">
+          <Button
             type="button"
             label="salvar rascunho"
             size="base"
@@ -223,6 +306,7 @@ function OfferRideForm() {
             type="submit"
           />
         </section>
+        )}
       </div>
     </Form>
   );
