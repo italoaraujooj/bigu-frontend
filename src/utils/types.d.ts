@@ -6,6 +6,9 @@ export interface User {
   phoneNumber: string
   sex: string
   userId: string
+  profileImage: string
+  feedbacks: string[],
+  isVerified: boolean
 }
 
 export interface OfferRideFormState {

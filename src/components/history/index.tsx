@@ -28,7 +28,6 @@ interface Props {
 
 function History(props: Props) {
   const { races, loading} = props;
-  console.log(loading)
   return (
     <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-6 flex flex-col mx-auto lg:mx-0 lg:w-full max-w-[800px]">
       <h2 className="font-['Poppins'] text-xl sm:text-3xl text-white font-bold pb-8">

@@ -1,4 +1,4 @@
-import { formatarData, formatarTelefone } from "@/utils/masks";
+import { formatarTelefone } from "@/utils/masks";
 import Button from "../../button";
 import Image from "next/image";
 import { answerCandidate } from "@/services/ride";

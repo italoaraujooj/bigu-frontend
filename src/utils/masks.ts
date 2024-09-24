@@ -20,31 +20,35 @@ export const formatDateTime = (date: string, time: string) => {
 }
 
 export const formatarData = (data: string): string => {
-  const dataAtual = new Date();
-  const dataRecebida = new Date(data);
+  const [date, hour] = data.split(',');
+  const [day, month, year] = date.split('/')
 
-  const diasSemana = [
-    "do domingo",
-    "da segunda-feira",
-    "da terça-feira",
-    "da quarta-feira",
-    "da quinta-feira",
-    "da sexta-feira",
-    "do sábado"
-  ];
+  return `${day}/${month} ás ${hour.slice(0, 6)}`
+  // const dataAtual = new Date();
+  // const dataRecebida = new Date(data);
 
-  let resultado = "";
+  // const diasSemana = [
+  //   "do domingo",
+  //   "da segunda-feira",
+  //   "da terça-feira",
+  //   "da quarta-feira",
+  //   "da quinta-feira",
+  //   "da sexta-feira",
+  //   "do sábado"
+  // ];
 
-  if (dataAtual.getDate() === dataRecebida.getDate()) {
-    resultado = "hoje";
-  } else {
-    resultado = diasSemana[dataRecebida.getDay()];
-  }
+  // let resultado = "";
 
-  const horas = (dataRecebida.getHours() - 3).toString().padStart(2, "0");
-  const minutos = dataRecebida.getMinutes().toString().padStart(2, "0");
+  // if (dataAtual.getDate() === dataRecebida.getDate()) {
+  //   resultado = "hoje";
+  // } else {
+  //   resultado = diasSemana[dataRecebida.getDay()];
+  // }
 
-  return `${horas}:${minutos} ${resultado}`;
+  // const horas = (dataRecebida.getHours() - 3).toString().padStart(2, "0");
+  // const minutos = dataRecebida.getMinutes().toString().padStart(2, "0");
+
+  // return `${horas}:${minutos} ${resultado}`;
 }
 
 export function formatarDate(data: string): string {
@@ -54,6 +58,7 @@ export function formatarDate(data: string): string {
 }
 
 export function moneyMask(value: any) {
+  console.log(value)
   const numericValue = value.replace(/[^0-9]/g, '');
 
   if (numericValue === '') {

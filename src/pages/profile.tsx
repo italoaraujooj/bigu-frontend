@@ -67,7 +67,6 @@ function Profile() {
   const handleDeleteCar = async (id: string): Promise<void> => {
     try{
       const response: any = await deleteCar(id);
-      console.log(response)
       if (response?.status === 200) {
         const previousCars = cars;
         const currentCars = previousCars.filter((car:CarResponseDTO) => car.carId !== id)

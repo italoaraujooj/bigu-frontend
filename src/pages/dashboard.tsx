@@ -174,7 +174,7 @@ function Dashboard() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { "nextauth.token": token } = parseCookies(ctx);
+  const { "nextauth.accessToken": token } = parseCookies(ctx);
 
   if (!token) {
     return {
