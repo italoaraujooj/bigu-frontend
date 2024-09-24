@@ -31,7 +31,7 @@ function AvailableRides() {
     }
   }
 
-  const ridesWithDriver = rides.filter(
+  const ridesWithDriver = rides?.filter(
     (element: any) => element.driver.userId !== user?.userId
   );
 
@@ -74,7 +74,7 @@ function AvailableRides() {
               </div>
             </div>
 
-            : ridesWithDriver.length ? (
+            : ridesWithDriver?.length ? (
               ridesWithDriver.map((item: RideResponseDTO, index: number) => (
                 <div key={index}>
                   <RideFull

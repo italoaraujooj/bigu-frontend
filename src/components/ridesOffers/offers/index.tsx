@@ -45,7 +45,7 @@ function Offer(props: Props) {
               <ul>
                 {ride.members.map((member, index) => (
                   <li key={index}>
-                    <Text label={member.name} color="gray" size="base" />
+                    <Text label={`- ${member.user.name}`} color="gray" size="base" />
                   </li>
                 ))}
               </ul>

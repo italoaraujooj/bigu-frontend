@@ -48,7 +48,7 @@ function Dropdown({ label, options, onSelectOption, selectedOption: initialSelec
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          {Object.keys(selectedOption).length > 0 ? (
+          {selectedOption && Object.keys(selectedOption).length > 0 ? (
             <span className="flex items-center justify-between">
               <Text
                 label={selectedOption.label}

@@ -7,6 +7,7 @@ import Notification from "@/components/notification";
 import Text from "@/components/text";
 import { toast } from "react-toastify";
 import { CandidateResponseDTO, RideResponseDTO } from "@/types/ride";
+import Whatsapp from "../../../assets/whatsapp.png"
 
 type Props = {
   avatar: any;
@@ -50,18 +51,50 @@ const CandidateRequest = (props: Props) => {
   console.log(ride)
   console.log(candidate)
 
+  const phoneNumber = candidate.user.phoneNumber.replace(/[^\d]/g, '');
+
   return (
     <div className="w-[500px] bg-white  rounded-lg px-10 py-6 shadow-xl ">
       <div className="flex flex-col gap-4">
-        <div className="flex gap-2 items-center">
-          <Image className="w-12 h-12" src={avatar} alt="ft" />
-          <p className="font-[Poppins] font-bold text-lg">
-            {String(candidate.user.name)?.toUpperCase()}
-          </p>
+        <div className="flex gap-2 items-center justify-between">
+          <div className="flex gap-2 items-center">
+            <Image className="w-12 h-12" src={avatar} alt="ft" />
+            <p className="font-[Poppins] font-bold text-lg">
+              {String(candidate.user.name)?.toUpperCase()}
+            </p>
+          </div>
+          <div className="justify-end">
+            <a
+              href={`https://wa.me/${phoneNumber}`}
+              target="_blank"
+            >
+              <div className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-full shadow-md">
+                <Image src={Whatsapp} alt="WhatsApp Icon" />
+              </div>
+            </a>
+          </div>
         </div>
         <div className="space-y-2">
           <>
-            <Text label="Local:" color="dark" size="base" weight="bold" />
+            <Text label={`🙋 Matrícula`} color="dark" size="base" weight="bold" />
+            <Text
+              label={candidate.user.matricula}
+              color="gray"
+              size="base"
+            />
+          </>
+
+          <>
+            <Text label={`⭐ Avaliação`} color="dark" size="base" weight="bold" />
+            <Text
+              label={candidate.user.avgScore + ' estrelas'}
+              color="gray"
+              size="base"
+            />
+          </>
+
+          <>
+            <Text label="📍 Local:" color="dark" size="base" weight="bold" />
             <Text
               label={`${candidate.address.rua}, ${candidate.address.bairro} - ${candidate.address.numero}`}
               color="gray"
@@ -70,16 +103,21 @@ const CandidateRequest = (props: Props) => {
           </>
 
           <>
-            <Text label="Telefone:" color="dark" size="base" weight="bold" />
+            <Text label="📫 E-mail:" color="dark" size="base" weight="bold" />
             <Text
-              label={formatarTelefone(candidate.user.phoneNumber)}
+              label={candidate.user.email}
               color="gray"
               size="base"
             />
           </>
 
           <>
-            <Text label="Horário/Dia:" color="dark" size="base" weight="bold" />
+            <Text label="📞 Telefone:" color="dark" size="base" weight="bold" />
+            <Text
+              label={formatarTelefone(candidate.user.phoneNumber)}
+              color="gray"
+              size="base"
+            />
           </>
         </div>
       </div>
