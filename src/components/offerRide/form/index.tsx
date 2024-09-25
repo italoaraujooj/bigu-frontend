@@ -123,9 +123,13 @@ function OfferRideForm(props: Props) {
           );
           if (ride?.goingToCollege == true) {
             setUserAddressesSelected(startAddressFormated);
-            setUfcgAddressesSelected(destinationAddressFormated);
+            if (destinationAddressFormated) {
+              setUfcgAddressesSelected(destinationAddressFormated);
+            }
           } else {
-            setUserAddressesSelected(destinationAddressFormated);
+            if (destinationAddressFormated) {
+              setUserAddressesSelected(destinationAddressFormated);
+            }
             setUfcgAddressesSelected(startAddressFormated);
           }
         }
