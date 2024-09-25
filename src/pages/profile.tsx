@@ -1,37 +1,35 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import Button from "../components/button";
-import WomanAvatar from "../assets/woman.png";
-import Star from "../assets/star.png";
-import Image from "next/image";
-import Input from "../components/input/input";
-import { Form } from "@unform/web";
+import Modal from "@/components/modal";
+import Notification from "@/components/notification";
 import Carousel from "@/components/profile/carousel";
 import Text from "@/components/text";
 import { AuthContext } from "@/context/AuthContext";
+import { changePasswordRequest } from "@/services/auth";
+import { Car, createCar, getUserCars } from "@/services/car";
+import { ChangePassword, CreateCarFormState } from "@/utils/types";
+import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
+import { FormHandles, SubmitHandler } from "@unform/core";
+import { Form } from "@unform/web";
+import Image from "next/image";
 import Link from "next/link";
 import Router from "next/router";
-import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react";
-import Modal from "@/components/modal";
-import { changePasswordRequest } from "@/services/auth";
-import { createCar, getUserCars } from "@/services/car";
-import { FormHandles, SubmitHandler } from "@unform/core";
-import { ChangePassword, CreateCarFormState } from "@/utils/types";
-import Notification from "@/components/notification";
-import React from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { Car } from "@/services/car";
+import Star from "../assets/star.png";
+import WomanAvatar from "../assets/woman.png";
+import Button from "../components/button";
+import Input from "../components/input/input";
 
 function Profile() {
   const formRef = useRef<FormHandles>(null);
   const formRefCar = useRef<FormHandles>(null);
   const formRefChangePassword = useRef<FormHandles>(null);
-  
+
   const { user } = useContext(AuthContext);
 
   const [readOnly, setReadOnly] = useState(true);
   const [changePassword, setChangePassord] = useState(false);
   const [modalCar, setModalCar] = useState(false);
-  const [cars, setCars] = useState<Car[]>([])
+  const [cars, setCars] = useState<Car[]>([]);
 
   const toggleModalCar = () => setModalCar((prev) => !prev);
   const handleOpenChangePassword = () => setChangePassord(true);
@@ -44,35 +42,34 @@ function Profile() {
   useEffect(() => {
     const loadCars = async () => {
       const responseCars: any = await getUserCars();
-      console.log(responseCars)
-      if(responseCars) setCars(responseCars.data.userCars)
-    }
+      console.log(responseCars);
+      if (responseCars) setCars(responseCars.data.userCars);
+    };
     loadCars();
-  }, [])
+  }, []);
 
   const handleCreateCar: SubmitHandler<CreateCarFormState> = async (data) => {
-    try{
+    try {
       const response: any = await createCar(data);
-      if(response.status === 201){
+      if (response.status === 201) {
         setCars([...cars, response.data.newCar]);
         toast.success(response.data.message);
         toggleModalCar();
-
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
       toast.error("Houve um erro na criação do carro");
     }
   };
-  
+
   const handleChangePassword: SubmitHandler<ChangePassword> = async (data) => {
-    try{
+    try {
       const response: any = await changePasswordRequest(data);
-      if(response.status === 200){
+      if (response.status === 200) {
         toast.success("A senha foi alterada com sucesso");
         handleCloseChangePassword();
       }
-    }catch(err){
+    } catch (err) {
       toast.error("Houve um erro na alteração da senha");
     }
   };
@@ -103,7 +100,6 @@ function Profile() {
               email: user?.email,
               telephone: user?.phoneNumber,
             }}
-
             ref={formRef}
           >
             <div className="flex justify-between items-center">
@@ -178,10 +174,18 @@ function Profile() {
 
               <div className="w-full flex flex-col md:w-1/2 gap-4">
                 <div className="w-full flex items-center justify-between flex-row gap-5">
-                  <Link className="w-full py-1 cursor-pointer group" href='/addresses'>
+                  <Link
+                    className="w-full py-1 cursor-pointer group"
+                    href="/addresses"
+                  >
                     <div className="flex items-center justify-between">
-                      <Text label="Ver endereços" size="md" weight="bold" className="uppercase"/>
-                      <CaretRight weight="bold" color="white" /> 
+                      <Text
+                        label="Ver endereços"
+                        size="md"
+                        weight="bold"
+                        className="uppercase"
+                      />
+                      <CaretRight weight="bold" color="white" />
                     </div>
                     <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
                   </Link>
@@ -190,7 +194,7 @@ function Profile() {
                   <h1 className="text-2xl text-white font-bold mb-2 font-[Poppins]">
                     Meus veículos
                   </h1>
-                  <Carousel profile add={toggleModalCar} items={cars}/>
+                  <Carousel profile add={toggleModalCar} items={cars} />
                 </div>
                 <div className="flex gap-7">
                   <Button
@@ -213,13 +217,18 @@ function Profile() {
                 </div>
               </div>
             </div>
-            <Modal
-              isOpen={modalCar}
-              onClose={toggleModalCar}
-              noActions
-            >
-                <Text label="Adicionar carro" color="dark" size="lg" weight="bold" />
-              <Form onSubmit={handleCreateCar} ref={formRefCar} className="space-y-2">
+            <Modal isOpen={modalCar} onClose={toggleModalCar} noActions>
+              <Text
+                label="Adicionar carro"
+                color="dark"
+                size="lg"
+                weight="bold"
+              />
+              <Form
+                onSubmit={handleCreateCar}
+                ref={formRefCar}
+                className="space-y-2"
+              >
                 <br />
                 <Input
                   name="brand"
@@ -277,7 +286,7 @@ function Profile() {
           </Form>
         </div>
       </div>
-      {(
+      {
         <Modal
           isOpen={changePassword}
           onClose={handleCloseChangePassword}
@@ -323,26 +332,26 @@ function Profile() {
                 Esqueci minha senha
               </p>
               <section className="flex items-center gap-4 mt-12">
-                  <Button
-                    label="Cancelar"
-                    size="sm"
-                    className="uppercase font-semibold px-3 lg:px-6"
-                    color="red"
-                    onClick={handleCloseChangePassword}
-                  />
-                  <Button
-                    label="Confirmar"
-                    size="sm"
-                    className="uppercase font-semibold px-3 lg:px-6"
-                    color="green"
-                    type="submit"
-                  />
-                </section>
+                <Button
+                  label="Cancelar"
+                  size="sm"
+                  className="uppercase font-semibold px-3 lg:px-6"
+                  color="red"
+                  onClick={handleCloseChangePassword}
+                />
+                <Button
+                  label="Confirmar"
+                  size="sm"
+                  className="uppercase font-semibold px-3 lg:px-6"
+                  color="green"
+                  type="submit"
+                />
+              </section>
             </div>
           </Form>
         </Modal>
-      )}
-      <Notification/>
+      }
+      <Notification />
     </div>
   );
 }

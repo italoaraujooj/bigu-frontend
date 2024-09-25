@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   modularizeImports: {
     "@phosphor-icons/react": {
-      transform: "@phosphor-icons/react/dist/icons/{{member}}",
+      transform: '@phosphor-icons/react/dist/ssr/{{member}}',
     },
   },
   env: {

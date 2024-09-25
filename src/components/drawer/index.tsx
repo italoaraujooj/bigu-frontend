@@ -1,8 +1,6 @@
-import React from "react";
-import Text from "../text";
+import { Jeep, SignOut, X } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
-import useDrawer from "@/hooks/useDrawer";
-import { Jeep, SignOut, X } from "@phosphor-icons/react";
+import Text from "../text";
 
 type Props = {
   drawerIsOpen: boolean;

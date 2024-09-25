@@ -1,6 +1,5 @@
-import { ArrowCircleLeft } from "@phosphor-icons/react";
+import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
-import React from "react";
 import Text from "../text";
 
 export default function GoBack() {

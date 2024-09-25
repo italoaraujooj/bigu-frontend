@@ -1,36 +1,29 @@
-import { useContext, useEffect, useState } from "react";
-import Modal from "../modal";
-import Avatar from "../../assets/woman.png"
-import Image from "next/image";
-import Text from "../text";
-import Star from "../../assets/star.png"
-import Button from "../button";
-import Fav from "../../assets/heart.png"
-import Plus from "../../assets/PlusCircle.png"
-import Map from "../../assets/map.png"
-import X from "../../assets/X.png"
-import { formatDateRide, formatarData } from "@/utils/masks";
-import { data } from "autoprefixer";
-import { MapPin, Person, Clock } from "@phosphor-icons/react";
-import React from "react";
-import { AuthContext } from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
-import Heart from "../../assets/heart.png";
+import { formatDateRide } from "@/utils/masks";
+import { Clock, MapPin, Person } from "@phosphor-icons/react/dist/ssr";
+import Image from "next/image";
+import React, { useContext, useEffect, useState } from "react";
 import HeartFilled from "../../assets/heart-filled.png";
+import Heart from "../../assets/heart.png";
+import Map from "../../assets/map.png";
+import Star from "../../assets/star.png";
+import Avatar from "../../assets/woman.png";
+import Button from "../button";
 import Dropdown from "../dropdown";
+import Modal from "../modal";
 
 interface RideProps {
-  id:any,
-  userName: string,
-  start: string,
-  destination: string,
-  numSeats: number,
-  model: string,
-  plate: string,
-  color: string,
-  dateTime: string,
+  id: any;
+  userName: string;
+  start: string;
+  destination: string;
+  numSeats: number;
+  model: string;
+  plate: string;
+  color: string;
+  dateTime: string;
 }
 
 function RideFull(props: RideProps) {
@@ -49,14 +42,14 @@ function RideFull(props: RideProps) {
 
   const toggleFavorite = () => setFavorite((prev) => !prev);
   const toggleAskRide = () => setAskRide((prev) => !prev);
-  
+
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
 
   useEffect(() => {
-    console.log(rides)
-    setRidesAvailable(rides)
-  }, [rides]);  
+    console.log(rides);
+    setRidesAvailable(rides);
+  }, [rides]);
 
   useEffect(() => {
     fetchUserAddresses().then((data) => {
@@ -89,7 +82,6 @@ function RideFull(props: RideProps) {
   };
 
   return (
-
     <div className="bg-light-white w-full h-48 rounded-xl flex p-2 flex-col gap-4 sm:p-5 md:h-56 md:gap-0 md:p-3">
       <div className="flex justify-between py-4 px-6">
         <div className="flex gap-2 sm:gap-4 items-center">
@@ -118,14 +110,14 @@ function RideFull(props: RideProps) {
       <div className="flex justify-between md:items-center px-6">
         <div className="space-y-2">
           <div className="flex gap-2 items-center">
-            <MapPin size={24} color="#252525" weight="bold"/>
+            <MapPin size={24} color="#252525" weight="bold" />
             <span className="font-['Poppins'] font-medium text-[10px] sm:text-sm md:text-base">
               {props.start} - {props.destination}
             </span>
           </div>
 
           <div className="flex gap-2 items-center">
-            <Person size={24} color="#252525" weight="fill"/>
+            <Person size={24} color="#252525" weight="fill" />
             <span className="font-['Poppins'] font-normal text-[10px] sm:text-sm md:text-base">
               {props.numSeats}{" "}
               {Number(props.numSeats) > 1
@@ -137,7 +129,6 @@ function RideFull(props: RideProps) {
           <div className="flex gap-2 items-center">
             <Clock size={24} color="#252525" weight="bold" />
 
-
             <span className="font-['Poppins'] font-medium text-[10px] sm:text-sm md:text-base">
               {formatDateRide(props.dateTime)}
             </span>
@@ -148,11 +139,7 @@ function RideFull(props: RideProps) {
           <div className="flex flex-col gap-1 items-center justify-center w">
             {!askRide ? (
               <Button
-                label={
-                  !askRide
-                    ? "Pedir carona"
-                    : "Aguardando confirmação..."
-                }
+                label={!askRide ? "Pedir carona" : "Aguardando confirmação..."}
                 onClick={() => handleAskRide(props.id)}
                 size="sm"
                 color="green"
@@ -165,8 +152,9 @@ function RideFull(props: RideProps) {
               </span>
             )}
             <div
-              className={`flex items-center gap-2 ${askRide && "translate-x-44 duration-500 ease-out"
-                }`}
+              className={`flex items-center gap-2 ${
+                askRide && "translate-x-44 duration-500 ease-out"
+              }`}
             >
               <button onClick={toggleFavorite}>
                 {!favorite ? (
@@ -187,7 +175,11 @@ function RideFull(props: RideProps) {
             </div>
           </div>
 
-          <Image className="hidden md:block md:w-40 md:h-32 md:relative bottom-8" src={Map} alt="mapa" />
+          <Image
+            className="hidden md:block md:w-40 md:h-32 md:relative bottom-8"
+            src={Map}
+            alt="mapa"
+          />
         </div>
 
         {/* <Image className="hidden lg:block md:w-40 md:h-32 md:relative bottom-8" src={Map} alt="mapa" /> */}
@@ -209,9 +201,7 @@ function RideFull(props: RideProps) {
           onSelectOption={setUserAddressesSelected}
         />
       </Modal>
-      
     </div>
-
   );
 }
 

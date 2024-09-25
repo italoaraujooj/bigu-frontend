@@ -10,7 +10,7 @@ import {
   MapPin,
   PencilSimple,
   TrashSimple,
-} from "@phosphor-icons/react";
+} from "@phosphor-icons/react/dist/ssr";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import { useRouter } from "next/router";

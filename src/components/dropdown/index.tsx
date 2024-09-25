@@ -1,6 +1,6 @@
+import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import React from "react";
 import Text from "../text";
-import { ArrowDown, CaretDown } from "@phosphor-icons/react";
 
 interface DropdownOption {
   label: string;
@@ -17,7 +17,7 @@ function Dropdown({ label, options, onSelectOption }: Props) {
   const [selectedOption, setSelectedOption] =
     React.useState<DropdownOption | null>(null);
   const [isOpen, setIsOpen] = React.useState(false);
- 
+
   const handleSelectOption = (option: DropdownOption) => {
     setSelectedOption(option);
     onSelectOption(option);

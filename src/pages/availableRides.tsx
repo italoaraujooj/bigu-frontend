@@ -3,7 +3,7 @@ import RideFull from "@/components/rideFull";
 import Text from "@/components/text";
 import { AuthContext } from "@/context/AuthContext";
 import { RideContext } from "@/context/RideContext";
-import { ArrowCircleLeft } from "@phosphor-icons/react";
+import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr";
 import Router from "next/router";
 import { useContext } from "react";
 import ghost from "../assets/ghost.json";
