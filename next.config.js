@@ -3,15 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   modularizeImports: {
     "@phosphor-icons/react": {
-      transform: "@phosphor-icons/react/{{member}}",
+      transform: "@phosphor-icons/react/dist/icons/{{member}}",
     },
   },
-}
-
-module.exports = nextConfig
-
-module.exports = {
   env: {
     API_URL: process.env.API_URL,
   },
-};
+}
+
+export default nextConfig;
