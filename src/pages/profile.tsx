@@ -1,37 +1,39 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import Button from "../components/button";
-import WomanAvatar from "../assets/woman.png";
-import Star from "../assets/star.png";
-import Image from "next/image";
-import Input from "../components/input/input";
-import { Form } from "@unform/web";
+import Modal from "@/components/modal";
+import Notification from "@/components/notification";
 import Carousel from "@/components/profile/carousel";
 import Text from "@/components/text";
 import { AuthContext } from "@/context/AuthContext";
+import { changePasswordRequest } from "@/services/auth";
+import { createCar, getUserCars } from "@/services/car";
+import { ChangePassword, CreateCarFormState } from "@/utils/types";
+// import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
+import { deleteCar } from "@/services/car";
+import { CarResponseDTO } from "@/types/ride";
+import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr/ArrowCircleLeft";
+import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
+import { FormHandles, SubmitHandler } from "@unform/core";
+import { Form } from "@unform/web";
+import Image from "next/image";
 import Link from "next/link";
 import Router from "next/router";
-import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react";
-import Modal from "@/components/modal";
-import { changePasswordRequest } from "@/services/auth";
-import { createCar, deleteCar, getUserCars } from "@/services/car";
-import { FormHandles, SubmitHandler } from "@unform/core";
-import { ChangePassword, CreateCarFormState } from "@/utils/types";
-import Notification from "@/components/notification";
-import React from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { CarResponseDTO } from "@/types/ride";
+import Star from "../assets/star.png";
+import WomanAvatar from "../assets/woman.png";
+import Button from "../components/button";
+import Input from "../components/input/input";
 
 function Profile() {
   const formRef = useRef<FormHandles>(null);
   const formRefCar = useRef<FormHandles>(null);
   const formRefChangePassword = useRef<FormHandles>(null);
-  
+
   const { user } = useContext(AuthContext);
 
   const [readOnly, setReadOnly] = useState(true);
   const [changePassword, setChangePassord] = useState(false);
   const [modalCar, setModalCar] = useState(false);
-  const [cars, setCars] = useState<CarResponseDTO[]>([])
+  const [cars, setCars] = useState<CarResponseDTO[]>([]);
   const [hoveredImage, setHoveredImage] = useState(false);
 
   const toggleModalCar = () => setModalCar((prev) => !prev);
@@ -45,48 +47,49 @@ function Profile() {
   useEffect(() => {
     const loadCars = async () => {
       const responseCars: any = await getUserCars();
-      if(responseCars) setCars(responseCars.data.userCars)
-    }
+      if (responseCars) setCars(responseCars.data.userCars);
+    };
     loadCars();
-  }, [])
+  }, []);
 
   const handleCreateCar: SubmitHandler<CreateCarFormState> = async (data) => {
-    try{
+    try {
       const response: any = await createCar(data);
-      if(response.status === 201){
+      if (response.status === 201) {
         setCars([...cars, response.data.newCar]);
         toast.success(response.data.message);
         toggleModalCar();
-
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
       toast.error("Houve um erro na criação do carro");
     }
   };
 
   const handleDeleteCar = async (id: string): Promise<void> => {
-    try{
+    try {
       const response: any = await deleteCar(id);
       if (response?.status === 200) {
         const previousCars = cars;
-        const currentCars = previousCars.filter((car:CarResponseDTO) => car.carId !== id)
-        setCars(currentCars)
+        const currentCars = previousCars.filter(
+          (car: CarResponseDTO) => car.carId !== id
+        );
+        setCars(currentCars);
         toast.success(`O carro foi removido.`);
       }
-    }catch(err){
+    } catch (err) {
       toast.error("Houve um erro na remoção do carro");
     }
   };
-  
+
   const handleChangePassword: SubmitHandler<ChangePassword> = async (data) => {
-    try{
+    try {
       const response: any = await changePasswordRequest(data);
-      if(response.status === 200){
+      if (response.status === 200) {
         toast.success("A senha foi alterada com sucesso");
         handleCloseChangePassword();
       }
-    }catch(err){
+    } catch (err) {
       toast.error("Houve um erro na alteração da senha");
     }
   };
@@ -117,55 +120,56 @@ function Profile() {
               email: user?.email,
               telephone: user?.phoneNumber,
             }}
-
             ref={formRef}
           >
             <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div
-                className="relative"
-                onMouseEnter={() => setHoveredImage(true)}
-                onMouseLeave={() => setHoveredImage(false)}
-              >
-                <Image
-                  className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${hoveredImage ? 'blur-sm' : ''}`}
-                  src={WomanAvatar}
-                  alt="avatar"
-                />
-                {hoveredImage && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">
-                    <label
-                      title="Click to upload"
-                      className="cursor-pointer flex items-center gap-4 px-6 py-4 relative"
-                    >
-                      <img
-                        className="w-12"
-                        src="https://www.svgrepo.com/show/357902/image-upload.svg"
-                        alt="file upload icon"
-                        width="512"
-                        height="512"
-                      />
-                      <Input
-                        name="foto"
-                        className="w-full md:h-16 md:text-lg hidden"
-                        type="file"
-                        sizing="xs"
+              <div className="flex items-center gap-3">
+                <div
+                  className="relative"
+                  onMouseEnter={() => setHoveredImage(true)}
+                  onMouseLeave={() => setHoveredImage(false)}
+                >
+                  <Image
+                    className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
+                      hoveredImage ? "blur-sm" : ""
+                    }`}
+                    src={WomanAvatar}
+                    alt="avatar"
+                  />
+                  {hoveredImage && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">
+                      <label
+                        title="Click to upload"
+                        className="cursor-pointer flex items-center gap-4 px-6 py-4 relative"
+                      >
+                        <img
+                          className="w-12"
+                          src="https://www.svgrepo.com/show/357902/image-upload.svg"
+                          alt="file upload icon"
+                          width="512"
+                          height="512"
                         />
-                    </label>
-                  </div>
-                )}
-              </div>
+                        <Input
+                          name="foto"
+                          className="w-full md:h-16 md:text-lg hidden"
+                          type="file"
+                          sizing="xs"
+                        />
+                      </label>
+                    </div>
+                  )}
+                </div>
 
-              <div className="flex gap-1 items-center">
-                <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
-                  {`Olá, ${user?.name.split(" ")[0]}`}
-                </h1>
-                <div className="flex items-center gap-2 pt-2">
-                  <Image className="w-3 h-3" src={Star} alt="estrela" />
-                  <span className="text-gray text-[0.725rem]">5.0</span>
+                <div className="flex gap-1 items-center">
+                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
+                    {`Olá, ${user?.name.split(" ")[0]}`}
+                  </h1>
+                  <div className="flex items-center gap-2 pt-2">
+                    <Image className="w-3 h-3" src={Star} alt="estrela" />
+                    <span className="text-gray text-[0.725rem]">5.0</span>
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
 
             <div className="w-full flex flex-col md:flex-row gap-12">
@@ -221,10 +225,18 @@ function Profile() {
 
               <div className="w-full flex flex-col md:w-1/2 gap-4">
                 <div className="w-full flex items-center justify-between flex-row gap-5">
-                  <Link className="w-full py-1 cursor-pointer group" href='/addresses'>
+                  <Link
+                    className="w-full py-1 cursor-pointer group"
+                    href="/addresses"
+                  >
                     <div className="flex items-center justify-between">
-                      <Text label="Ver endereços" size="md" weight="bold" className="uppercase"/>
-                      <CaretRight weight="bold" color="white" /> 
+                      <Text
+                        label="Ver endereços"
+                        size="md"
+                        weight="bold"
+                        className="uppercase"
+                      />
+                      <CaretRight weight="bold" color="white" />
                     </div>
                     <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
                   </Link>
@@ -233,7 +245,12 @@ function Profile() {
                   <h1 className="text-2xl text-white font-bold mb-2 font-[Poppins]">
                     Meus veículos
                   </h1>
-                  <Carousel profile add={toggleModalCar} remove={handleDeleteCar} items={cars}/>
+                  <Carousel
+                    profile
+                    add={toggleModalCar}
+                    remove={handleDeleteCar}
+                    items={cars}
+                  />
                 </div>
                 <div className="flex gap-7">
                   <Button
@@ -256,13 +273,18 @@ function Profile() {
                 </div>
               </div>
             </div>
-            <Modal
-              isOpen={modalCar}
-              onClose={toggleModalCar}
-              noActions
-            >
-              <Text label="Adicionar carro" color="dark" size="lg" weight="bold" />
-              <Form onSubmit={handleCreateCar} ref={formRefCar} className="space-y-2">
+            <Modal isOpen={modalCar} onClose={toggleModalCar} noActions>
+              <Text
+                label="Adicionar carro"
+                color="dark"
+                size="lg"
+                weight="bold"
+              />
+              <Form
+                onSubmit={handleCreateCar}
+                ref={formRefCar}
+                className="space-y-2"
+              >
                 <br />
                 <Input
                   name="brand"
@@ -320,7 +342,7 @@ function Profile() {
           </Form>
         </div>
       </div>
-      {(
+      {
         <Modal
           isOpen={changePassword}
           onClose={handleCloseChangePassword}
@@ -328,7 +350,9 @@ function Profile() {
         >
           <Form onSubmit={handleChangePassword} ref={formRefChangePassword}>
             <div className=" bg-white rounded-lg p-3 flex flex-col gap-4 justify-center items-center">
-              <h2 className="text-2xl font-semibold font-[Poppins]">Alterar senha</h2>
+              <h2 className="text-2xl font-semibold font-[Poppins]">
+                Alterar senha
+              </h2>
               <Input
                 label="Senha atual: "
                 name="actualPassword"
@@ -366,26 +390,26 @@ function Profile() {
                 Esqueci minha senha
               </p>
               <section className="flex items-center gap-4 mt-12">
-                  <Button
-                    label="Cancelar"
-                    size="xs"
-                    className="uppercase font-semibold px-3 lg:px-6"
-                    color="red"
-                    onClick={handleCloseChangePassword}
-                  />
-                  <Button
-                    label="Confirmar"
-                    size="xs"
-                    className="uppercase font-semibold px-3 lg:px-6"
-                    color="green"
-                    type="submit"
-                  />
-                </section>
+                <Button
+                  label="Cancelar"
+                  size="xs"
+                  className="uppercase font-semibold px-3 lg:px-6"
+                  color="red"
+                  onClick={handleCloseChangePassword}
+                />
+                <Button
+                  label="Confirmar"
+                  size="xs"
+                  className="uppercase font-semibold px-3 lg:px-6"
+                  color="green"
+                  type="submit"
+                />
+              </section>
             </div>
           </Form>
         </Modal>
-      )}
-      <Notification/>
+      }
+      <Notification />
     </div>
   );
 }

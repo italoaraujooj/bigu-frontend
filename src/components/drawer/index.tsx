@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
-import Text from "../text";
+import { Jeep } from "@phosphor-icons/react/dist/ssr/Jeep";
+import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut";
+import { X } from "@phosphor-icons/react/dist/ssr/X";
 import clsx from "clsx";
-import useDrawer from "@/hooks/useDrawer";
-import { Jeep, SignOut, X } from "@phosphor-icons/react";
-import { AuthContext } from "@/context/AuthContext";
+import Text from "../text";
 
 type Props = {
   drawerIsOpen: boolean;
@@ -20,18 +19,17 @@ export default function Drawer({
   handleNavigateToOfferRide,
   handleLogout,
   handleOpenRequests,
-  handleOpenRides
+  handleOpenRides,
 }: Props) {
-
   const openRequests = () => {
     toggleDrawer();
     handleOpenRequests();
-  }
+  };
 
-  const openRides= () => {
+  const openRides = () => {
     toggleDrawer();
     handleOpenRides();
-  }
+  };
 
   return (
     <div
@@ -63,10 +61,7 @@ export default function Drawer({
         </div>
         <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
       </div>
-      <div
-        onClick={openRequests}
-        className="w-full px-2 group cursor-pointer"
-      >
+      <div onClick={openRequests} className="w-full px-2 group cursor-pointer">
         <div className="flex items-center gap-4">
           <Jeep size={32} color="gray" />
           <Text
@@ -78,10 +73,7 @@ export default function Drawer({
         </div>
         <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
       </div>
-      <div
-        onClick={openRides}
-        className="w-full px-2 group cursor-pointer"
-      >
+      <div onClick={openRides} className="w-full px-2 group cursor-pointer">
         <div className="flex items-center gap-4">
           <Jeep size={32} color="gray" />
           <Text

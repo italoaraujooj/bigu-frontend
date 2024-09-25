@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@phosphor-icons/react": "^2.0.9",
+    "@phosphor-icons/react": "^2.1.5-alpha.3",
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "18.16.3",
@@ -44,7 +44,8 @@
     "@types/bcryptjs": "^2.4.2"
   },
   "engines": {
-    "node": "20.x"
+    "node": "20.x",
+    "npm": "10.x"
   },
   "cacheDirectories": [
     ".next/cache"
