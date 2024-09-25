@@ -28,7 +28,7 @@ interface RideProps {
   toWoman: boolean
 }
 
-function RideFull(props: RideProps) {
+function RideHistoryFull(props: RideProps) {
   const { user } = useContext(AuthContext)
   const [userAddress, setUserAddresses] = React.useState([]);
   const [userAddressesSelected, setUserAddressesSelected] = React.useState(
@@ -107,10 +107,8 @@ function RideFull(props: RideProps) {
           <div className="flex gap-2 items-center">
             <Person size={24} color="#252525" weight="fill"/>
             <span className="font-['Poppins'] font-normal text-xs sm:text-sm md:text-base lg:text-xl">
-              {props.numSeats}{" "}
-              {Number(props.numSeats) > 1
-                ? "vagas disponíveis"
-                : "vaga disponível"}{" "}
+              {3 - props.numSeats}{" "}
+              {"vagas ocupadas"}{" "}
             </span>
           </div>
 
@@ -125,27 +123,6 @@ function RideFull(props: RideProps) {
         </div>
 
         <div className="flex gap-8 md:relative bottom-8">
-          <div className="self-end md:self-center">
-            {!askRide ? (
-              <Button
-                label={
-                  !askRide
-                    ? "Pedir carona"
-                    : "Aguardando confirmação..."
-                }
-                onClick={() => handleAskRide(props.id)}
-                size="xs"
-                color="green"
-                shape="square"
-                className="sm:w-36 sm:h-10 sm:px-3 md:w-48 md:h-12 md:px-8 md:text-base"
-              />
-            ) : (
-              <span className="animate-pulse text-yellow ease-in-out infinite">
-                Aguardando confirmação..
-              </span>
-            )}
-          </div>
-
           <Image className="hidden md:flex md:w-40 md:h-32 lg:w-64 lg:h-52" src={Map} alt="mapa" />
         </div>
       </div>
@@ -165,4 +142,4 @@ function RideFull(props: RideProps) {
   );
 }
 
-export default RideFull;
+export default RideHistoryFull;

@@ -6,6 +6,7 @@ import ghost from "../../assets/ghost.json";
 import LottieAnimation from "../LottieAnimation";
 import Text from "../text";
 import { RideResponseDTO } from "@/types/ride";
+import Router from "next/router";
 
 interface RacesHistory {
   id: number;
@@ -55,12 +56,14 @@ function History(props: Props) {
             {/* @ts-ignore */}
             <Image src={OK} className="w-7 h-7" alt="race finished status" />
             {/* @ts-ignore */}
+            <Text label={race.driver.name} color="gray" size="md" />
+            {/* @ts-ignore */}
             <Text label={race.startAddress.bairro} color="gray" size="md" />
             <div className="w-12 h-1 bg-light" />
             {/* @ts-ignore */}
             <Text label={race.destinationAddress.bairro} color="gray" size="md" />
             {/* @ts-ignore */}
-            <Text label={formatarDate(race.scheduledTime)} color="gray" size="md" />
+            <Text label={race.scheduledTime} color="gray" size="md" />
           </div>
         )):
           <div className="w-full flex items-center justify-center">
@@ -72,7 +75,10 @@ function History(props: Props) {
         }
       </div>
       <footer className="pt-4">
-        <p className=" text-gray text-base self-start hover:text-stone-400 cursor-pointer font-[Poppins]">
+        <p
+          className=" text-gray text-base self-start hover:text-stone-400 cursor-pointer font-[Poppins]"
+          onClick={() => Router.push("/history-rides")}
+        >
           Ver mais
         </p>
       </footer>

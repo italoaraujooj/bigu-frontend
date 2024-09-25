@@ -1,5 +1,5 @@
 import { Button } from "@/components";
-import RideFull from "@/components/rideFull";
+import RideHistoryFull from "@/components/rideHistoryFull";
 import Text from "@/components/text";
 import { AuthContext } from "@/context/AuthContext";
 import Router from "next/router";
@@ -7,12 +7,12 @@ import { useContext, useEffect, useState } from "react";
 import ghost from "../assets/ghost.json";
 import LottieAnimation from "../components/LottieAnimation";
 import { RideResponseDTO } from "@/types/ride";
-import { getAllRidesAvailable } from "@/services/ride";
+import { getAllRidesAvailable, getRideHistory } from "@/services/ride";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import Back from "../assets/CaretRight.svg";
 
-function AvailableRides() {
+function HistoryRides() {
   const [rides, setRides] = useState<RideResponseDTO[]>([])
   const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,17 +23,14 @@ function AvailableRides() {
 
   const loadDataRidesAvailable = async () => {
     try {
-      const responseAvailable = await getAllRidesAvailable();
-      setRides(responseAvailable?.data.availableRides);
+      const responseHistory = await getRideHistory();
+      console.log(responseHistory?.data.userHistory)
+      setRides(responseHistory?.data.userHistory);
       setLoading(false);
     } catch (error) {
-      toast.error("Ocorreu algum erro ao buscar as caronas disponíveis.")
+      toast.error("Ocorreu algum erro ao buscar as caronas no histórico.")
     }
   }
-
-  const ridesWithDriver = rides?.filter(
-    (element: any) => element.driver.userId !== user?.userId
-  );
 
   return (
     <div className="flex justify-center items-center my-12">
@@ -49,7 +46,7 @@ function AvailableRides() {
         <div className=" w-full flex flex-col rounded-lg gap-3">
           <div className="flex gap-2 items-center">
             <Text
-              label="Caronas disponíveis"
+              label="Histórico de Caronas"
               className=" cursor-pointer hover:text-stone-400 "
               color="white"
               size="lg"
@@ -74,10 +71,10 @@ function AvailableRides() {
               </div>
             </div>
 
-            : ridesWithDriver?.length ? (
-              ridesWithDriver.map((item: RideResponseDTO, index: number) => (
+            : rides?.length ? (
+                rides.map((item: RideResponseDTO, index: number) => (
                 <div key={index}>
-                  <RideFull
+                  <RideHistoryFull
                     id={item.rideId}
                     driver={item.driver}
                     start={item.startAddress.bairro}
@@ -106,4 +103,4 @@ function AvailableRides() {
   );
 }
 
-export default AvailableRides;
+export default HistoryRides;

@@ -90,7 +90,7 @@ function Ride(props: Props) {
 
   return (
     <div className="bg-dark w-full rounded-lg p-2 flex flex-col mx-auto max-w-[800px] lg:mx-0 lg:w-full sm:py-4 sm:px-8">
-      <h2 className="font-['Poppins'] text-center text-lg text-white font-bold pb-4 sm:text-xl md:text-2xl ">
+      <h2 className="font-['Poppins'] text-xl sm:text-3xl text-white font-bold pb-8">
         Caronas disponíveis
       </h2>
       <div className="space-y-4 grow">
