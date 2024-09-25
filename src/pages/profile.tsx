@@ -12,7 +12,7 @@ import Link from "next/link";
 import Router from "next/router";
 import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react";
 import Modal from "@/components/modal";
-import { changePasswordRequest } from "@/services/auth";
+import { changePasswordRequest, getUser, profilePicture } from "@/services/auth";
 import { createCar, deleteCar, getUserCars } from "@/services/car";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { ChangePassword, CreateCarFormState } from "@/utils/types";
@@ -26,7 +26,7 @@ function Profile() {
   const formRefCar = useRef<FormHandles>(null);
   const formRefChangePassword = useRef<FormHandles>(null);
   
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   const [readOnly, setReadOnly] = useState(true);
   const [changePassword, setChangePassord] = useState(false);
@@ -91,6 +91,29 @@ function Profile() {
     }
   };
 
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement> ) => {
+    let file;
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      file = files[0];
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response: any = await profilePicture(formData);
+      if(response && response.status == 201){
+        const response = await getUser();
+        setUser(response.data.user);
+        console.log(user)
+        toast.success('Imagem atualizada com sucesso');
+      }
+    } catch (error) {
+      toast.error('Erro ao enviar a imagem');
+    }
+  };
+
   return (
     <div className="flex w-full items-center justify-center my-8">
       <div>
@@ -128,7 +151,7 @@ function Profile() {
                 onMouseLeave={() => setHoveredImage(false)}
               >
                 <Image
-                  className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${hoveredImage ? 'blur-sm' : ''}`}
+                  className={`w-12 h-12 lg:w-20 lg:h-20 object-cover rounded-full transition duration-300 ${hoveredImage ? 'blur-sm' : ''}`}
                   src={WomanAvatar}
                   alt="avatar"
                 />
@@ -145,11 +168,10 @@ function Profile() {
                         width="512"
                         height="512"
                       />
-                      <Input
-                        name="foto"
+                      <input
                         className="w-full md:h-16 md:text-lg hidden"
                         type="file"
-                        sizing="xs"
+                        onChange={handleImageChange}
                         />
                     </label>
                   </div>

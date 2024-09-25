@@ -80,4 +80,16 @@ export const refreshToken = async () => {
   }
 };
 
+export const profilePicture = async (formData: FormData) => {
+  try{
+    return await api.post('/users/upload-profile-picture', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }catch(error){
+    toast.error("Erro ao atualizar a foto de perfil.");
+  }
+}
+
 
