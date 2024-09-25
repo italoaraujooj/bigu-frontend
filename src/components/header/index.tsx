@@ -1,7 +1,9 @@
 import { fetchUserAddresses } from "@/services/address";
 import { Car, getUserCars } from "@/services/car";
 import { AddressFormState } from "@/utils/types";
-import { List, SignOut } from "@phosphor-icons/react/dist/ssr";
+// import { List, SignOut } from "@phosphor-icons/react/dist/ssr";
+import { List } from "@phosphor-icons/react/dist/ssr/List";
+import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut";
 import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useState } from "react";

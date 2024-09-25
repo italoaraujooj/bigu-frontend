@@ -2,7 +2,7 @@
 import { Button, Input, Text } from "@/components";
 import LottieAnimation from "@/components/LottieAnimation";
 import { forgotPasswordRequest } from "@/services/auth";
-import { CaretCircleLeft } from "@phosphor-icons/react/dist/ssr";
+import { CaretCircleLeft } from "@phosphor-icons/react/dist/ssr/CaretCircleLeft";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import clsx from "clsx";

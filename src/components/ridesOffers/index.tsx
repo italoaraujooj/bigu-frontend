@@ -1,6 +1,7 @@
 import { deleteRide, getMyRidesAvailable } from "@/services/ride";
 import { Ride } from "@/utils/types";
-import { CaretRight } from "@phosphor-icons/react/dist/ssr";
+//import { CaretRight } from "@phosphor-icons/react/dist/ssr";
+import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";

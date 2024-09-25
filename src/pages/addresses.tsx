@@ -5,12 +5,16 @@ import {
   fetchUserAddresses,
 } from "@/services/address";
 import { Address, AddressFormState } from "@/utils/types";
-import {
-  ArrowCircleLeft,
-  MapPin,
-  PencilSimple,
-  TrashSimple,
-} from "@phosphor-icons/react/dist/ssr";
+// import {
+//   ArrowCircleLeft,
+//   MapPin,
+//   PencilSimple,
+//   TrashSimple,
+// } from "@phosphor-icons/react/dist/ssr";
+import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr/ArrowCircleLeft";
+import { MapPin } from "@phosphor-icons/react/dist/ssr/MapPin";
+import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
+import { TrashSimple } from "@phosphor-icons/react/dist/ssr/TrashSimple";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import { useRouter } from "next/router";

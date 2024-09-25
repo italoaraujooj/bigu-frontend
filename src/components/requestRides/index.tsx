@@ -1,5 +1,5 @@
 import { RideContext } from "@/context/RideContext";
-import { CaretRight } from "@phosphor-icons/react/dist/ssr";
+import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
 import clsx from "clsx";
 import { useContext } from "react";
 import Avatar from "../../assets/avatar.png";

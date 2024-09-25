@@ -1,4 +1,4 @@
-import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr";
+import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr/ArrowCircleLeft";
 import Link from "next/link";
 import Text from "../text";
 

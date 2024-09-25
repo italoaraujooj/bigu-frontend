@@ -1,4 +1,4 @@
-import { CaretDown } from "@phosphor-icons/react/dist/ssr";
+import { CaretDown } from "@phosphor-icons/react/dist/ssr/CaretDown";
 import React from "react";
 import Text from "../text";
 

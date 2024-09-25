@@ -1,4 +1,7 @@
-import { Jeep, SignOut, X } from "@phosphor-icons/react/dist/ssr";
+// import { Jeep, SignOut, X } from "@phosphor-icons/react/dist/ssr";
+import { Jeep } from "@phosphor-icons/react/dist/ssr/Jeep";
+import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut";
+import { X } from "@phosphor-icons/react/dist/ssr/X";
 import clsx from "clsx";
 import Text from "../text";
 

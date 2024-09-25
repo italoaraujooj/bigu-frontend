@@ -1,5 +1,5 @@
 import { Button, Login, Register, Text } from "@/components";
-import { List } from "@phosphor-icons/react/dist/ssr";
+import { List } from "@phosphor-icons/react/dist/ssr/List";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { parseCookies } from "nookies";
