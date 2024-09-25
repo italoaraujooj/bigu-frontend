@@ -1,12 +1,11 @@
 import axios from "axios";
-import { getCookie } from "cookies-next";
-import { parseCookies, destroyCookie } from "nookies";
+import { parseCookies } from "nookies";
 
-const baseURL = "http://localhost:3001";
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://bigu-backend-nest.fly.dev";
 
 export const api = axios.create({
   baseURL,
-  headers: {'Accept': 'application/json'}
+  headers: { 'Accept': 'application/json' }
 });
 
 // let token;
@@ -26,8 +25,8 @@ api.interceptors.response.use(
     // console.log(JSON.stringify(error, null, 2))
     if (error.response.status === 500 || error.response.status === 404 || error.response.status === 403) {
       // destroyCookie(null, 'nextauth.token');
-    // Erro na resposta - manipular o erro ou lançar um novo erro
-    // Aqui você pode fazer qualquer manipulação desejada no erro de resposta
+      // Erro na resposta - manipular o erro ou lançar um novo erro
+      // Aqui você pode fazer qualquer manipulação desejada no erro de resposta
     }
     // Por exemplo, você pode adicionar uma propriedade personalizada ao erro
     error.customProperty = 'Custom Value';
@@ -40,9 +39,9 @@ api.interceptors.response.use(
   }
 );
 
-api.interceptors.request.use( config => {
+api.interceptors.request.use(config => {
   const { 'nextauth.token': token } = parseCookies();
-  
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
