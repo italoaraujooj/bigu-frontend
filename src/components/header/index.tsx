@@ -12,6 +12,8 @@ import { Car } from "@/services/car";
 import { AddressFormState } from "@/utils/types";
 import { fetchUserAddresses } from "@/services/address";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import Input from "../input/input";
 
 type Props = {
   handleOpenRequests: () => void;
@@ -25,9 +27,11 @@ export default function Header(props: Props) {
     handleLogout,
     handleNavigateToOfferRide,
   } = useDrawer();
+  const router = useRouter()
 
   const [carsUser, setCarsUser] = useState<Car[]>([]);
   const [userAddresses, setUserAddresses] = useState<AddressFormState[]>([]);
+  const [hoveredImage, setHoveredImage] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -49,7 +53,29 @@ export default function Header(props: Props) {
   return (
     <header className="flex justify-between items-center">
       <div className="flex gap-4 items-center">
-        <Image className="w-12 h-12" src={Foto} alt="foto" />
+        <Image onClick={() => router.push("/profile")} className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer" src={Foto} alt="foto" />
+        {hoveredImage && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">
+            <label
+              title="Click to upload"
+              className="cursor-pointer flex items-center gap-4 px-6 py-4 relative"
+            >
+              <img
+                className="w-12"
+                src="https://www.svgrepo.com/show/357902/image-upload.svg"
+                alt="file upload icon"
+                width="512"
+                height="512"
+              />
+              <Input
+                name="foto"
+                className="w-full md:h-16 md:text-lg hidden"
+                type="file"
+                sizing="xs"
+                />
+            </label>
+          </div>
+        )}
         <Link
           to="/profile"
           label="Ver perfil"

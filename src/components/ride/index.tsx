@@ -83,8 +83,6 @@ function Ride(props: Props) {
     }
   };
 
-  console.log(ridesAvailable[0].candidates.some((member) => member.user.userId == user?.userId))
-
   return (
     <div className="bg-dark w-full rounded-lg p-2 flex flex-col mx-auto max-w-[800px] lg:mx-0 lg:w-full sm:py-4 sm:px-8">
       <h2 className="font-['Poppins'] text-center text-lg text-white font-bold pb-4 sm:text-xl md:text-2xl ">
@@ -128,7 +126,7 @@ function Ride(props: Props) {
                   />
                 </div>
                 <div className="flex flex-row w-full justify-between">
-                  <div className="space-y-2 mt-2">
+                  <div className="space-y-2 mt-2 whitespace-nowrap">
                     <Text
                       label={`🚕 ${item.car.carModel} ${item.car.color} - ${item.car.plate}`}
                       color="dark"

@@ -12,7 +12,7 @@ interface Props {
   type?: InputType;
   color?: InputColor;
   sizing: InputSize;
-  placeholder: string;
+  placeholder?: string;
   shape?: "rounded" | "square";
   readOnly?: boolean;
   visibility?: string;

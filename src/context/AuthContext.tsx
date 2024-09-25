@@ -6,8 +6,8 @@ import {
   logOut,
 } from "@/services/auth";
 import { createContext, useContext, useEffect, useState } from "react";
-import Router, { useRouter } from "next/router";
-import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { useRouter } from "next/router";
+import { parseCookies, setCookie } from "nookies";
 import { RequestContext } from "./RequestContext";
 import { fakeDelay } from "@/utils/delay";
 import { User } from "@/utils/types";

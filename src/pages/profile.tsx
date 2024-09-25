@@ -32,6 +32,7 @@ function Profile() {
   const [changePassword, setChangePassord] = useState(false);
   const [modalCar, setModalCar] = useState(false);
   const [cars, setCars] = useState<CarResponseDTO[]>([])
+  const [hoveredImage, setHoveredImage] = useState(false);
 
   const toggleModalCar = () => setModalCar((prev) => !prev);
   const handleOpenChangePassword = () => setChangePassord(true);
@@ -120,22 +121,51 @@ function Profile() {
             ref={formRef}
           >
             <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
+              <div
+                className="relative"
+                onMouseEnter={() => setHoveredImage(true)}
+                onMouseLeave={() => setHoveredImage(false)}
+              >
                 <Image
-                  className="w-12 h-12 md:w-24 md:h-24"
+                  className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${hoveredImage ? 'blur-sm' : ''}`}
                   src={WomanAvatar}
                   alt="avatar"
-                ></Image>
-                <div className="flex gap-1">
-                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
-                    {`Olá, ${user?.name.split(" ")[0]}`}
-                  </h1>
-                  <div className="flex items-center gap-2 pt-2">
-                    <Image className="w-3 h-3" src={Star} alt="estrela" />
-                    <span className="text-gray text-[0.725rem]">5.0</span>
+                />
+                {hoveredImage && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">
+                    <label
+                      title="Click to upload"
+                      className="cursor-pointer flex items-center gap-4 px-6 py-4 relative"
+                    >
+                      <img
+                        className="w-12"
+                        src="https://www.svgrepo.com/show/357902/image-upload.svg"
+                        alt="file upload icon"
+                        width="512"
+                        height="512"
+                      />
+                      <Input
+                        name="foto"
+                        className="w-full md:h-16 md:text-lg hidden"
+                        type="file"
+                        sizing="xs"
+                        />
+                    </label>
                   </div>
+                )}
+              </div>
+
+              <div className="flex gap-1 items-center">
+                <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
+                  {`Olá, ${user?.name.split(" ")[0]}`}
+                </h1>
+                <div className="flex items-center gap-2 pt-2">
+                  <Image className="w-3 h-3" src={Star} alt="estrela" />
+                  <span className="text-gray text-[0.725rem]">5.0</span>
                 </div>
               </div>
+            </div>
             </div>
 
             <div className="w-full flex flex-col md:flex-row gap-12">

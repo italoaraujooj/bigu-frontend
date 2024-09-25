@@ -55,7 +55,7 @@ function RidesOffers(props: Props) {
             id="rideOffers"
             className={clsx(
                 "transition ease-in-out delay-150 duration-500",
-                `h-screen w-full fixed bg-[#1a1a1a] overflow-y-scroll p-4 top-0 right-0 sm:p-8 md:p-12 lg:max-w-[35%]`,
+                `h-screen w-full fixed bg-[#1a1a1a] overflow-y-scroll p-4 top-0 right-0 sm:p-8 md:p-10 lg:max-w-[35%]`,
                 visible ? "translate-x-0" : "translate-x-full"
             )}
         >

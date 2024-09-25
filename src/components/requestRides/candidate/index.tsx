@@ -54,7 +54,7 @@ const CandidateRequest = (props: Props) => {
   const phoneNumber = candidate.user.phoneNumber.replace(/[^\d]/g, '');
 
   return (
-    <div className="w-[500px] bg-white  rounded-lg px-10 py-6 shadow-xl ">
+    <div className="w-full rounded-lg px-10 py-6 bg-white shadow-xl">
       <div className="flex flex-col gap-4">
         <div className="flex gap-2 items-center justify-between">
           <div className="flex gap-2 items-center">
