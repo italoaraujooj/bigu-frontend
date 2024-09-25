@@ -1,18 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import MaleAvatar from "../../assets/avatar.png";
-import Heart from "../../assets/heart.png";
-import HeartFilled from "../../assets/heart-filled.png";
 import Image from "next/image";
 import Button from "../button";
 import Text from "../text";
 import {
-  getAllRidesAvailable,
   requestRide,
 } from "@/services/ride";
 import LottieAnimation from "../LottieAnimation";
 import ghost from "../../assets/ghost.json";
-import empty from "../../assets/empty-box.json";
-import { formatarData, moneyMask } from "@/utils/masks";
+import { formatarData } from "@/utils/masks";
 import Modal from "../modal";
 import Dropdown from "../dropdown";
 import { fetchUserAddresses } from "@/services/address";
@@ -22,7 +18,6 @@ import clsx from "clsx";
 import { toast } from "react-toastify";
 import type { Ride } from "@/utils/types";
 import { AddressResponseDTO, RequestRide, RideResponseDTO } from "@/types/ride";
-import { FormProvider } from "@unform/core";
 
 type Props = {
   ridesAvailable: RideResponseDTO[];
@@ -88,6 +83,8 @@ function Ride(props: Props) {
     }
   };
 
+  console.log(ridesAvailable[0].candidates.some((member) => member.user.userId == user?.userId))
+
   return (
     <div className="bg-dark w-full rounded-lg p-2 flex flex-col mx-auto max-w-[800px] lg:mx-0 lg:w-full sm:py-4 sm:px-8">
       <h2 className="font-['Poppins'] text-center text-lg text-white font-bold pb-4 sm:text-xl md:text-2xl ">
@@ -112,7 +109,7 @@ function Ride(props: Props) {
               )}
             >
               <div className={clsx("w-4 h-full", item.toWomen && "bg-[#f15bb5]", item.members.some((member) => member.user.userId == user?.userId) && 'bg-green')}></div>
-              <div className="w-full p-4 self-start">
+              <div className="w-full pt-4 pr-4 pb-4 self-start">
                 <div className={clsx("flex gap-2 items-center mb-2")}>
                   <Image
                     className="w-8 h-8 md:w-12 md:h-12"
@@ -133,28 +130,28 @@ function Ride(props: Props) {
                 <div className="flex flex-row w-full justify-between">
                   <div className="space-y-2 mt-2">
                     <Text
-                      label={`${item.car.carModel} ${item.car.color} - ${item.car.plate}`}
+                      label={`🚕 ${item.car.carModel} ${item.car.color} - ${item.car.plate}`}
                       color="dark"
                       size="md"
                       weight="medium"
                       className="tracking-wide text-xs md:text-md"
                     />
                     <Text
-                      label={`${Number(item.numSeats - item.members.length) > 1 ? "Vagas disponíveis" : "Vaga disponível"} ${item.numSeats - item.members.length}`}
+                      label={`🙍‍♂️ ${Number(item.numSeats - item.members.length) > 1 ? "Vagas disponíveis" : "Vaga disponível"} ${item.numSeats - item.members.length}`}
                       color="dark"
                       size="md"
                       weight="medium"
                       className="tracking-wide text-xs md:text-md"
                     />
                     <Text
-                      label={formatarData(item.scheduledTime)}
+                      label={`⏰ ${formatarData(item.scheduledTime)}`}
                       color="dark"
                       size="md"
                       weight="medium"
                       className="tracking-wide text-xs md:text-md"
                     />
                     <Text
-                      label={`R$ ${String(item.price)}`}
+                      label={`💵 ${String(item.price)}`}
                       color="dark"
                       size="md"
                       weight="medium"
@@ -168,21 +165,19 @@ function Ride(props: Props) {
                     </div>
                   ) : (
                     <div className={`self-end`}>
-                    {!askRide ? (
+                    {askRide || item.candidates.some((candidate) => candidate.user.userId == user?.userId) ? (
+                      <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite text-xs">
+                      Aguardando confirmação...
+                      </span>
+                    ) : (
                       <Button
-                        label={
-                          !askRide ? "Pedir carona" : "Aguardando confirmação..."
-                        }
+                        label="Pedir carona"
                         onClick={() => handleAskRide(item.rideId)}
                         size="xs"
                         color="green"
                         shape="square"
                         className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base"
                       />
-                    ) : (
-                      <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite">
-                      Aguardando confirmação...
-                      </span>
                     )}
                   </div>
                   )}

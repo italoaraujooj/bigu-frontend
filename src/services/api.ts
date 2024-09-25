@@ -4,7 +4,7 @@ import { parseCookies, destroyCookie } from "nookies";
 import { refreshToken } from "./auth";
 import router from "next/router";
 
-const baseURL = "http://localhost:3001";
+const baseURL = "http://localhost:3000";
 
 export const api = axios.create({
   baseURL,

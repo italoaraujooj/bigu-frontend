@@ -63,9 +63,7 @@ export function AuthProvider({ children }: any) {
   }
 
   async function logout() {
-    router.push("/");
     await exit();
-    setUser(undefined);
   }
 
   const getUserData = async () => {

@@ -6,7 +6,9 @@ export type UserResponseDTO = {
     phoneNumber: string,
     matricula: string,
     feedbacks: string[],
-    avgScore: number
+    avgScore: number,
+    profileImage: string,
+    isVerified: boolean
 }
 
 export type AddressResponseDTO = {

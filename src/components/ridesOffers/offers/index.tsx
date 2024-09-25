@@ -17,7 +17,7 @@ function Offer(props: Props) {
   const { ride } = props;
 
   return (
-    <div className="w-[400px] rounded-lg px-10 py-6 bg-white shadow-xl ">
+    <div className="w-full rounded-lg px-10 py-6 bg-white shadow-xl">
       <div className="flex flex-col gap-2">
           <div>
             <Text label="📍 Origem:" color="dark" size="base" weight="bold" />
@@ -31,7 +31,7 @@ function Offer(props: Props) {
 
           <div>
             <Text label="🚙 Vagas disponíveis:" color="dark" size="base" weight="bold" />
-            <Text label={Number(ride.numSeats) > 1 ? ride.numSeats + " vagas disponíveis" : ride.numSeats + " vaga disponível"} color="gray" size="base" />
+            <Text label={Number(ride.numSeats) - ride.members.length > 1 ? ride.numSeats + " vagas disponíveis" : Number(ride.numSeats) - ride.members.length + " vaga disponível"} color="gray" size="base" />
           </div>
 
           <div>
@@ -58,7 +58,7 @@ function Offer(props: Props) {
       <div className="flex flex-row justify-center gap-2 mt-4">
         <Button
           label="Cancelar"
-          size="base"
+          size="sm"
           color="red"
           className="uppercase"
           shape="square"
@@ -67,7 +67,7 @@ function Offer(props: Props) {
 
         <Button
           label="Editar"
-          size="base"
+          size="sm"
           color="dark-blue"
           className="uppercase"
           shape="square"

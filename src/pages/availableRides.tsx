@@ -24,7 +24,7 @@ function AvailableRides() {
   const loadDataRidesAvailable = async () => {
     try {
       const responseAvailable = await getAllRidesAvailable();
-      setRides(responseAvailable?.data.ridesAvailable);
+      setRides(responseAvailable?.data.availableRides);
       setLoading(false);
     } catch (error) {
       toast.error("Ocorreu algum erro ao buscar as caronas disponíveis.")

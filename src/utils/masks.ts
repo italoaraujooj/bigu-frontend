@@ -1,6 +1,21 @@
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+const MESES: any = {
+  '01': 'Janeiro',
+  '02': 'Fevereivo',
+  '03': 'Março',
+  '04': 'Abril',
+  '05': 'Maio',
+  '06': 'Junho',
+  '07': 'Julho',
+  '08': 'Agosto',
+  '09': 'Setembro',
+  '10': 'Outubro',
+  '11': 'Novembro',
+  '12': 'Dezembro',
+}
+
 export const formatDateRide = (dateTime: string) => {
   const dateTimeFormat = new Date(dateTime);
   const day = dateTimeFormat.getDate();
@@ -52,8 +67,11 @@ export const formatarData = (data: string): string => {
 }
 
 export function formatarDate(data: string): string {
-  const dataRecebida = parseISO(data);
-  const dataFormatada = format(dataRecebida, "dd 'de' MMMM 'às' HH:mm", { locale: ptBR });
+  const [date, hour] = data.split(',');
+  const [dia, mes, ano] = date.split('/');
+  // const dataRecebida = parseISO(data);
+  // const dataFormatada = format(dataRecebida, "dd 'de' MMMM 'às' HH:mm", { locale: ptBR });
+  const dataFormatada = `${dia} de ${MESES[mes]} às ${hour.slice(0,6)}`
   return dataFormatada;
 }
 

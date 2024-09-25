@@ -4,6 +4,7 @@ import { ChangePassword, SignInResponse } from "@/utils/types";
 
 import { toast } from "react-toastify";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
+import router from "next/router";
 
 type UserFormState = {
     name:string,
@@ -40,6 +41,7 @@ export async function logOut(){
     await api.post('auth/logout')
     destroyCookie(null, "nextauth.accessToken");
     destroyCookie(null, "nextauth.refreshToken");
+    router.push("/");
   }catch (error: any){
     toast.error(error.message)
   }

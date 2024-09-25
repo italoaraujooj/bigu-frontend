@@ -52,18 +52,18 @@ function RidesOffers(props: Props) {
 
     return (
         <div
-            id="login"
+            id="rideOffers"
             className={clsx(
                 "transition ease-in-out delay-150 duration-500",
-                `flex justify-center items-start h-screen fixed bg-[#1a1a1a] w-[100%] overflow-y-scroll pt-3 px-5 top-0 lg:right-0 lg:max-w-[38rem]`,
+                `h-screen w-full fixed bg-[#1a1a1a] overflow-y-scroll p-4 top-0 right-0 sm:p-8 md:p-12 lg:max-w-[35%]`,
                 visible ? "translate-x-0" : "translate-x-full"
             )}
         >
-            <div className="flex flex-col justify-between gap-4 mb-20">
-                <CaretRight size={32} color="white" onClick={handleClose} className="cursor-pointer my-4" weight="bold"/>
+            <div className="flex flex-col justify-between items-start gap-4 mb-3">
+                <CaretRight size={32} color="white" onClick={handleClose} className="cursor-pointer self-start" weight="bold"/>
 
-                <h1 className="font-['Poppins'] font-semibold text-2xl md:text-3xl text-white my-2">
-                    Caronas oferecidas por você
+                <h1 className="font-['Poppins'] font-semibold text-2xl sm:text-3xl text-white my-2">
+                    Suas caronas oferecidas:
                 </h1>
 
                 {myRides.map((ride: RideResponseDTO, index: number) => {

@@ -47,7 +47,7 @@ function History(props: Props) {
             </div>
           </div>
         :
-        races.length ? races.map((race: RideResponseDTO) => (
+        races.length ? races.slice(0, 3).map((race: RideResponseDTO) => (
           <div
             key={race.rideId}
             className="h-24 w-full px-6 py-6 border-light border-2 flex justify-between items-center gap-5 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer transition-colors duration-600"
@@ -55,12 +55,12 @@ function History(props: Props) {
             {/* @ts-ignore */}
             <Image src={OK} className="w-7 h-7" alt="race finished status" />
             {/* @ts-ignore */}
-            <Text label={race.startAddress.bairro} color="gray" size="md" />
+            <Text label={race.startAddress.bairro} color="gray" size="md" className=" text-xs sm:text-sm md:text-base"/>
             <div className="w-12 h-1 bg-light" />
             {/* @ts-ignore */}
-            <Text label={race.destinationAddress.bairro} color="gray" size="md" />
+            <Text label={race.destinationAddress.bairro} color="gray" size="md" className=" text-xs sm:text-sm md:text-base"/>
             {/* @ts-ignore */}
-            <Text label={formatarDate(race.scheduledTime)} color="gray" size="md" />
+            <Text label={formatarDate(race.scheduledTime)} color="gray" size="md" className=" text-xs sm:text-sm md:text-base"/>
           </div>
         )):
           <div className="w-full flex items-center justify-center">
