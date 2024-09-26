@@ -107,7 +107,6 @@ function OfferRideForm(props: Props) {
           setRide(responseRide?.data?.ride);
           setDescription(responseRide.data.ride.description);
           setScheduledTime(responseRide.data.ride.scheduledTime);
-          console.log(scheduledTime);
           if (!responseRide.data.ride.goingToCollege) {
             handleCheckboxChange(2);
           }
@@ -168,7 +167,6 @@ function OfferRideForm(props: Props) {
     );
     const toWomen = user?.sex === "F" ? onlyWomanChecked : false;
     const carId = selectedCar;
-    console.log(description);
     const body = {
       driver: user?.userId,
       startAddress: startAddress,
@@ -181,7 +179,6 @@ function OfferRideForm(props: Props) {
       description: description,
       toWomen: toWomen,
     };
-    console.log(body);
     if (rideId) {
       try {
         const response = await editRide(rideId, body);

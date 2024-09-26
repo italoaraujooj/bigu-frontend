@@ -53,6 +53,8 @@ function Ride(props: Props) {
     loadData();
   }, [askRide]);
 
+  console.log(userAddress)
+
   const handleAskRide = (rideId: string) => {
     const userSex = user?.sex;
     const ride = ridesAvailable.find(ride => ride.rideId === rideId)
@@ -61,6 +63,9 @@ function Ride(props: Props) {
       return
     }else if(ride?.toWomen && userSex == "Masculino"){
       toast.info("Essa carona é exclusiva para mulheres.")
+      return
+    }else if(!userAddress.length){
+      toast.info("Você precisa ter um endereço cadastrado para solicitar uma carona.")
       return
     }
     setModalOpen((prev) => !prev);
@@ -82,7 +87,6 @@ function Ride(props: Props) {
       toast.error(err.message)
     }
   };
-
   return (
     <div className="bg-dark w-full rounded-lg p-2 flex flex-col mx-auto max-w-[800px] lg:mx-0 lg:w-full sm:py-4 sm:px-8">
       <h2 className="font-['Poppins'] text-center text-lg text-white font-bold pb-4 sm:text-xl md:text-2xl ">

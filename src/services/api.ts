@@ -59,7 +59,6 @@ api.interceptors.response.use(
 
         return new Promise(async (resolve, reject) => {
           try {
-            console.log("refresh")
             await refreshToken();
             const { 'nextauth.accessToken': newToken } = parseCookies();
             originalRequest.headers.Authorization = `Bearer ${newToken}`;

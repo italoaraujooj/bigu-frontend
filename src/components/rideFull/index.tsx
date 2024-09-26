@@ -60,7 +60,7 @@ function RideFull(props: RideProps) {
     } else if (props.toWoman && userSex == "Masculino") {
       toast.info("Essa carona é exclusiva para mulheres.");
       return;
-    }
+    } else
     setModalOpen((prev) => !prev);
     setRideIdSelected(rideId);
   };

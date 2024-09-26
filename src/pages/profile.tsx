@@ -114,7 +114,6 @@ function Profile() {
       if (response && response.status == 201) {
         const userResponse = await getUser();
         setUser(userResponse.data.user);
-        console.log(user);
         toast.success('Imagem atualizada com sucesso');
       }
     } catch (error) {
