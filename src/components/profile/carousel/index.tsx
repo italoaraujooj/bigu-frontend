@@ -5,6 +5,7 @@ import React from "react";
 import Plus from "../../../assets/plus-green.png";
 import { Actions, Attribute, Bar, Navigation } from "./components";
 import { CarResponseDTO } from "@/types/ride";
+import Modal from "@/components/modal";
 
 type Props = {
   profile?: boolean;
@@ -60,11 +61,11 @@ const Carousel = (props: Props) => {
                 'duration-700 ease-["cubic-bezier(0.645, 0.045, 0.355, 1.000)"]'
               )}
             >
-              <div className="flex items-start justify-between md:h-48 pt-6 pl-8 h-48 bg-white my-2 rounded-lg py-6 px-8">
+              <div className="flex items-start justify-between md:h-48 p-2 h-48 bg-white my-2 rounded-lg">
                 <div className="flex items-start justify-between mb-2">
                   {/* @ts-ignore */}
                   <Bar />
-                  <div className="w-3/4 flex-col items-center justify-between space-y-4">
+                  <div className="w-3/4 flex-col items-center justify-between space-y-4 self-center">
                     <div className="flex items-center gap-12">
                       {/* @ts-ignore */}
                       <Attribute

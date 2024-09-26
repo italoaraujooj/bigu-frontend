@@ -35,8 +35,14 @@ function Profile() {
   const [modalCar, setModalCar] = useState(false);
   const [cars, setCars] = useState<CarResponseDTO[]>([]);
   const [hoveredImage, setHoveredImage] = useState(false);
+  const [modalRemoveCar, setModalRemoveCar] = useState(false);
+  const [carToRemove, setCarToRemove] = useState<string | null>(null);
 
   const toggleModalCar = () => setModalCar((prev) => !prev);
+  const toggleModalRemoveCar = (id: string | null) => {
+    setCarToRemove(id);
+    setModalRemoveCar((prev) => !prev);
+  };
   const handleOpenChangePassword = () => setChangePassord(true);
   const handleCloseChangePassword = () => setChangePassord(false);
 
@@ -75,6 +81,7 @@ function Profile() {
           (car: CarResponseDTO) => car.carId !== id
         );
         setCars(currentCars);
+        toggleModalRemoveCar(null)
         toast.success(`O carro foi removido.`);
       }
     } catch (err) {
@@ -146,6 +153,7 @@ function Profile() {
               name: user?.name,
               email: user?.email,
               telephone: user?.phoneNumber,
+              matricula: user?.matricula
             }}
             ref={formRef}
           >
@@ -275,7 +283,7 @@ function Profile() {
                   <Carousel
                     profile
                     add={toggleModalCar}
-                    remove={handleDeleteCar}
+                    remove={toggleModalRemoveCar}
                     items={cars}
                   />
                 </div>
@@ -365,6 +373,31 @@ function Profile() {
                   />
                 </section>
               </Form>
+            </Modal>
+            <Modal isOpen={modalRemoveCar} onClose={() => toggleModalRemoveCar(null)} noActions>
+              <Text
+                label="Tem certeza que deseja remover esse carro?"
+                color="dark"
+                size="lg"
+                weight="bold"
+                className="text-lg"
+              />
+              <section className="flex items-center gap-4 mt-12">
+                <Button
+                  label="Cancelar"
+                  size="xs"
+                  className="uppercase font-semibold px-3 sm:w-48 sm:h-12 sm:px-8 sm:text-sm lg:px-6"
+                  color="red"
+                  onClick={() => toggleModalRemoveCar(null)}
+                />
+                <Button
+                  label="Confirmar"
+                  size="xs"
+                  className="uppercase font-semibold px-3 sm:w-48 sm:h-12 sm:px-8 sm:text-sm lg:px-6"
+                  color="green"
+                  onClick={() => handleDeleteCar(carToRemove as string)}
+                />
+              </section>
             </Modal>
           </Form>
         </div>

@@ -17,7 +17,7 @@ export default function Actions({ add, edit, remove }: Props) {
   }
 
   return (
-    <div className="flex items-center justify-end gap-4 mb-2">
+    <div className="flex items-center justify-end gap-4 self-start mt-1">
       <Image
         className="w-6 h-6 cursor-pointer"
         src={Plus}

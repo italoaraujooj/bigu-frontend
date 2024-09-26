@@ -70,7 +70,7 @@ export default function Home() {
         <main className="flex flex-col w-8/12 gap-10 my-auto sm:gap-10 mt-28">
           <Text
             label="Compartilhe viagens, economize e proteja o planeta."
-            size="5xl"
+            size="lg"
             weight="bold"
             className="leading-[3rem]"
           />

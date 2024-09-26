@@ -57,7 +57,6 @@ export default function Header(props: Props) {
   return (
     <header className="flex justify-between items-center">
       <div className="flex gap-4 items-center">
-        <Image onClick={() => router.push("/profile")} className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer" src={Foto} alt="foto" />
         <Image
           onClick={() => router.push("/profile")}
           className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer"
