@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { Text, Button, Register, Login } from "@/components";
-import Image from "next/image";
-import Logo from "../assets/car-secondary.png";
-import Menu from "../assets/Menu.png";
-import { parseCookies } from "nookies";
+import { Button, Login, Register, Text } from "@/components";
+import { List } from "@phosphor-icons/react/dist/ssr/List";
 import { GetServerSideProps } from "next";
-import { List } from "@phosphor-icons/react";
+import Image from "next/image";
+import { parseCookies } from "nookies";
+import { useState } from "react";
+import Logo from "../assets/car-secondary.png";
 import Back from "../assets/CaretRight.svg";
 
 export default function Home() {
@@ -15,7 +14,7 @@ export default function Home() {
   const openLoginModal = () => {
     setShowLogin(true);
     setShowRegister(false);
-    setSideBar(false)
+    setSideBar(false);
   };
 
   const closeLoginModal = () => {
@@ -25,7 +24,7 @@ export default function Home() {
   const handleOpenRegister = () => {
     setShowRegister(true);
     setShowLogin(false);
-    setSideBar(false)
+    setSideBar(false);
   };
 
   const handleCloseRegister = () => {
@@ -33,19 +32,24 @@ export default function Home() {
   };
 
   const openSideBar = () => {
-    setSideBar(true)
-  }
+    setSideBar(true);
+  };
 
   const closeSideBar = () => {
-    setSideBar(false)
-  }
+    setSideBar(false);
+  };
 
   return (
     <div className="relative w-full h-fit">
       <div className=" w-[21.625rem] mx-auto mt-7 flex flex-col gap-12 sm:w-528 sm:gap-20 lg:w-3/4">
         <header className="flex items-center gap-4 justify-between pr-2">
           <Image className=" w-14 h-14" src={Logo} alt="car" />
-          <List size={32} color="gray" className="md:hidden cursor-pointer" onClick={openSideBar}/>
+          <List
+            size={32}
+            color="gray"
+            className="md:hidden cursor-pointer"
+            onClick={openSideBar}
+          />
           <section className="hidden lg:flex lg:gap-10">
             <Button
               label="CADASTRAR"
@@ -91,7 +95,7 @@ export default function Home() {
         <Register handleClose={handleCloseRegister} visible={showRegister} />
         {sideBar && (
           <div className="bg-white w-full h-full fixed top-0 right-0 py-14 px-14 space-y-4 transition-all ease-in-out duration-500">
-             <Image
+            <Image
               className="w-10 h-10 cursor-pointer"
               src={Back}
               alt="voltar"

@@ -1,35 +1,37 @@
-import { useContext, useEffect } from "react";
-import Modal from "../modal";
-import Avatar from "../../assets/woman.png"
-import Image from "next/image";
-import Star from "../../assets/star.png"
-import Button from "../button";
-import Map from "../../assets/map.png"
-import { formatDateRide } from "@/utils/masks";
-import { MapPin, Person, Clock } from "@phosphor-icons/react";
-import React from "react";
+import { AuthContext } from "@/context/AuthContext";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
 import { AddressResponseDTO, RequestRide, UserResponseDTO } from "@/types/ride";
+import { formatDateRide } from "@/utils/masks";
+import Image from "next/image";
+import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
+import Map from "../../assets/map.png";
+import Star from "../../assets/star.png";
+import Avatar from "../../assets/woman.png";
+import Button from "../button";
 import Dropdown from "../dropdown";
-import { AuthContext } from "@/context/AuthContext";
+import Modal from "../modal";
+// import { Clock, MapPin, Person } from "@phosphor-icons/react/dist/ssr";
+import { Clock } from "@phosphor-icons/react/dist/ssr/Clock";
+import { MapPin } from "@phosphor-icons/react/dist/ssr/MapPin";
+import { Person } from "@phosphor-icons/react/dist/ssr/Person";
 
 interface RideProps {
-  id:string,
-  driver: UserResponseDTO,
-  start: string,
-  destination: string,
-  numSeats: number,
-  model: string,
-  plate: string,
-  color: string,
-  dateTime: string,
-  toWoman: boolean
+  id: string;
+  driver: UserResponseDTO;
+  start: string;
+  destination: string;
+  numSeats: number;
+  model: string;
+  plate: string;
+  color: string;
+  dateTime: string;
+  toWoman: boolean;
 }
 
 function RideFull(props: RideProps) {
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const [userAddress, setUserAddresses] = React.useState([]);
   const [userAddressesSelected, setUserAddressesSelected] = React.useState(
     {} as any
@@ -40,22 +42,24 @@ function RideFull(props: RideProps) {
 
   useEffect(() => {
     fetchUserAddresses().then((data) => {
-      const addressesFormated = data?.data.userAddress.map((address: AddressResponseDTO) => ({
-        label: address.nome,
-        value: address.addressId,
-      }));
+      const addressesFormated = data?.data.userAddress.map(
+        (address: AddressResponseDTO) => ({
+          label: address.nome,
+          value: address.addressId,
+        })
+      );
       setUserAddresses(addressesFormated);
     });
   }, [askRide]);
 
   const handleAskRide = (rideId: string) => {
     const userSex = user?.sex;
-    if(props.driver.userId === user?.userId){
-      toast.info("Você já é o motorista dessa carona.")
-      return
-    }else if(props.toWoman && userSex == "Masculino"){
-      toast.info("Essa carona é exclusiva para mulheres.")
-      return
+    if (props.driver.userId === user?.userId) {
+      toast.info("Você já é o motorista dessa carona.");
+      return;
+    } else if (props.toWoman && userSex == "Masculino") {
+      toast.info("Essa carona é exclusiva para mulheres.");
+      return;
     }
     setModalOpen((prev) => !prev);
     setRideIdSelected(rideId);
@@ -70,15 +74,14 @@ function RideFull(props: RideProps) {
       if (response?.status == 200) {
         setAskRide((prev) => !prev);
         setModalOpen((prev) => !prev);
-        toast.success("Solicitação enviada. Aguarde a resposta do motorista.")
+        toast.success("Solicitação enviada. Aguarde a resposta do motorista.");
       }
     } catch (err: any) {
-      toast.error(err.message)
+      toast.error(err.message);
     }
   };
 
   return (
-
     <div className="bg-light-white w-full h-42 rounded-xl flex p-4 flex-col gap-4 sm:p-5">
       <div className="flex justify-between">
         <div className="flex gap-2 sm:gap-4 items-center">
@@ -98,14 +101,14 @@ function RideFull(props: RideProps) {
       <div className="flex justify-between md:items-center">
         <div className="space-y-2 md:space-y-4 lg:space-y-8">
           <div className="flex gap-2 items-center">
-            <MapPin size={24} color="#252525" weight="bold"/>
+            <MapPin size={24} color="#252525" weight="bold" />
             <span className="font-['Poppins'] font-medium text-xs sm:text-sm md:text-base lg:text-xl">
               {props.start} - {props.destination}
             </span>
           </div>
 
           <div className="flex gap-2 items-center">
-            <Person size={24} color="#252525" weight="fill"/>
+            <Person size={24} color="#252525" weight="fill" />
             <span className="font-['Poppins'] font-normal text-xs sm:text-sm md:text-base lg:text-xl">
               {props.numSeats}{" "}
               {Number(props.numSeats) > 1
@@ -117,7 +120,6 @@ function RideFull(props: RideProps) {
           <div className="flex gap-2 items-center">
             <Clock size={24} color="#252525" weight="bold" />
 
-
             <span className="font-['Poppins'] font-medium text-xs sm:text-sm md:text-base lg:text-xl">
               {formatDateRide(props.dateTime)}
             </span>
@@ -128,11 +130,7 @@ function RideFull(props: RideProps) {
           <div className="self-end md:self-center">
             {!askRide ? (
               <Button
-                label={
-                  !askRide
-                    ? "Pedir carona"
-                    : "Aguardando confirmação..."
-                }
+                label={!askRide ? "Pedir carona" : "Aguardando confirmação..."}
                 onClick={() => handleAskRide(props.id)}
                 size="xs"
                 color="green"
@@ -146,7 +144,11 @@ function RideFull(props: RideProps) {
             )}
           </div>
 
-          <Image className="hidden md:flex md:w-40 md:h-32 lg:w-64 lg:h-52" src={Map} alt="mapa" />
+          <Image
+            className="hidden md:flex md:w-40 md:h-32 lg:w-64 lg:h-52"
+            src={Map}
+            alt="mapa"
+          />
         </div>
       </div>
       <Modal
@@ -161,7 +163,6 @@ function RideFull(props: RideProps) {
         />
       </Modal>
     </div>
-
   );
 }
 

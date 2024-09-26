@@ -1,20 +1,20 @@
 import axios from "axios";
-import { getCookie } from "cookies-next";
-import { parseCookies, destroyCookie } from "nookies";
-import { refreshToken } from "./auth";
 import router from "next/router";
+import { destroyCookie, parseCookies } from "nookies";
+import { refreshToken } from "./auth";
 
-const baseURL = "http://localhost:3000";
+
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://bigu-backend-nest.fly.dev";
 
 export const api = axios.create({
   baseURL,
-  headers: {'Accept': 'application/json'}
+  headers: { 'Accept': 'application/json' }
 });
 
 let isRefreshing = false;
 let failedQueue: any = [];
 
-const processQueue = (error:any, token: string | null = null) => {
+const processQueue = (error: any, token: string | null = null) => {
   failedQueue.forEach((prom: any) => {
     if (error) {
       prom.reject(error);
@@ -80,9 +80,9 @@ api.interceptors.response.use(
 );
 
 
-api.interceptors.request.use( config => {
+api.interceptors.request.use(config => {
   const { 'nextauth.accessToken': token } = parseCookies();
-  
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

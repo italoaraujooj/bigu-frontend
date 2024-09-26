@@ -2,18 +2,16 @@ import { Button } from "@/components";
 import RideFull from "@/components/rideFull";
 import Text from "@/components/text";
 import { AuthContext } from "@/context/AuthContext";
+import { getAllRidesAvailable } from "@/services/ride";
+import { RideResponseDTO } from "@/types/ride";
 import Router from "next/router";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import ghost from "../assets/ghost.json";
 import LottieAnimation from "../components/LottieAnimation";
-import { RideResponseDTO } from "@/types/ride";
-import { getAllRidesAvailable } from "@/services/ride";
-import { toast } from "react-toastify";
-import Image from "next/image";
-import Back from "../assets/CaretRight.svg";
 
 function AvailableRides() {
-  const [rides, setRides] = useState<RideResponseDTO[]>([])
+  const [rides, setRides] = useState<RideResponseDTO[]>([]);
   const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -27,9 +25,9 @@ function AvailableRides() {
       setRides(responseAvailable?.data.availableRides);
       setLoading(false);
     } catch (error) {
-      toast.error("Ocorreu algum erro ao buscar as caronas disponíveis.")
+      toast.error("Ocorreu algum erro ao buscar as caronas disponíveis.");
     }
-  }
+  };
 
   const ridesWithDriver = rides?.filter(
     (element: any) => element.driver.userId !== user?.userId
@@ -66,43 +64,40 @@ function AvailableRides() {
             />
             <Button label="Filtrar" size="res" color="yellow" shape="square" />
           </div>
-          {loading ?
+          {loading ? (
             <div className="flex items-center justify-center">
               <div
                 className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-yellow-500 border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                role="status">
+                role="status"
+              ></div>
+            </div>
+          ) : ridesWithDriver?.length ? (
+            ridesWithDriver.map((item: RideResponseDTO, index: number) => (
+              <div key={index}>
+                <RideFull
+                  id={item.rideId}
+                  driver={item.driver}
+                  start={item.startAddress.bairro}
+                  destination={item.destinationAddress.bairro}
+                  numSeats={item.numSeats}
+                  model={item.car.carModel}
+                  plate={item.car.plate}
+                  color={item.car.color}
+                  dateTime={item.scheduledTime}
+                  toWoman={item.toWomen}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="w-full flex items-center justify-center">
+              <div className="w-64 h-64 ">
+                <LottieAnimation data={ghost} />
               </div>
             </div>
-
-            : ridesWithDriver?.length ? (
-              ridesWithDriver.map((item: RideResponseDTO, index: number) => (
-                <div key={index}>
-                  <RideFull
-                    id={item.rideId}
-                    driver={item.driver}
-                    start={item.startAddress.bairro}
-                    destination={item.destinationAddress.bairro}
-                    numSeats={item.numSeats}
-                    model={item.car.carModel}
-                    plate={item.car.plate}
-                    color={item.car.color}
-                    dateTime={item.scheduledTime}
-                    toWoman={item.toWomen}
-                  />
-                </div>
-              ))
-            ) : (
-              <div className="w-full flex items-center justify-center">
-                <div className="w-64 h-64 ">
-                  <LottieAnimation data={ghost} />
-                </div>
-              </div>
-            )}
+          )}
         </div>
       </div>
     </div>
-
-
   );
 }
 

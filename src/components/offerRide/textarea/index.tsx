@@ -5,7 +5,7 @@ type Props = {
   label: string;
   placeholder: string;
   value?: string;
-  onChange: () => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 const TextArea = (props: Props) => {
@@ -13,12 +13,7 @@ const TextArea = (props: Props) => {
 
   return (
     <div>
-      <Text
-        label={label}
-        size="lg"
-        className="mb-4"
-        weight="bold"
-      />
+      <Text label={label} size="lg" className="mb-4" weight="bold" />
       <textarea
         rows={6}
         minLength={10}
