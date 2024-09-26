@@ -3,10 +3,11 @@ import {
   signInRequest,
   signUpRequest,
   logOut as exit,
+  logOut,
 } from "@/services/auth";
 import { createContext, useContext, useEffect, useState } from "react";
-import Router, { useRouter } from "next/router";
-import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { useRouter } from "next/router";
+import { parseCookies, setCookie } from "nookies";
 import { RequestContext } from "./RequestContext";
 import { fakeDelay } from "@/utils/delay";
 import { User } from "@/utils/types";
@@ -38,11 +39,10 @@ export function AuthProvider({ children }: any) {
     const response = await signInRequest(credentials);
     
     if (response && response.status === 200) {
-      setCookie(undefined, "nextauth.token", response?.data?.token, {
-        maxAge: 8600,
-      });
+      setCookie(undefined, "nextauth.accessToken", response.data.accessToken);
+      setCookie(undefined, "nextauth.refreshToken", response.data.refreshToken);
       setUser(response.data.user);
-      router.push("/dashboard");
+      await router.push("/dashboard");
     }
     return { data: response?.data, status: response?.status };
   }
@@ -50,9 +50,8 @@ export function AuthProvider({ children }: any) {
   async function signUp(credentials: UserFormState) {
     const response = await signUpRequest(credentials);
     if (response && response.status === 201) {
-      setCookie(undefined, "nextauth.token", response?.data?.token, {
-        maxAge: 8600,
-      });
+      setCookie(undefined, "nextauth.accessToken", response.data.accessToken);
+      setCookie(undefined, "nextauth.refreshToken", response.data.refreshToken);
       setUser(response.data.user);
       
       router.push({
@@ -64,8 +63,6 @@ export function AuthProvider({ children }: any) {
   }
 
   async function logout() {
-    router.push("/");
-    setUser(undefined);
     await exit();
   }
 
@@ -85,7 +82,7 @@ export function AuthProvider({ children }: any) {
   }
 
   useEffect(() => {
-    const { "nextauth.token": token } = parseCookies();
+    const { "nextauth.accessToken": token } = parseCookies();
     if (token) {
       getUserData();
     }

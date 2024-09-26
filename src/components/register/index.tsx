@@ -115,7 +115,7 @@ function Register(props: Props){
             <div className="flex flex-col gap-2">
               <Radio
                 name="sex"
-                options={[{ id: "M", label: "Homem" }, { id: "F", label: "Mulher" }]}
+                options={[{ id: "Masculino", label: "Homem" }, { id: "Feminino", label: "Mulher" }]}
                 onChange={setSexSelected}
               />
             </div>

@@ -7,20 +7,18 @@ import Header from "@/components/header";
 import History from "@/components/history";
 import Ride from "@/components/ride";
 import { AuthContext } from "@/context/AuthContext";
-import { RideContext } from "@/context/RideContext";
 import Star from "../assets/star.png";
 import { RequestContext } from "@/context/RequestContext";
 import RidesRequests from "@/components/requestRides";
 import RidesOffers from "@/components/ridesOffers";
-import { fetchUserAddresses } from "@/services/address";
 import LottieAnimation from "@/components/LottieAnimation";
 import Celebrations from "../assets/celebrations.json";
 import { Text } from "@/components";
 import { fakeDelay } from "@/utils/delay";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { AddressFormState } from "@/utils/types";
 import { getAllRidesAvailable, getRideHistory } from "@/services/ride";
+import { RideResponseDTO } from "@/types/ride";
 
 function Dashboard() {
   const router = useRouter();
@@ -31,7 +29,10 @@ function Dashboard() {
   const [showRequests, setShowRequests] = useState(false);
   const [showRides, setShowRides] = useState(false);
   const [firstDashboardAccess, setFirstDashboardAccess] = useState(first);
-  const [ridesAvailable, setRidesAvailable] = useState<Ride[]>([]);
+  const [ridesAvailable, setRidesAvailable] = useState<RideResponseDTO[]>([]);
+
+  const [loadingStateRides, setLoadingStateRides] = useState<boolean>(true);
+  const [loadingStateHistory, setLoadingStateHistory] = useState<boolean>(true);
 
   const handleCloseRequests = () => setShowRequests(false);
   const handleOpenRequests = () => setShowRequests(true);
@@ -44,15 +45,22 @@ function Dashboard() {
   }, []);
   
   const loadDataHistory = async () => {
-    const responseHistory = await getRideHistory();
-    setHistory(responseHistory.data.userHistory);
+    try{
+      const responseHistory = await getRideHistory();
+      setHistory(responseHistory.data.userHistory);
+    }finally{
+      setLoadingStateHistory(false);
+    }
   }
 
   const loadDataRidesAvailable = async () => {
-    const responseAvailable = await getAllRidesAvailable();
-    setRidesAvailable(responseAvailable?.data.ridesAvailable);
+    try{
+      const responseAvailable = await getAllRidesAvailable();
+      setRidesAvailable(responseAvailable?.data.availableRides);
+    }finally{
+      setLoadingStateRides(false);
+    }
   }
-
 
   const renderGreeting = () => {
     return (
@@ -64,7 +72,7 @@ function Dashboard() {
           </div>
         ) : (
           <div className="flex items-center gap-4">
-            <h1 className="font-[Poppins] text-xl font-bold text-white md:text-4xl mr-2">
+            <h1 className="font-[Poppins] text-xl font-bold text-white sm:text-2xl md:text-3xl lg:text-4xl mr-2">
               {`Olá, ${user?.name.split(" ")[0]}`}
             </h1>
             <div className="flex items-center gap-2 pt-2">
@@ -90,7 +98,6 @@ function Dashboard() {
 
   useEffect(() => {
     async function t() {
-      console.log("entrou");
       await fakeDelay(2000);
       setP(1);
       await fakeDelay(2000);
@@ -108,7 +115,6 @@ function Dashboard() {
     if (p === 4) {
       setFirstDashboardAccess(false);
     }
-    //console.log("oi");
   }, [p]);
 
   const firstAccess = () => {
@@ -137,12 +143,12 @@ function Dashboard() {
   };
 
   return (
-    <div className="relative w-full my-16">
+    <div className="relative w-full my-16 max-w-[1920px] mx-auto">
       {firstDashboardAccess ? (
         firstAccess()
       ) : (
         <>
-          <div className="max-w-[80%] mx-auto flex flex-col gap-9">
+          <div className="max-w-[90%] mx-auto flex flex-col gap-9">
             <Header
               handleOpenRequests={handleOpenRequests}
               handleOpenRides={handleOpenRides}
@@ -150,10 +156,10 @@ function Dashboard() {
             <div className="flex justify-between items-center">
               {renderGreeting()}
             </div>
-            <div className="flex flex-col justify-between gap-2 sm:gap-12 lg:gap-12 lg:flex-row">
-              <History races={history} />
+            <div className="flex flex-col-reverse justify-between gap-2 sm:gap-12 lg:gap-12 lg:flex-row">
+              <History races={history} loading={loadingStateHistory} />
               <div className="border-solid border-[1px] border-warmGray-700"></div>
-              <Ride ridesAvailable={ridesAvailable} />
+              <Ride ridesAvailable={ridesAvailable} loadDataRidesAvailable={loadDataRidesAvailable} loading={loadingStateRides}/>
             </div>
           </div>
           <RidesRequests
@@ -168,7 +174,7 @@ function Dashboard() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { "nextauth.token": token } = parseCookies(ctx);
+  const { "nextauth.accessToken": token } = parseCookies(ctx);
 
   if (!token) {
     return {

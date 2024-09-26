@@ -11,7 +11,7 @@ type Props = {
 export default function Attribute({ label, value, color }: Props) {
   return (
     <div className="space-y-2 text-center">
-      <div className={clsx(`bg-${color}`, 'text-white px-4 py-2 rounded-md font-semibold')}>
+      <div className={clsx(`bg-${color}`, 'text-white px-4 py-2 rounded-md font-semibold font-[Poppins]')}>
         {label}
       </div>
       <Text label={value} color="gray" />

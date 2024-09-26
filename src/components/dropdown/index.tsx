@@ -11,11 +11,18 @@ type Props = {
   label: string;
   options: DropdownOption[];
   onSelectOption: (selectedOption: DropdownOption) => void;
+  selectedOption?: DropdownOption | null; // Adicionar a prop selectedOption
 };
 
-function Dropdown({ label, options, onSelectOption }: Props) {
+function Dropdown({
+  label,
+  options,
+  onSelectOption,
+  selectedOption: initialSelectedOption,
+}: Props) {
   const [selectedOption, setSelectedOption] =
-    React.useState<DropdownOption | null>(null);
+    React.useState<DropdownOption | null>(initialSelectedOption || null); // Inicializa com a prop recebida
+
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleSelectOption = (option: DropdownOption) => {
@@ -24,12 +31,18 @@ function Dropdown({ label, options, onSelectOption }: Props) {
     setIsOpen(false);
   };
 
+  // Atualiza o estado se a prop selectedOption mudar externamente
+  React.useEffect(() => {
+    if (initialSelectedOption) {
+      setSelectedOption(initialSelectedOption);
+    }
+  }, [initialSelectedOption]);
+
   return (
-    <div className=" flex flex-col items-start justify-center gap-2">
+    <div className="flex flex-col items-start justify-center gap-2">
       {label && (
         <label
-          className={`font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase`}
-          // htmlFor={fieldName}
+          className={`font-['Poppins'] text-[#616161] font-bold text-xs sm:text-sm md:text-md uppercase`}
         >
           {label}
         </label>
@@ -40,7 +53,7 @@ function Dropdown({ label, options, onSelectOption }: Props) {
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          {selectedOption ? (
+          {selectedOption && Object.keys(selectedOption).length > 0 ? (
             <span className="flex items-center justify-between">
               <Text
                 label={selectedOption.label}

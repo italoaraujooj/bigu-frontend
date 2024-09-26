@@ -122,13 +122,12 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<{ data: any }> = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps<{ data: any }> = async (context) => {
   const data = [] as any;
 
   const cookies = parseCookies(context);
-  const token = cookies.token;
+  const token = cookies['nextauth.accessToken']; 
+
   if (token) {
     return {
       redirect: {

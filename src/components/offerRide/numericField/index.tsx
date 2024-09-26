@@ -42,7 +42,11 @@ const NumericField = (props: Props) => {
         className: "top-[-4rem]",
       },
     ];
-    return positions[vacancies].className;
+
+    // Limit the vacancies to the range of available positions
+    const index = Math.min(vacancies, positions.length - 1);
+
+    return positions[index].className;
   }, [vacancies]);
 
   return (

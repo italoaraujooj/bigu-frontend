@@ -6,11 +6,13 @@ import { List } from "@phosphor-icons/react/dist/ssr/List";
 import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut";
 import clsx from "clsx";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Foto from "../../assets/woman.png";
 import useDrawer from "../../hooks/useDrawer";
 import Drawer from "../drawer";
+import Input from "../input/input";
 import Text from "../text";
 import Link from "./Link";
 
@@ -26,9 +28,11 @@ export default function Header(props: Props) {
     handleLogout,
     handleNavigateToOfferRide,
   } = useDrawer();
+  const router = useRouter();
 
   const [carsUser, setCarsUser] = useState<Car[]>([]);
   const [userAddresses, setUserAddresses] = useState<AddressFormState[]>([]);
+  const [hoveredImage, setHoveredImage] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -38,8 +42,6 @@ export default function Header(props: Props) {
       const responseAddress = await fetchUserAddresses();
       if (responseAddress?.data)
         setUserAddresses(responseAddress?.data.userAddress);
-      console.log(responseCars);
-      console.log(responseAddress?.data);
     };
     loadData();
   }, []);
@@ -55,7 +57,35 @@ export default function Header(props: Props) {
   return (
     <header className="flex justify-between items-center">
       <div className="flex gap-4 items-center">
-        <Image className="w-12 h-12" src={Foto} alt="foto" />
+        <Image onClick={() => router.push("/profile")} className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer" src={Foto} alt="foto" />
+        <Image
+          onClick={() => router.push("/profile")}
+          className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer"
+          src={Foto}
+          alt="foto"
+        />
+        {hoveredImage && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">
+            <label
+              title="Click to upload"
+              className="cursor-pointer flex items-center gap-4 px-6 py-4 relative"
+            >
+              <img
+                className="w-12"
+                src="https://www.svgrepo.com/show/357902/image-upload.svg"
+                alt="file upload icon"
+                width="512"
+                height="512"
+              />
+              <Input
+                name="foto"
+                className="w-full md:h-16 md:text-lg hidden"
+                type="file"
+                sizing="xs"
+              />
+            </label>
+          </div>
+        )}
         <Link
           to="/profile"
           label="Ver perfil"
@@ -91,7 +121,7 @@ export default function Header(props: Props) {
           className="group transition-all duration-300 ease-in-out"
         >
           <Text
-            label="Solicitações de carona"
+            label="Solicitações"
             className="py-2 text-gray text-base hover:text-[#a8a29e] uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8"
             color="gray"
             size="base"
@@ -127,6 +157,8 @@ export default function Header(props: Props) {
       <Drawer
         drawerIsOpen={drawerIsOpen}
         toggleDrawer={toggleDrawer}
+        handleOpenRequests={props.handleOpenRequests}
+        handleOpenRides={props.handleOpenRides}
         handleNavigateToOfferRide={handleNavigateToOfferRide}
         handleLogout={handleLogout}
       />

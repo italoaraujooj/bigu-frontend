@@ -1,36 +1,32 @@
 import React, { useContext, useEffect } from "react";
 import MaleAvatar from "../../assets/avatar.png";
-import Heart from "../../assets/heart.png";
-import HeartFilled from "../../assets/heart-filled.png";
 import Image from "next/image";
 import Button from "../button";
 import Text from "../text";
 import {
-  getAllRidesAvailable,
   requestRide,
 } from "@/services/ride";
 import LottieAnimation from "../LottieAnimation";
 import ghost from "../../assets/ghost.json";
-import empty from "../../assets/empty-box.json";
 import { formatarData } from "@/utils/masks";
 import Modal from "../modal";
 import Dropdown from "../dropdown";
 import { fetchUserAddresses } from "@/services/address";
 import { AuthContext } from "@/context/AuthContext";
-import { RideContext } from "@/context/RideContext";
 import Router from "next/router";
 import clsx from "clsx";
 import { toast } from "react-toastify";
-import { Car } from "@/services/car";
-import { AddressFormState, User } from "@/utils/types";
 import type { Ride } from "@/utils/types";
+import { AddressResponseDTO, RequestRide, RideResponseDTO } from "@/types/ride";
 
 type Props = {
-  ridesAvailable: Ride[];
+  ridesAvailable: RideResponseDTO[];
+  loadDataRidesAvailable: () => void;
+  loading: boolean;
 };
 
 function Ride(props: Props) {
-  const { ridesAvailable } = props
+  const { ridesAvailable, loading } = props
   const [userAddress, setUserAddresses] = React.useState([]);
   const [userAddressesSelected, setUserAddressesSelected] = React.useState(
     {} as any
@@ -44,11 +40,11 @@ function Ride(props: Props) {
 
   const toggleFavorite = () => setFavorite((prev) => !prev);
   const toggleAskRide = () => setAskRide((prev) => !prev);
-
+  
   useEffect(() => {
     const loadData = async () => {
       const responseAddress = await fetchUserAddresses();
-      const addressesFormated = responseAddress?.data.userAddress.map((address: any) => ({
+      const addressesFormated = responseAddress?.data.userAddress.map((address: AddressResponseDTO) => ({
         label: address.nome,
         value: address.addressId,
       }));
@@ -57,10 +53,19 @@ function Ride(props: Props) {
     loadData();
   }, [askRide]);
 
-  const handleAskRide = (rideId: number) => {
-    const ride = ridesAvailable.find(ride => ride.id === rideId)
+  console.log(userAddress)
+
+  const handleAskRide = (rideId: string) => {
+    const userSex = user?.sex;
+    const ride = ridesAvailable.find(ride => ride.rideId === rideId)
     if(ride?.driver.userId === user?.userId){
       toast.info("Você já é o motorista dessa carona.")
+      return
+    }else if(ride?.toWomen && userSex == "Masculino"){
+      toast.info("Essa carona é exclusiva para mulheres.")
+      return
+    }else if(!userAddress.length){
+      toast.info("Você precisa ter um endereço cadastrado para solicitar uma carona.")
       return
     }
     setModalOpen((prev) => !prev);
@@ -70,131 +75,115 @@ function Ride(props: Props) {
   const submitRide = async () => {
     try {
       const response = await requestRide({
-        phoneNumber: user?.phoneNumber,
-        addressId: Number(userAddressesSelected.value),
-        rideId: Number(rideIdSelected),
-      });
+        addressId: userAddressesSelected.value,
+        rideId: rideIdSelected,
+      } as RequestRide);
       if (response?.status == 200) {
         setAskRide((prev) => !prev);
         setModalOpen((prev) => !prev);
+        toast.success("Solicitação enviada. Aguarde a resposta do motorista.")
       }
     } catch (err: any) {
       toast.error(err.message)
     }
   };
-
-  // const rideUser = () => ridesAvailable.map((ride: any, i: number) => {
-  //   ride.riders?.map((usr: any, i: number) => {
-  //     if (usr?.userId === user?.userId) {
-  //       if (!i) return ride;
-  //       ride = {...ride, confirmation: true }
-  //     }
-  //   })
-
-  //   return ride;
-  // });
   return (
-    <div className="bg-dark w-[98%] h-fit rounded-lg py-6 px-6 flex flex-col mx-auto lg:mx-0 lg:w-[30rem] 2xl:w-[40rem]">
-      <h2 className="font-['Poppins'] text-xl sm:text-3xl text-white font-bold pb-8">
+    <div className="bg-dark w-full rounded-lg p-2 flex flex-col mx-auto max-w-[800px] lg:mx-0 lg:w-full sm:py-4 sm:px-8">
+      <h2 className="font-['Poppins'] text-center text-lg text-white font-bold pb-4 sm:text-xl md:text-2xl ">
         Caronas disponíveis
       </h2>
-
-      <div className="space-y-4">
-        {!!ridesAvailable.length ? (
-          ridesAvailable.map((item: any) => (
+      <div className="space-y-4 grow">
+        {loading ? 
+          <div className="flex items-center justify-center">
             <div
-              key={item.id}
+              className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-yellow-500 border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status">
+            </div>
+          </div>
+        :
+        ridesAvailable.length ? (
+          ridesAvailable.slice(0, 3).map((item: RideResponseDTO) => (
+            <div
+              key={item.rideId}
               className={clsx(
                 "flex w-full h-16",
-                "bg-white rounded-xl transition-height duration-500 ease-in-out overflow-hidden hover:h-64 sm:h-20 gap-2",
+                "bg-white rounded-xl transition-height duration-500 ease-in-out overflow-hidden hover:h-40 md:hover:h-44 md:h-20",
               )}
             >
-              <div className={clsx("w-6 h-full", item?.toWomen && "bg-[#f15bb5]", item?.confirmation && 'bg-green')}></div>
-              <div>
-              <div className="flex items-center gap-2 grow px-4 py-4">
-                <Image
-                  className="w-8 h-8 sm:w-12 sm:h-12"
-                  src={MaleAvatar}
-                  alt="male avatar"
-                />
-                <Text
-                  label={`${
-                    item.driver.userId !== user?.userId
-                      ? item.driver.name.split(" ")[0]
-                      : "Você"
-                  } está saindo do ${item.startAddress.bairro}...`}
-                  color="dark"
-                  size="md"
-                  className="tracking-wide text-sm md:text-md xl:text-lg "
-                />
-              </div>
-              <div className="space-y-2 px-4">
-                <p className="font-['Poppins']">
-                  {`${item.car.carModel} ${item.car.color}`} -{" "}
-                  <strong>{item.car.plate}</strong>
-                </p>
-                <p className="font-['Poppins']">
-                  {item.numSeats}{" "}
-                  {Number(item.numSeats) > 1
-                    ? "vagas disponíveis"
-                    : "vaga disponível"}{" "}
-                </p>
-                <p className="font-['Poppins']">
-                  <strong>Saída às {formatarData(item.scheduledTime)}</strong>
-                </p>
-              </div>
-
-              { item?.confirmation ? (
-                <div className="w-full h-24 my-4 px-4">
-                  <Text label="Carona aceita" color="green" weight="bold" size="base" className="uppercase" />
-                </div>
-              ) : (
-                <div className={`flex items-center gap-4 px-4 py-4`}>
-                {!askRide ? (
-                  <Button
-                    label={
-                      !askRide ? "Pedir carona" : "Aguardando confirmação..."
-                    }
-                    onClick={() => handleAskRide(item.id)}
-                    size="sm"
-                    color="green"
-                    shape="square"
-                    className={clsx(
-                      item.driver.userId === user?.userId
-                        ? "font-semibold"
-                        : "font-semibold",
-                      !!userAddress.length && "hover:bg-hover-green"
-                    )}
+              <div className={clsx("w-4 h-full", item.toWomen && "bg-[#f15bb5]", item.members.some((member) => member.user.userId == user?.userId) && 'bg-green')}></div>
+              <div className="w-full pt-4 pr-4 pb-4 self-start">
+                <div className={clsx("flex gap-2 items-center mb-2")}>
+                  <Image
+                    className="w-8 h-8 md:w-12 md:h-12"
+                    src={MaleAvatar}
+                    alt="male avatar"
                   />
-                ) : (
-                  <span className="animate-pulse text-yellow ease-in-out infinite">
-                   Aguardando confirmação...
-                  </span>
-                )}
-                <div
-                  className={`flex items-center gap-2 ${
-                    askRide && "translate-x-28 duration-500 ease-out"
-                  }`}
-                >
-                  <button onClick={toggleFavorite}>
-                    {!favorite ? (
-                      <Image className="w-6 h-6" src={Heart} alt="heart" />
+                  <Text
+                    label={`${
+                      item.driver.userId !== user?.userId
+                        ? item.driver.name.split(" ")[0]
+                        : "Você"
+                    } está saindo do ${item.startAddress.bairro}...`}
+                    color="dark"
+                    size="md"
+                    className="tracking-wide whitespace-nowrap text-sm md:text-base lg:text-lg "
+                  />
+                </div>
+                <div className="flex flex-row w-full justify-between">
+                  <div className="space-y-2 mt-2 whitespace-nowrap">
+                    <Text
+                      label={`🚕 ${item.car.carModel} ${item.car.color} - ${item.car.plate}`}
+                      color="dark"
+                      size="md"
+                      weight="medium"
+                      className="tracking-wide text-xs md:text-md"
+                    />
+                    <Text
+                      label={`🙍‍♂️ ${Number(item.numSeats - item.members.length) > 1 ? "Vagas disponíveis" : "Vaga disponível"} ${item.numSeats - item.members.length}`}
+                      color="dark"
+                      size="md"
+                      weight="medium"
+                      className="tracking-wide text-xs md:text-md"
+                    />
+                    <Text
+                      label={`⏰ ${formatarData(item.scheduledTime)}`}
+                      color="dark"
+                      size="md"
+                      weight="medium"
+                      className="tracking-wide text-xs md:text-md"
+                    />
+                    <Text
+                      label={`💵 ${String(item.price)}`}
+                      color="dark"
+                      size="md"
+                      weight="medium"
+                      className="tracking-wide text-xs md:text-md"
+                    />
+                  </div>
+                  
+                  { item.members.some((membro) => membro.user.userId == user?.userId) ? (
+                    <div className="self-end">
+                      <Text label="Carona aceita" color="green" weight="bold" size="xs" className="uppercase sm:text-sm" />
+                    </div>
+                  ) : (
+                    <div className={`self-end`}>
+                    {askRide || item.candidates.some((candidate) => candidate.user.userId == user?.userId) ? (
+                      <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite text-xs">
+                      Aguardando confirmação...
+                      </span>
                     ) : (
-                      <Image
-                        className="w-6 h-6 transition-transform scale-110"
-                        src={HeartFilled}
-                        alt="heart"
+                      <Button
+                        label="Pedir carona"
+                        onClick={() => handleAskRide(item.rideId)}
+                        size="xs"
+                        color="green"
+                        shape="square"
+                        className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base"
                       />
                     )}
-                  </button>
-                  {!askRide && (
-                    <p className="font-['Poppins'] text-sm font-normal">
-                      Adicionar aos favoritos
-                    </p>
+                  </div>
                   )}
                 </div>
-              </div>
-              )}
               </div>
             </div>
           ))
@@ -207,7 +196,7 @@ function Ride(props: Props) {
         )}
       </div>
 
-      <footer className="pt-4">
+      <footer className="pt-4 justify-self-end">
         <p
           className=" text-gray text-base self-start hover:text-stone-400 cursor-pointer font-[Poppins]"
           onClick={() => Router.push("/availableRides")}

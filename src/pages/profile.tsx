@@ -3,10 +3,12 @@ import Notification from "@/components/notification";
 import Carousel from "@/components/profile/carousel";
 import Text from "@/components/text";
 import { AuthContext } from "@/context/AuthContext";
-import { changePasswordRequest } from "@/services/auth";
-import { Car, createCar, getUserCars } from "@/services/car";
+import { changePasswordRequest, getUser, profilePicture } from "@/services/auth";
+import { createCar, getUserCars } from "@/services/car";
 import { ChangePassword, CreateCarFormState } from "@/utils/types";
 // import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
+import { deleteCar } from "@/services/car";
+import { CarResponseDTO } from "@/types/ride";
 import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr/ArrowCircleLeft";
 import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
 import { FormHandles, SubmitHandler } from "@unform/core";
@@ -25,13 +27,14 @@ function Profile() {
   const formRef = useRef<FormHandles>(null);
   const formRefCar = useRef<FormHandles>(null);
   const formRefChangePassword = useRef<FormHandles>(null);
-
-  const { user } = useContext(AuthContext);
+  
+  const { user, setUser } = useContext(AuthContext);
 
   const [readOnly, setReadOnly] = useState(true);
   const [changePassword, setChangePassord] = useState(false);
   const [modalCar, setModalCar] = useState(false);
-  const [cars, setCars] = useState<Car[]>([]);
+  const [cars, setCars] = useState<CarResponseDTO[]>([]);
+  const [hoveredImage, setHoveredImage] = useState(false);
 
   const toggleModalCar = () => setModalCar((prev) => !prev);
   const handleOpenChangePassword = () => setChangePassord(true);
@@ -44,7 +47,6 @@ function Profile() {
   useEffect(() => {
     const loadCars = async () => {
       const responseCars: any = await getUserCars();
-      console.log(responseCars);
       if (responseCars) setCars(responseCars.data.userCars);
     };
     loadCars();
@@ -64,6 +66,22 @@ function Profile() {
     }
   };
 
+  const handleDeleteCar = async (id: string): Promise<void> => {
+    try {
+      const response: any = await deleteCar(id);
+      if (response?.status === 200) {
+        const previousCars = cars;
+        const currentCars = previousCars.filter(
+          (car: CarResponseDTO) => car.carId !== id
+        );
+        setCars(currentCars);
+        toast.success(`O carro foi removido.`);
+      }
+    } catch (err) {
+      toast.error("Houve um erro na remoção do carro");
+    }
+  };
+
   const handleChangePassword: SubmitHandler<ChangePassword> = async (data) => {
     try {
       const response: any = await changePasswordRequest(data);
@@ -76,8 +94,35 @@ function Profile() {
     }
   };
 
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    let file;
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      file = files[0];
+    }
+  
+    if (!file) {
+      toast.error('Nenhum arquivo foi selecionado');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      const response: any = await profilePicture(formData);
+      if (response && response.status == 201) {
+        const userResponse = await getUser();
+        setUser(userResponse.data.user);
+        toast.success('Imagem atualizada com sucesso');
+      }
+    } catch (error) {
+      toast.error('Erro ao enviar a imagem');
+    }
+  };
+
   return (
-    <div className="flex w-full items-center justify-center my-12">
+    <div className="flex w-full items-center justify-center my-8">
       <div>
         <div>
           <Link
@@ -95,7 +140,7 @@ function Profile() {
         </div>
         <div className="w-full h-fit flex items-center justify-center">
           <Form
-            className="bg-dark max-w-xs rounded-2xl px-8 py-12 flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl"
+            className="bg-dark max-w-[360px] p-4 rounded-2xl flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl"
             onSubmit={() => {}}
             initialData={{
               name: user?.name,
@@ -106,12 +151,43 @@ function Profile() {
           >
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <Image
-                  className="w-12 h-12 md:w-24 md:h-24"
-                  src={WomanAvatar}
-                  alt="avatar"
-                ></Image>
-                <div className="flex gap-1">
+                <div
+                  className="relative"
+                  onMouseEnter={() => setHoveredImage(true)}
+                  onMouseLeave={() => setHoveredImage(false)}
+                >
+                  <Image
+                    className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
+                      hoveredImage ? "blur-sm" : ""
+                    }`}
+                    src={WomanAvatar}
+                    alt="avatar"
+                  />
+                  {hoveredImage && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">
+                      <label
+                        title="Click to upload"
+                        className="cursor-pointer flex items-center gap-4 px-6 py-4 relative"
+                      >
+                        <img
+                          className="w-12"
+                          src="https://www.svgrepo.com/show/357902/image-upload.svg"
+                          alt="file upload icon"
+                          width="512"
+                          height="512"
+                        />
+                        <Input
+                          name="foto"
+                          className="w-full md:h-16 md:text-lg hidden"
+                          type="file"
+                          sizing="xs"
+                        />
+                      </label>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex gap-1 items-center">
                   <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
                     {`Olá, ${user?.name.split(" ")[0]}`}
                   </h1>
@@ -196,7 +272,12 @@ function Profile() {
                   <h1 className="text-2xl text-white font-bold mb-2 font-[Poppins]">
                     Meus veículos
                   </h1>
-                  <Carousel profile add={toggleModalCar} items={cars} />
+                  <Carousel
+                    profile
+                    add={toggleModalCar}
+                    remove={handleDeleteCar}
+                    items={cars}
+                  />
                 </div>
                 <div className="flex gap-7">
                   <Button
@@ -270,15 +351,15 @@ function Profile() {
                 <section className="flex items-center gap-4 mt-12">
                   <Button
                     label="Cancelar"
-                    size="sm"
-                    className="uppercase font-semibold px-3 lg:px-6"
+                    size="xs"
+                    className="uppercase font-semibold px-3 sm:w-48 sm:h-12 sm:px-8 sm:text-sm lg:px-6"
                     color="red"
                     onClick={toggleModalCar}
                   />
                   <Button
                     label="Confirmar"
-                    size="sm"
-                    className="uppercase font-semibold px-3 lg:px-6"
+                    size="xs"
+                    className="uppercase font-semibold px-3 sm:w-48 sm:h-12 sm:px-8 sm:text-sm lg:px-6"
                     color="green"
                     type="submit"
                   />
@@ -296,13 +377,15 @@ function Profile() {
         >
           <Form onSubmit={handleChangePassword} ref={formRefChangePassword}>
             <div className=" bg-white rounded-lg p-3 flex flex-col gap-4 justify-center items-center">
-              <h2 className=" text-2xl font-semibold">Alterar senha</h2>
+              <h2 className="text-2xl font-semibold font-[Poppins]">
+                Alterar senha
+              </h2>
               <Input
                 label="Senha atual: "
                 name="actualPassword"
-                sizing="sm"
+                sizing="adjustable"
                 color="extralight"
-                className="md:h-16 md:text-lg"
+                className="sm:w-72 md:h-16 md:text-lg"
                 type="password"
                 placeholder="*********"
               />
@@ -310,23 +393,23 @@ function Profile() {
               <Input
                 label="Nova senha: "
                 name="newPassword"
-                sizing="sm"
+                sizing="adjustable"
                 color="extralight"
-                className="md:h-16 md:text-lg"
+                className="sm:w-72 md:h-16 md:text-lg"
                 type="password"
                 placeholder="*********"
               />
               <Input
                 label="Confirmar senha: "
                 name="newPasswordConfirmation"
-                sizing="sm"
+                sizing="adjustable"
                 color="extralight"
-                className="md:h-16 md:text-lg"
+                className="sm:w-72 md:h-16 md:text-lg"
                 type="password"
                 placeholder="*********"
               />
               <p
-                className=" text-gray cursor-pointer"
+                className=" text-gray cursor-pointer font-[Poppins]"
                 onClick={() => {
                   Router.push("/recover-password");
                 }}
@@ -336,14 +419,14 @@ function Profile() {
               <section className="flex items-center gap-4 mt-12">
                 <Button
                   label="Cancelar"
-                  size="sm"
+                  size="xs"
                   className="uppercase font-semibold px-3 lg:px-6"
                   color="red"
                   onClick={handleCloseChangePassword}
                 />
                 <Button
                   label="Confirmar"
-                  size="sm"
+                  size="xs"
                   className="uppercase font-semibold px-3 lg:px-6"
                   color="green"
                   type="submit"

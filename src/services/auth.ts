@@ -3,7 +3,8 @@ import { api } from "./api";
 import { ChangePassword, SignInResponse } from "@/utils/types";
 
 import { toast } from "react-toastify";
-import { destroyCookie } from "nookies";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
+import router from "next/router";
 
 type UserFormState = {
     name:string,
@@ -31,7 +32,6 @@ export async function signInRequest(credentials: SignInRequestData){
   try{
     return await api.post('auth/login/user', credentials);
   }catch (error: any){
-    
     toast.error(error.message)
   }
 }
@@ -39,14 +39,16 @@ export async function signInRequest(credentials: SignInRequestData){
 export async function logOut(){
   try{
     await api.post('auth/logout')
-    destroyCookie(null, "nextauth.token");
+    destroyCookie(null, "nextauth.accessToken");
+    destroyCookie(null, "nextauth.refreshToken");
+    router.push("/");
   }catch (error: any){
     toast.error(error.message)
   }
 }
 
 export async function getUser(){
-  return await api.get('/users/user/self')
+  return await api.get('/users/user')
 }
 
 export async function forgotPasswordRequest(email: string){
@@ -60,10 +62,33 @@ export async function forgotPasswordRequest(email: string){
 
 export async function changePasswordRequest(credentials: ChangePassword){
   try{
-    console.log(credentials)
     return await api.put(`/api/v1/auth/edit-password?actualPassword=${credentials.actualPassword}`, credentials)
   }catch(error: any){
     toast.error(error.message)
+  }
+}
+
+export const refreshToken = async () => {
+  try {
+    const { "nextauth.refreshToken": token } = parseCookies();
+    const response = await api.post('/auth/refresh', {"refreshToken": token});
+    if (response && response.status === 200) {
+      setCookie(undefined, "nextauth.accessToken", response.data.accessToken);
+    }
+  } catch (error) {
+    toast.error("Erro ao renovar token");
+  }
+};
+
+export const profilePicture = async (formData: FormData) => {
+  try{
+    return await api.post('/users/upload-profile-picture', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }catch(error){
+    toast.error("Erro ao atualizar a foto de perfil.");
   }
 }
 

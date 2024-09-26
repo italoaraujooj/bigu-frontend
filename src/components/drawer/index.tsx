@@ -1,4 +1,3 @@
-// import { Jeep, SignOut, X } from "@phosphor-icons/react/dist/ssr";
 import { Jeep } from "@phosphor-icons/react/dist/ssr/Jeep";
 import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut";
 import { X } from "@phosphor-icons/react/dist/ssr/X";
@@ -7,9 +6,11 @@ import Text from "../text";
 
 type Props = {
   drawerIsOpen: boolean;
-  toggleDrawer: any;
-  handleNavigateToOfferRide: any;
-  handleLogout: any;
+  toggleDrawer: () => void;
+  handleNavigateToOfferRide: () => void;
+  handleLogout: () => void;
+  handleOpenRequests: () => void;
+  handleOpenRides: () => void;
 };
 
 export default function Drawer({
@@ -17,20 +18,25 @@ export default function Drawer({
   toggleDrawer,
   handleNavigateToOfferRide,
   handleLogout,
+  handleOpenRequests,
+  handleOpenRides,
 }: Props) {
-  //   const {
-  //     drawerIsOpen,
-  //     toggleDrawer,
-  //     handleNavigateToOfferRide,
-  //     handleLogout,
-  //   } = useDrawer();
+  const openRequests = () => {
+    toggleDrawer();
+    handleOpenRequests();
+  };
+
+  const openRides = () => {
+    toggleDrawer();
+    handleOpenRides();
+  };
 
   return (
     <div
       id="drawer"
       className={clsx(
-        "bg-white w-full h-full fixed top-0 right-0 py-14 px-14 space-y-4 transition-all ease-in-out duration-500",
-        !drawerIsOpen && "hidden"
+        "bg-white w-full h-full fixed top-0 right-0 py-14 px-14 space-y-4 transition-all ease-in-out duration-500 z-50",
+        drawerIsOpen ? "translate-x-0" : "translate-x-full"
       )}
     >
       <X
@@ -55,8 +61,32 @@ export default function Drawer({
         </div>
         <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
       </div>
+      <div onClick={openRequests} className="w-full px-2 group cursor-pointer">
+        <div className="flex items-center gap-4">
+          <Jeep size={32} color="gray" />
+          <Text
+            label="Solicitações"
+            size="xl"
+            color="gray"
+            className="group-hover:text-blackline"
+          />
+        </div>
+        <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
+      </div>
+      <div onClick={openRides} className="w-full px-2 group cursor-pointer">
+        <div className="flex items-center gap-4">
+          <Jeep size={32} color="gray" />
+          <Text
+            label="Minhas corridas"
+            size="xl"
+            color="gray"
+            className="group-hover:text-blackline"
+          />
+        </div>
+        <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
+      </div>
       <div
-        className="w-full h-5/6 px-2 flex items-end gap-4 justify-end cursor-pointer"
+        className="w-full px-2 flex items-end gap-4 justify-end cursor-pointer"
         onClick={handleLogout}
       >
         <SignOut size={32} color="gray" />

@@ -1,25 +1,25 @@
-import { RideContext } from "@/context/RideContext";
+import { AuthContext } from "@/context/AuthContext";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
+import { AddressResponseDTO, RequestRide, UserResponseDTO } from "@/types/ride";
 import { formatDateRide } from "@/utils/masks";
-// import { Clock, MapPin, Person } from "@phosphor-icons/react/dist/ssr";
-import { Clock } from "@phosphor-icons/react/dist/ssr/Clock";
-import { MapPin } from "@phosphor-icons/react/dist/ssr/MapPin";
-import { Person } from "@phosphor-icons/react/dist/ssr/Person";
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
-import HeartFilled from "../../assets/heart-filled.png";
-import Heart from "../../assets/heart.png";
+import React, { useContext, useEffect } from "react";
+import { toast } from "react-toastify";
 import Map from "../../assets/map.png";
 import Star from "../../assets/star.png";
 import Avatar from "../../assets/woman.png";
 import Button from "../button";
 import Dropdown from "../dropdown";
 import Modal from "../modal";
+// import { Clock, MapPin, Person } from "@phosphor-icons/react/dist/ssr";
+import { Clock } from "@phosphor-icons/react/dist/ssr/Clock";
+import { MapPin } from "@phosphor-icons/react/dist/ssr/MapPin";
+import { Person } from "@phosphor-icons/react/dist/ssr/Person";
 
 interface RideProps {
-  id: any;
-  userName: string;
+  id: string;
+  driver: UserResponseDTO;
   start: string;
   destination: string;
   numSeats: number;
@@ -27,44 +27,40 @@ interface RideProps {
   plate: string;
   color: string;
   dateTime: string;
+  toWoman: boolean;
 }
 
 function RideFull(props: RideProps) {
+  const { user } = useContext(AuthContext);
   const [userAddress, setUserAddresses] = React.useState([]);
   const [userAddressesSelected, setUserAddressesSelected] = React.useState(
     {} as any
   );
-  const [favorite, setFavorite] = React.useState(false);
   const [askRide, setAskRide] = React.useState(false);
-  const [ridesAvailable, setRidesAvailable] = React.useState([]);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [rideIdSelected, setRideIdSelected] = React.useState({});
 
-  const { rides } = useContext(RideContext);
-  const [showModal, setShowModal] = useState(false);
-
-  const toggleFavorite = () => setFavorite((prev) => !prev);
-  const toggleAskRide = () => setAskRide((prev) => !prev);
-
-  const handleClose = () => setShowModal(false);
-  const handleOpen = () => setShowModal(true);
-
-  useEffect(() => {
-    console.log(rides);
-    setRidesAvailable(rides);
-  }, [rides]);
-
   useEffect(() => {
     fetchUserAddresses().then((data) => {
-      const addressesFormated = data?.data.map((address: any) => ({
-        label: address.nome,
-        value: address.addressId,
-      }));
+      const addressesFormated = data?.data.userAddress.map(
+        (address: AddressResponseDTO) => ({
+          label: address.nome,
+          value: address.addressId,
+        })
+      );
       setUserAddresses(addressesFormated);
     });
   }, [askRide]);
 
-  const handleAskRide = (rideId: number) => {
+  const handleAskRide = (rideId: string) => {
+    const userSex = user?.sex;
+    if (props.driver.userId === user?.userId) {
+      toast.info("Você já é o motorista dessa carona.");
+      return;
+    } else if (props.toWoman && userSex == "Masculino") {
+      toast.info("Essa carona é exclusiva para mulheres.");
+      return;
+    } else
     setModalOpen((prev) => !prev);
     setRideIdSelected(rideId);
   };
@@ -72,56 +68,48 @@ function RideFull(props: RideProps) {
   const submitRide = async () => {
     try {
       const response = await requestRide({
-        addressId: Number(userAddressesSelected.value),
-        rideId: Number(rideIdSelected),
-      });
+        addressId: userAddressesSelected.value,
+        rideId: rideIdSelected,
+      } as RequestRide);
       if (response?.status == 200) {
         setAskRide((prev) => !prev);
         setModalOpen((prev) => !prev);
+        toast.success("Solicitação enviada. Aguarde a resposta do motorista.");
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
 
   return (
-    <div className="bg-light-white w-full h-48 rounded-xl flex p-2 flex-col gap-4 sm:p-5 md:h-56 md:gap-0 md:p-3">
-      <div className="flex justify-between py-4 px-6">
+    <div className="bg-light-white w-full h-42 rounded-xl flex p-4 flex-col gap-4 sm:p-5">
+      <div className="flex justify-between">
         <div className="flex gap-2 sm:gap-4 items-center">
           <Image className="w-8 h-8 md:w-12 md:h-12" src={Avatar} alt="foto" />
-          <div className="flex flex-col gap-1 mt-2">
+          <div className="flex flex-col gap-1">
             <div className="flex gap-3 items-center">
-              <h1 className="font-bold text-2xl text-black font-['Poppins'] sm:text-xl md:text-3xl">
-                {props.userName.split(" ")[0]}
+              <h1 className="font-bold text-black font-['Poppins'] sm:text-2xl md:text-3xl">
+                {props.driver.name.split(" ")[0]}
               </h1>
               <Image className=" w-3 h-3" src={Star} alt="estrela" />
               <span className=" text-gray text-xs">5.0</span>
             </div>
-            {/* <div className="flex gap-2 md:gap-4">
-              <Image src={Car} alt="carro" />
-              <span className="text-xs md:text-base">
-                {props.model} - <strong>Placa {props.plate}</strong>
-              </span>
-            </div> */}
           </div>
         </div>
-        {/* <div onClick={handleOpen}>
-          <Image className=" w-5 h-5 md:w-7 md:h-7" src={Plus} alt="plus" />
-        </div> */}
       </div>
 
-      <div className="flex justify-between md:items-center px-6">
-        <div className="space-y-2">
+      <div className="flex justify-between md:items-center">
+        <div className="space-y-2 md:space-y-4 lg:space-y-8">
           <div className="flex gap-2 items-center">
             <MapPin size={24} color="#252525" weight="bold" />
-            <span className="font-['Poppins'] font-medium text-[10px] sm:text-sm md:text-base">
+            <span className="font-['Poppins'] font-medium text-xs sm:text-sm md:text-base lg:text-xl">
               {props.start} - {props.destination}
             </span>
           </div>
 
           <div className="flex gap-2 items-center">
             <Person size={24} color="#252525" weight="fill" />
-            <span className="font-['Poppins'] font-normal text-[10px] sm:text-sm md:text-base">
+            <span className="font-['Poppins'] font-normal text-xs sm:text-sm md:text-base lg:text-xl">
               {props.numSeats}{" "}
               {Number(props.numSeats) > 1
                 ? "vagas disponíveis"
@@ -132,67 +120,37 @@ function RideFull(props: RideProps) {
           <div className="flex gap-2 items-center">
             <Clock size={24} color="#252525" weight="bold" />
 
-            <span className="font-['Poppins'] font-medium text-[10px] sm:text-sm md:text-base">
+            <span className="font-['Poppins'] font-medium text-xs sm:text-sm md:text-base lg:text-xl">
               {formatDateRide(props.dateTime)}
             </span>
           </div>
         </div>
 
-        <div className="flex gap-4">
-          <div className="flex flex-col gap-1 items-center justify-center w">
+        <div className="flex gap-8 md:relative bottom-8">
+          <div className="self-end md:self-center">
             {!askRide ? (
               <Button
                 label={!askRide ? "Pedir carona" : "Aguardando confirmação..."}
                 onClick={() => handleAskRide(props.id)}
-                size="sm"
+                size="xs"
                 color="green"
                 shape="square"
-                className={`font-semibold hover:bg-hover-green`}
+                className="sm:w-36 sm:h-10 sm:px-3 md:w-48 md:h-12 md:px-8 md:text-base"
               />
             ) : (
               <span className="animate-pulse text-yellow ease-in-out infinite">
                 Aguardando confirmação..
               </span>
             )}
-            <div
-              className={`flex items-center gap-2 ${
-                askRide && "translate-x-44 duration-500 ease-out"
-              }`}
-            >
-              <button onClick={toggleFavorite}>
-                {!favorite ? (
-                  <Image className="w-6 h-6" src={Heart} alt="heart" />
-                ) : (
-                  <Image
-                    className="w-6 h-6 transition-transform scale-110"
-                    src={HeartFilled}
-                    alt="heart"
-                  />
-                )}
-              </button>
-              {!askRide && (
-                <p className="font-['Poppins'] text-sm font-normal">
-                  Adicionar aos favoritos
-                </p>
-              )}
-            </div>
           </div>
 
           <Image
-            className="hidden md:block md:w-40 md:h-32 md:relative bottom-8"
+            className="hidden md:flex md:w-40 md:h-32 lg:w-64 lg:h-52"
             src={Map}
             alt="mapa"
           />
         </div>
-
-        {/* <Image className="hidden lg:block md:w-40 md:h-32 md:relative bottom-8" src={Map} alt="mapa" /> */}
       </div>
-      <Modal isOpen={showModal} onClose={handleClose}>
-        <div className="w-3/4 bg-white h-2/4 relative rounded-lg p-2 sm:2/4">
-          {/* <Image className=" absolute top-2 right-2 cursor-pointer" src={X} alt="sair" onClick={handleClose}/> */}
-          {/* dasdfdfdssdf */}
-        </div>
-      </Modal>
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen((prev) => !prev)}

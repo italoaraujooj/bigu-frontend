@@ -3,7 +3,7 @@ import React from "react";
 
 type ButtonType = "submit" | "button" | "reset";
 type ButtonColor = "yellow" | "green" | "dark-blue" | "light-blue" | "red" | "blackLine" ;
-type ButtonSize = "sm" | "base" | "md" | "lg" | "res";
+type ButtonSize = "xs" | "sm" | "base" | "md" | "lg" | "res";
 type ButtonText = "white" | "black";
 
 type Props = {
@@ -34,8 +34,9 @@ const Button = (props: Props) => {
 
   const styles = {
     sizes: {
+      xs: "w-32 h-10 px-4 text-xs",
       res: "w-36 h-10 px-3 text-base",
-      sm: "w-48 h-12 px-8 text-xs",
+      sm: "w-48 h-12 px-8 text-sm",
       base: "w-48 h-14 px-6 text-sm",
       md: "w-60 h-16 px-8 text-xl",
       lg: "w-80 h-16 px-8 text-2xl",

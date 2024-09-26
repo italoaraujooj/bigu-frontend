@@ -4,11 +4,13 @@ import Image from "next/image";
 import React from "react";
 import Plus from "../../../assets/plus-green.png";
 import { Actions, Attribute, Bar, Navigation } from "./components";
+import { CarResponseDTO } from "@/types/ride";
 
 type Props = {
   profile?: boolean;
-  add: any;
-  items: Car[];
+  add: () => void;
+  remove: (id: string) => any;
+  items: CarResponseDTO[];
 };
 
 const Carousel = (props: Props) => {
@@ -48,9 +50,9 @@ const Carousel = (props: Props) => {
         )}
       >
         {items.length > 0 ? (
-          items?.map(({ _id, carModel, color, plate }: Car, index: number) => (
+          items?.map((car: CarResponseDTO, index: number) => (
             <div
-              key={index}
+              key={car.carId}
               className={clsx(
                 "w-full shrink-0",
                 "transform-gpu",
@@ -67,20 +69,20 @@ const Carousel = (props: Props) => {
                       {/* @ts-ignore */}
                       <Attribute
                         label="Modelo"
-                        value={carModel}
+                        value={car.carModel}
                         color="light-blue"
                       />
                       {/* @ts-ignore */}
-                      <Attribute label="Cor" value={color} color="yellow" />
+                      <Attribute label="Cor" value={car.color} color="yellow" />
                     </div>
                     <div className="w-full flex items-end justify-between gap-16">
                       {/* @ts-ignore */}
-                      <Attribute label="Placa" value={plate} color="orange" />
+                      <Attribute label="Placa" value={car.plate} color="orange" />
                       {/* @ts-ignore */}
                       <Actions
                         add={props.add}
                         edit={() => {}}
-                        remove={() => {}}
+                        remove={() => {props.remove(car.carId)}}
                       />
                     </div>
                   </div>

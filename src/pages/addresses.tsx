@@ -57,7 +57,7 @@ function Addresses({}: Props) {
   };
 
   const handleDeleteAddress = async (address: Address) => {
-    const responseDelete = await deleteAddress(address._id);
+    const responseDelete = await deleteAddress(address.addressId);
     if (responseDelete?.status === 200) {
       toast.success(`O endereço '${address.nome}' foi removido.`);
     }

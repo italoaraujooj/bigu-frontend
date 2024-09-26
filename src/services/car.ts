@@ -39,7 +39,7 @@ export async function getAllCars() {
   }
 }
 
-export async function deleteCar(id: number) {
+export async function deleteCar(id: string) {
   try {
     const response = await api.delete(`/cars/${id}`);
 
