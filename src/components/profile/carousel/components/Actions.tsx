@@ -17,19 +17,19 @@ export default function Actions({ add, edit, remove }: Props) {
   }
 
   return (
-    <div className="flex items-center justify-end gap-4 self-start mt-1">
+    <div className="flex items-center justify-end gap-3 self-start mt-1">
       <Image
         className="w-6 h-6 cursor-pointer"
         src={Plus}
         alt="add button car"
         onClick={() => makeAction(add)}
       />
-      <Image
+      {/* <Image
         className="w-6 h-6 cursor-pointer"
         src={Edit}
         alt="edit button car"
         onClick={edit}
-      />
+      /> */}
       <Image
         className="w-6 h-6 cursor-pointer"
         src={Trash}
