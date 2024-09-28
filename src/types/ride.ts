@@ -18,7 +18,8 @@ export type AddressResponseDTO = {
     numero: string,
     bairro: string,
     estado: string,
-    addressId: string
+    addressId: string,
+    cep: string
 }
 
 export type CarResponseDTO = {

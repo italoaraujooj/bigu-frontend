@@ -16,12 +16,12 @@ const Text = (props: Props) => {
     sizes: {
       base: 'text-base',
       xs: "text-xs",
-      sm: "text-sm", // normal text (p)
-      md: "text-md", // subtitle
+      sm: "text-sm",
+      md: "text-md",
       xl: "text-xl",
       lg: "text-3xl font-bold",
-      '2xl': "text-2xl", // title
-      '5xl': "text-5xl leading-normal			", // title
+      '2xl': "text-2xl",
+      '5xl': "text-5xl leading-normal",
       '6xl': "text-6xl "
     },
     weight: {

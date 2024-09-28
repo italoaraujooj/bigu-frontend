@@ -43,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black/70">
           <div
             className={clsx(
-              "modal w-80 p-8 rounded-md shadow-lg sm:w-full sm:max-w-md",
+              "modal p-4 w-96 rounded-md shadow-lg sm:w-full sm:max-w-md",
               transparent ? "transparent opacity-3 rounded-full" : "bg-white"
             )}
           >

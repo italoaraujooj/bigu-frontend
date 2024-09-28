@@ -28,3 +28,12 @@ export const createAddress = async (address: AddressFormState) => {
     toast.error(err.message)
   }
 }
+
+export const editAddress = async (address: AddressFormState, addressId: string) => {
+  try {
+    const response = await api.put(`/addresses/${addressId}`, address);
+    return response;
+  } catch (err: any) {
+    toast.error(err.message)
+  }
+}
