@@ -51,7 +51,7 @@ function Login(props: Props) {
       id="login"
       className={clsx(
         "transition ease-in-out delay-150 duration-500",
-        `flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem]`,
+        `flex pr-12 lg:pr-0 justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem]`,
         visible ? "translate-x-0" : "translate-x-full"
       )}
     >
@@ -66,10 +66,10 @@ function Login(props: Props) {
           alt="voltar"
           onClick={handleClose}
         />
-        <h1 className="font-['Poppins'] font-semibold text-2xl md:text-4xl">
+        <h1 className="font-['Poppins'] font-semibold text-3xl md:text-5xl my-2">
           Login
         </h1>
-        <div className="flex flex-col gap-6 items-center">
+        <div className="flex flex-col gap-2 sm:gap-3">
           <div className="flex flex-col gap-3">
             <Input
               label="Email"

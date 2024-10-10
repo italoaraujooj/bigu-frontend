@@ -41,13 +41,13 @@ export default function Home() {
 
   return (
     <div className="relative w-full h-fit">
-      <div className=" w-[21.625rem] mx-auto mt-7 flex flex-col gap-12 sm:w-528 sm:gap-20 lg:w-3/4">
+      <div className="w-[80%] mx-auto mt-7 flex flex-col">
         <header className="flex items-center gap-4 justify-between pr-2">
           <Image className=" w-14 h-14" src={Logo} alt="car" />
           <List
             size={32}
             color="gray"
-            className="md:hidden cursor-pointer"
+            className="lg:hidden cursor-pointer"
             onClick={openSideBar}
           />
           <section className="hidden lg:flex lg:gap-10">
@@ -72,7 +72,7 @@ export default function Home() {
             label="Compartilhe viagens, economize e proteja o planeta."
             size="lg"
             weight="bold"
-            className="leading-[3rem]"
+            className="leading-[3rem] md:text-4xl xl:text-6xl"
           />
           <div className="flex flex-col gap-10">
             <Text
@@ -94,7 +94,11 @@ export default function Home() {
         <Login handleClose={closeLoginModal} visible={showLogin} />
         <Register handleClose={handleCloseRegister} visible={showRegister} />
         {sideBar && (
-          <div className="bg-white w-full h-full fixed top-0 right-0 py-14 px-14 space-y-4 transition-all ease-in-out duration-500">
+          <div
+            className={`bg-white w-full h-full fixed top-0 right-0 py-14 px-14 space-y-4 
+    transition-transform transform ease-in-out duration-500 ${sideBar ? "translate-x-0" : "translate-x-full"
+              }`}
+          >
             <Image
               className="w-10 h-10 cursor-pointer"
               src={Back}
@@ -117,6 +121,7 @@ export default function Home() {
             />
           </div>
         )}
+
       </div>
     </div>
   );
@@ -126,7 +131,7 @@ export const getServerSideProps: GetServerSideProps<{ data: any }> = async (cont
   const data = [] as any;
 
   const cookies = parseCookies(context);
-  const token = cookies['nextauth.accessToken']; 
+  const token = cookies['nextauth.accessToken'];
 
   if (token) {
     return {
