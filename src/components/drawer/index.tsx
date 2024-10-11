@@ -3,6 +3,9 @@ import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut";
 import { X } from "@phosphor-icons/react/dist/ssr/X";
 import clsx from "clsx";
 import Text from "../text";
+import { AddressResponseDTO, CarResponseDTO } from "@/types/ride";
+import NextLink from "next/link";
+import { toast } from "react-toastify";
 
 type Props = {
   drawerIsOpen: boolean;
@@ -11,6 +14,10 @@ type Props = {
   handleLogout: () => void;
   handleOpenRequests: () => void;
   handleOpenRides: () => void;
+  userAddresses: AddressResponseDTO[];
+  carsUser: CarResponseDTO[];
+  showToast: () => void;
+  hasCandidates: boolean
 };
 
 export default function Drawer({
@@ -20,6 +27,10 @@ export default function Drawer({
   handleLogout,
   handleOpenRequests,
   handleOpenRides,
+  carsUser,
+  userAddresses,
+  showToast,
+  hasCandidates
 }: Props) {
   const openRequests = () => {
     toggleDrawer();
@@ -47,22 +58,23 @@ export default function Drawer({
       />
       <br />
       <div
-        onClick={handleNavigateToOfferRide}
-        className="w-full px-2 group cursor-pointer"
+        onClick={showToast}
+        className={clsx("w-full px-2 cursor-pointer", carsUser.length && userAddresses.length && "group")}
       >
         <div className="flex items-center gap-4">
           <Jeep size={32} color="gray" />
-          <Text
-            label="Oferecer Carona"
-            size="xl"
-            color="gray"
-            className="group-hover:text-blackline"
-          />
+          <NextLink href="/offer-ride" className={clsx(!(carsUser.length && userAddresses.length) && 'pointer-events-none text-[#71717a]')}>
+            <Text
+              label="Oferecer Carona"
+              size="xl"
+              color="gray"
+            />
+          </NextLink>
         </div>
         <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
       </div>
       <div onClick={openRequests} className="w-full px-2 group cursor-pointer">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 relative">
           <Jeep size={32} color="gray" />
           <Text
             label="Solicitações"
@@ -70,6 +82,9 @@ export default function Drawer({
             color="gray"
             className="group-hover:text-blackline"
           />
+          {hasCandidates && (
+            <span className="absolute top-3 right-0 transform translate-x-2 -translate-y-2 w-2 h-2 rounded-full bg-red" />
+          )}
         </div>
         <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
       </div>

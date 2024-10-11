@@ -17,8 +17,9 @@ import { Text } from "@/components";
 import { fakeDelay } from "@/utils/delay";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { getAllRidesAvailable, getRideHistory } from "@/services/ride";
+import { getAllRidesAvailable, getMyRidesAvailable, getRideHistory } from "@/services/ride";
 import { RideResponseDTO } from "@/types/ride";
+import { toast } from "react-toastify";
 
 function Dashboard() {
   const router = useRouter();
@@ -30,6 +31,7 @@ function Dashboard() {
   const [showRides, setShowRides] = useState(false);
   const [firstDashboardAccess, setFirstDashboardAccess] = useState(first);
   const [ridesAvailable, setRidesAvailable] = useState<RideResponseDTO[]>([]);
+  const [myRides, setMyRides] = useState<RideResponseDTO[]>([]);
 
   const [loadingStateRides, setLoadingStateRides] = useState<boolean>(true);
   const [loadingStateHistory, setLoadingStateHistory] = useState<boolean>(true);
@@ -42,6 +44,7 @@ function Dashboard() {
   useEffect(() => {
     loadDataHistory();
     loadDataRidesAvailable();
+    loadDataMyRides();
   }, []);
   
   const loadDataHistory = async () => {
@@ -59,6 +62,15 @@ function Dashboard() {
       setRidesAvailable(responseAvailable?.data.availableRides);
     }finally{
       setLoadingStateRides(false);
+    }
+  }
+
+  const loadDataMyRides = async () => {
+    try{
+      const myRides = await getMyRidesAvailable();
+      if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
+    }catch(error: any){
+      toast.error("Ocorreu um erro ao buscar as suas caronas.")
     }
   }
 
@@ -152,6 +164,7 @@ function Dashboard() {
             <Header
               handleOpenRequests={handleOpenRequests}
               handleOpenRides={handleOpenRides}
+              hasCandidates={myRides.some((ride) => ride.candidates.length > 0)}
             />
             <div className="flex justify-between items-center">
               {renderGreeting()}
@@ -165,6 +178,7 @@ function Dashboard() {
           <RidesRequests
             handleClose={handleCloseRequests}
             visible={showRequests}
+            myRides={myRides}
           />
           <RidesOffers handleClose={handleCloseRides} visible={showRides} loadDataRidesAvailable={loadDataRidesAvailable}/>
         </>
