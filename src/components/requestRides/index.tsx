@@ -9,20 +9,21 @@ import CandidateRequest from "./candidate";
 type Props = {
   visible: boolean;
   handleClose: () => void;
+  myRides: RideResponseDTO[]
 };
 
 function RidesRequests(props: Props) {
-  const { visible, handleClose } = props;
-  const [myRides, setMyRides] = useState<RideResponseDTO[]>([]);
+  const { visible, handleClose, myRides } = props;
+  // const [myRides, setMyRides] = useState<RideResponseDTO[]>([]);
 
-  useEffect(() => {
-    const loadData = async () => {
-      const myRides = await getMyRidesAvailable();
-      if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
-    };
+  // useEffect(() => {
+  //   const loadData = async () => {
+  //     const myRides = await getMyRidesAvailable();
+  //     if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
+  //   };
 
-    loadData();
-  }, []);
+  //   loadData();
+  // }, []);
   return (
     <div
       id="rideRequests"

@@ -101,3 +101,12 @@ export const getMyRidesAvailable = async () => {
     toast.error(err.message)
   }
 }
+
+export const setOverRide = async (rideId: string) => {
+  try {
+    const response = api.get(`/rides/over/${rideId}`);
+    return response;
+  } catch (err: any) {
+    toast.error(err.message)
+  }
+}

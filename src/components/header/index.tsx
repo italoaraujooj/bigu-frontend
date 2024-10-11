@@ -15,10 +15,12 @@ import Drawer from "../drawer";
 import Input from "../input/input";
 import Text from "../text";
 import Link from "./Link";
+import { AddressResponseDTO, CarResponseDTO } from "@/types/ride";
 
 type Props = {
   handleOpenRequests: () => void;
   handleOpenRides: () => void;
+  hasCandidates: boolean
 };
 
 export default function Header(props: Props) {
@@ -30,8 +32,8 @@ export default function Header(props: Props) {
   } = useDrawer();
   const router = useRouter();
 
-  const [carsUser, setCarsUser] = useState<Car[]>([]);
-  const [userAddresses, setUserAddresses] = useState<AddressFormState[]>([]);
+  const [carsUser, setCarsUser] = useState<CarResponseDTO[]>([]);
+  const [userAddresses, setUserAddresses] = useState<AddressResponseDTO[]>([]);
   const [hoveredImage, setHoveredImage] = useState(false);
 
   useEffect(() => {
@@ -160,6 +162,10 @@ export default function Header(props: Props) {
         handleOpenRides={props.handleOpenRides}
         handleNavigateToOfferRide={handleNavigateToOfferRide}
         handleLogout={handleLogout}
+        carsUser={carsUser}
+        userAddresses={userAddresses}
+        showToast={showToast}
+        hasCandidates={props.hasCandidates}
       />
     </header>
   );

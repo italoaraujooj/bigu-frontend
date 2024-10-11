@@ -79,6 +79,7 @@ function RidesOffers(props: Props) {
               handleClose={handleClose}
               handleDeleteRide={handleDeleteRide}
               handleEditRide={handleEditRide}
+              setMyRides={setMyRides}
             />
           );
         })}

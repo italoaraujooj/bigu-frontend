@@ -46,7 +46,7 @@ function Register(props: Props){
     }
 
     return (
-      <div id="register" className={clsx("transition ease-in-out delay-150 duration-500", "flex justify-center items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem] lg:mx-auto", visible ? "translate-x-0" : "translate-x-full")}>
+      <div id="register" className={clsx("transition ease-in-out delay-150 duration-500", "flex justify-center pr-12 lg:pr-0 items-start h-screen fixed bg-white w-[100%] overflow-y-scroll pt-3 top-0 lg:right-0 lg:max-w-[30.125rem] lg:mx-auto", visible ? "translate-x-0" : "translate-x-full")}>
         <Form
           className="flex flex-col gap-2 justify-center"
           ref={formRef}
