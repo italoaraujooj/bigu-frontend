@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Text } from "@/components";
+import { Button, Input, Modal, Text, Dropdown } from "@/components";
 import {
   createAddress,
   deleteAddress,
@@ -23,9 +23,42 @@ import { useRouter } from "next/router";
 import React from "react";
 import { toast } from "react-toastify";
 
-type Props = {};
+interface DropdownOption {
+  label: string;
+  value: string;
+}
 
-function Addresses({}: Props) {
+const ESTADOS: DropdownOption[] = [
+  { label: 'AC', value: 'AC' },
+  { label: 'AL', value: 'AL' },
+  { label: 'AP', value: 'AP' },
+  { label: 'AM', value: 'AM' },
+  { label: 'BA', value: 'BA' },
+  { label: 'CE', value: 'CE' },
+  { label: 'DF', value: 'DF' },
+  { label: 'ES', value: 'ES' },
+  { label: 'GO', value: 'GO' },
+  { label: 'MA', value: 'MA' },
+  { label: 'MT', value: 'MT' },
+  { label: 'MS', value: 'MS' },
+  { label: 'MG', value: 'MG' },
+  { label: 'PA', value: 'PA' },
+  { label: 'PB', value: 'PB' },
+  { label: 'PR', value: 'PR' },
+  { label: 'PE', value: 'PE' },
+  { label: 'PI', value: 'PI' },
+  { label: 'RJ', value: 'RJ' },
+  { label: 'RN', value: 'RN' },
+  { label: 'RS', value: 'RS' },
+  { label: 'RO', value: 'RO' },
+  { label: 'RR', value: 'RR' },
+  { label: 'SC', value: 'SC' },
+  { label: 'SP', value: 'SP' },
+  { label: 'SE', value: 'SE' },
+  { label: 'TO', value: 'TO' }
+];
+
+function Addresses() {
   const formRef = React.useRef<FormHandles>(null);
   const formRefEdit = React.useRef<FormHandles>(null);
   const router = useRouter();
@@ -35,7 +68,9 @@ function Addresses({}: Props) {
   const [addressSelected, setAddressSelected] = React.useState(
     null as any
   );
+  const [stateSelected, setStateSelected] = React.useState({} as DropdownOption)
 
+  console.log(stateSelected)
   const toggleModalEditAddress = (address?: AddressResponseDTO) => {
     setAddressSelected(address);
     
@@ -56,7 +91,8 @@ function Addresses({}: Props) {
   }, []);
 
   const handleCreateAddress: SubmitHandler<AddressFormState> = async (data) => {
-    const responsePost = await createAddress(data);
+    const payload = {...data, estado: stateSelected.value}
+    const responsePost = await createAddress(payload);
     if (responsePost?.status === 201) {
       toast.success(`O endereço '${data.nome}' foi cadastrado.`);
       const responseGet = await fetchUserAddresses();
@@ -66,7 +102,8 @@ function Addresses({}: Props) {
   };
 
   const handleEditAddress: SubmitHandler<AddressFormState> = async (data) => {
-    const responsePost = await editAddress(data, addressSelected.addressId);
+    const payload = {...data, estado: stateSelected.value}
+    const responsePost = await editAddress(payload, addressSelected.addressId);
     if (responsePost?.status === 200) {
       toast.success(`O endereço '${data.nome}' foi editado.`);
       const responseGet = await fetchUserAddresses();
@@ -225,11 +262,13 @@ function Addresses({}: Props) {
             sizing="adjustable"
           />
           {/* @ts-ignore */}
-          <Input
-            name="estado"
+          <Dropdown
             label="Estado"
-            placeholder="PB"
-            sizing="adjustable"
+            options={ESTADOS}
+            selectedOption={stateSelected}
+            onSelectOption={(selectedOption) =>
+              setStateSelected(selectedOption)
+            }
           />
           {/* @ts-ignore */}
           <Input
