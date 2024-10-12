@@ -93,15 +93,17 @@ export default function Header(props: Props) {
           className="hover:text-stone-400 text-xl"
         />
       </div>
-      <List
-        size={32}
-        color="gray"
-        className="lg:hidden cursor-pointer"
-        onClick={toggleDrawer}
-      />
-      {props.hasCandidates && (
-        <span className="absolute top-4 right-5 transform translate-x-2 -translate-y-2 w-2 h-2 rounded-full bg-red" />
-      )}
+      <div className="flex">
+        <List
+          size={32}
+          color="gray"
+          className="lg:hidden cursor-pointer"
+          onClick={toggleDrawer}
+        />
+        {props.hasCandidates && (
+          <span className="w-2 h-2 rounded-full bg-red lg:hidden" />
+        )}
+      </div>
       <div className="hidden lg:flex md:gap-5 items-center">
         <button
           onClick={showToast}
@@ -122,14 +124,19 @@ export default function Header(props: Props) {
         <button
           onClick={props.handleOpenRequests}
           className="group transition-all duration-300 ease-in-out"
-        >
-          <Text
-            label="Solicitações"
-            className="py-2 text-gray text-base hover:text-[#a8a29e] uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8"
-            color="gray"
-            size="base"
-            weight="medium"
-          />
+        > 
+          <div className="flex">
+            <Text
+              label="Solicitações"
+              className="py-2 text-gray text-base hover:text-[#a8a29e] uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8"
+              color="gray"
+              size="base"
+              weight="medium"
+            />
+            {props.hasCandidates && (
+            <span className="w-2 h-2 rounded-full bg-red" />
+            )}
+          </div>
         </button>
 
         <button
