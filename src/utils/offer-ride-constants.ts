@@ -23,7 +23,6 @@ const fieldsFirstRow: OfferRideField[] = [
 ]
 
 const fieldsLastRow = (time: any): OfferRideField[] => {
-  console.log(time)
   return [
     {
       name: "date",

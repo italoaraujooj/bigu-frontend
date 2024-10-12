@@ -179,6 +179,7 @@ function Dashboard() {
             handleClose={handleCloseRequests}
             visible={showRequests}
             myRides={myRides}
+            setMyRides={setMyRides}
           />
           <RidesOffers handleClose={handleCloseRides} visible={showRides} loadDataRidesAvailable={loadDataRidesAvailable}/>
         </>

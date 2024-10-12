@@ -1,35 +1,47 @@
 import { formatarTelefone } from "@/utils/masks";
 import Button from "../../button";
 import Image from "next/image";
-import { answerCandidate } from "@/services/ride";
+import { answerCandidate, getMyRidesAvailable } from "@/services/ride";
 import NotificationContext from "@/context/NotificationContext";
 import Notification from "@/components/notification";
 import Text from "@/components/text";
 import { toast } from "react-toastify";
 import { CandidateResponseDTO, RideResponseDTO } from "@/types/ride";
 import Whatsapp from "../../../assets/whatsapp.png"
+import { Dispatch, SetStateAction } from "react";
 
 type Props = {
   avatar: any;
   ride: RideResponseDTO;
   handleClose: any;
-  candidate: CandidateResponseDTO
+  candidate: CandidateResponseDTO;
+  setMyRides: Dispatch<SetStateAction<RideResponseDTO[]>>;
 };
 
 const CandidateRequest = (props: Props) => {
-  const { avatar, ride, handleClose, candidate } = props;
+  const { avatar, ride, handleClose, candidate, setMyRides } = props;
+
+  const loadDataMyRides = async () => {
+    try{
+      const myRides = await getMyRidesAvailable();
+      if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
+    }catch(error: any){
+      toast.error("Ocorreu um erro ao buscar as suas caronas.")
+    }
+  }
+  
   const handleAcceptCandidate = async () => {
     try {
       const body = { status: "accept" };
       const response = await answerCandidate(body, ride.rideId, candidate.user.userId);
       if (response?.status === 200) {
         toast.success("O usuário foi adicionado a carona com sucesso");
+        loadDataMyRides();
         handleClose();
       }
 
     } catch (err: any) {
       toast.error("Falha ao aceitar o usuário");
-      console.log(err);
     }
   };
 
@@ -40,16 +52,13 @@ const CandidateRequest = (props: Props) => {
       if (response?.status === 200) {
         toast.success("Você rejeitou o usuário para sua carona");
       }
+      loadDataMyRides();
       handleClose();
 
     } catch (err: any) {
       toast.error("Falha ao rejeitar o usuário");
-      console.log(err);
     }
   };
-
-  console.log(ride)
-  console.log(candidate)
 
   const phoneNumber = candidate.user.phoneNumber.replace(/[^\d]/g, '');
 

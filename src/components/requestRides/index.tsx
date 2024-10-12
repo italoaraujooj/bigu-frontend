@@ -2,18 +2,19 @@ import { getMyRidesAvailable } from "@/services/ride";
 import { CandidateResponseDTO, RideResponseDTO } from "@/types/ride";
 import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Avatar from "../../assets/avatar.png";
 import CandidateRequest from "./candidate";
 
 type Props = {
   visible: boolean;
   handleClose: () => void;
-  myRides: RideResponseDTO[]
+  myRides: RideResponseDTO[];
+  setMyRides: Dispatch<SetStateAction<RideResponseDTO[]>>;
 };
 
 function RidesRequests(props: Props) {
-  const { visible, handleClose, myRides } = props;
+  const { visible, handleClose, myRides, setMyRides } = props;
   // const [myRides, setMyRides] = useState<RideResponseDTO[]>([]);
 
   // useEffect(() => {
@@ -55,6 +56,7 @@ function RidesRequests(props: Props) {
                     candidate={candidate}
                     avatar={Avatar}
                     handleClose={handleClose}
+                    setMyRides={setMyRides}
                   />
                 ))}
               </>

@@ -76,7 +76,6 @@ export function formatarDate(data: string): string {
 }
 
 export function moneyMask(value: any) {
-  console.log(value)
   const numericValue = value.replace(/[^0-9]/g, '');
 
   if (numericValue === '') {
