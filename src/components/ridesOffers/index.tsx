@@ -41,7 +41,6 @@ function RidesOffers(props: Props) {
     } catch (err: any) {
       toast.error("Falha ao cancelar a carona");
       handleClose();
-      console.log(err);
     }
   };
 

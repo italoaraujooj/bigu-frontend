@@ -78,7 +78,6 @@ export function RideProvider({ children }: any) {
 
   useEffect(() => {
     if (cars.length > 0) {
-      console.log("entrei aqui");
       getCandidates().then((data) => {
         setRidesUser(data?.data);
       });

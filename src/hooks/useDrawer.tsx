@@ -17,7 +17,6 @@ function useDrawer() {
       try {
         await logout();
       } catch (err) {
-        console.log(err);
       }
     };
   

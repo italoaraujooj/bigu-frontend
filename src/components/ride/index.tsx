@@ -53,8 +53,6 @@ function Ride(props: Props) {
     loadData();
   }, [askRide]);
 
-  console.log(userAddress)
-
   const handleAskRide = (rideId: string) => {
     const userSex = user?.sex;
     const ride = ridesAvailable.find(ride => ride.rideId === rideId)
@@ -73,18 +71,20 @@ function Ride(props: Props) {
   };
 
   const submitRide = async () => {
-    try {
-      const response = await requestRide({
-        addressId: userAddressesSelected.value,
-        rideId: rideIdSelected,
-      } as RequestRide);
-      if (response?.status == 200) {
-        setAskRide((prev) => !prev);
-        setModalOpen((prev) => !prev);
-        toast.success("Solicitação enviada. Aguarde a resposta do motorista.")
+    if(Object.keys(userAddressesSelected).length != 0){
+      try {
+        const response = await requestRide({
+          addressId: userAddressesSelected.value,
+          rideId: rideIdSelected,
+        } as RequestRide);
+        if (response?.status == 200) {
+          setAskRide((prev) => !prev);
+          setModalOpen((prev) => !prev);
+          toast.success("Solicitação enviada. Aguarde a resposta do motorista.")
+        }
+      } catch (err: any) {
+        toast.error(err.message)
       }
-    } catch (err: any) {
-      toast.error(err.message)
     }
   };
   return (
