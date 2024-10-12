@@ -2,7 +2,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
 import { AddressResponseDTO, RequestRide, UserResponseDTO } from "@/types/ride";
-import { formatDateRide } from "@/utils/masks";
+import { formatarData, formatDateRide } from "@/utils/masks";
 import Image from "next/image";
 import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
@@ -51,7 +51,7 @@ function RideFull(props: RideProps) {
       setUserAddresses(addressesFormated);
     });
   }, [askRide]);
-
+  console.log(props)
   const handleAskRide = (rideId: string) => {
     const userSex = user?.sex;
     if (props.driver.userId === user?.userId) {
@@ -121,7 +121,7 @@ function RideFull(props: RideProps) {
             <Clock size={24} color="#252525" weight="bold" />
 
             <span className="font-['Poppins'] font-medium text-xs sm:text-sm md:text-base lg:text-xl">
-              {formatDateRide(props.dateTime)}
+              {formatarData(props.dateTime)}
             </span>
           </div>
         </div>
