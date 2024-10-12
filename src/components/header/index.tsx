@@ -99,7 +99,9 @@ export default function Header(props: Props) {
         className="lg:hidden cursor-pointer"
         onClick={toggleDrawer}
       />
-
+      {props.hasCandidates && (
+        <span className="absolute top-4 right-5 transform translate-x-2 -translate-y-2 w-2 h-2 rounded-full bg-red" />
+      )}
       <div className="hidden lg:flex md:gap-5 items-center">
         <button
           onClick={showToast}
