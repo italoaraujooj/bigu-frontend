@@ -76,15 +76,17 @@ export default function Drawer({
       <div onClick={openRequests} className="w-full px-2 group cursor-pointer">
         <div className="flex items-center gap-4 relative">
           <Jeep size={32} color="gray" />
-          <Text
-            label="Solicitações"
-            size="xl"
-            color="gray"
-            className="group-hover:text-blackline"
-          />
-          {hasCandidates && (
-            <span className="absolute top-3 right-0 transform translate-x-2 -translate-y-2 w-2 h-2 rounded-full bg-red" />
-          )}
+          <div className="flex">
+            <Text
+              label="Solicitações"
+              size="xl"
+              color="gray"
+              className="group-hover:text-blackline"
+            />
+            {hasCandidates && (
+              <span className="w-2 h-2 rounded-full bg-red" />
+            )}
+          </div>
         </div>
         <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
       </div>
