@@ -201,7 +201,7 @@ function Profile() {
                   </h1>
                   <div className="flex items-center gap-2 pt-2">
                     <Image className="w-3 h-3" src={Star} alt="estrela" />
-                    <span className="text-gray text-[0.725rem]">5.0</span>
+                    <span className="text-gray text-[0.725rem] pt-1">{user ? user.avgScore.toFixed(1) : 0.0}</span>
                   </div>
                 </div>
               </div>

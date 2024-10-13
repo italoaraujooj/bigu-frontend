@@ -12,14 +12,15 @@ import { RequestContext } from "./RequestContext";
 import { fakeDelay } from "@/utils/delay";
 import { User } from "@/utils/types";
 import { UserFormState } from "@/components/register";
+import { UserResponseDTO } from "@/types/ride";
 
 type AuthContextType = {
   isAuthenticated: boolean;
   signIn: (data: SignInData) => Promise<any>;
   signUp: (data: UserFormState) => Promise<any>;
   logout: () => Promise<void>;
-  user: User | undefined;
-  setUser: (user: User) => void;
+  user: UserResponseDTO | undefined;
+  setUser: (user: UserResponseDTO) => void;
 };
 
 type SignInData = {
@@ -30,7 +31,7 @@ type SignInData = {
 export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: any) {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<UserResponseDTO>();
   const isAuthenticated = !!user;
   const { inProgress, done } = useContext(RequestContext);
   const router = useRouter();
