@@ -83,13 +83,13 @@ function Dashboard() {
             <div className="animate-pulse rounded-md bg-slate-700 h-14 w-16"></div>
           </div>
         ) : (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1">
             <h1 className="font-[Poppins] text-xl font-bold text-white sm:text-2xl md:text-3xl lg:text-4xl mr-2">
               {`Olá, ${user?.name.split(" ")[0]}`}
             </h1>
-            <div className="flex items-center gap-2 pt-2">
+            <div className="flex items-center gap-2">
               <Image className="w-3 h-3" src={Star} alt="estrela" />
-              <span className="text-gray text-[0.725rem]">5.0</span>
+              <span className="text-gray text-[0.725rem] pt-1">{user ? user.avgScore.toFixed(1) : 0.0}</span>
             </div>
           </div>
         )}

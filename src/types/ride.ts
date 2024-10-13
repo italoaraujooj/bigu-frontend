@@ -9,6 +9,7 @@ export type UserResponseDTO = {
     avgScore: number,
     profileImage: string,
     isVerified: boolean
+    ratingCount: number
 }
 
 export type AddressResponseDTO = {
