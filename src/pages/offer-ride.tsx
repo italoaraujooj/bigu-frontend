@@ -21,15 +21,15 @@ const OfferRide = () => {
           <header className="flex gap-4 items-center">
             {user?.sex === "Feminino" ?
               <Image
-                //onClick={() => router.push("/profile")}
-                className={"w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300"}
+                onClick={() => router.push("/profile")}
+                className="w-14 h-14"
                 src={Woman}
                 alt="foto"
               />
               :
               <Image
-                //onClick={() => router.push("/profile")}
-                className={"w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300"}
+                onClick={() => router.push("/profile")}
+                className="w-14 h-14"
                 src={Homem}
                 alt="foto"
               />
