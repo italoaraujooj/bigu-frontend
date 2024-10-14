@@ -92,4 +92,8 @@ export const profilePicture = async (formData: FormData) => {
   }
 }
 
+export async function getUserById(id: string){
+  return await api.get(`/users/id/${id}`)
+}
+
 
