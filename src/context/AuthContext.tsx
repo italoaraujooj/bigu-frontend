@@ -53,8 +53,8 @@ export function AuthProvider({ children }: any) {
     if (response && response.status === 201) {
       setCookie(undefined, "nextauth.accessToken", response.data.accessToken);
       setCookie(undefined, "nextauth.refreshToken", response.data.refreshToken);
-      setUser(response.data.user);
-      
+      setUser(response.data.userResponse);
+
       router.push({
         pathname: '/dashboard',
         query: { firstAccess: true }
