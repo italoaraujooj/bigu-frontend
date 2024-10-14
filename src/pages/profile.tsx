@@ -22,7 +22,7 @@ import Star from "../assets/star.png";
 import WomanAvatar from "../assets/woman.png";
 import Button from "../components/button";
 import Input from "../components/input/input";
-import Homem from "../../assets/avatar.png"
+import Homem from "../assets/avatar.png"
 
 function Profile() {
   const router = useRouter();
