@@ -73,7 +73,7 @@ export const refreshToken = async () => {
     const { "nextauth.refreshToken": token } = parseCookies();
     const response = await api.post('/auth/refresh', {"refreshToken": token});
     if (response && response.status === 200) {
-      setCookie(undefined, "nextauth.accessToken", response.data.accessToken);
+      setCookie(undefined, "nextauth.accessToken", response.data.newAccessToken);
     }
   } catch (error) {
     toast.error("Erro ao renovar token");
