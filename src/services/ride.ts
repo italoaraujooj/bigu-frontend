@@ -102,6 +102,34 @@ export const getMyRidesAvailable = async () => {
   }
 }
 
+export const getAllRidesActive = async () => {
+  try {
+    const response = api.get('/rides/active');
+    return response;
+  } catch (err: any) {
+    toast.error(err.message)
+  }
+}
+
+export const getAllRidesActiveToWomen = async () => {
+  try {
+    const response = api.get('/rides/active/toWomen');
+    return response;
+  } catch (err: any) {
+    toast.error(err.message)
+  }
+}
+
+export const getAllRidesAvailableToWomen = async () => {
+  try {
+    const response = api.get('/rides/available/toWomen');
+    return response;
+  } catch (err: any) {
+    toast.error(err.message)
+  }
+}
+
+
 export const setOverRide = async (rideId: string) => {
   try {
     const response = api.put(`/rides/over/${rideId}`);
