@@ -43,7 +43,7 @@ function AvailableRides() {
       else {
         response = await getAllRidesActive();
       }
-      setRides(response?.data || []);
+      setRides(response?.data.rides || []);
     } catch (error) {
       toast.error("Ocorreu algum erro ao buscar as caronas disponíveis.");
     } finally {
