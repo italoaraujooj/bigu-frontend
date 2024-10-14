@@ -36,37 +36,13 @@ export const formatDateTime = (date: string, time: string) => {
 
 export const formatarData = (data: string): string => {
   const date = new Date(data);
-  
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // meses começam em 0
-    const hours = String(date.getHours()).padStart(2, '0');
-  
-    return `${day}/${month} às ${hours}h`;
-  // const dataAtual = new Date();
-  // const dataRecebida = new Date(data);
 
-  // const diasSemana = [
-  //   "do domingo",
-  //   "da segunda-feira",
-  //   "da terça-feira",
-  //   "da quarta-feira",
-  //   "da quinta-feira",
-  //   "da sexta-feira",
-  //   "do sábado"
-  // ];
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // meses começam em 0
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
 
-  // let resultado = "";
-
-  // if (dataAtual.getDate() === dataRecebida.getDate()) {
-  //   resultado = "hoje";
-  // } else {
-  //   resultado = diasSemana[dataRecebida.getDay()];
-  // }
-
-  // const horas = (dataRecebida.getHours() - 3).toString().padStart(2, "0");
-  // const minutos = dataRecebida.getMinutes().toString().padStart(2, "0");
-
-  // return `${horas}:${minutos} ${resultado}`;
+  return `${day}/${month} às ${hours}h${minutes}`;
 }
 
 export function formatarDate(data: string): string {
