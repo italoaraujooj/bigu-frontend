@@ -36,6 +36,8 @@ export const formatDateTime = (date: string, time: string) => {
 
 export const formatarData = (data: string): string => {
   const [date, hour] = data.split(',');
+  console.log(date)
+  console.log(hour)
   const [day, month, year] = date.split('/')
 
   return `${day}/${month} ás ${hour.slice(0, 6)}`
