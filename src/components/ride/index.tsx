@@ -32,14 +32,14 @@ function Ride(props: Props) {
     {} as any
   );
   const [favorite, setFavorite] = React.useState(false);
-  const [askRide, setAskRide] = React.useState(false);
+  const [askRide, setAskRide] = React.useState('');
   const [modalOpen, setModalOpen] = React.useState(false);
-  const [rideIdSelected, setRideIdSelected] = React.useState({});
+  const [rideIdSelected, setRideIdSelected] = React.useState('');
 
   const { user } = useContext(AuthContext);
 
-  const toggleFavorite = () => setFavorite((prev) => !prev);
-  const toggleAskRide = () => setAskRide((prev) => !prev);
+  // const toggleFavorite = () => setFavorite((prev) => !prev);
+  // const toggleAskRide = () => setAskRide((prev) => !prev);
   
   useEffect(() => {
     const loadData = async () => {
@@ -78,7 +78,7 @@ function Ride(props: Props) {
           rideId: rideIdSelected,
         } as RequestRide);
         if (response?.status == 200) {
-          setAskRide((prev) => !prev);
+          setAskRide(rideIdSelected);
           setModalOpen((prev) => !prev);
           toast.success("Solicitação enviada. Aguarde a resposta do motorista.")
         }
@@ -87,7 +87,6 @@ function Ride(props: Props) {
       }
     }
   };
-  console.log(ridesAvailable)
   return (
     <div className="bg-dark w-full rounded-lg p-2 flex flex-col mx-auto max-w-[800px] lg:mx-0 lg:w-full sm:py-4 sm:px-8">
       <h2 className="font-['Poppins'] text-center text-lg text-white font-bold pb-4 sm:text-xl md:text-2xl ">
@@ -168,7 +167,7 @@ function Ride(props: Props) {
                     </div>
                   ) : (
                     <div className={`self-end`}>
-                    {askRide || item.candidates.some((candidate) => candidate.user.userId == user?.userId) ? (
+                    {item.candidates.some((candidate) => candidate.user.userId == user?.userId) || askRide === item.rideId ? (
                       <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite text-xs">
                       Aguardando confirmação...
                       </span>
