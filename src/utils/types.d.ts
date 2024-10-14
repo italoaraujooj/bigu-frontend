@@ -120,9 +120,9 @@ export interface Address {
 }
 
 export interface ChangePassword {
-  actualPassword: string;
+  email: string;
   newPassword: string;
-  newPasswordConfirmation: string;
+  confirmPassword: string;
 }
 
 export interface Ride {

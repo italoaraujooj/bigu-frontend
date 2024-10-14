@@ -62,7 +62,8 @@ export async function forgotPasswordRequest(email: string){
 
 export async function changePasswordRequest(credentials: ChangePassword){
   try{
-    return await api.put(`/api/v1/auth/edit-password?actualPassword=${credentials.actualPassword}`, credentials)
+    const { newPassword } = credentials
+    return await api.put(`/auth/reset-password/${credentials.email}`, { password: newPassword })
   }catch(error: any){
     toast.error(error.message)
   }

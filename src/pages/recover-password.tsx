@@ -43,7 +43,10 @@ export default function RecoverPassword() {
   const handleSubmitCode: SubmitHandler<CodeFormState> = async (data) => {
     const res = await verifyCode(email, data.code);
     if (res?.status === 202) {
-      //router.push("/update-password")
+      router.push({
+        pathname: '/update-password',
+        query: { email: email }
+      })
     }
   }
 
