@@ -96,4 +96,12 @@ export async function getUserById(id: string){
   return await api.get(`/users/id/${id}`)
 }
 
+export async function verifyCode(email: string, code: string){
+  try{
+    return await api.put(`/auth/validate-code/${email}/${code}`)
+  }catch(error: any){
+    toast.error(error.message);
+  }
+}
+
 
