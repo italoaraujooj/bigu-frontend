@@ -53,7 +53,7 @@ export async function getUser(){
 
 export async function forgotPasswordRequest(email: string){
   try{
-    const res = await api.post('/auth/request-password-reset', {requestResetPasswordDto: email});
+    const res = await api.post('/auth/request-password-reset', {email: email});
     return res;
   }catch (error: any){
     toast.error(error.message)
