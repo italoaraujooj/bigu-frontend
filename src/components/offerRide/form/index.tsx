@@ -66,19 +66,19 @@ function OfferRideForm(props: Props) {
 
   const ufcgAddresses = [
     {
-      value: "66e093bfe2323b4802da45c3",
+      value: "670c7741db1b1d5886b04cdb",
       label: "Entrada principal",
     },
     {
-      value: "66e09414e2323b4802da45c5",
+      value: "670c7815db1b1d5886b04cdc",
       label: "Entrada CEEI",
     },
     {
-      value: "66e09431e2323b4802da45c7",
+      value: "670c78ebdb1b1d5886b04cdd",
       label: "Entrada Humanas",
     },
     {
-      value: "66e09466e2323b4802da45c9",
+      value: "670c7957db1b1d5886b04cdf",
       label: "Entrada CCT",
     },
   ];

@@ -27,7 +27,8 @@ module.exports = {
       'light-yellow': '#FFB703',
       'orange': '#FB8500',
       'light-white': '#F6F6F6',
-      'red': '#dd5035'
+      'red': '#dd5035',
+      'cinza': '#616161'
     },
     extend: {
       width: {
