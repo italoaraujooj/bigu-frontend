@@ -101,7 +101,7 @@ function Ride(props: Props) {
             </div>
           </div>
         :
-        ridesAvailable.length ? (
+        ridesAvailable?.length ? (
           ridesAvailable.slice(0, 3).map((item: RideResponseDTO) => (
             <div
               key={item.rideId}

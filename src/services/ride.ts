@@ -22,6 +22,15 @@ export const getRideHistory = async () => {
   }
 }
 
+export const getRideHistoryUser = async (id: string) => {
+  try {
+    const response: any = api.get(`/rides/user/history/${id}`);
+    return response;
+  } catch (err: any) {
+    toast.error(err.message)
+  }
+}
+
 export const getRide = async (id: string) => {
   try {
     const response: any = api.get(`/rides/ride/${id}`);

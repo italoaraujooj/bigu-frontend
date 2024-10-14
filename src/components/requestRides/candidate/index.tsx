@@ -2,7 +2,7 @@ import { formatarTelefone } from "@/utils/masks";
 import Button from "../../button";
 import Image from "next/image";
 import { answerCandidate, getMyRidesAvailable } from "@/services/ride";
-import NotificationContext from "@/context/NotificationContext";
+import Router from "next/router";
 import Notification from "@/components/notification";
 import Text from "@/components/text";
 import { toast } from "react-toastify";
@@ -64,6 +64,10 @@ const CandidateRequest = (props: Props) => {
     }
   };
 
+  const handleViewProfile = async (userId: string) => {
+    Router.push(`/view-profile/${userId}`);
+  };
+
   const phoneNumber = candidate.user.phoneNumber.replace(/[^\d]/g, '');
 
   return (
@@ -86,7 +90,10 @@ const CandidateRequest = (props: Props) => {
                     alt="foto"
                   />
                   }
-            <p className="font-[Poppins] font-bold text-lg">
+            <p
+              className="font-[Poppins] font-bold text-lg cursor-pointer hover:text-blue-500"
+              onClick={() => handleViewProfile(candidate.user.userId)}
+            >
               {String(candidate.user.name)?.toUpperCase()}
             </p>
           </div>

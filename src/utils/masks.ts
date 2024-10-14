@@ -46,11 +46,12 @@ export const formatarData = (data: string): string => {
 }
 
 export function formatarDate(data: string): string {
-  const [date, hour] = data.split(',');
-  const [dia, mes, ano] = date.split('/');
+  const [date, time] = data.split(',');
+  const [mes, dia, ano] = date.split('/');
+  const [hour, minute, second] = time.split(":")
   // const dataRecebida = parseISO(data);
   // const dataFormatada = format(dataRecebida, "dd 'de' MMMM 'às' HH:mm", { locale: ptBR });
-  const dataFormatada = `${dia} de ${MESES[mes]} às ${hour.slice(0,6)}`
+  const dataFormatada = `${dia} de ${MESES[mes]} às ${hour}:${minute}`
   return dataFormatada;
 }
 
