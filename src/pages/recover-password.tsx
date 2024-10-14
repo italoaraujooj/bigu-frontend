@@ -1,32 +1,54 @@
 // import { Button, Input, Text } from '@/components';
 import { Button, Input, Text } from "@/components";
 import LottieAnimation from "@/components/LottieAnimation";
-import { forgotPasswordRequest } from "@/services/auth";
+import { forgotPasswordRequest, verifyCode } from "@/services/auth";
 import { CaretCircleLeft } from "@phosphor-icons/react/dist/ssr/CaretCircleLeft";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import clsx from "clsx";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import success from "../assets/message_sent.json";
+import { toast } from "react-toastify";
 
 interface RecoverPasswordFormState {
   email: string;
 }
 
+interface CodeFormState {
+  code: string;
+}
+
 export default function RecoverPassword() {
+  const router = useRouter();
   const formRef = useRef<FormHandles>(null);
+  const formRefCod = useRef<FormHandles>(null);
   const [successRequest, setSuccessRequest] = useState(false);
+  const [email, setEmail] = useState("")
 
   const handleSubmit: SubmitHandler<RecoverPasswordFormState> = async ({
     email,
   }) => {
-    const res = await forgotPasswordRequest(email);
-
-    if (res?.status === 200) {
-      setSuccessRequest(true);
+    try{
+      const res = await forgotPasswordRequest(email);
+      if (res?.status === 200) {
+        setEmail(email)
+        setSuccessRequest(true);
+      }
+    }catch(error: any){
+      toast.error(error.message)
     }
   };
+
+  const handleSubmitCode: SubmitHandler<CodeFormState> = async (data) => {
+    const res = await verifyCode(email, data.code);
+    if (res?.status === 202) {
+      router.push({
+        pathname: '/update-password',
+        query: { email: email }
+      })
+    }
+  }
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -82,9 +104,31 @@ export default function RecoverPassword() {
             <LottieAnimation data={success} loop={false} />
           </div>
           <Text
-            label="Verifique sua caixa de e-mail para instruções sobre a recuperação de senha."
+            label="Verifique sua caixa de e-mail insira o código enviado no campo abaixo."
             className="text-center"
           />
+          <Form
+            className="flex flex-col gap-5 justify-center"
+            ref={formRefCod}
+            onSubmit={handleSubmitCode}
+          >
+            <div className="flex flex-col gap-2 sm:gap-3">
+              <div className="flex flex-col gap-3">
+                <Input
+                  label="Código"
+                  name="code"
+                  sizing="adjustable"
+                  color="extralight"
+                  className="md:w-80 md:h-16 md:text-lg"
+                  type="text"
+                  placeholder="000000"
+                  readOnly={false}
+                  required
+                />
+              </div>
+              <Button label="Enviar" size="lg" color="yellow" shape="square" type="submit" />
+            </div>
+          </Form>
         </div>
       )}
     </div>

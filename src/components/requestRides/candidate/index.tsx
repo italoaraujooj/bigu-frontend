@@ -9,6 +9,9 @@ import { toast } from "react-toastify";
 import { CandidateResponseDTO, RideResponseDTO } from "@/types/ride";
 import Whatsapp from "../../../assets/whatsapp.png"
 import { Dispatch, SetStateAction } from "react";
+import Homem from "../../../assets/avatar.png"
+import WomanAvatar from "../../../assets/woman.png";
+import { useRouter } from "next/router";
 
 type Props = {
   avatar: any;
@@ -19,7 +22,8 @@ type Props = {
 };
 
 const CandidateRequest = (props: Props) => {
-  const { avatar, ride, handleClose, candidate, setMyRides } = props;
+  const { ride, handleClose, candidate, setMyRides } = props;
+  const router = useRouter()
 
   const loadDataMyRides = async () => {
     try{
@@ -71,7 +75,21 @@ const CandidateRequest = (props: Props) => {
       <div className="flex flex-col gap-4">
         <div className="flex gap-2 items-center justify-between">
           <div className="flex gap-2 items-center">
-            <Image className="w-12 h-12" src={avatar} alt="ft" />
+              {candidate.user.sex === "Feminino" ?
+                  <Image
+                    onClick={() => router.push("/profile")}
+                    className="w-12 h-12"
+                    src={WomanAvatar}
+                    alt="foto"
+                  />
+                  :
+                  <Image
+                    onClick={() => router.push("/profile")}
+                    className="w-12 h-12" 
+                    src={Homem}
+                    alt="foto"
+                  />
+                  }
             <p
               className="font-[Poppins] font-bold text-lg cursor-pointer hover:text-blue-500"
               onClick={() => handleViewProfile(candidate.user.userId)}
@@ -81,7 +99,7 @@ const CandidateRequest = (props: Props) => {
           </div>
           <div className="justify-end">
             <a
-              href={`https://wa.me/${phoneNumber}`}
+              href={`https://wa.me/55${phoneNumber}`}
               target="_blank"
             >
               <div className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-full shadow-md">
