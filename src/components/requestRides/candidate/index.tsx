@@ -74,7 +74,7 @@ const CandidateRequest = (props: Props) => {
           </div>
           <div className="justify-end">
             <a
-              href={`https://wa.me/${phoneNumber}`}
+              href={`https://wa.me/55${phoneNumber}`}
               target="_blank"
             >
               <div className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-full shadow-md">
