@@ -94,7 +94,7 @@ function Offer(props: Props) {
           color="green"
           className="uppercase"
           shape="square"
-          onClick={() => handleOverRide}
+          onClick={() => handleOverRide(ride.rideId)}
         />
       </div>
     </div>
