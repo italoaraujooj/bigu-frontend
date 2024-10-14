@@ -70,7 +70,6 @@ function Addresses() {
   );
   const [stateSelected, setStateSelected] = React.useState({} as DropdownOption)
 
-  console.log(stateSelected)
   const toggleModalEditAddress = (address?: AddressResponseDTO) => {
     setAddressSelected(address);
     

@@ -51,7 +51,6 @@ function RideFull(props: RideProps) {
       setUserAddresses(addressesFormated);
     });
   }, [askRide]);
-  console.log(props)
   const handleAskRide = (rideId: string) => {
     const userSex = user?.sex;
     if (props.driver.userId === user?.userId) {
