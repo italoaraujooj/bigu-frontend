@@ -6,6 +6,7 @@ import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
 import { getMyRidesAvailable, setOverRide } from "@/services/ride";
 import { toast } from "react-toastify";
 import { Dispatch, SetStateAction } from "react";
+import Router from "next/router";
 
 type Props = {
   ride: RideResponseDTO;
@@ -30,6 +31,10 @@ function Offer(props: Props) {
       toast.error("Ocorreu algum erro ao finalizar essa carona.");
     }
   }
+
+  const handleViewProfile = async (userId: string) => {
+    Router.push(`/view-profile/${userId}`);
+  };
 
   return (
     <div className="w-full rounded-lg px-8 py-6 bg-white shadow-xl">
@@ -61,7 +66,13 @@ function Offer(props: Props) {
                 <ul>
                   {ride.members.map((member, index) => (
                     <li key={index}>
-                      <Text label={`- ${member.user.name}`} color="gray" size="base" />
+                      <p
+                        className="font-[Poppins] text-gray text-lg cursor-pointer hover:text-blue-500"
+                        onClick={() => handleViewProfile(member.user.userId)}
+                      >
+                        {`- ${member.user.name}`}
+                      </p>
+                      {/* <Text label={`- ${member.user.name}`} color="gray" size="base" /> */}
                     </li>
                   ))}
                 </ul>

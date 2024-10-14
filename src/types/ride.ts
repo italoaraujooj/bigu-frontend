@@ -10,6 +10,8 @@ export type UserResponseDTO = {
     profileImage: string,
     isVerified: boolean
     ratingCount: number
+    offeredRidesCount: number;
+    takenRidesCount: number;
 }
 
 export type AddressResponseDTO = {
@@ -72,4 +74,12 @@ export type RideResponseDTO = {
 export type RequestRide = {
     rideId: string,
     addressId: string
+}
+
+export type RatingResponseDTO = {
+    raterId: string;
+    raterName: string;
+    score: number;
+    comment: string;
+    createdAt: string;
 }
