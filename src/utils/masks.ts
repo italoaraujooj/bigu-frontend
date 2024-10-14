@@ -35,12 +35,13 @@ export const formatDateTime = (date: string, time: string) => {
 }
 
 export const formatarData = (data: string): string => {
-  const [date, hour] = data.split(',');
-  console.log(date)
-  console.log(hour)
-  const [day, month, year] = date.split('/')
-
-  return `${day}/${month} ás ${hour.slice(0, 6)}`
+  const date = new Date(data);
+  
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // meses começam em 0
+    const hours = String(date.getHours()).padStart(2, '0');
+  
+    return `${day}/${month} às ${hours}h`;
   // const dataAtual = new Date();
   // const dataRecebida = new Date(data);
 
