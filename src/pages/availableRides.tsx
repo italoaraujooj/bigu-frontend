@@ -102,7 +102,7 @@ function AvailableRides() {
               size="res" 
               color={isToWomen ? "pink" : "yellow"}
               shape="square" 
-              onClick={() => setIsAvailable(!isAvailable)}
+              onClick={() => setIsToWomen(!isToWomen)}
             />
               
           </div>
