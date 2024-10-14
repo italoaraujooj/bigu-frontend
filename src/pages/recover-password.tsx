@@ -22,7 +22,7 @@ export default function RecoverPassword() {
     email,
   }) => {
     const res = await forgotPasswordRequest(email);
-
+    console.log(res)
     if (res?.status === 200) {
       setSuccessRequest(true);
     }
