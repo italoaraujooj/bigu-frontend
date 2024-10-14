@@ -2,13 +2,15 @@ import { formatarTelefone } from "@/utils/masks";
 import Button from "../../button";
 import Image from "next/image";
 import { answerCandidate, getMyRidesAvailable } from "@/services/ride";
-import NotificationContext from "@/context/NotificationContext";
 import Notification from "@/components/notification";
 import Text from "@/components/text";
 import { toast } from "react-toastify";
 import { CandidateResponseDTO, RideResponseDTO } from "@/types/ride";
 import Whatsapp from "../../../assets/whatsapp.png"
 import { Dispatch, SetStateAction } from "react";
+import Homem from "../assets/avatar.png"
+import WomanAvatar from "../assets/woman.png";
+import { useRouter } from "next/router";
 
 type Props = {
   avatar: any;
@@ -19,7 +21,8 @@ type Props = {
 };
 
 const CandidateRequest = (props: Props) => {
-  const { avatar, ride, handleClose, candidate, setMyRides } = props;
+  const { ride, handleClose, candidate, setMyRides } = props;
+  const router = useRouter()
 
   const loadDataMyRides = async () => {
     try{
@@ -67,7 +70,21 @@ const CandidateRequest = (props: Props) => {
       <div className="flex flex-col gap-4">
         <div className="flex gap-2 items-center justify-between">
           <div className="flex gap-2 items-center">
-            <Image className="w-12 h-12" src={avatar} alt="ft" />
+                {candidate.user.sex === "Feminino" ?
+                  <Image
+                    onClick={() => router.push("/profile")}
+                    className={"w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300"}
+                    src={WomanAvatar}
+                    alt="foto"
+                  />
+                  :
+                  <Image
+                    onClick={() => router.push("/profile")}
+                    className={"w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300"}
+                    src={Homem}
+                    alt="foto"
+                  />
+                  }
             <p className="font-[Poppins] font-bold text-lg">
               {String(candidate.user.name)?.toUpperCase()}
             </p>
