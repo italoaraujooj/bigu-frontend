@@ -2,7 +2,12 @@ import { Button } from "@/components";
 import RideFull from "@/components/rideFull";
 import Text from "@/components/text";
 import { AuthContext } from "@/context/AuthContext";
-import { getAllRidesAvailable } from "@/services/ride";
+import { 
+  getAllRidesActive, 
+  getAllRidesAvailable,
+  getAllRidesActiveToWomen,
+  getAllRidesAvailableToWomen,
+ } from "@/services/ride";
 import { RideResponseDTO } from "@/types/ride";
 import Router from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -14,19 +19,41 @@ function AvailableRides() {
   const [rides, setRides] = useState<RideResponseDTO[]>([]);
   const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isAvailable, setIsAvailable] = useState<boolean>(false);
+  const [isToWomen, setIsToWomen] = useState<boolean>(false);
 
   useEffect(() => {
-    loadDataRidesAvailable();
-  }, []);
+    loadDataRides();
+  }, [isAvailable, isToWomen]);
 
-  const loadDataRidesAvailable = async () => {
+  const loadDataRides = async () => {
+    setLoading(true);
     try {
-      const responseAvailable = await getAllRidesAvailable();
-      setRides(responseAvailable?.data.availableRides);
-      setLoading(false);
+      let response;
+
+      if (isAvailable && isToWomen) {
+        response = await getAllRidesAvailableToWomen();
+      } 
+      else if (isAvailable) {
+        response = await getAllRidesAvailable();
+      } 
+      else if (isToWomen) {
+        response = await getAllRidesActiveToWomen();
+      } 
+      else {
+        response = await getAllRidesActive();
+      }
+      setRides(response?.data || []);
     } catch (error) {
       toast.error("Ocorreu algum erro ao buscar as caronas disponíveis.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const clearFilters = () => {
+    setIsAvailable(false);
+    setIsToWomen(false);
   };
 
   const ridesWithDriver = rides?.filter(
@@ -47,7 +74,7 @@ function AvailableRides() {
         <div className=" w-full flex flex-col rounded-lg gap-3">
           <div className="flex gap-2 items-center">
             <Text
-              label="Caronas disponíveis"
+              label="Caronas ativas"
               className=" cursor-pointer hover:text-stone-400 "
               color="white"
               size="lg"
@@ -57,12 +84,27 @@ function AvailableRides() {
 
           <div className=" w-full flex gap-2 justify-end items-center">
             <Button
-              label="Pesquisar"
+              label="Todas"
               size="res"
-              color="yellow"
+              color={!isAvailable && !isToWomen ? "green" : "yellow"}
               shape="square"
+              onClick={clearFilters}
             />
-            <Button label="Filtrar" size="res" color="yellow" shape="square" />
+            <Button 
+              label="Disponíveis" 
+              size="res" 
+              color={isAvailable ? "green" : "yellow"}
+              shape="square" 
+              onClick={() => setIsAvailable(!isAvailable)}
+            />
+            <Button 
+              label="Para elas" 
+              size="res" 
+              color={isToWomen ? "pink" : "yellow"}
+              shape="square" 
+              onClick={() => setIsAvailable(!isAvailable)}
+            />
+              
           </div>
           {loading ? (
             <div className="flex items-center justify-center">
