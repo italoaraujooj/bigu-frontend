@@ -19,7 +19,6 @@ const Ajuda = () => {
         </div>
         <div className="mt-8 text-center">
           <a
-            href="/support"
             className="bg-light-blue text-white py-3 px-6 rounded-lg text-lg font-medium font-[Poppins]"
           >
             Ainda tem mais alguma dúvida? Contate nosso Suporte, clicando aqui!

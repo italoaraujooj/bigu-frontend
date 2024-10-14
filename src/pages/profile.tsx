@@ -15,15 +15,17 @@ import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import Image from "next/image";
 import Link from "next/link";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Star from "../assets/star.png";
 import WomanAvatar from "../assets/woman.png";
 import Button from "../components/button";
 import Input from "../components/input/input";
+import Homem from "../assets/avatar.png"
 
 function Profile() {
+  const router = useRouter();
   const formRef = useRef<FormHandles>(null);
   const formRefCar = useRef<FormHandles>(null);
   const formRefChangePassword = useRef<FormHandles>(null);
@@ -164,13 +166,25 @@ function Profile() {
                   onMouseEnter={() => setHoveredImage(true)}
                   onMouseLeave={() => setHoveredImage(false)}
                 >
+                  {user?.sex === "Feminino" ?
                   <Image
+                    onClick={() => router.push("/profile")}
                     className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
                       hoveredImage ? "blur-sm" : ""
                     }`}
                     src={WomanAvatar}
-                    alt="avatar"
+                    alt="foto"
                   />
+                  :
+                  <Image
+                    onClick={() => router.push("/profile")}
+                    className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
+                      hoveredImage ? "blur-sm" : ""
+                    }`}
+                    src={Homem}
+                    alt="foto"
+                  />
+                  }
                   {hoveredImage && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">
                       <label
