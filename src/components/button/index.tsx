@@ -48,7 +48,7 @@ const Button = (props: Props) => {
       "light-blue": "bg-light-blue",
       red:"bg-red",
       blackLine: "bg-blackLine",
-      pink: "bg-pink"
+      pink: "bg-pink",
     },
     shapes: {
       rounded: "rounded-full",
