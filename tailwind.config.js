@@ -28,7 +28,8 @@ module.exports = {
       'orange': '#FB8500',
       'light-white': '#F6F6F6',
       'red': '#dd5035',
-      'cinza': '#616161'
+      'cinza': '#616161',
+      'pink': '#f15bb5'
     },
     extend: {
       width: {
