@@ -14,8 +14,13 @@ interface RecoverPasswordFormState {
   email: string;
 }
 
+interface CodeFormState {
+  email: string;
+}
+
 export default function RecoverPassword() {
   const formRef = useRef<FormHandles>(null);
+  const formRefCod = useRef<FormHandles>(null);
   const [successRequest, setSuccessRequest] = useState(false);
 
   const handleSubmit: SubmitHandler<RecoverPasswordFormState> = async ({
@@ -27,6 +32,14 @@ export default function RecoverPassword() {
       setSuccessRequest(true);
     }
   };
+
+  const handleSubmitCode: SubmitHandler<CodeFormState> = async (data) => {
+    // const res = await forgotPasswordRequest(email);
+    // console.log(res)
+    // if (res?.status === 200) {
+    //   setSuccessRequest(true);
+    // }
+  }
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -82,9 +95,31 @@ export default function RecoverPassword() {
             <LottieAnimation data={success} loop={false} />
           </div>
           <Text
-            label="Verifique sua caixa de e-mail para instruções sobre a recuperação de senha."
+            label="Verifique sua caixa de e-mail insira o código enviado no campo abaixo."
             className="text-center"
           />
+          <Form
+            className="flex flex-col gap-5 justify-center"
+            ref={formRefCod}
+            onSubmit={handleSubmit}
+          >
+            <div className="flex flex-col gap-2 sm:gap-3">
+              <div className="flex flex-col gap-3">
+                <Input
+                  label="Código"
+                  name="email"
+                  sizing="adjustable"
+                  color="extralight"
+                  className="md:w-80 md:h-16 md:text-lg"
+                  type="email"
+                  placeholder="seu.nome@ufcg.edu.br"
+                  readOnly={false}
+                  required
+                />
+              </div>
+              <Button label="Enviar" size="lg" color="yellow" shape="square" type="submit" />
+            </div>
+          </Form>
         </div>
       )}
     </div>
