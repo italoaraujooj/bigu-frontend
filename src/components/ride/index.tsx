@@ -87,6 +87,11 @@ function Ride(props: Props) {
       }
     }
   };
+
+  const handleViewProfile = async (userId: string) => {
+    Router.push(`/view-profile/${userId}`);
+  };
+
   return (
     <div className="bg-dark w-full rounded-lg p-2 flex flex-col mx-auto max-w-[800px] lg:mx-0 lg:w-full sm:py-4 sm:px-8">
       <h2 className="font-['Poppins'] text-center text-lg text-white font-bold pb-4 sm:text-xl md:text-2xl ">
@@ -118,16 +123,21 @@ function Ride(props: Props) {
                     src={MaleAvatar}
                     alt="male avatar"
                   />
-                  <Text
-                    label={`${
-                      item.driver.userId !== user?.userId
-                        ? item.driver.name.split(" ")[0]
-                        : "Você"
-                    } está saindo do ${item.startAddress.bairro}...`}
-                    color="dark"
-                    size="md"
-                    className="tracking-wide whitespace-nowrap text-sm md:text-base lg:text-lg "
-                  />
+                      <p className="font-[Poppins] text-lg tracking-wide whitespace-nowrap md:text-base lg:text-lg ">
+                      <span
+                        className={`cursor-pointer hover:text-blue-500 ${
+                          item.driver.userId === user?.userId ? "cursor-default hover:text-gray-700" : ""
+                        }`}
+                        onClick={() => {
+                          if (item.driver.userId !== user?.userId) {
+                            handleViewProfile(item.driver.userId);
+                          }
+                        }}
+                      >
+                        {item.driver.userId !== user?.userId ? item.driver.name.split(" ")[0] : "Você"}
+                      </span>
+                      {` está saindo do ${item.startAddress.bairro}...`}
+                    </p>
                 </div>
                 <div className="flex flex-row w-full justify-between">
                   <div className="space-y-2 mt-2 whitespace-nowrap">
