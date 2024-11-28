@@ -57,7 +57,14 @@ module.exports = {
         'in-expo': 'cubic-bezier(0.645, 0.045, 0.355, 1.000)',
         'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
       },
+      animation: {
+        'slide-in': 'slideIn 0.5s ease-in-out',
+      },
       keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
         pulse: {
           '0%': { transform: 'scale(1.05)'  },
           '25%': { transform: 'scale(1.04)'  },

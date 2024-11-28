@@ -11,3 +11,4 @@ export { default as TextArea } from './offerRide/textarea';
 export { default as Register } from './register';
 export { default as Login } from './login';
 export { default as GoBack } from './goBack';
+export { default as Banner } from './banner';
