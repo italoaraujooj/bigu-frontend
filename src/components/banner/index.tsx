@@ -1,23 +1,26 @@
 import { useState, useEffect } from "react";
 import { Text } from "@/components";
 import Image from "next/image";
-import Elas from "../../assets/elas.png";
+import Elas from "../../assets/womens.png";
 import Car from "../../assets/car.png";
-import CarSecondary from "../../assets/sport-car.png";
+import SportCar from "../../assets/sport-car.png";
 
 const RotatingBanner = () => {
   const items = [
     {
       image: Elas,
       text: "Aqui nós temos caronas, de mulheres, só para mulheres!",
+      style: "w-100 h-auto object-contain rounded-md"
     },
     {
       image: Car,
       text: "Você pode ter o seu anúncio aqui! Entre em contato.",
+      style: "w-64 h-auto object-contain rounded-md"
     },
     {
-      image: CarSecondary,
+      image: SportCar,
       text: "Cadastre-se agora e comece a pegar caronas hoje!",
+      style: "w-60 h-auto object-contain rounded-md"
     },
   ];
 
@@ -43,7 +46,7 @@ const RotatingBanner = () => {
           <div className="w-full h-full flex flex-row items-center justify-center text-center px-4 space-x-4">
             {/* Imagem */}
             <Image
-              className="w-64 h-auto object-contain rounded-md"
+              className={item.style}
               src={item.image}
               alt={`Banner ${index + 1}`}
             />
