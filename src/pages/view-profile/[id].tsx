@@ -59,7 +59,7 @@ function Profile() {
   console.log(user)
 
   return (
-    <div className="w-full max-w-[90%] mx-auto">
+    <div className="w-full max-w-[90%] mx-auto my-8">
       <div>
         <div>
           <Link
