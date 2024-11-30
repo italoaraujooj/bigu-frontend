@@ -13,6 +13,7 @@ import History from "@/components/history";
 import Homem from "../../assets/avatar.png"
 import { formatarData } from "@/utils/masks";
 import { getRideHistoryUser } from "@/services/ride";
+import { Attribute, Bar } from "@/components/profile/carousel/components";
 
 function Profile() {
   const router = useRouter();
@@ -54,7 +55,7 @@ function Profile() {
   }
 
   return (
-    <div className="flex w-full items-center justify-center my-8">
+    <div className="flex w-full items-center justify-center my-4 md:my-8">
       <div>
         <div>
           <Link
@@ -71,73 +72,64 @@ function Profile() {
           </Link>
         </div>
         <div className="w-full h-fit flex items-center justify-center">
-        <div
-            className="bg-dark w-[80vw] md:w-[80vw] lg:w-[80vw] xl:w-[80vw] 2xl:w-[80vw] sm:w-full p-4 rounded-2xl flex flex-col gap-6 md:p-16 space-y-6"
-            >
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div
-                  className="relative"
-                >
-                  {userData?.sex === "Feminino" ?
-                  <Image
-                    className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300`}
-                    src={userData?.profileImage ? userData.profileImage : WomanAvatar}
-                    alt="foto"
-                  />
-                  :
-                  <Image
-                    className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full`}
-                    src={userData?.profileImage ? userData.profileImage : Homem}
-                    alt="foto"
-                  />
-                  }
-                </div>
-
-                <div className="flex gap-1 items-center">
-                  <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
-                    {userData?.name}
-                  </h1>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray text-[2rem] font-[Poppins] pt-1">⭐ {userData ? userData.avgScore.toFixed(1) : 0.0}</span>
+          <div className="bg-dark w-[90vw] md:w-[85vw] lg:w-[90vw] xl:w-[80vw] 2xl:w-[80vw] sm:w-full p-4 rounded-2xl flex flex-col gap-6 md:p-16 space-y-6">
+            <div className="flex flex-col md:flex-row justify-between gap-6 items-center">
+              <div className="flex justify-between self-start">
+                {/* Bloco do nome, rating e status de verificação */}
+                <div className="flex items-center self-start gap-3">
+                  <div className="relative">
+                    {userData?.sex === "Feminino" ?
+                    <Image
+                      className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300`}
+                      src={userData?.profileImage ? userData.profileImage : WomanAvatar}
+                      alt="foto"
+                    />
+                    :
+                    <Image
+                      className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full`}
+                      src={userData?.profileImage ? userData.profileImage : Homem}
+                      alt="foto"
+                    />
+                    }
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full flex flex-col md:flex-row justify-center items-center gap-6">
-              <div className="w-auto space-y-4 py-6 flex justify-center">
-                <div className="bg-blue-500 px-4 py-3 md:px-6 md:py-4 rounded-lg shadow-lg flex items-center">
-                  <span className="text-white text-[2.5rem] md:text-[3rem] mr-3 md:mr-4 flex-shrink-0">
-                    {userData?.isVerified ? '✅' : '❌'}
-                  </span>
-                  <div className="text-left">
-                    <p className="text-white font-[Poppins] font-bold text-[1.2rem] md:text-[1.5rem] leading-tight">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex justify-between items-center">
+                      <h1 className="text-xl font-bold text-white md:text-4xl font-[Poppins]">
+                        {userData?.name}
+                      </h1>
+                      <span className="text-gray text-[2rem] font-[Poppins]">⭐ {userData ? userData.avgScore.toFixed(1) : 0.0}</span>
+                    </div>
+                    <p className="text-gray italic text-md font-[Poppins]">
                       {userData?.isVerified ? 'Usuário Verificado' : 'Usuário Não Verificado'}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="w-auto space-y-4 py-6 flex justify-center">
-                <div className="bg-purple-500 px-4 py-3 md:px-6 md:py-4 rounded-lg shadow-lg flex items-center">
-                  <span className="text-white text-[2.5rem] md:text-[3rem] mr-3 md:mr-4 flex-shrink-0">🚗</span>
-                  <div className="text-left">
-                    <p className="text-white font-[Poppins] font-bold text-[1.2rem] md:text-[1.5rem] leading-tight">
-                      {userData?.offeredRidesCount} Caronas Conduzidas
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-auto space-y-4 py-6 flex justify-center">
-                <div className="bg-green px-4 py-3 md:px-6 md:py-4 rounded-lg shadow-lg flex items-center">
-                  <span className="text-white text-[2.5rem] md:text-[3rem] mr-3 md:mr-4 flex-shrink-0">🚙</span>
-                  <div className="text-left">
-                    <p className="text-white font-[Poppins] font-bold text-[1.2rem] md:text-[1.5rem] leading-tight">
-                      {userData?.takenRidesCount} Caronas Recebidas
-                    </p>
-                  </div>
+              {/* Bloco da barra e atributos */}
+              <div className="flex items-center gap-6 bg-white p-4 pb-0 rounded-md">
+                <Bar/>
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+                    <Attribute
+                      label={userData?.sex === "Feminino" ? "MULHER" : "HOMEM"}
+                      value={userData?.sex === "Feminino" ? "ELA/DELA" : "ELE/DELE"}
+                      color="light-blue"
+                    />
+                    <Attribute
+                      label="ESTUDANTE"
+                      value="GRADUAÇÃO"
+                      color="yellow"
+                    />
+                    <Attribute
+                      label={`${userData?.offeredRidesCount} ${userData?.offeredRidesCount === 1 ? 'CARONA' : 'CARONAS'}`}
+                      value="CONDUZIDAS"
+                      color="orange"
+                    />
+                    <Attribute
+                      label={`${userData?.takenRidesCount} ${userData?.takenRidesCount === 1 ? 'CARONA' : 'CARONAS'}`}
+                      value="RECEBIDAS"
+                      color="orange"
+                    />
                 </div>
               </div>
             </div>
