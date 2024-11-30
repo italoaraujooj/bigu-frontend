@@ -72,7 +72,6 @@ function Offer(props: Props) {
                       >
                         {`- ${member.user.name}`}
                       </p>
-                      {/* <Text label={`- ${member.user.name}`} color="gray" size="base" /> */}
                     </li>
                   ))}
                 </ul>
