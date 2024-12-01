@@ -197,7 +197,14 @@ function OfferRideForm(props: Props) {
           toast.success("A carona foi criada com sucesso");
         }
       } catch (err: any) {
-        toast.error(err.message);
+        if (
+          err.error ===
+          "Você já tem uma carona marcada para esse horário ou para um horário próximo."
+        ) {
+          toast.error(err.error);
+        } else {
+          toast.error(err.message);
+        }
       }
     }
   };
