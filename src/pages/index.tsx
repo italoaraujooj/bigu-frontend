@@ -1,4 +1,4 @@
-import { Button, Login, Register, Text } from "@/components";
+import { Button, Login, Register, Text, Banner } from "@/components";
 import { List } from "@phosphor-icons/react/dist/ssr/List";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
@@ -81,15 +81,19 @@ export default function Home() {
               size="md"
               className=""
             />
-            <Button
+            {/* <Button
               label="VER MAIS"
               onClick={handleOpenRegister}
               size="base"
               color="yellow"
               shape="rounded"
-            />
+            /> */}
           </div>
         </main>
+
+        <div style={{ marginTop: '80px' }}>
+          <Banner />
+        </div>
 
         <Login handleClose={closeLoginModal} visible={showLogin} />
         <Register handleClose={handleCloseRegister} visible={showRegister} />
