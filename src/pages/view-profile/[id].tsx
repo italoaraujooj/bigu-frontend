@@ -116,7 +116,7 @@ function Profile() {
                       color="light-blue"
                     />
                     <Attribute
-                      label="ESTUDANTE"
+                      label={/estudante|ccc|ee/i.test(userData?.email ?? "") ? "ESTUDANTE" : "PROFESSOR"}
                       value="GRADUAÇÃO"
                       color="yellow"
                     />
