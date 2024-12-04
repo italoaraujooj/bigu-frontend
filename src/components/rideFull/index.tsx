@@ -88,7 +88,7 @@ function RideFull(props: RideProps) {
   return (
     <div className="bg-light-white w-full h-42 rounded-xl flex p-4 flex-col gap-4 sm:p-5">
       <div className="flex justify-between">
-        <div className="flex gap-2 sm:gap-4 items-center">
+        <div onClick={() => handleViewProfile(props.driver.userId)} className="flex gap-2 sm:gap-4 items-center">
           <Image className="w-8 h-8 md:w-12 md:h-12" src={Avatar} alt="foto" />
           <div className="flex flex-col gap-1">
             <div className="flex gap-3 items-center">
