@@ -93,7 +93,21 @@ function RideFull(props: RideProps) {
           <div className="flex flex-col gap-1">
             <div className="flex gap-3 items-center">
               <h1 className="font-bold text-black font-['Poppins'] sm:text-2xl md:text-3xl">
-                {props.driver.name.split(" ")[0]}
+                {/* aqui tbm deve haver um jeito de ir a pagina de usuario */}
+
+                <span
+                  className={`cursor-pointer hover:text-blue-500 ${
+                    props.driver.userId === user?.userId ? "cursor-default hover:text-gray-700" : ""
+                  }`}
+                  onClick={() => {
+                    if (props.driver.userId !== user?.userId) {
+                      handleViewProfile(props.driver.userId);
+                    }
+                  }}
+                >
+                  {props.driver.userId !== user?.userId ? props.driver.name.split(" ")[0] : "Você"}
+                </span>
+                {/* {props.driver.name.split(" ")[0]} */}
               </h1>
               <Image className=" w-3 h-3" src={Star} alt="estrela" />
               <span className=" text-gray text-xs">5.0</span>
