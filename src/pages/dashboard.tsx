@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import { getAllRidesAvailable, getMyRidesAvailable, getRideHistory } from "@/services/ride";
 import { RideResponseDTO } from "@/types/ride";
 import { toast } from "react-toastify";
+import Joyride, { Step, CallBackProps } from "react-joyride";
 
 function Dashboard() {
   const router = useRouter();
@@ -154,25 +155,88 @@ function Dashboard() {
     );
   };
 
+  // Steps for Joyride
+  const steps: Step[] = [
+    {
+      target: ".profile", // CSS selector for the element to highlight
+      content: "Aqui você pode ver o seu nome e sua pontuação média!",
+    },
+    {
+      target: ".history-section", // Assuming this class is applied to the History component
+      content: "Este é o histórico das suas corridas.",
+    },
+    {
+      target: ".rides-available", // Assuming this class is applied to the Ride component
+      content: "Estas são as corridas disponíveis no momento.",
+    },
+    {
+      target: ".header-actions", // Assuming this class is applied to Header actions
+      content: "Use estas opções para criar ou gerenciar corridas.",
+    },
+  ];
+
+  const [showGuide, setShowGuide] = useState(false);
+
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { status } = data;
+    const finishedStatuses = ["finished", "skipped"];
+    if (finishedStatuses.includes(status)) {
+      setShowGuide(false); // Hide guide after it finishes
+    }
+  };
+
+
+
   return (
     <div className="relative w-full my-16 max-w-[1920px] mx-auto">
       {firstDashboardAccess ? (
         firstAccess()
       ) : (
         <>
-          <div className="max-w-[90%] mx-auto flex flex-col gap-9">
-            <Header
-              handleOpenRequests={handleOpenRequests}
-              handleOpenRides={handleOpenRides}
-              hasCandidates={myRides.some((ride) => ride.candidates.length > 0)}
+        
+          {showGuide && (
+              <Joyride
+              steps={steps}
+              continuous
+              showSkipButton
+              showProgress
+              run={showGuide}
+              callback={handleJoyrideCallback}
+              styles={{
+                options: {
+                  zIndex: 10000,
+                },
+              }}
             />
-            <div className="flex justify-between items-center">
+          )}
+        
+          {/* Conteúdo do Dashboard */}
+          <div className="max-w-[90%] mx-auto flex flex-col gap-9">
+            <div className="header-actions">
+              <Header
+                handleOpenRequests={handleOpenRequests}
+                handleOpenRides={handleOpenRides}
+                hasCandidates={myRides.some((ride) => ride.candidates.length > 0)}
+              />
+            </div>
+            <div className="profile flex justify-between items-center">
               {renderGreeting()}
             </div>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+              onClick={() => setShowGuide(true)}
+            >
+              Iniciar Guia
+            </button>
             <div className="flex flex-col-reverse justify-between gap-2 sm:gap-12 lg:gap-12 lg:flex-row">
-              <History races={history} loading={loadingStateHistory} />
+              <div className="history-section w-full">
+                <History races={history} loading={loadingStateHistory} />
+              </div>
               <div className="border-solid border-[1px] border-warmGray-700"></div>
-              <Ride ridesAvailable={ridesAvailable} loadDataRidesAvailable={loadDataRidesAvailable} loading={loadingStateRides}/>
+              <div className="rides-available w-full">
+                <Ride ridesAvailable={ridesAvailable} loadDataRidesAvailable={loadDataRidesAvailable} loading={loadingStateRides}/>
+              </div>
             </div>
           </div>
           <RidesRequests
