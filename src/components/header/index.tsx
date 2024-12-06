@@ -129,6 +129,17 @@ export default function Header(props: Props) {
           />
         </button>
         <button
+          className="group transition-all duration-300 ease-in-out"
+        >
+          <Link
+            to="/complaint"
+            className={clsx(
+              "py-2 text-gray text-base hover:text-[#a8a29e] uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8"
+            )}
+            label="Denunciar"
+          />
+        </button>
+        <button
           onClick={showToast}
           className="group transition-all duration-300 ease-in-out"
         >

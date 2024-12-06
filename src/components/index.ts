@@ -12,3 +12,4 @@ export { default as Register } from './register';
 export { default as Login } from './login';
 export { default as GoBack } from './goBack';
 export { default as Banner } from './banner';
+export { default as Complaint } from './complaint';
