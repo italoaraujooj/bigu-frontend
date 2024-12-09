@@ -1,4 +1,5 @@
 // "use client";
+import { GoBack } from "@/components";
 import { AuthContext } from "@/context/AuthContext";
 import { pollMessages, sendChatMessage } from "@/services/chat";
 import clsx from "clsx";
@@ -94,6 +95,7 @@ export default () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen w-screen">
+      <GoBack />
       <div className="bg-white flex gap-2 flex-col items-center p-4 rounded max-h-[75%]">
         <div
           ref={messagesEndRef}
@@ -132,6 +134,9 @@ export default () => {
               </span>
             </div>
           ))}
+          {messages.length === 0 && (
+            <div className="text-center text-gray-500">Sem mensagens</div>
+          )}
         </div>
         <div className="p-2 flex gap-2">
           <input
