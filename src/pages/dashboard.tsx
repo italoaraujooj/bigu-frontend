@@ -159,19 +159,28 @@ function Dashboard() {
   const steps: Step[] = [
     {
       target: ".profile", // CSS selector for the element to highlight
-      content: "Aqui você pode ver o seu nome e sua pontuação média!",
+      content: "Aqui você encontra sua pontuação média, conquistada ao longo da sua jornada no Bigu!",
+      disableBeacon: true
     },
     {
       target: ".history-section", // Assuming this class is applied to the History component
-      content: "Este é o histórico das suas corridas.",
+      content: "Este é o seu histórico de corridas, incluindo as que você participou e as que ofereceu!",
+      disableBeacon: true
     },
     {
       target: ".rides-available", // Assuming this class is applied to the Ride component
-      content: "Estas são as corridas disponíveis no momento.",
+      content: "Estas são as corridas disponíveis no momento. Clique em 'Ver mais' para explorar mais opções e filtrá-las conforme sua preferência.",
+      disableBeacon: true
     },
     {
       target: ".header-actions", // Assuming this class is applied to Header actions
-      content: "Use estas opções para criar ou gerenciar corridas.",
+      content: "No canto superior direito, você pode configurar sua foto de perfil, acessar suas informações e editá-las. Já no canto superior esquerdo, é possível buscar ajuda, oferecer uma carona, visualizar as solicitações recebidas e acessar dados das caronas que você está oferecendo!",
+      disableBeacon: true
+    },
+    {
+      target: ".info-Botton", // Assuming this class is applied to Header actions
+      content: "Por fim, no botão abaixo, você pode revisitar este tutorial sempre que precisar. Estamos aqui para ajudar :)",
+      disableBeacon: true
     },
   ];
 
@@ -197,10 +206,10 @@ function Dashboard() {
         
           {showGuide && (
               <Joyride
-              steps={steps}
+              steps={steps} 
               continuous
               showSkipButton
-              showProgress
+              // showProgress
               run={showGuide}
               callback={handleJoyrideCallback}
               styles={{
@@ -208,6 +217,15 @@ function Dashboard() {
                   zIndex: 10000,
                 },
               }}
+              locale={{
+                back: "Voltar",
+                close: "Fechar",
+                last: "Finalizar",
+                next: "Próximo",
+                open: 'Abrir',
+                skip: "Pular",
+              }}
+              
             />
           )}
         
@@ -223,12 +241,6 @@ function Dashboard() {
             <div className="profile flex justify-between items-center">
               {renderGreeting()}
             </div>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded"
-              onClick={() => setShowGuide(true)}
-            >
-              Iniciar Guia
-            </button>
             <div className="flex flex-col-reverse justify-between gap-2 sm:gap-12 lg:gap-12 lg:flex-row">
               <div className="history-section w-full">
                 <History races={history} loading={loadingStateHistory} />
@@ -246,6 +258,13 @@ function Dashboard() {
             setMyRides={setMyRides}
           />
           <RidesOffers handleClose={handleCloseRides} visible={showRides} loadDataRidesAvailable={loadDataRidesAvailable}/>
+          <button
+            className="info-Botton fixed bottom-4 left-4 w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none"
+            onClick={() => setShowGuide(true)}
+            title="Iniciar Guia"
+          >
+            ?
+          </button>
         </>
       )}
     </div>
