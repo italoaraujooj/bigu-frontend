@@ -91,6 +91,7 @@ export interface CreateCarFormState {
   brand: string;
   carModel: string;
   modelYear: string;
+  avgConsumption: number;
   color: string;
   plate: string;
 }
