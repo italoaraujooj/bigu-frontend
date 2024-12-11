@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
-import { AddressResponseDTO, RequestRide, UserResponseDTO } from "@/types/ride";
+import { AddressResponseDTO, CandidateResponseDTO, RequestRide, UserResponseDTO } from "@/types/ride";
 import { formatarData } from "@/utils/masks";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -30,16 +30,20 @@ interface RideProps {
   color: string;
   dateTime: string;
   toWoman: boolean;
+  candidates: CandidateResponseDTO[]
 }
 
 function RideFull(props: RideProps) {
   const { user } = useContext(AuthContext);
   const [userAddress, setUserAddresses] = React.useState([]);
-  const [userAddressesSelected, setUserAddressesSelected] = React.useState({} as any);
-  const [askRide, setAskRide] = React.useState(false);
+  const [userAddressesSelected, setUserAddressesSelected] = React.useState(
+    {} as any
+  );
+  const [askRide, setAskRide] = React.useState('');
   const [modalOpen, setModalOpen] = React.useState(false);
-  const [rideIdSelected, setRideIdSelected] = React.useState({});
+  const [rideIdSelected, setRideIdSelected] = React.useState('');
   const [isMapFullScreen, setIsMapFullScreen] = React.useState(false); // Novo estado
+
 
   useEffect(() => {
     fetchUserAddresses().then((data) => {
@@ -73,7 +77,7 @@ function RideFull(props: RideProps) {
         rideId: rideIdSelected,
       } as RequestRide);
       if (response?.status == 200) {
-        setAskRide((prev) => !prev);
+        setAskRide(rideIdSelected);
         setModalOpen((prev) => !prev);
         toast.success("Solicitação enviada. Aguarde a resposta do motorista.");
       }
@@ -162,22 +166,21 @@ function RideFull(props: RideProps) {
                 </span>
               </div>
             </div>
-
             <div className="flex justify-center items-start md:gap-8">
               <div className="flex flex-col h-full items-center gap-4 md:self-center">
-                {!askRide ? (
+                {props.candidates.some((candidate) => candidate.user.userId == user?.userId) || askRide === props.id ? (
+                  <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite text-xs">
+                    Aguardando confirmação...
+                  </span>
+                ) : (
                   <Button
-                    label={!askRide ? "Pedir carona" : "Aguardando confirmação..."}
+                    label="Pedir carona"
                     onClick={() => handleAskRide(props.id)}
-                    size="res"
+                    size="xs"
                     color="green"
                     shape="square"
-                    className="sm:w-36 sm:h-10 sm:px-3 md:w-48 md:h-12 md:px-8 md:text-base"
+                    className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base"
                   />
-                ) : (
-                  <span className="animate-pulse text-yellow ease-in-out infinite">
-                    Aguardando confirmação..
-                  </span>
                 )}
                 <span
                   className="animate-pulse text-blue-500 ease-in-out infinite font-[Poppins] cursor-pointer"
@@ -193,18 +196,18 @@ function RideFull(props: RideProps) {
                 />
               </div>
             </div>
+            <Modal
+              isOpen={modalOpen}
+              onClose={() => setModalOpen((prev) => !prev)}
+              onSubmit={submitRide}
+            >
+              <Dropdown
+                label="Selecione o ponto de partida"
+                options={userAddress}
+                onSelectOption={setUserAddressesSelected}
+              />
+            </Modal>
           </div>
-          <Modal
-            isOpen={modalOpen}
-            onClose={() => setModalOpen((prev) => !prev)}
-            onSubmit={submitRide}
-          >
-            <Dropdown
-              label="Selecione o ponto de partida"
-              options={userAddress}
-              onSelectOption={setUserAddressesSelected}
-            />
-          </Modal>
         </div>
     }
     </>

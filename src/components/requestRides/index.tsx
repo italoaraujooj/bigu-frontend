@@ -15,16 +15,7 @@ type Props = {
 
 function RidesRequests(props: Props) {
   const { visible, handleClose, myRides, setMyRides } = props;
-  // const [myRides, setMyRides] = useState<RideResponseDTO[]>([]);
 
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //     const myRides = await getMyRidesAvailable();
-  //     if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
-  //   };
-
-  //   loadData();
-  // }, []);
   return (
     <div
       id="rideRequests"

@@ -127,6 +127,7 @@ function AvailableRides() {
                   color={item.car.color}
                   dateTime={item.scheduledTime}
                   toWoman={item.toWomen}
+                  candidates={item.candidates}
                 />
               </div>
             ))
