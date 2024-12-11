@@ -231,14 +231,7 @@ function Dashboard() {
               }}
             />
             )}
-          
-          {/* <Head>
-            <script
-              type="text/javascript"
-              src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAypS4QQbX6rnHntFda-rNxXDbO0aCOUN4&"
-            ></script>
-          </Head> */}
-        
+            
           {/* Conteúdo do Dashboard */}
           <div className="max-w-[90%] mx-auto flex flex-col gap-9">
             <div className="header-actions">
