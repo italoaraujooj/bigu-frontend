@@ -13,9 +13,11 @@ import History from "@/components/history";
 import Homem from "../../assets/avatar.png"
 import { formatarData } from "@/utils/masks";
 import { getRideHistoryUser } from "@/services/ride";
+import { Attribute, Bar } from "@/components/profile/carousel/components";
 import Star from "../../assets/star.png";
 import ghost from "../../assets/ghost.json";
 import LottieAnimation from "../../components/LottieAnimation";
+
 
 function Profile() {
   const router = useRouter();
@@ -59,7 +61,8 @@ function Profile() {
   console.log(user)
 
   return (
-    <div className="w-full max-w-[90%] mx-auto my-8">
+    <div className="flex w-full items-center justify-center my-4 md:my-8">
+
       <div>
         <div>
           <Link
@@ -76,57 +79,66 @@ function Profile() {
           </Link>
         </div>
         <div className="w-full h-fit flex items-center justify-center">
-        <div
-            className="bg-dark w-full rounded-lg px-4 py-6 flex flex-col mx-auto max-w-[800px] gap-4 lg:mx-0 lg:w-full sm:py-4 sm:px-8"
-            >
-            <div className="flex items-center text-white gap-4">
-              <div className="w-12 h-12 rounded-full overflow-hidden">
-                {userData?.sex === "Feminino" ?
-                  <Image
-                    className="w-12 h-12 md:w-24 md:h-24 rounded-full"
-                    src={userData?.profileImage ? userData.profileImage : WomanAvatar}
-                    alt="foto"
-                  />
-                  :
-                  <Image
-                    className="w-12 h-12 md:w-24 md:h-24 rounded-full"
-                    src={userData?.profileImage ? userData.profileImage : Homem}
-                    alt="foto"
-                  />
-                }
-              </div>
-              <div className="flex gap-2">
-                <div>
-                  <h2 className="text-3xl font-bold text-white md:text-4xl font-[Poppins]">{user?.name.split(" ")[0]}</h2>
-                  {userData?.isVerified ?
-                  <p className="text-[12px] font-semibold text-gray-400 font-[Poppins]">Usuário verificado</p> :
-                  <p className="text-[12px] font-semibold text-gray-400 font-[Poppins]">Usuário não verificado</p> }
+          <div className="bg-dark w-[90vw] md:w-[85vw] lg:w-[90vw] xl:w-[80vw] 2xl:w-[80vw] sm:w-full p-4 rounded-2xl flex flex-col gap-6 md:p-16 space-y-6">
+            <div className="flex flex-col md:flex-row justify-between gap-6 items-center">
+              <div className="flex justify-between self-start">
+                {/* Bloco do nome, rating e status de verificação */}
+                <div className="flex items-center self-start gap-3">
+                  <div className="relative">
+                    {userData?.sex === "Feminino" ?
+                    <Image
+                      className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300`}
+                      src={userData?.profileImage ? userData.profileImage : WomanAvatar}
+                      alt="foto"
+                    />
+                    :
+                    <Image
+                      className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full`}
+                      src={userData?.profileImage ? userData.profileImage : Homem}
+                      alt="foto"
+                    />
+                    }
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex justify-between items-center">
+                      <h1 className="text-xl font-bold text-white md:text-4xl font-[Poppins]">
+                        {userData?.name}
+                      </h1>
+                      <span className="text-gray text-[2rem] font-[Poppins]">⭐ {userData ? userData.avgScore.toFixed(1) : 0.0}</span>
+                    </div>
+                    <p className="text-gray italic text-md font-[Poppins]">
+                      {userData?.isVerified ? 'Usuário Verificado' : 'Usuário Não Verificado'}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-start mb-3">
-                  <Image className="w-3 h-3 self-center" src={Star} alt="estrela" />
-                  <span className="ml-2 text-[12px] font-[Poppins] self-center">{user?.avgScore}</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center justify-between w-full">
-              <div className="flex h-20 items-end">
-                <div className="w-2 h-10 bg-orange"></div>
-                <div className="w-2 h-12 bg-yellow"></div>
-                <div className="w-2 h-14 bg-light-blue"></div>
               </div>
 
-              <div className="flex flex-col self-end text-gray font-medium text-xs md:text-lg">
-                <div className="font-[Poppins] bg-orange w-full px-4 py-2 flex items-center justify-center rounded-md font-bold text-white text-sm md:text-lg md:p-4">
-                  {`${userData?.offeredRidesCount} CARONAS`}
-                </div>
-                <span className="font-[Poppins] self-center">CONDUZIDAS</span>
-              </div>
+              {/* Bloco da barra e atributos */}
+              <div className="flex items-center gap-6 bg-white p-4 pb-0 rounded-md">
+                <Bar/>
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+                    <Attribute
+                      label={userData?.sex === "Feminino" ? "MULHER" : "HOMEM"}
+                      value={userData?.sex === "Feminino" ? "ELA/DELA" : "ELE/DELE"}
+                      color="light-blue"
+                    />
+                    <Attribute
+                      label={/estudante|ccc|ee/i.test(userData?.email ?? "") ? "ESTUDANTE" : "PROFESSOR"}
+                      value="GRADUAÇÃO"
+                      color="yellow"
+                    />
+                    <Attribute
+                      label={`${userData?.offeredRidesCount} ${userData?.offeredRidesCount === 1 ? 'CARONA' : 'CARONAS'}`}
+                      value="CONDUZIDAS"
+                      color="orange"
+                    />
+                    <Attribute
+                      label={`${userData?.takenRidesCount} ${userData?.takenRidesCount === 1 ? 'CARONA' : 'CARONAS'}`}
+                      value="RECEBIDAS"
+                      color="orange"
+                    />
 
-              <div className="flex flex-col self-end text-gray font-medium text-xs md:text-lg">
-                <div className="font-[Poppins] bg-yellow w-full px-4 py-2 flex items-center justify-center rounded-md font-bold text-white text-sm md:text-lg md:p-4">
-                  {`${userData?.takenRidesCount} CARONAS`}
                 </div>
-                <span className="font-[Poppins] self-center">RECEBIDAS</span>
               </div>
             </div>
 
