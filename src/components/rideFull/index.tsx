@@ -1,7 +1,7 @@
 import { AuthContext } from "@/context/AuthContext";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
-import { AddressResponseDTO, RequestRide, UserResponseDTO } from "@/types/ride";
+import { AddressResponseDTO, CandidateResponseDTO, RequestRide, UserResponseDTO } from "@/types/ride";
 import { formatarData, formatDateRide } from "@/utils/masks";
 import Image from "next/image";
 import React, { useContext, useEffect } from "react";
@@ -29,6 +29,7 @@ interface RideProps {
   color: string;
   dateTime: string;
   toWoman: boolean;
+  candidates: CandidateResponseDTO[]
 }
 
 function RideFull(props: RideProps) {
@@ -37,9 +38,9 @@ function RideFull(props: RideProps) {
   const [userAddressesSelected, setUserAddressesSelected] = React.useState(
     {} as any
   );
-  const [askRide, setAskRide] = React.useState(false);
+  const [askRide, setAskRide] = React.useState('');
   const [modalOpen, setModalOpen] = React.useState(false);
-  const [rideIdSelected, setRideIdSelected] = React.useState({});
+  const [rideIdSelected, setRideIdSelected] = React.useState('');
 
   useEffect(() => {
     fetchUserAddresses().then((data) => {
@@ -72,7 +73,7 @@ function RideFull(props: RideProps) {
         rideId: rideIdSelected,
       } as RequestRide);
       if (response?.status == 200) {
-        setAskRide((prev) => !prev);
+        setAskRide(rideIdSelected);
         setModalOpen((prev) => !prev);
         toast.success("Solicitação enviada. Aguarde a resposta do motorista.");
       }
@@ -132,20 +133,22 @@ function RideFull(props: RideProps) {
 
         <div className="flex gap-8 md:relative bottom-8">
           <div className="self-end md:self-center">
-            {!askRide ? (
-              <Button
-                label={!askRide ? "Pedir carona" : "Aguardando confirmação..."}
-                onClick={() => handleAskRide(props.id)}
-                size="xs"
-                color="green"
-                shape="square"
-                className="sm:w-36 sm:h-10 sm:px-3 md:w-48 md:h-12 md:px-8 md:text-base"
-              />
-            ) : (
-              <span className="animate-pulse text-yellow ease-in-out infinite">
-                Aguardando confirmação..
-              </span>
-            )}
+            <div className={`self-end`}>
+              {props.candidates.some((candidate) => candidate.user.userId == user?.userId) || askRide === props.id ? (
+                <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite text-xs">
+                  Aguardando confirmação...
+                </span>
+              ) : (
+                <Button
+                  label="Pedir carona"
+                  onClick={() => handleAskRide(props.id)}
+                  size="xs"
+                  color="green"
+                  shape="square"
+                  className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base"
+                />
+              )}
+            </div>
           </div>
 
           <Image

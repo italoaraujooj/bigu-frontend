@@ -59,7 +59,7 @@ function Dashboard() {
   const loadDataRidesAvailable = async () => {
     try{
       const responseAvailable = await getAllRidesAvailable();
-      setRidesAvailable(responseAvailable?.data.rides);
+      setRidesAvailable(responseAvailable?.data.availableRides);
     }finally{
       setLoadingStateRides(false);
     }
