@@ -208,7 +208,6 @@ function Dashboard() {
         firstAccess()
       ) : (
         <>
-        
           {showGuide && (
               <Joyride
               steps={steps} 
@@ -230,22 +229,15 @@ function Dashboard() {
                 open: 'Abrir',
                 skip: "Pular",
               }}
-              
-
+            />
+            )}
+          
           {/* <Head>
             <script
               type="text/javascript"
               src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAypS4QQbX6rnHntFda-rNxXDbO0aCOUN4&"
             ></script>
           </Head> */}
-          <div className="max-w-[90%] mx-auto flex flex-col gap-9">
-            <Header
-              handleOpenRequests={handleOpenRequests}
-              handleOpenRides={handleOpenRides}
-              hasCandidates={myRides.some((ride) => ride.candidates.length > 0)}
-
-            />
-          )}
         
           {/* Conteúdo do Dashboard */}
           <div className="max-w-[90%] mx-auto flex flex-col gap-9">
