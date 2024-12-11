@@ -10,17 +10,17 @@ const RotatingBanner = () => {
     {
       image: Elas,
       text: "Aqui nós temos caronas, de mulheres, só para mulheres!",
-      style: "w-100 h-auto object-contain rounded-md"
+      style: "w-36 h-auto sm:w-60 md:w-80 object-contain rounded-md"
     },
     {
       image: Car,
       text: "Você pode ter o seu anúncio aqui! Entre em contato.",
-      style: "w-64 h-auto object-contain rounded-md"
+      style: "w-24 h-auto sm:w-48 md:w-64 object-contain rounded-md"
     },
     {
       image: SportCar,
       text: "Cadastre-se agora e comece a pegar caronas hoje!",
-      style: "w-60 h-auto object-contain rounded-md"
+      style: "w-24 h-auto sm:w-48 md:w-64 object-contain rounded-md"
     },
   ];
 
@@ -35,7 +35,7 @@ const RotatingBanner = () => {
   }, [items.length]);
 
   return (
-    <div className="relative w-full h-48 overflow-hidden rounded-lg shadow-lg bg-yellow">
+    <div className="relative w-full h-32 sm:h-48 md:h-52 lg:h-60 xl:h-52 overflow-hidden rounded-lg shadow-lg bg-yellow">
       {items.map((item, index) => (
         <div
           key={index}
@@ -55,7 +55,8 @@ const RotatingBanner = () => {
               label={item.text}
               size="lg"
               weight="bold"
-              className="leading-[3rem] md:text-4xl xl:text-5xl"
+              // className="leading-[3rem] md:text-4xl xl:text-5xl"
+              className="leading-6 sm:leading-8 md:leading-[3rem] text-lg sm:text-2xl md:text-5xl"
             />
           </div>
         </div>
