@@ -76,14 +76,6 @@ export const requestRide = async (params: RequestRide) => {
   }
 }
 
-export const getCandidates = async () => {
-  try{
-    return api.get("rides/candidates")
-  }catch(err: any){
-    toast.error(err.message)
-  }
-}
-
 export const answerCandidate = async (body: any, rideId: string, candidateId: string) => {
   try{
     const response =  api.put(`/rides/answer/${rideId}/candidate/${candidateId}`, body)
@@ -105,6 +97,15 @@ export const deleteRide = async (id: string) => {
 export const getMyRidesAvailable = async () => {
   try {
     const response = api.get('/rides/driver/active');
+    return response;
+  } catch (err: any) {
+    toast.error(err.message)
+  }
+}
+
+export const getCandidates = async () => {
+  try {
+    const response = api.get('/rides/candidates');
     return response;
   } catch (err: any) {
     toast.error(err.message)

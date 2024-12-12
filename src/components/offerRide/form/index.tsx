@@ -265,10 +265,10 @@ function OfferRideForm(props: Props) {
           "w-full flex items-end gap-4 space-y-2"
         )}
         <div className="flex gap-4 items-center space-y-2">
-          <div className="w-1/2 lg:w-3/4 flex flex-col ">
+          <div className="w-full flex flex-col ">
             <NumericField vacancies={vacancies} setVacancies={setVacancies} />
           </div>
-          <div className="w-1/2">
+          {/* <div className="w-1/2">
             <Input
               name="estimated_value"
               label="VALOR ESTIMADO"
@@ -280,7 +280,7 @@ function OfferRideForm(props: Props) {
               readOnly={false}
               value={ride?.price}
             />
-          </div>
+          </div> */}
         </div>
         {user?.sex === "F" && (
           <div>
