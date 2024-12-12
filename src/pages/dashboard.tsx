@@ -46,30 +46,30 @@ function Dashboard() {
     loadDataRidesAvailable();
     loadDataMyRides();
   }, []);
-  
+
   const loadDataHistory = async () => {
-    try{
+    try {
       const responseHistory = await getRideHistory();
       setHistory(responseHistory.data.userHistory);
-    }finally{
+    } finally {
       setLoadingStateHistory(false);
     }
   }
 
   const loadDataRidesAvailable = async () => {
-    try{
+    try {
       const responseAvailable = await getAllRidesAvailable();
       setRidesAvailable(responseAvailable?.data.rides);
-    }finally{
+    } finally {
       setLoadingStateRides(false);
     }
   }
 
   const loadDataMyRides = async () => {
-    try{
+    try {
       const myRides = await getMyRidesAvailable();
       if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
-    }catch(error: any){
+    } catch (error: any) {
       toast.error("Ocorreu um erro ao buscar as suas caronas.")
     }
   }
@@ -118,6 +118,7 @@ function Dashboard() {
       setP(3);
       await fakeDelay(2000);
       setP(4);
+
     }
 
     t();
@@ -132,23 +133,20 @@ function Dashboard() {
   const firstAccess = () => {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center relative">
-        <div className="w-[1100px] h-28 mt-28 overflow-hidden mx-auto text-center space-y-10">
-          {messages.map((ms, i) => (
-            <Text
-              key={i}
-              label={ms}
-              size="5xl"
-              className={clsx(
-                `transition translate-y-[${positions[p]}] ease-in-out duration-1000`,
-              )}
-            />
-          ))}
-        </div>
-        <div className="flex items-center justify-center w-full h-screen absolute">
-          <LottieAnimation
-            data={Celebrations}
-            className="top-48 w-[800px] absolute start-auto"
-          />
+        <div className="w-[1100px] h-28 mt-28 overflow-hidden mx-auto text-center">
+          <div
+            className="transition-transform duration-1000 ease-in-out"
+            style={{ transform: `translateY(-${p * 7}rem)` }}
+          >
+            {messages.map((ms, i) => (
+              <Text
+                key={i}
+                label={ms}
+                size="5xl"
+                className="h-28 flex items-center justify-center"
+              />
+            ))}
+          </div>
         </div>
       </div>
     );
