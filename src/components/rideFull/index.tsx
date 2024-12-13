@@ -1,23 +1,27 @@
-import React, { useContext, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
-import { AddressResponseDTO, CandidateResponseDTO, RequestRide, UserResponseDTO } from "@/types/ride";
+import {
+  AddressResponseDTO,
+  CandidateResponseDTO,
+  RequestRide,
+  UserResponseDTO,
+} from "@/types/ride";
 import { formatarData } from "@/utils/masks";
+import { Clock } from "@phosphor-icons/react/dist/ssr/Clock";
+import { MapPin } from "@phosphor-icons/react/dist/ssr/MapPin";
+import { Person } from "@phosphor-icons/react/dist/ssr/Person";
 import Image from "next/image";
+import Router from "next/router";
+import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
-import Map from "../../assets/map.png";
 import Star from "../../assets/star.png";
 import Avatar from "../../assets/woman.png";
 import Button from "../button";
 import Dropdown from "../dropdown";
-import Modal from "../modal";
-import { Clock } from "@phosphor-icons/react/dist/ssr/Clock";
-import { MapPin } from "@phosphor-icons/react/dist/ssr/MapPin";
-import { Person } from "@phosphor-icons/react/dist/ssr/Person";
-import Router from "next/router";
 import Mapa from "../map";
 import MapFullScreen from "../mapFullScreen";
+import Modal from "../modal";
 
 interface RideProps {
   id: string;
@@ -30,7 +34,7 @@ interface RideProps {
   color: string;
   dateTime: string;
   toWoman: boolean;
-  candidates: CandidateResponseDTO[]
+  candidates: CandidateResponseDTO[];
 }
 
 function RideFull(props: RideProps) {
@@ -39,11 +43,10 @@ function RideFull(props: RideProps) {
   const [userAddressesSelected, setUserAddressesSelected] = React.useState(
     {} as any
   );
-  const [askRide, setAskRide] = React.useState('');
+  const [askRide, setAskRide] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
-  const [rideIdSelected, setRideIdSelected] = React.useState('');
+  const [rideIdSelected, setRideIdSelected] = React.useState("");
   const [isMapFullScreen, setIsMapFullScreen] = React.useState(false); // Novo estado
-
 
   useEffect(() => {
     fetchUserAddresses().then((data) => {
@@ -87,7 +90,15 @@ function RideFull(props: RideProps) {
   };
 
   const formatAddress = (adress: AddressResponseDTO) => {
-    return adress.rua + ", " + adress.numero + ", " + adress.cidade + " - " + adress.estado;
+    return (
+      adress.rua +
+      ", " +
+      adress.numero +
+      ", " +
+      adress.cidade +
+      " - " +
+      adress.estado
+    );
   };
 
   const handleViewProfile = async (userId: string) => {
@@ -96,6 +107,10 @@ function RideFull(props: RideProps) {
 
   const handleToggleMap = () => {
     setIsMapFullScreen((prev) => !prev);
+  };
+
+  const handleChatWithDriver = () => {
+    Router.push(`/chat?rideId=${props.id}&senderId=${user?.userId}`);
   };
 
   if (isMapFullScreen) {
@@ -118,18 +133,25 @@ function RideFull(props: RideProps) {
   }
 
   return (
-    <>{
-      isMapFullScreen ?
-
-        <MapFullScreen origin={formatAddress(props.start)} destination={formatAddress(props.destination)} handleToggleMap={handleToggleMap} />
-        :
+    <>
+      {isMapFullScreen ? (
+        <MapFullScreen
+          origin={formatAddress(props.start)}
+          destination={formatAddress(props.destination)}
+          handleToggleMap={handleToggleMap}
+        />
+      ) : (
         <div className="bg-light-white w-full h-42 rounded-xl flex p-2 flex-col gap-4 sm:p-5">
           <div className="flex justify-between">
             <div
               onClick={() => handleViewProfile(props.driver.userId)}
               className="flex gap-2 sm:gap-4 items-center"
             >
-              <Image className="w-8 h-8 md:w-12 md:h-12" src={Avatar} alt="foto" />
+              <Image
+                className="w-8 h-8 md:w-12 md:h-12"
+                src={Avatar}
+                alt="foto"
+              />
               <div className="flex flex-col gap-1">
                 <div className="flex gap-3 items-center">
                   <h1 className="font-bold text-black font-['Poppins'] sm:text-2xl md:text-3xl">
@@ -155,7 +177,9 @@ function RideFull(props: RideProps) {
                 <Person size={24} color="#252525" weight="fill" />
                 <span className="font-['Poppins'] font-normal text-xs sm:text-sm md:text-base lg:text-xl">
                   {props.numSeats}{" "}
-                  {Number(props.numSeats) > 1 ? "vagas disponíveis" : "vaga disponível"}{" "}
+                  {Number(props.numSeats) > 1
+                    ? "vagas disponíveis"
+                    : "vaga disponível"}{" "}
                 </span>
               </div>
 
@@ -168,7 +192,17 @@ function RideFull(props: RideProps) {
             </div>
             <div className="flex justify-center items-start md:gap-8">
               <div className="flex flex-col h-full items-center gap-4 md:self-center">
-                {props.candidates.some((candidate) => candidate.user.userId == user?.userId) || askRide === props.id ? (
+                <Button
+                  label={"Chat"}
+                  onClick={() => handleChatWithDriver()}
+                  size="xs"
+                  color="green"
+                  shape="square"
+                  className="sm:w-36 sm:h-10 sm:px-3 md:w-48 md:h-12 md:px-8 md:text-base"
+                />
+                {props.candidates.some(
+                  (candidate) => candidate.user.userId == user?.userId
+                ) || askRide === props.id ? (
                   <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite text-xs">
                     Aguardando confirmação...
                   </span>
@@ -209,7 +243,7 @@ function RideFull(props: RideProps) {
             </Modal>
           </div>
         </div>
-    }
+      )}
     </>
   );
 }

@@ -1,28 +1,30 @@
-import { useContext, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
 import Image from "next/image";
+import { parseCookies } from "nookies";
+import { useContext, useEffect, useState } from "react";
 
+import { Text } from "@/components";
 import Header from "@/components/header";
 import History from "@/components/history";
-import Ride from "@/components/ride";
-import { AuthContext } from "@/context/AuthContext";
-import Star from "../assets/star.png";
-import { RequestContext } from "@/context/RequestContext";
-import RidesRequests from "@/components/requestRides";
-import RidesOffers from "@/components/ridesOffers";
 import LottieAnimation from "@/components/LottieAnimation";
-import Celebrations from "../assets/celebrations.json";
-import { Text } from "@/components";
+import RidesRequests from "@/components/requestRides";
+import Ride from "@/components/ride";
+import RidesOffers from "@/components/ridesOffers";
+import { AuthContext } from "@/context/AuthContext";
+import { RequestContext } from "@/context/RequestContext";
+import {
+  getAllRidesAvailable,
+  getMyRidesAvailable,
+  getRideHistory,
+} from "@/services/ride";
+import { RideResponseDTO } from "@/types/ride";
 import { fakeDelay } from "@/utils/delay";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { getAllRidesAvailable, getMyRidesAvailable, getRideHistory } from "@/services/ride";
-import { RideResponseDTO } from "@/types/ride";
+import Joyride, { CallBackProps, Step } from "react-joyride";
 import { toast } from "react-toastify";
-import Joyride, { Step, CallBackProps } from "react-joyride";
-import Intro from "@/components/map";
-import Head from 'next/head';
+import Celebrations from "../assets/celebrations.json";
+import Star from "../assets/star.png";
 
 function Dashboard() {
   const router = useRouter();
@@ -36,8 +38,8 @@ function Dashboard() {
   const [ridesAvailable, setRidesAvailable] = useState<RideResponseDTO[]>([]);
   const [myRides, setMyRides] = useState<RideResponseDTO[]>([]);
 
-  const origin = 'Rua jose mamede de souza, 63';
-  const destination = 'ufcg';
+  const origin = "Rua jose mamede de souza, 63";
+  const destination = "ufcg";
 
   const [loadingStateRides, setLoadingStateRides] = useState<boolean>(true);
   const [loadingStateHistory, setLoadingStateHistory] = useState<boolean>(true);
@@ -52,33 +54,33 @@ function Dashboard() {
     loadDataRidesAvailable();
     loadDataMyRides();
   }, []);
-  
+
   const loadDataHistory = async () => {
-    try{
+    try {
       const responseHistory = await getRideHistory();
       setHistory(responseHistory.data.userHistory);
-    }finally{
+    } finally {
       setLoadingStateHistory(false);
     }
-  }
+  };
 
   const loadDataRidesAvailable = async () => {
-    try{
+    try {
       const responseAvailable = await getAllRidesAvailable();
       setRidesAvailable(responseAvailable?.data.availableRides);
-    }finally{
+    } finally {
       setLoadingStateRides(false);
     }
-  }
+  };
 
   const loadDataMyRides = async () => {
-    try{
+    try {
       const myRides = await getMyRidesAvailable();
       if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
-    }catch(error: any){
-      toast.error("Ocorreu um erro ao buscar as suas caronas.")
+    } catch (error: any) {
+      toast.error("Ocorreu um erro ao buscar as suas caronas.");
     }
-  }
+  };
 
   const renderGreeting = () => {
     return (
@@ -95,7 +97,9 @@ function Dashboard() {
             </h1>
             <div className="flex items-center gap-2">
               <Image className="w-3 h-3" src={Star} alt="estrela" />
-              <span className="text-gray text-[0.725rem] pt-1">{user ? user.avgScore.toFixed(1) : 0.0}</span>
+              <span className="text-gray text-[0.725rem] pt-1">
+                {user ? user.avgScore.toFixed(1) : 0.0}
+              </span>
             </div>
           </div>
         )}
@@ -145,7 +149,7 @@ function Dashboard() {
               label={ms}
               size="5xl"
               className={clsx(
-                `transition translate-y-[${positions[p]}] ease-in-out duration-1000`,
+                `transition translate-y-[${positions[p]}] ease-in-out duration-1000`
               )}
             />
           ))}
@@ -164,33 +168,37 @@ function Dashboard() {
   const steps: Step[] = [
     {
       target: ".profile", // CSS selector for the element to highlight
-      content: "Aqui você encontra sua pontuação média, conquistada ao longo da sua jornada no Bigu!",
-      disableBeacon: true
+      content:
+        "Aqui você encontra sua pontuação média, conquistada ao longo da sua jornada no Bigu!",
+      disableBeacon: true,
     },
     {
       target: ".history-section", // Assuming this class is applied to the History component
-      content: "Este é o seu histórico de corridas, incluindo as que você participou e as que ofereceu!",
-      disableBeacon: true
+      content:
+        "Este é o seu histórico de corridas, incluindo as que você participou e as que ofereceu!",
+      disableBeacon: true,
     },
     {
       target: ".rides-available", // Assuming this class is applied to the Ride component
-      content: "Estas são as corridas disponíveis no momento. Clique em 'Ver mais' para explorar mais opções e filtrá-las conforme sua preferência.",
-      disableBeacon: true
+      content:
+        "Estas são as corridas disponíveis no momento. Clique em 'Ver mais' para explorar mais opções e filtrá-las conforme sua preferência.",
+      disableBeacon: true,
     },
     {
       target: ".header-actions", // Assuming this class is applied to Header actions
-      content: "No canto superior direito, você pode configurar sua foto de perfil, acessar suas informações e editá-las. Já no canto superior esquerdo, é possível buscar ajuda, oferecer uma carona, visualizar as solicitações recebidas e acessar dados das caronas que você está oferecendo!",
-      disableBeacon: true
+      content:
+        "No canto superior direito, você pode configurar sua foto de perfil, acessar suas informações e editá-las. Já no canto superior esquerdo, é possível buscar ajuda, oferecer uma carona, visualizar as solicitações recebidas e acessar dados das caronas que você está oferecendo!",
+      disableBeacon: true,
     },
     {
       target: ".info-Botton", // Assuming this class is applied to Header actions
-      content: "Por fim, no botão abaixo, você pode revisitar este tutorial sempre que precisar. Estamos aqui para ajudar :)",
-      disableBeacon: true
+      content:
+        "Por fim, no botão abaixo, você pode revisitar este tutorial sempre que precisar. Estamos aqui para ajudar :)",
+      disableBeacon: true,
     },
   ];
 
   const [showGuide, setShowGuide] = useState(false);
-
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { status } = data;
@@ -200,8 +208,6 @@ function Dashboard() {
     }
   };
 
-
-
   return (
     <div className="relative w-full my-16 max-w-[1920px] mx-auto">
       {firstDashboardAccess ? (
@@ -209,8 +215,8 @@ function Dashboard() {
       ) : (
         <>
           {showGuide && (
-              <Joyride
-              steps={steps} 
+            <Joyride
+              steps={steps}
               continuous
               showSkipButton
               // showProgress
@@ -226,19 +232,21 @@ function Dashboard() {
                 close: "Fechar",
                 last: "Finalizar",
                 next: "Próximo",
-                open: 'Abrir',
+                open: "Abrir",
                 skip: "Pular",
               }}
             />
-            )}
-            
+          )}
+
           {/* Conteúdo do Dashboard */}
           <div className="max-w-[90%] mx-auto flex flex-col gap-9">
             <div className="header-actions">
               <Header
                 handleOpenRequests={handleOpenRequests}
                 handleOpenRides={handleOpenRides}
-                hasCandidates={myRides.some((ride) => ride.candidates.length > 0)}
+                hasCandidates={myRides.some(
+                  (ride) => ride.candidates.length > 0
+                )}
               />
             </div>
             <div className="profile flex justify-between items-center">
@@ -250,7 +258,11 @@ function Dashboard() {
               </div>
               <div className="border-solid border-[1px] border-warmGray-700"></div>
               <div className="rides-available w-full">
-                <Ride ridesAvailable={ridesAvailable} loadDataRidesAvailable={loadDataRidesAvailable} loading={loadingStateRides}/>
+                <Ride
+                  ridesAvailable={ridesAvailable}
+                  loadDataRidesAvailable={loadDataRidesAvailable}
+                  loading={loadingStateRides}
+                />
               </div>
             </div>
           </div>
@@ -260,7 +272,11 @@ function Dashboard() {
             myRides={myRides}
             setMyRides={setMyRides}
           />
-          <RidesOffers handleClose={handleCloseRides} visible={showRides} loadDataRidesAvailable={loadDataRidesAvailable}/>
+          <RidesOffers
+            handleClose={handleCloseRides}
+            visible={showRides}
+            loadDataRidesAvailable={loadDataRidesAvailable}
+          />
           <button
             className="info-Botton fixed bottom-4 left-4 w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none"
             onClick={() => setShowGuide(true)}
