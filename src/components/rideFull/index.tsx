@@ -109,6 +109,10 @@ function RideFull(props: RideProps) {
     setIsMapFullScreen((prev) => !prev);
   };
 
+  const handleChatWithDriver = () => {
+    Router.push(`/chat?rideId=${props.id}&senderId=${user?.userId}`);
+  };
+
   if (isMapFullScreen) {
     return (
       <div className="w-full h-full fixed top-0 left-0 bg-white z-50 flex flex-col items-center justify-center">
@@ -188,6 +192,14 @@ function RideFull(props: RideProps) {
             </div>
             <div className="flex justify-center items-start md:gap-8">
               <div className="flex flex-col h-full items-center gap-4 md:self-center">
+                <Button
+                  label={"Chat"}
+                  onClick={() => handleChatWithDriver()}
+                  size="xs"
+                  color="green"
+                  shape="square"
+                  className="sm:w-36 sm:h-10 sm:px-3 md:w-48 md:h-12 md:px-8 md:text-base"
+                />
                 {props.candidates.some(
                   (candidate) => candidate.user.userId == user?.userId
                 ) || askRide === props.id ? (
