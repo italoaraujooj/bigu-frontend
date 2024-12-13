@@ -49,7 +49,8 @@ export type RideDto = {
 
 export type CandidateResponseDTO = {
     user: UserResponseDTO,
-    address: AddressResponseDTO
+    address: AddressResponseDTO,
+    suggestedValue: number
 }
 
 export type RideResponseDTO = {

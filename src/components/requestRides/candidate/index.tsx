@@ -36,7 +36,22 @@ const CandidateRequest = (props: Props) => {
   
   const handleAcceptCandidate = async () => {
     try {
-      const body = { status: "accept" };
+      const body = { status: "accept", freeRide: "false" };
+      const response = await answerCandidate(body, ride.rideId, candidate.user.userId);
+      if (response?.status === 200) {
+        toast.success("O usuário foi adicionado a carona com sucesso");
+        loadDataMyRides();
+        handleClose();
+      }
+
+    } catch (err: any) {
+      toast.error("Falha ao aceitar o usuário");
+    }
+  };
+
+  const handleAcceptFreeCandidate = async () => {
+    try {
+      const body = { status: "accept", freeRide: "true" };
       const response = await answerCandidate(body, ride.rideId, candidate.user.userId);
       if (response?.status === 200) {
         toast.success("O usuário foi adicionado a carona com sucesso");
@@ -153,11 +168,20 @@ const CandidateRequest = (props: Props) => {
               size="base"
             />
           </>
+
+          <>
+            <Text label="💸 Contribuição:" color="dark" size="base" weight="bold" />
+            <Text
+              label={String(candidate.suggestedValue)}
+              color="gray"
+              size="base"
+            />
+          </>
         </div>
       </div>
       <div className="flex gap-4 mt-6 mb-2 items-center">
         <Button
-          label="Aceitar"
+          label="Aceitar com Contribuição"
           size="base"
           color="green"
           className="uppercase"
@@ -165,14 +189,25 @@ const CandidateRequest = (props: Props) => {
           onClick={handleAcceptCandidate}
         />
         <Button
+          label="Aceitar de Graça"
+          size="base"
+          color="yellow"
+          className="uppercase"
+          shape="square"
+          onClick={handleAcceptFreeCandidate}
+        />
+      </div>
+      <div className="w-full mt-6 mb-2 flex justify-center">
+        <Button
           label="Recusar"
           size="base"
           color="red"
-          className="uppercase"
+          className="w-full uppercase"
           shape="square"
           onClick={handleRejectCandidate}
         />
       </div>
+
      <Notification />
     </div>
   );

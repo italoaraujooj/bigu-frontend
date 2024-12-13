@@ -62,7 +62,8 @@ function Profile() {
 
   const handleCreateCar: SubmitHandler<CreateCarFormState> = async (data) => {
     try {
-      const response: any = await createCar(data);
+      const payload = {...data, avgConsumption: Number(data.avgConsumption)}
+      const response: any = await createCar(payload);
       if (response.status === 201) {
         setCars([...cars, response.data.newCar]);
         toast.success(response.data.message);
@@ -353,6 +354,13 @@ function Profile() {
                   name="modelYear"
                   label="Ano"
                   placeholder="2023"
+                  sizing="adjustable"
+                  color="extralight"
+                />
+                <Input
+                  name="avgConsumption"
+                  label="Consumo médio (km/l)"
+                  placeholder="16"
                   sizing="adjustable"
                   color="extralight"
                 />
