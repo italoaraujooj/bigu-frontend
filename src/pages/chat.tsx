@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
 
-export default () => {
+const Chat = () => {
   const searchParams = useSearchParams();
 
   const senderId = searchParams.get("senderId");
@@ -159,3 +159,5 @@ export default () => {
     </div>
   );
 };
+
+export default Chat;
