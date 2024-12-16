@@ -6,6 +6,8 @@ import WomanAvatar from "../../assets/woman.png";
 import LottieAnimation from "../../components/LottieAnimation";
 import ghost from "../../assets/ghost.json";
 import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
 
 type Props = {
   reports: ReportResponseDTO[];
@@ -15,6 +17,7 @@ type Props = {
 
 const Reports = (props: Props) => {
   const { reports, handleOpenReportForm, setEditReport } = props;
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="bg-dark w-full h-fit rounded-lg py-6 flex flex-col mx-auto lg:mx-0 max-w-[800px]">
@@ -33,7 +36,7 @@ const Reports = (props: Props) => {
                 <div className="relative">
                   {report.reporterSex === "Feminino" ? (
                     <Image
-                      className="w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300"
+                      className="w-8 h-8 md:w-16 md:h-16 object-cover rounded-full"
                       src={WomanAvatar}
                       alt="foto"
                     />
@@ -53,18 +56,20 @@ const Reports = (props: Props) => {
               </div>
 
               {/* Move PencilSimple icon to the right */}
-              <div className="ml-auto">
-                <PencilSimple
-                  color="#FFB400"
-                  weight="bold"
-                  className="cursor-pointer"
-                  size={24}
-                  onClick={() => {
-                    handleOpenReportForm();
-                    setEditReport(report._id);
-                  }}
-                />
-              </div>
+              {user?.userId === report.reporterId && (
+                <div className="ml-auto">
+                  <PencilSimple
+                    color="#FFB400"
+                    weight="bold"
+                    className="cursor-pointer"
+                    size={24}
+                    onClick={() => {
+                      handleOpenReportForm();
+                      setEditReport(report._id);
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="flex-grow mt-4">

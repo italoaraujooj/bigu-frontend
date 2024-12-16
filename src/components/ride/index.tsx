@@ -17,7 +17,6 @@ import Button from "../button";
 import Dropdown from "../dropdown";
 import LottieAnimation from "../LottieAnimation";
 import MapFullScreen from "../mapFullScreen";
-import Modal from "../modal";
 import Text from "../text";
 
 type Props = {
@@ -186,67 +185,86 @@ function Ride(props: Props) {
                         {` está saindo do ${item.startAddress.bairro}...`}
                       </p>
                     </div>
-                      <div className="flex flex-row w-full justify-between">
-                        <div className="space-y-2 mt-2 whitespace-nowrap flex flex-col gap-2">
-                          <Text
-                            label={`🚕 ${item.car.carModel} ${item.car.color} - ${item.car.plate}`}
-                            color="dark"
-                            size="md"
-                            weight="medium"
-                            className="tracking-wide text-xs md:text-md"
-                          />
-                          <Text
-                            label={`🙍‍♂️ ${item.numSeats - item.members.length} ${Number(item.numSeats - item.members.length) > 1 ? "Vagas disponíveis" : "Vaga disponível"}`}
-                            color="dark"
-                            size="md"
-                            weight="medium"
-                            className="tracking-wide text-xs md:text-md"
-                          />
-                          <Text
-                            label={`⏰ ${formatarDate(item.scheduledTime)}`}
-                            color="dark"
-                            size="md"
-                            weight="medium"
-                            className="tracking-wide text-xs md:text-md"
-                          />
-                          <Text
-                            label={`💵 ${String(item.price)}`}
-                            color="dark"
-                            size="md"
-                            weight="medium"
-                            className="tracking-wide text-xs md:text-md"
-                          />
-                        </div>
-                        <div className="flex flex-col items-center justify-center gap-4">
-                          <span
-                            className="animate-pulse text-blue-500 ease-in-out infinite font-[Poppins] cursor-pointer font-bold"
-                            onClick={() => handleToggleMap(item.startAddress, item.destinationAddress)}
-                          >
-                            📍 Ver no mapa
-                          </span>
-                          {item.members.some((membro) => membro.user.userId == user?.userId) ? (
-                            <div className="self-end">
-                              <Text label="Carona aceita" color="green" weight="bold" size="xs" className="uppercase sm:text-sm" />
-                            </div>
-                          ) : (
-                            <div className={`self-end`}>
-                              {item.candidates.some((candidate) => candidate.user.userId == user?.userId) || askRide === item.rideId ? (
-                                <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite text-xs">
-                                  Aguardando confirmação...
-                                </span>
-                              ) : (
-                                <Button
-                                  label="Pedir carona"
-                                  onClick={() => handleAskRide(item.rideId)}
-                                  size="xs"
-                                  color="green"
-                                  shape="square"
-                                  className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base mb-5"
-                                />
-                              )}
-                            </div>
-                          )}
-                        </div>
+                    <div className="flex flex-row w-full justify-between">
+                      <div className="space-y-2 mt-2 whitespace-nowrap flex flex-col gap-2">
+                        <Text
+                          label={`🚕 ${item.car.carModel} ${item.car.color} - ${item.car.plate}`}
+                          color="dark"
+                          size="md"
+                          weight="medium"
+                          className="tracking-wide text-xs md:text-md"
+                        />
+                        <Text
+                          label={`🙍‍♂️ ${item.numSeats - item.members.length} ${
+                            Number(item.numSeats - item.members.length) > 1
+                              ? "Vagas disponíveis"
+                              : "Vaga disponível"
+                          }`}
+                          color="dark"
+                          size="md"
+                          weight="medium"
+                          className="tracking-wide text-xs md:text-md"
+                        />
+                        <Text
+                          label={`⏰ ${formatarDate(item.scheduledTime)}`}
+                          color="dark"
+                          size="md"
+                          weight="medium"
+                          className="tracking-wide text-xs md:text-md"
+                        />
+                        <Text
+                          label={`💵 ${String(item.price)}`}
+                          color="dark"
+                          size="md"
+                          weight="medium"
+                          className="tracking-wide text-xs md:text-md"
+                        />
+                      </div>
+                      <div className="flex flex-col items-center justify-center gap-4">
+                        <span
+                          className="animate-pulse text-blue-500 ease-in-out infinite font-[Poppins] cursor-pointer font-bold"
+                          onClick={() =>
+                            handleToggleMap(
+                              item.startAddress,
+                              item.destinationAddress
+                            )
+                          }
+                        >
+                          📍 Ver no mapa
+                        </span>
+                        {item.members.some(
+                          (membro) => membro.user.userId == user?.userId
+                        ) ? (
+                          <div className="self-end">
+                            <Text
+                              label="Carona aceita"
+                              color="green"
+                              weight="bold"
+                              size="xs"
+                              className="uppercase sm:text-sm"
+                            />
+                          </div>
+                        ) : (
+                          <div className={`self-end`}>
+                            {item.candidates.some(
+                              (candidate) =>
+                                candidate.user.userId == user?.userId
+                            ) || askRide === item.rideId ? (
+                              <span className="font-['Poppins'] animate-pulse text-yellow ease-in-out infinite text-xs">
+                                Aguardando confirmação...
+                              </span>
+                            ) : (
+                              <Button
+                                label="Pedir carona"
+                                onClick={() => handleAskRide(item.rideId)}
+                                size="xs"
+                                color="green"
+                                shape="square"
+                                className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base mb-5"
+                              />
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
