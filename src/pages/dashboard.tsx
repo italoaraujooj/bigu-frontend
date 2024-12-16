@@ -185,7 +185,7 @@ function Dashboard() {
     {
       target: ".header-actions", // Assuming this class is applied to Header actions
       content:
-        "No canto superior direito, você pode configurar sua foto de perfil, acessar suas informações e editá-las. Já no canto superior esquerdo, é possível buscar ajuda, oferecer uma carona, visualizar as solicitações recebidas e acessar dados das caronas que você está oferecendo!",
+        "No canto superior esquerdo, você pode configurar sua foto de perfil, acessar suas informações e editá-las. Já no canto superior esquerdo, é possível buscar ajuda, oferecer uma carona, visualizar as solicitações recebidas e acessar dados das caronas que você está oferecendo!",
       disableBeacon: true,
     },
     {
@@ -222,7 +222,19 @@ function Dashboard() {
               callback={handleJoyrideCallback}
               styles={{
                 options: {
-                  zIndex: 10000,
+                  zIndex: 0,
+                },
+                tooltip: {
+                  fontFamily: 'Poppins, sans-serif',
+                },
+                buttonSkip: {
+                  fontFamily: 'Poppins, sans-serif',
+                },
+                buttonNext: {
+                  fontFamily: 'Poppins, sans-serif',
+                },
+                buttonBack: {
+                  fontFamily: 'Poppins, sans-serif',
                 },
               }}
               locale={{
