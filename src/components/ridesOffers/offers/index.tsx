@@ -7,6 +7,8 @@ import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
 import Router from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
+import Image from "next/image";
+import chat from "../../../assets/message-circle.svg";
 
 type Props = {
   ride: RideResponseDTO;
@@ -41,7 +43,7 @@ function Offer(props: Props) {
   };
 
   return (
-    <div className="w-full rounded-lg px-8 py-6 bg-white shadow-xl">
+    <div className="w-full rounded-lg px-4 py-4 bg-white shadow-xl">
       <div className="flex justify-between">
         <div className="flex flex-col gap-2">
           <div>
@@ -86,8 +88,8 @@ function Offer(props: Props) {
                 Number(ride.numSeats) - ride.members.length > 1
                   ? ride.numSeats + " vagas disponíveis"
                   : Number(ride.numSeats) -
-                    ride.members.length +
-                    " vaga disponível"
+                  ride.members.length +
+                  " vaga disponível"
               }
               color="gray"
               size="base"
@@ -140,16 +142,15 @@ function Offer(props: Props) {
           onClick={() => props.handleEditRide(ride.rideId)}
         />
       </div>
-      <div className="flex flex-row justify-center gap-2 mt-4">
-        <Button
+      <div className="flex flex-row justify-center items-center gap-2 mt-4">
+        {/* <Button
           label="Chat"
           size="sm"
           color="dark-blue"
           className="uppercase"
           shape="square"
           onClick={() => handleChat()}
-        />
-
+        /> */}
         <Button
           label="Cancelar"
           size="sm"
@@ -167,6 +168,7 @@ function Offer(props: Props) {
           shape="square"
           onClick={() => handleOverRide(ride.rideId)}
         />
+        <Image onClick={() => handleChat()} className="w-10 h-10" src={chat} alt="car" />
       </div>
     </div>
   );
