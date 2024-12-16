@@ -89,11 +89,12 @@ export interface SignInResponse {
 
 export interface CreateCarFormState {
   brand: string;
-  carModel: string;
+  vehicleModel: string;
   modelYear: string;
   avgConsumption: number;
   color: string;
   plate: string;
+  type: string;
 }
 
 export interface AddressFormState {

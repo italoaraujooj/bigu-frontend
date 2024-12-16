@@ -6,6 +6,7 @@ import Plus from "../../../assets/plus-green.png";
 import { Actions, Attribute, Bar, Navigation } from "./components";
 import { CarResponseDTO } from "@/types/ride";
 import Modal from "@/components/modal";
+import { VehicleType } from "@googlemaps/google-maps-services-js";
 
 type Props = {
   profile?: boolean;
@@ -16,6 +17,7 @@ type Props = {
 
 const Carousel = (props: Props) => {
   const { profile, add, items } = props;
+  console.log({items});
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [selectedCar, setSelectedCar] = React.useState(0);
 
@@ -50,10 +52,10 @@ const Carousel = (props: Props) => {
           props.profile && "w-96"
         )}
       >
-        {items.length > 0 ? (
+        {items?.length > 0 ? (
           items?.map((car: CarResponseDTO, index: number) => (
             <div
-              key={car.carId}
+              key={car?.vehicleId}
               className={clsx(
                 "w-full shrink-0",
                 "transform-gpu",
@@ -63,27 +65,26 @@ const Carousel = (props: Props) => {
             >
               <div className="flex items-start justify-between md:h-48 p-2 h-48 bg-white my-2 rounded-lg">
                 <div className="flex items-start justify-between mb-2">
-                  {/* @ts-ignore */}
-                  <Bar />
+                  {car?.type && (<Bar type={car.type} />)}
                   <div className="w-3/4 flex-col items-center justify-between space-y-4 self-center">
                     <div className="flex items-center gap-12">
                       {/* @ts-ignore */}
                       <Attribute
                         label="Modelo"
-                        value={car.carModel}
+                        value={car?.vehicleModel}
                         color="light-blue"
                       />
                       {/* @ts-ignore */}
-                      <Attribute label="Cor" value={car.color} color="yellow" />
+                      <Attribute label="Cor" value={car?.color} color="yellow" />
                     </div>
                     <div className="w-full flex items-end justify-between gap-16">
                       {/* @ts-ignore */}
-                      <Attribute label="Placa" value={car.plate} color="orange" />
+                      <Attribute label="Placa" value={car?.plate} color="orange" />
                       {/* @ts-ignore */}
                       <Actions
                         add={props.add}
                         edit={() => {}}
-                        remove={() => {props.remove(car.carId)}}
+                        remove={() => {props.remove(car?.vehicleId)}}
                       />
                     </div>
                   </div>
@@ -107,7 +108,7 @@ const Carousel = (props: Props) => {
         )}
       </div>
       {/* @ts-ignore */}
-      <Navigation length={items.length} goToIndex={goToIndex} />
+      <Navigation length={items?.length} goToIndex={goToIndex} />
     </div>
   );
 };

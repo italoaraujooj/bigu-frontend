@@ -23,7 +23,7 @@ const Carousel = (props: Props) => {
   useEffect(() => {
     const loadData = async () => {
       const responseCars: any = await getUserCars()
-      if(responseCars) setItems(responseCars.data.userCars);
+      if(responseCars) setItems(responseCars.data.userVehicles);
     };
     loadData();
   }, []);

@@ -26,12 +26,13 @@ export type AddressResponseDTO = {
 }
 
 export type CarResponseDTO = {
-    carId: string,
+    vehicleId: string,
     brand: string,
-    carModel: string,
+    vehicleModel: string,
     plate: string,
     modelYear: string,
-    color: string
+    color: string,
+    type: "CAR" | "MOTORCYCLE"
 }
 
 export type RideDto = {

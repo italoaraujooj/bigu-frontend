@@ -59,11 +59,11 @@ export default function Drawer({
       <br />
       <div
         onClick={showToast}
-        className={clsx("w-full px-2 cursor-pointer", carsUser.length && userAddresses.length && "group")}
+        className={clsx("w-full px-2 cursor-pointer", carsUser?.length && userAddresses?.length && "group")}
       >
         <div className="flex items-center gap-4">
           <Jeep size={32} color="gray" />
-          <NextLink href="/offer-ride" className={clsx(!(carsUser.length && userAddresses.length) && 'pointer-events-none text-[#71717a]')}>
+          <NextLink href="/offer-ride" className={clsx(!(carsUser?.length && userAddresses?.length) && 'pointer-events-none text-[#71717a]')}>
             <Text
               label="Oferecer Carona"
               size="xl"
