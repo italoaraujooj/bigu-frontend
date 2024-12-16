@@ -8,7 +8,7 @@ import {
 } from "@/services/ride";
 import LottieAnimation from "../LottieAnimation";
 import ghost from "../../assets/ghost.json";
-import { formatarData } from "@/utils/masks";
+import { formatarDate } from "@/utils/masks";
 import Modal from "../modal";
 import Dropdown from "../dropdown";
 import { fetchUserAddresses } from "@/services/address";
@@ -165,14 +165,14 @@ function Ride(props: Props) {
                             className="tracking-wide text-xs md:text-md"
                           />
                           <Text
-                            label={`🙍‍♂️ ${Number(item.numSeats - item.members.length) > 1 ? "Vagas disponíveis" : "Vaga disponível"} ${item.numSeats - item.members.length}`}
+                            label={`🙍‍♂️ ${item.numSeats - item.members.length} ${Number(item.numSeats - item.members.length) > 1 ? "Vagas disponíveis" : "Vaga disponível"}`}
                             color="dark"
                             size="md"
                             weight="medium"
                             className="tracking-wide text-xs md:text-md"
                           />
                           <Text
-                            label={`⏰ ${formatarData(item.scheduledTime)}`}
+                            label={`⏰ ${formatarDate(item.scheduledTime)}`}
                             color="dark"
                             size="md"
                             weight="medium"
@@ -186,12 +186,12 @@ function Ride(props: Props) {
                             className="tracking-wide text-xs md:text-md"
                           />
                         </div>
-                        <div className="flex flex-col items-center justify-center gap-6">
+                        <div className="flex flex-col items-center justify-center gap-4">
                           <span
-                            className="animate-pulse text-blue-500 ease-in-out infinite font-[Poppins] cursor-pointer"
+                            className="animate-pulse text-blue-500 ease-in-out infinite font-[Poppins] cursor-pointer font-bold"
                             onClick={() => handleToggleMap(item.startAddress, item.destinationAddress)}
                           >
-                            Ver no mapa
+                            📍 Ver no mapa
                           </span>
                           {item.members.some((membro) => membro.user.userId == user?.userId) ? (
                             <div className="self-end">
@@ -210,7 +210,7 @@ function Ride(props: Props) {
                                   size="xs"
                                   color="green"
                                   shape="square"
-                                  className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base"
+                                  className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base mb-5"
                                 />
                               )}
                             </div>

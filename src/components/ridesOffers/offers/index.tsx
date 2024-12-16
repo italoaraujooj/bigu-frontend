@@ -1,5 +1,5 @@
 import Button from "@/components/button";
-import { formatarData } from "@/utils/masks";
+import { formatarDate } from "@/utils/masks";
 import Text from "@/components/text";
 import { RideResponseDTO } from "@/types/ride";
 import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
@@ -36,6 +36,8 @@ function Offer(props: Props) {
     Router.push(`/view-profile/${userId}`);
   };
 
+  console.log(ride.members)
+
   return (
     <div className="w-full rounded-lg px-8 py-6 bg-white shadow-xl">
       <div className="flex justify-between">
@@ -57,7 +59,7 @@ function Offer(props: Props) {
 
             <div>
               <Text label="⏰ Data e hora:" color="dark" size="base" weight="bold" />
-              <Text label={formatarData(ride.scheduledTime)} color="gray" size="base" />
+              <Text label={formatarDate(ride.scheduledTime)} color="gray" size="base" />
             </div>
 
             <div>
@@ -70,7 +72,7 @@ function Offer(props: Props) {
                         className="font-[Poppins] text-gray text-lg cursor-pointer hover:text-blue-500"
                         onClick={() => handleViewProfile(member.user.userId)}
                       >
-                        {`- ${member.user.name}`}
+                        {`- ${member.user.name} (${member.aggreedValue ? `R$ ${member.aggreedValue}` : 'De Graça'})`}
                       </p>
                     </li>
                   ))}

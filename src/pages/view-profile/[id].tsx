@@ -1,43 +1,54 @@
 import Text from "@/components/text";
-import { AuthContext } from "@/context/AuthContext";
 import { getUserById } from "@/services/auth";
 import { getUserRatings } from "@/services/ratings";
-import { RatingResponseDTO, UserResponseDTO } from "@/types/ride";
+import {
+  RatingResponseDTO,
+  UserResponseDTO,
+  ReportResponseDTO,
+} from "@/types/ride";
 import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr/ArrowCircleLeft";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import WomanAvatar from "../../assets/woman.png";
 import History from "@/components/history";
-import Homem from "../../assets/avatar.png"
-import { formatarData } from "@/utils/masks";
+import Homem from "../../assets/avatar.png";
 import { getRideHistoryUser } from "@/services/ride";
 import { Attribute, Bar } from "@/components/profile/carousel/components";
-import Star from "../../assets/star.png";
-import ghost from "../../assets/ghost.json";
-import LottieAnimation from "../../components/LottieAnimation";
-
+import ReportForm from "@/components/reportForm";
+import { getUserReportsReceived } from "@/services/report";
+import Ratings from "@/components/ratings";
+import Reports from "@/components/reports";
 
 function Profile() {
   const router = useRouter();
   const { id } = router.query;
-  
-  const { user, setUser } = useContext(AuthContext);
 
   const [userData, setUserData] = useState<UserResponseDTO>();
   const [history, setHistory] = useState([]);
   const [loadingStateHistory, setLoadingStateHistory] = useState<boolean>(true);
   const [ratings, setRatings] = useState<RatingResponseDTO[]>([]);
+  const [reports, setReports] = useState<ReportResponseDTO[]>([]);
+  const [showReportForm, setShowReportForm] = useState(false);
+  const [editReport, setEditReport] = useState<string>("");
+  const [shouldFetch, setShouldFetch] = useState<boolean>(true);
 
+  const handleCloseReportForm = () => setShowReportForm(false);
+  const handleOpenReportForm = () => setShowReportForm(true);
 
   useEffect(() => {
     if (id) {
       loadDataUser();
       loadDataRatings();
       loadDataHistory();
+      loadDataReports();
+
+      if (shouldFetch) {
+        setShouldFetch(false);
+      }
     }
-  }, [id]);
+  }, [id, shouldFetch]);
 
   const loadDataUser = async () => {
     const responseUser = await getUserById(id as string);
@@ -49,20 +60,22 @@ function Profile() {
     if (responseRatings) setRatings(responseRatings.data.ratings);
   };
 
+  const loadDataReports = async () => {
+    const responseReports = await getUserReportsReceived(id as string);
+    if (responseReports) setReports(responseReports.data.reports);
+  };
+
   const loadDataHistory = async () => {
-    try{
+    try {
       const responseHistory = await getRideHistoryUser(id as string);
       setHistory(responseHistory.data.userHistory);
-    }finally{
+    } finally {
       setLoadingStateHistory(false);
     }
-  }
-
-  console.log(user)
+  };
 
   return (
     <div className="flex w-full items-center justify-center my-4 md:my-8">
-
       <div>
         <div>
           <Link
@@ -78,128 +91,124 @@ function Profile() {
             />
           </Link>
         </div>
-        <div className="w-full h-fit flex items-center justify-center">
-          <div className="bg-dark w-[90vw] md:w-[85vw] lg:w-[90vw] xl:w-[80vw] 2xl:w-[80vw] sm:w-full p-4 rounded-2xl flex flex-col gap-6 md:p-16 space-y-6">
+        <div className="flex w-full items-center justify-center my-4 md:my-8">
+          <div className="relative bg-dark w-[90vw] md:w-[85vw] lg:w-[90vw] xl:w-[80vw] 2xl:w-[80vw] sm:w-full p-4 rounded-2xl flex flex-col gap-6 md:p-16 space-y-6">
             <div className="flex flex-col md:flex-row justify-between gap-6 items-center">
-              <div className="flex justify-between self-start">
-                {/* Bloco do nome, rating e status de verificação */}
-                <div className="flex items-center self-start gap-3">
+              {/* Bloco do nome, rating e status de verificação */}
+              <div className="flex justify-between md:justify-start md:flex-row flex-col items-center md:items-start">
+                <div className="flex flex-col md:flex-row justify-between gap-6 items-center">
                   <div className="relative">
-                    {userData?.sex === "Feminino" ?
-                    <Image
-                      className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300`}
-                      src={userData?.profileImage ? userData.profileImage : WomanAvatar}
-                      alt="foto"
-                    />
-                    :
-                    <Image
-                      className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full`}
-                      src={userData?.profileImage ? userData.profileImage : Homem}
-                      alt="foto"
-                    />
-                    }
+                    {userData?.sex === "Feminino" ? (
+                      <Image
+                        className="w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300"
+                        src={userData?.profileImage || WomanAvatar}
+                        alt="foto"
+                      />
+                    ) : (
+                      <Image
+                        className="w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300"
+                        src={userData?.profileImage || Homem}
+                        alt="foto"
+                      />
+                    )}
                   </div>
                   <div className="flex flex-col gap-1">
                     <div className="flex justify-between items-center">
                       <h1 className="text-xl font-bold text-white md:text-4xl font-[Poppins]">
                         {userData?.name}
                       </h1>
-                      <span className="text-gray text-[2rem] font-[Poppins]">⭐ {userData ? userData.avgScore.toFixed(1) : 0.0}</span>
+                      <span className="text-gray text-[2rem] font-[Poppins]">
+                        ⭐ {userData ? userData.avgScore.toFixed(1) : 0.0}
+                      </span>
                     </div>
                     <p className="text-gray italic text-md font-[Poppins]">
-                      {userData?.isVerified ? 'Usuário Verificado' : 'Usuário Não Verificado'}
+                      {userData?.isVerified
+                        ? "Usuário Verificado"
+                        : "Usuário Não Verificado"}
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Bloco da barra e atributos */}
-              <div className="flex items-center gap-6 bg-white p-4 pb-0 rounded-md">
-                <Bar/>
-                <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+              <button
+                onClick={handleOpenReportForm}
+                className="group transition-all duration-300 ease-in-out"
+              >
+                <Text
+                  label="🚫 Denunciar Usuário"
+                  className="py-2 px-4 sm:text-sm text-base md:text-lg hover:text-[#AA0000] text-gray uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8"
+                  color="gray"
+                  size="base"
+                  weight="medium"
+                />
+              </button>
+            </div>
+
+            <div className="w-full h-full flex flex-col md:flex-row gap-12">
+              <div className="w-full md:w-1/2 flex flex-col gap-6">
+                {/* Avaliações */}
+                <Ratings ratings={ratings} />
+
+                {/* Denúncias */}
+                <Reports
+                  reports={reports}
+                  handleOpenReportForm={handleOpenReportForm}
+                  setEditReport={setEditReport}
+                />
+              </div>
+
+              {/* Divider */}
+              <div className="w-1 h-auto bg-blackLine md:w-[2px] md:h-[50rem]"></div>
+
+              {/* Bloco da Barra e Histórico Section */}
+              <div className="w-full md:w-1/2 flex flex-col gap-6">
+                {/* Bloco da Barra e Atributos */}
+                <div className="flex md:w-2/3 mx-auto items-center justify-center gap-6 bg-white p-4 pb-0 rounded-md">
+                  <Bar />
+                  <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
                     <Attribute
                       label={userData?.sex === "Feminino" ? "MULHER" : "HOMEM"}
-                      value={userData?.sex === "Feminino" ? "ELA/DELA" : "ELE/DELE"}
+                      value={
+                        userData?.sex === "Feminino" ? "ELA/DELA" : "ELE/DELE"
+                      }
                       color="light-blue"
                     />
                     <Attribute
-                      label={/estudante|ccc|ee/i.test(userData?.email ?? "") ? "ESTUDANTE" : "PROFESSOR"}
+                      label={
+                        /estudante|ccc|ee/i.test(userData?.email ?? "")
+                          ? "ESTUDANTE"
+                          : "PROFESSOR"
+                      }
                       value="GRADUAÇÃO"
                       color="yellow"
                     />
                     <Attribute
-                      label={`${userData?.offeredRidesCount} ${userData?.offeredRidesCount === 1 ? 'CARONA' : 'CARONAS'}`}
+                      label={`${userData?.offeredRidesCount} ${
+                        userData?.offeredRidesCount === 1 ? "CARONA" : "CARONAS"
+                      }`}
                       value="CONDUZIDAS"
                       color="orange"
                     />
                     <Attribute
-                      label={`${userData?.takenRidesCount} ${userData?.takenRidesCount === 1 ? 'CARONA' : 'CARONAS'}`}
+                      label={`${userData?.takenRidesCount} ${
+                        userData?.takenRidesCount === 1 ? "CARONA" : "CARONAS"
+                      }`}
                       value="RECEBIDAS"
                       color="orange"
                     />
-
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full h-full flex flex-col md:flex-row gap-12">
-              <div className="bg-dark w-[98%] h-fit rounded-lg py-6 flex flex-col mx-auto lg:mx-0 lg:w-full max-w-[800px]">
-                <h2 className="font-['Poppins'] text-center text-xl sm:text-3xl text-white font-bold pb-8">
-                  Avaliações
-                </h2>
-
-                { ratings?.length > 0 ? ratings?.map((rating, index) => (
-                  <div key={index} className="flex flex-col bg-white rounded-lg p-4 mb-4">
-                    <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="relative">
-                          {user?.sex === "Feminino" ? (
-                            <Image
-                              className="w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300"
-                              src={WomanAvatar}
-                              alt="foto"
-                            />
-                          ) : (
-                            <Image
-                              className="w-8 h-8 md:w-16 md:h-16 object-cover rounded-full"
-                              src={Homem}
-                              alt="foto"
-                            />
-                          )}
-                        </div>
-
-                        <div className="flex flex-col gap-1 items-start">
-                          <p className="text-xl font-bold text-black font-[Poppins]">
-                            {user?.name}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="justify-end">
-                        <span className="text-black font-[Poppins] font-bold text-[1.5rem] pt-1">⭐ {rating.raterName ? rating.score.toFixed(1) : 0.0}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex-grow mt-4">
-                      <p className="text-black my-2">{rating.comment}</p>
-                      <div className="flex text-gray-600 text-sm">
-                        <span>⏰ {formatarData(rating.createdAt)}</span>
-                      </div>
-                    </div>
-                  </div>
-                )) :
-                <div className="w-full flex items-center justify-center">
-                  <div className="w-64 h-64 ">
-                    {/* @ts-ignore */}
-                    <LottieAnimation data={ghost} />
                   </div>
                 </div>
-                }
-              </div>
 
-              <div className="w-full h-1 bg-blackLine md:w-1 md:h-[32.5rem]"></div>
-
-              <div className="w-full h-1/2 flex flex-col md:w-1/2 gap-4">
+                {/* Histórico de Caronas */}
                 <History races={history} loading={loadingStateHistory} />
+                <ReportForm
+                  visible={showReportForm}
+                  handleClose={handleCloseReportForm}
+                  reportId={editReport}
+                  accusedId={id}
+                  setShouldFetch={setShouldFetch}
+                  setEditReport={setEditReport}
+                />
               </div>
             </div>
           </div>

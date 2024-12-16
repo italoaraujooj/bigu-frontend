@@ -172,7 +172,7 @@ const CandidateRequest = (props: Props) => {
           <>
             <Text label="💸 Contribuição:" color="dark" size="base" weight="bold" />
             <Text
-              label={String(candidate.suggestedValue)}
+              label={"R$ " + String(candidate.suggestedValue)}
               color="gray"
               size="base"
             />
@@ -184,7 +184,7 @@ const CandidateRequest = (props: Props) => {
           label="Aceitar com Contribuição"
           size="base"
           color="green"
-          className="uppercase"
+          className="uppercase flex-1"
           shape="square"
           onClick={handleAcceptCandidate}
         />
@@ -192,17 +192,18 @@ const CandidateRequest = (props: Props) => {
           label="Aceitar de Graça"
           size="base"
           color="yellow"
-          className="uppercase"
+          className="uppercase flex-1"
           shape="square"
           onClick={handleAcceptFreeCandidate}
         />
       </div>
+
       <div className="w-full mt-6 mb-2 flex justify-center">
         <Button
           label="Recusar"
           size="base"
           color="red"
-          className="w-full uppercase"
+          className="uppercase flex-1"
           shape="square"
           onClick={handleRejectCandidate}
         />
