@@ -8,22 +8,23 @@ import ghost from "../../assets/ghost.json";
 
 type Props = {
   ratings: RatingResponseDTO[];
+  title?: string;
 };
 
 const Ratings = (props: Props) => {
-  const { ratings } = props;
+  const { ratings, title } = props;
 
   return (
     <div className="bg-dark w-full h-fit rounded-lg py-6 flex flex-col mx-auto lg:mx-0 max-w-[800px]">
       <h2 className="font-['Poppins'] text-center text-xl sm:text-3xl text-white font-bold pb-8">
-        Avaliações
+        {title ? title : "Avaliações"}
       </h2>
 
       {ratings?.length > 0 ? (
         ratings?.map((rating, index) => (
           <div
             key={index}
-            className="flex flex-col bg-white rounded-lg p-4 mb-4"
+            className="flex flex-col bg-white rounded-lg p-4 mb-4 ml-8 mr-8"
           >
             <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
               <div className="flex items-center gap-3">
@@ -59,7 +60,7 @@ const Ratings = (props: Props) => {
               <p className="font-['Poppins'] text-black my-2">
                 {rating.comment}
               </p>
-              <div className="flex font-['Poppins'] text-gray-600 text-sm">
+              <div className="flex font-['Poppins'] text-black text-sm">
                 <span>⏰ {formatarData(rating.createdAt)}</span>
               </div>
             </div>

@@ -38,6 +38,7 @@ function ReportForm(props: Props) {
   const { reportId } = props;
   const { user } = useContext(AuthContext);
   const formRef = useRef<FormHandles>(null);
+  const [accused, setAccused] = useState<string>(accusedId || "");
   const [content, setContent] = useState<FormatContent>({} as FormatContent);
   const [comment, setComment] = useState("");
 
@@ -94,9 +95,10 @@ function ReportForm(props: Props) {
           );
           if (selectedContent) {
             setContent(selectedContent);
-            console.log(selectedContent);
           }
+          console.log(responseReport.data.report.comment);
           setComment(responseReport.data.report.comment);
+          setAccused(responseReport.data.report.accusedId);
         }
       };
       loadData();
@@ -107,7 +109,7 @@ function ReportForm(props: Props) {
     console.log(content);
     const body = {
       reporterId: user?.userId,
-      accusedId: accusedId,
+      accusedId: accused,
       content: content.label,
       comment: comment,
     };
@@ -208,7 +210,7 @@ function ReportForm(props: Props) {
                 autoComplete="on"
                 autoCorrect="on"
                 name="ride_description"
-                className="w-full rounded-lg px-6 py-6 my-[0.16rem] placeholder-placeholder font-[Poppins]"
+                className="w-full rounded-lg px-6 py-6 my-[0.16rem] placeholder-placeholder font-[Poppins] text-black"
               ></textarea>
             </div>
 

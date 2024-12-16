@@ -13,23 +13,24 @@ type Props = {
   reports: ReportResponseDTO[];
   handleOpenReportForm: () => void;
   setEditReport: (reportId: string) => void;
+  title?: string;
 };
 
 const Reports = (props: Props) => {
-  const { reports, handleOpenReportForm, setEditReport } = props;
+  const { reports, handleOpenReportForm, setEditReport, title } = props;
   const { user } = useContext(AuthContext);
 
   return (
     <div className="bg-dark w-full h-fit rounded-lg py-6 flex flex-col mx-auto lg:mx-0 max-w-[800px]">
       <h2 className="font-['Poppins'] text-center text-xl sm:text-3xl text-white font-bold pb-8">
-        Denúncias
+        {title ? title : "Denúncias"}
       </h2>
 
       {reports?.length > 0 ? (
         reports?.map((report, index) => (
           <div
             key={index}
-            className="flex flex-col bg-white rounded-lg p-4 mb-4"
+            className="flex flex-col bg-white rounded-lg p-4 mb-4 ml-8 mr-8"
           >
             <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
               <div className="flex items-center gap-3">
@@ -75,7 +76,7 @@ const Reports = (props: Props) => {
               <p className="font-['Poppins'] text-black my-2">
                 {report.comment}
               </p>
-              <div className="flex font-['Poppins'] text-gray-600 text-sm">
+              <div className="flex font-['Poppins'] text-black text-sm">
                 <span>⏰ {formatarData(report.createdAt)}</span>
               </div>
             </div>
