@@ -378,7 +378,7 @@ function Profile() {
                   sizing="adjustable"
                   color="extralight"
                 />
-                <section className="flex items-center gap-4 mt-12">
+                <section className="flex justify-center gap-4 mt-12 self-center">
                   <Button
                     label="Cancelar"
                     size="xs"
