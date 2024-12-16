@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from "react";
 import { Text } from "@/components";
 import Header from "@/components/header";
 import History from "@/components/history";
-import LottieAnimation from "@/components/LottieAnimation";
 import RidesRequests from "@/components/requestRides";
 import Ride from "@/components/ride";
 import RidesOffers from "@/components/ridesOffers";
@@ -19,11 +18,9 @@ import {
 } from "@/services/ride";
 import { RideResponseDTO } from "@/types/ride";
 import { fakeDelay } from "@/utils/delay";
-import clsx from "clsx";
 import { useRouter } from "next/router";
 import Joyride, { CallBackProps, Step } from "react-joyride";
 import { toast } from "react-toastify";
-import Celebrations from "../assets/celebrations.json";
 import Star from "../assets/star.png";
 
 function Dashboard() {
@@ -128,7 +125,6 @@ function Dashboard() {
       setP(3);
       await fakeDelay(2000);
       setP(4);
-
     }
 
     t();
@@ -225,16 +221,16 @@ function Dashboard() {
                   zIndex: 0,
                 },
                 tooltip: {
-                  fontFamily: 'Poppins, sans-serif',
+                  fontFamily: "Poppins, sans-serif",
                 },
                 buttonSkip: {
-                  fontFamily: 'Poppins, sans-serif',
+                  fontFamily: "Poppins, sans-serif",
                 },
                 buttonNext: {
-                  fontFamily: 'Poppins, sans-serif',
+                  fontFamily: "Poppins, sans-serif",
                 },
                 buttonBack: {
-                  fontFamily: 'Poppins, sans-serif',
+                  fontFamily: "Poppins, sans-serif",
                 },
               }}
               locale={{

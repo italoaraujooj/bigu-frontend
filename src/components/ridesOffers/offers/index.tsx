@@ -1,4 +1,5 @@
 import Button from "@/components/button";
+import { formatarDate } from "@/utils/masks";
 import Text from "@/components/text";
 import { getMyRidesAvailable, setOverRide } from "@/services/ride";
 import { RideResponseDTO } from "@/types/ride";
@@ -96,43 +97,30 @@ function Offer(props: Props) {
             />
           </div>
 
-          <div>
-            <Text
-              label="⏰ Data e hora:"
-              color="dark"
-              size="base"
-              weight="bold"
-            />
-            <Text
-              label={formatarData(ride.scheduledTime)}
-              color="gray"
-              size="base"
-            />
-          </div>
+            <div>
+              <Text label="⏰ Data e hora:" color="dark" size="base" weight="bold" />
+              <Text label={formatarDate(ride.scheduledTime)} color="gray" size="base" />
+            </div>
 
-          <div>
-            <Text label="🙋 Membros:" color="dark" size="base" weight="bold" />
-            {ride.members && ride.members.length > 0 ? (
-              <ul>
-                {ride.members.map((member, index) => (
-                  <li key={index}>
-                    <p
-                      className="font-[Poppins] text-gray text-lg cursor-pointer hover:text-blue-500"
-                      onClick={() => handleViewProfile(member.user.userId)}
-                    >
-                      {`- ${member.user.name}`}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <Text
-                label="Sem membros por enquanto..."
-                color="gray"
-                size="base"
-              />
-            )}
-          </div>
+            <div>
+              <Text label="🙋 Membros:" color="dark" size="base" weight="bold" />
+              {ride.members && ride.members.length > 0 ? (
+                <ul>
+                  {ride.members.map((member, index) => (
+                    <li key={index}>
+                      <p
+                        className="font-[Poppins] text-gray text-lg cursor-pointer hover:text-blue-500"
+                        onClick={() => handleViewProfile(member.user.userId)}
+                      >
+                        {`- ${member.user.name} (${member.aggreedValue ? `R$ ${member.aggreedValue}` : 'De Graça'})`}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Text label="Sem membros por enquanto..." color="gray" size="base" />
+              )}
+            </div>
         </div>
         <PencilSimple
           color="#FFB400"
