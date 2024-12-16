@@ -20,6 +20,7 @@ import ReportForm from "@/components/reportForm";
 import { getUserReportsReceived } from "@/services/report";
 import Ratings from "@/components/ratings";
 import Reports from "@/components/reports";
+import RatingForm from "@/components/ratingForm";
 
 function Profile() {
   const router = useRouter();
@@ -31,11 +32,18 @@ function Profile() {
   const [ratings, setRatings] = useState<RatingResponseDTO[]>([]);
   const [reports, setReports] = useState<ReportResponseDTO[]>([]);
   const [showReportForm, setShowReportForm] = useState(false);
+  const [showRatingForm, setShowRatingForm] = useState(false);
   const [editReport, setEditReport] = useState<string>("");
+  const [editRating, setEditRating] = useState<string>("");
   const [shouldFetch, setShouldFetch] = useState<boolean>(true);
+  const [rateeId, setRateeId] = useState<string>("");
+  const [rateeName, setRateeName] = useState<string>("");
+  const [rideId, setRideId] = useState<string>("");
 
   const handleCloseReportForm = () => setShowReportForm(false);
   const handleOpenReportForm = () => setShowReportForm(true);
+  const handleCloseRatingForm = () => setShowRatingForm(false);
+  const handleOpenRatingForm = () => setShowRatingForm(true);
 
   useEffect(() => {
     if (id) {
@@ -147,18 +155,22 @@ function Profile() {
             <div className="w-full h-full flex flex-col md:flex-row gap-12">
               <div className="w-full md:w-1/2 flex flex-col gap-6">
                 {/* Avaliações */}
-                <Ratings ratings={ratings} />
+                <Ratings
+                  ratings={ratings}
+                  handleOpenRatingForm={handleOpenRatingForm}
+                  setEditRating={setEditRating}
+                />
 
                 {/* Denúncias */}
-                <Reports
+                {/* <Reports
                   reports={reports}
                   handleOpenReportForm={handleOpenReportForm}
                   setEditReport={setEditReport}
-                />
+                /> */}
               </div>
 
               {/* Divider */}
-              <div className="w-1 h-auto bg-blackLine md:w-[2px] md:h-[50rem]"></div>
+              <div className="w-1 h-auto bg-blackLine md:w-[2px] md:h-[40rem]"></div>
 
               {/* Bloco da Barra e Histórico Section */}
               <div className="w-full md:w-1/2 flex flex-col gap-6">
@@ -201,6 +213,7 @@ function Profile() {
 
                 {/* Histórico de Caronas */}
                 <History races={history} loading={loadingStateHistory} />
+
                 <ReportForm
                   visible={showReportForm}
                   handleClose={handleCloseReportForm}
@@ -208,6 +221,17 @@ function Profile() {
                   accusedId={id}
                   setShouldFetch={setShouldFetch}
                   setEditReport={setEditReport}
+                />
+
+                <RatingForm
+                  visible={showRatingForm}
+                  handleClose={handleCloseRatingForm}
+                  ratingId={editRating}
+                  rideId={rideId}
+                  rateeId={rateeId}
+                  rateeName={rateeName}
+                  setShouldFetch={setShouldFetch}
+                  setEditRating={setEditRating}
                 />
               </div>
             </div>

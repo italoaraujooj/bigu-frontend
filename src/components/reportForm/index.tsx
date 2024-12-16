@@ -32,10 +32,15 @@ type Props = {
 };
 
 function ReportForm(props: Props) {
-  const { visible, handleClose, accusedId, setShouldFetch, setEditReport } =
-    props;
+  const {
+    visible,
+    handleClose,
+    accusedId,
+    reportId,
+    setShouldFetch,
+    setEditReport,
+  } = props;
 
-  const { reportId } = props;
   const { user } = useContext(AuthContext);
   const formRef = useRef<FormHandles>(null);
   const [accused, setAccused] = useState<string>(accusedId || "");
@@ -96,7 +101,6 @@ function ReportForm(props: Props) {
           if (selectedContent) {
             setContent(selectedContent);
           }
-          console.log(responseReport.data.report.comment);
           setComment(responseReport.data.report.comment);
           setAccused(responseReport.data.report.accusedId);
         }
