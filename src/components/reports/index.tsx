@@ -55,7 +55,6 @@ const Reports = (props: Props) => {
                 </div>
               </div>
 
-              {/* Move PencilSimple icon to the right */}
               {user?.userId === report.reporterId && (
                 <div className="ml-auto">
                   <PencilSimple

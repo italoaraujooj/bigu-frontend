@@ -88,6 +88,7 @@ export type RatingResponseDTO = {
 };
 
 export type ReportResponseDTO = {
+  _id: string;
   reporterId: string;
   reporterName: string;
   reporterSex: string;
