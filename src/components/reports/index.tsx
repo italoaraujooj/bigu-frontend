@@ -21,7 +21,7 @@ const Reports = (props: Props) => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="bg-dark w-full h-fit rounded-lg py-6 flex flex-col mx-auto lg:mx-0 max-w-[800px]">
+    <div className="bg-dark w-full h-fit rounded-lg py-6 flex flex-col mx-auto lg:mx-0 max-w-[800px] gap-4">
       <h2 className="font-['Poppins'] text-center text-xl sm:text-3xl text-white font-bold pb-8">
         {title ? title : "Denúncias"}
       </h2>
@@ -30,9 +30,9 @@ const Reports = (props: Props) => {
         reports?.map((report, index) => (
           <div
             key={index}
-            className="flex flex-col bg-white rounded-lg p-4 mb-4 ml-8 mr-8"
+            className="flex flex-col bg-white rounded-lg p-4"
           >
-            <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+            <div className="flex md:flex-row items-center gap-4 justify-between">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   {report.reporterSex === "Feminino" ? (
