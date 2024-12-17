@@ -50,7 +50,7 @@ function History(props: Props) {
         races.length ? races.slice(0, 3).map((race: RideResponseDTO) => (
           <div
             key={race.rideId}
-            className="h-24 w-full px-6 py-6 border-light border-2 flex justify-between items-center gap-5 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer transition-colors duration-600"
+            className="h-24 w-full p-2 border-light border-2 flex justify-between items-center gap-3 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer transition-colors duration-600"
           >
             {/* @ts-ignore */}
             <Image src={OK} className="w-7 h-7" alt="race finished status" />

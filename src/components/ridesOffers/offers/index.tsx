@@ -1,4 +1,5 @@
 import Button from "@/components/button";
+import { formatarDate } from "@/utils/masks";
 import Text from "@/components/text";
 import { getMyRidesAvailable, setOverRide } from "@/services/ride";
 import { RideResponseDTO } from "@/types/ride";
@@ -7,6 +8,8 @@ import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
 import Router from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
+import Image from "next/image";
+import chat from "../../../assets/message-circle.svg";
 
 type Props = {
   ride: RideResponseDTO;
@@ -41,7 +44,7 @@ function Offer(props: Props) {
   };
 
   return (
-    <div className="w-full rounded-lg px-8 py-6 bg-white shadow-xl">
+    <div className="w-full rounded-lg px-4 py-4 bg-white shadow-xl">
       <div className="flex justify-between">
         <div className="flex flex-col gap-2">
           <div>
@@ -86,51 +89,38 @@ function Offer(props: Props) {
                 Number(ride.numSeats) - ride.members.length > 1
                   ? ride.numSeats + " vagas disponíveis"
                   : Number(ride.numSeats) -
-                    ride.members.length +
-                    " vaga disponível"
+                  ride.members.length +
+                  " vaga disponível"
               }
               color="gray"
               size="base"
             />
           </div>
 
-          <div>
-            <Text
-              label="⏰ Data e hora:"
-              color="dark"
-              size="base"
-              weight="bold"
-            />
-            <Text
-              label={formatarData(ride.scheduledTime)}
-              color="gray"
-              size="base"
-            />
-          </div>
+            <div>
+              <Text label="⏰ Data e hora:" color="dark" size="base" weight="bold" />
+              <Text label={formatarDate(ride.scheduledTime)} color="gray" size="base" />
+            </div>
 
-          <div>
-            <Text label="🙋 Membros:" color="dark" size="base" weight="bold" />
-            {ride.members && ride.members.length > 0 ? (
-              <ul>
-                {ride.members.map((member, index) => (
-                  <li key={index}>
-                    <p
-                      className="font-[Poppins] text-gray text-lg cursor-pointer hover:text-blue-500"
-                      onClick={() => handleViewProfile(member.user.userId)}
-                    >
-                      {`- ${member.user.name}`}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <Text
-                label="Sem membros por enquanto..."
-                color="gray"
-                size="base"
-              />
-            )}
-          </div>
+            <div>
+              <Text label="🙋 Membros:" color="dark" size="base" weight="bold" />
+              {ride.members && ride.members.length > 0 ? (
+                <ul>
+                  {ride.members.map((member, index) => (
+                    <li key={index}>
+                      <p
+                        className="font-[Poppins] text-gray text-lg cursor-pointer hover:text-blue-500"
+                        onClick={() => handleViewProfile(member.user.userId)}
+                      >
+                        {`- ${member.user.name} (${member.aggreedValue ? `R$ ${member.aggreedValue}` : 'De Graça'})`}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Text label="Sem membros por enquanto..." color="gray" size="base" />
+              )}
+            </div>
         </div>
         <PencilSimple
           color="#FFB400"
@@ -140,16 +130,15 @@ function Offer(props: Props) {
           onClick={() => props.handleEditRide(ride.rideId)}
         />
       </div>
-      <div className="flex flex-row justify-center gap-2 mt-4">
-        <Button
+      <div className="flex flex-row justify-center items-center gap-2 mt-4">
+        {/* <Button
           label="Chat"
           size="sm"
           color="dark-blue"
           className="uppercase"
           shape="square"
           onClick={() => handleChat()}
-        />
-
+        /> */}
         <Button
           label="Cancelar"
           size="sm"
@@ -167,6 +156,7 @@ function Offer(props: Props) {
           shape="square"
           onClick={() => handleOverRide(ride.rideId)}
         />
+        <Image onClick={() => handleChat()} className="w-10 h-10" src={chat} alt="car" />
       </div>
     </div>
   );

@@ -10,17 +10,17 @@ const RotatingBanner = () => {
     {
       image: Elas,
       text: "Aqui nós temos caronas, de mulheres, só para mulheres!",
-      style: "w-36 h-auto sm:w-60 md:w-80 object-contain rounded-md"
+      style: "w-36 h-auto sm:w-60 md:w-80 object-contain rounded-md",
     },
     {
       image: Car,
       text: "Você pode ter o seu anúncio aqui! Entre em contato.",
-      style: "w-24 h-auto sm:w-48 md:w-64 object-contain rounded-md"
+      style: "w-24 h-auto sm:w-48 md:w-64 object-contain rounded-md",
     },
     {
       image: SportCar,
       text: "Cadastre-se agora e comece a pegar caronas hoje!",
-      style: "w-24 h-auto sm:w-48 md:w-64 object-contain rounded-md"
+      style: "w-24 h-auto sm:w-48 md:w-64 object-contain rounded-md",
     },
   ];
 
@@ -40,7 +40,9 @@ const RotatingBanner = () => {
         <div
           key={index}
           className={`absolute w-full h-full flex items-center justify-center text-white transition-transform duration-500 ease-in-out ${
-            index === currentIndex ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full"
+            index === currentIndex
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 -translate-x-full"
           }`}
         >
           <div className="w-full h-full flex flex-row items-center justify-center text-center px-4 space-x-4">

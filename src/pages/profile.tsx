@@ -3,7 +3,11 @@ import Notification from "@/components/notification";
 import Carousel from "@/components/profile/carousel";
 import Text from "@/components/text";
 import { AuthContext } from "@/context/AuthContext";
-import { changePasswordRequest, getUser, profilePicture } from "@/services/auth";
+import {
+  changePasswordRequest,
+  getUser,
+  profilePicture,
+} from "@/services/auth";
 import { createCar, getUserCars } from "@/services/car";
 import { ChangePassword, CreateCarFormState } from "@/utils/types";
 // import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
@@ -30,7 +34,7 @@ function Profile() {
   const formRef = useRef<FormHandles>(null);
   const formRefCar = useRef<FormHandles>(null);
   const formRefChangePassword = useRef<FormHandles>(null);
-  
+
   const { user, setUser } = useContext(AuthContext);
 
   const [readOnly, setReadOnly] = useState(true);
@@ -94,7 +98,7 @@ function Profile() {
           (car: CarResponseDTO) => car.vehicleId !== id
         );
         setCars(currentCars);
-        toggleModalRemoveCar(null)
+        toggleModalRemoveCar(null);
         toast.success(`O carro foi removido.`);
       }
     } catch (err) {
@@ -114,30 +118,32 @@ function Profile() {
     }
   };
 
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     let file;
     const files = event.target.files;
     if (files && files.length > 0) {
       file = files[0];
     }
-  
+
     if (!file) {
-      toast.error('Nenhum arquivo foi selecionado');
+      toast.error("Nenhum arquivo foi selecionado");
       return;
     }
-  
+
     const formData = new FormData();
-    formData.append('file', file);
-  
+    formData.append("file", file);
+
     try {
       const response: any = await profilePicture(formData);
       if (response && response.status == 201) {
         const userResponse = await getUser();
         setUser(userResponse.data.user);
-        toast.success('Imagem atualizada com sucesso');
+        toast.success("Imagem atualizada com sucesso");
       }
     } catch (error) {
-      toast.error('Erro ao enviar a imagem');
+      toast.error("Erro ao enviar a imagem");
     }
   };
 
@@ -168,7 +174,7 @@ function Profile() {
               name: user?.name,
               email: user?.email,
               telephone: user?.phoneNumber,
-              matricula: user?.matricula
+              matricula: user?.matricula,
             }}
             ref={formRef}
           >
@@ -179,25 +185,25 @@ function Profile() {
                   onMouseEnter={() => setHoveredImage(true)}
                   onMouseLeave={() => setHoveredImage(false)}
                 >
-                  {user?.sex === "Feminino" ?
-                  <Image
-                    onClick={() => router.push("/profile")}
-                    className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
-                      hoveredImage ? "blur-sm" : ""
-                    }`}
-                    src={WomanAvatar}
-                    alt="foto"
-                  />
-                  :
-                  <Image
-                    onClick={() => router.push("/profile")}
-                    className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
-                      hoveredImage ? "blur-sm" : ""
-                    }`}
-                    src={Homem}
-                    alt="foto"
-                  />
-                  }
+                  {user?.sex === "Feminino" ? (
+                    <Image
+                      onClick={() => router.push("/profile")}
+                      className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
+                        hoveredImage ? "blur-sm" : ""
+                      }`}
+                      src={WomanAvatar}
+                      alt="foto"
+                    />
+                  ) : (
+                    <Image
+                      onClick={() => router.push("/profile")}
+                      className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
+                        hoveredImage ? "blur-sm" : ""
+                      }`}
+                      src={Homem}
+                      alt="foto"
+                    />
+                  )}
                   {hoveredImage && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">
                       <label
@@ -228,7 +234,9 @@ function Profile() {
                   </h1>
                   <div className="flex items-center gap-2 pt-2">
                     <Image className="w-3 h-3" src={Star} alt="estrela" />
-                    <span className="text-gray text-[0.725rem] pt-1">{user ? user.avgScore.toFixed(1) : 0.0}</span>
+                    <span className="text-gray text-[0.725rem] pt-1">
+                      {user ? user.avgScore.toFixed(1) : 0.0}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -294,6 +302,40 @@ function Profile() {
                     <div className="flex items-center justify-between">
                       <Text
                         label="Ver endereços"
+                        size="md"
+                        weight="bold"
+                        className="uppercase"
+                      />
+                      <CaretRight weight="bold" color="white" />
+                    </div>
+                    <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
+                  </Link>
+                </div>
+                <div className="w-full flex items-center justify-between flex-row gap-5">
+                  <Link
+                    className="w-full py-1 cursor-pointer group"
+                    href="/receivedRatings"
+                  >
+                    <div className="flex items-center justify-between">
+                      <Text
+                        label="Ver avaliações recebidas"
+                        size="md"
+                        weight="bold"
+                        className="uppercase"
+                      />
+                      <CaretRight weight="bold" color="white" />
+                    </div>
+                    <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
+                  </Link>
+                </div>
+                <div className="w-full flex items-center justify-between flex-row gap-5">
+                  <Link
+                    className="w-full py-1 cursor-pointer group"
+                    href="/sentReports"
+                  >
+                    <div className="flex items-center justify-between">
+                      <Text
+                        label="Ver denúncias enviadas"
                         size="md"
                         weight="bold"
                         className="uppercase"
@@ -405,7 +447,8 @@ function Profile() {
                   color="extralight"
                 />
                 
-                <section className="flex items-center gap-4 mt-12">
+                <section className="flex justify-center gap-4 mt-12 self-center">
+                  
                   <Button
                     label="Cancelar"
                     size="xs"
@@ -423,7 +466,11 @@ function Profile() {
                 </section>
               </Form>
             </Modal>
-            <Modal isOpen={modalRemoveCar} onClose={() => toggleModalRemoveCar(null)} noActions>
+            <Modal
+              isOpen={modalRemoveCar}
+              onClose={() => toggleModalRemoveCar(null)}
+              noActions
+            >
               <Text
                 label="Tem certeza que deseja remover esse carro?"
                 color="dark"

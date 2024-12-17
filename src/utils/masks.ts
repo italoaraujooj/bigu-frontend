@@ -35,6 +35,7 @@ export const formatDateTime = (date: string, time: string) => {
 }
 
 export const formatarData = (data: string): string => {
+  console.log(data)
   const date = new Date(data);
 
   const day = String(date.getDate()).padStart(2, '0');
@@ -42,16 +43,20 @@ export const formatarData = (data: string): string => {
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
 
-  return `${day}/${month} às ${hours}h${minutes}`;
+  return `${day} de ${MESES[month]} às ${hours}h${minutes}`;
 }
 
 export function formatarDate(data: string): string {
   const [date, time] = data.split(',');
-  const [mes, dia, ano] = date.split('/');
-  const [hour, minute, second] = time.split(":")
-  // const dataRecebida = parseISO(data);
-  // const dataFormatada = format(dataRecebida, "dd 'de' MMMM 'às' HH:mm", { locale: ptBR });
-  const dataFormatada = `${dia} de ${MESES[mes]} às ${hour}:${minute}`
+  let [dia, mes, ano] = date.trim().split('/');
+
+  if (mes.length === 1) {
+    mes = `0${mes}`;
+  }
+
+  const [hour, minute, second] = time.trim().split(':');
+
+  const dataFormatada = `${dia} de ${MESES[mes]} às ${hour}:${minute}`;
   return dataFormatada;
 }
 

@@ -1,18 +1,15 @@
+import { UserFormState } from "@/components/register";
 import {
+  logOut as exit,
   getUser,
   signInRequest,
   signUpRequest,
-  logOut as exit,
-  logOut,
 } from "@/services/auth";
-import { createContext, useContext, useEffect, useState } from "react";
+import { UserResponseDTO } from "@/types/ride";
 import { useRouter } from "next/router";
 import { parseCookies, setCookie } from "nookies";
+import { createContext, useContext, useEffect, useState } from "react";
 import { RequestContext } from "./RequestContext";
-import { fakeDelay } from "@/utils/delay";
-import { User } from "@/utils/types";
-import { UserFormState } from "@/components/register";
-import { UserResponseDTO } from "@/types/ride";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -35,10 +32,10 @@ export function AuthProvider({ children }: any) {
   const isAuthenticated = !!user;
   const { inProgress, done } = useContext(RequestContext);
   const router = useRouter();
-  
+
   async function signIn(credentials: SignInData) {
     const response = await signInRequest(credentials);
-    
+
     if (response && response.status === 200) {
       setCookie(undefined, "nextauth.accessToken", response.data.accessToken);
       setCookie(undefined, "nextauth.refreshToken", response.data.refreshToken);
@@ -56,9 +53,9 @@ export function AuthProvider({ children }: any) {
       setUser(response.data.userResponse);
 
       router.push({
-        pathname: '/dashboard',
-        query: { firstAccess: true }
-      })
+        pathname: "/dashboard",
+        query: { firstAccess: true },
+      });
     }
     return { data: response?.data, status: response?.status };
   }
@@ -71,16 +68,15 @@ export function AuthProvider({ children }: any) {
     try {
       inProgress();
       const response = await getUser();
-
-      await fakeDelay(500);
-
       done();
 
       setUser(response.data.user);
-    } catch (err) {
 
-    }
-  }
+      if (!response.data.user.isVerified) {
+        router.push("/verify-email");
+      }
+    } catch (err) {}
+  };
 
   useEffect(() => {
     const { "nextauth.accessToken": token } = parseCookies();

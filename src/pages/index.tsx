@@ -5,7 +5,7 @@ import Image from "next/image";
 import { parseCookies } from "nookies";
 import { useState } from "react";
 import Logo from "../assets/car-secondary.png";
-import Back from "../assets/CaretRight.svg";
+import { SideBar } from "@/components/sideBar";
 
 export default function Home() {
   const [showLogin, setShowLogin] = useState(false);
@@ -96,35 +96,10 @@ export default function Home() {
         </div>
 
         <Login handleClose={closeLoginModal} visible={showLogin} />
+        
         <Register handleClose={handleCloseRegister} visible={showRegister} />
-        {sideBar && (
-          <div
-            className={`bg-white w-full h-full fixed top-0 right-0 py-14 px-14 space-y-4 
-    transition-transform transform ease-in-out duration-500 ${sideBar ? "translate-x-0" : "translate-x-full"
-              }`}
-          >
-            <Image
-              className="w-10 h-10 cursor-pointer"
-              src={Back}
-              alt="voltar"
-              onClick={closeSideBar}
-            />
-            <Button
-              label="CADASTRAR"
-              size="base"
-              color="yellow"
-              shape="rounded"
-              onClick={handleOpenRegister}
-            />
-            <Button
-              label="ENTRAR"
-              size="base"
-              color="yellow"
-              shape="rounded"
-              onClick={openLoginModal}
-            />
-          </div>
-        )}
+        
+        <SideBar handleClose={closeSideBar} visible={sideBar} handleOpenRegister={handleOpenRegister} openLoginModal={openLoginModal}/>
 
       </div>
     </div>

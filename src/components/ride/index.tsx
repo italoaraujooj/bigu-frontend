@@ -11,11 +11,12 @@ import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import MaleAvatar from "../../assets/avatar.png";
 import ghost from "../../assets/ghost.json";
+import { formatarDate } from "@/utils/masks";
+import Modal from "../modal";
 import Button from "../button";
 import Dropdown from "../dropdown";
 import LottieAnimation from "../LottieAnimation";
 import MapFullScreen from "../mapFullScreen";
-import Modal from "../modal";
 import Text from "../text";
 
 type Props = {
@@ -194,18 +195,18 @@ function Ride(props: Props) {
                           className="tracking-wide text-xs md:text-md"
                         />
                         <Text
-                          label={`🙍‍♂️ ${
+                          label={`🙍‍♂️ ${item.numSeats - item.members.length} ${
                             Number(item.numSeats - item.members.length) > 1
                               ? "Vagas disponíveis"
                               : "Vaga disponível"
-                          } ${item.numSeats - item.members.length}`}
+                          }`}
                           color="dark"
                           size="md"
                           weight="medium"
                           className="tracking-wide text-xs md:text-md"
                         />
                         <Text
-                          label={`⏰ ${formatarData(item.scheduledTime)}`}
+                          label={`⏰ ${formatarDate(item.scheduledTime)}`}
                           color="dark"
                           size="md"
                           weight="medium"
@@ -219,9 +220,9 @@ function Ride(props: Props) {
                           className="tracking-wide text-xs md:text-md"
                         />
                       </div>
-                      <div className="flex flex-col items-center justify-center gap-6">
+                      <div className="flex flex-col items-center justify-center gap-4">
                         <span
-                          className="animate-pulse text-blue-500 ease-in-out infinite font-[Poppins] cursor-pointer"
+                          className="animate-pulse text-blue-500 ease-in-out infinite font-[Poppins] cursor-pointer font-bold"
                           onClick={() =>
                             handleToggleMap(
                               item.startAddress,
@@ -229,7 +230,7 @@ function Ride(props: Props) {
                             )
                           }
                         >
-                          Ver no mapa
+                          📍 Ver no mapa
                         </span>
                         {item.members.some(
                           (membro) => membro.user.userId == user?.userId
@@ -241,18 +242,6 @@ function Ride(props: Props) {
                               weight="bold"
                               size="xs"
                               className="uppercase sm:text-sm"
-                            />
-                            <Button
-                              label={"Chat"}
-                              onClick={() => {
-                                Router.push(
-                                  `/chat?rideId=${item.rideId}&senderId=${user?.userId}`
-                                );
-                              }}
-                              size="xs"
-                              color="green"
-                              shape="square"
-                              className="sm:w-36 sm:h-10 sm:px-3 md:w-48 md:h-12 md:px-8 md:text-base"
                             />
                           </div>
                         ) : (
@@ -271,7 +260,7 @@ function Ride(props: Props) {
                                 size="xs"
                                 color="green"
                                 shape="square"
-                                className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base"
+                                className="sm:w-36 sm:h-10 sm:px-3 sm:text-sm md:w-48 md:h-12 md:px-8 md:text-base mb-5"
                               />
                             )}
                           </div>

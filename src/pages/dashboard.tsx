@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from "react";
 import { Text } from "@/components";
 import Header from "@/components/header";
 import History from "@/components/history";
-import LottieAnimation from "@/components/LottieAnimation";
 import RidesRequests from "@/components/requestRides";
 import Ride from "@/components/ride";
 import RidesOffers from "@/components/ridesOffers";
@@ -19,11 +18,9 @@ import {
 } from "@/services/ride";
 import { RideResponseDTO } from "@/types/ride";
 import { fakeDelay } from "@/utils/delay";
-import clsx from "clsx";
 import { useRouter } from "next/router";
 import Joyride, { CallBackProps, Step } from "react-joyride";
 import { toast } from "react-toastify";
-import Celebrations from "../assets/celebrations.json";
 import Star from "../assets/star.png";
 
 function Dashboard() {
@@ -142,23 +139,20 @@ function Dashboard() {
   const firstAccess = () => {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center relative">
-        <div className="w-[1100px] h-28 mt-28 overflow-hidden mx-auto text-center space-y-10">
-          {messages.map((ms, i) => (
-            <Text
-              key={i}
-              label={ms}
-              size="5xl"
-              className={clsx(
-                `transition translate-y-[${positions[p]}] ease-in-out duration-1000`
-              )}
-            />
-          ))}
-        </div>
-        <div className="flex items-center justify-center w-full h-screen absolute">
-          <LottieAnimation
-            data={Celebrations}
-            className="top-48 w-[800px] absolute start-auto"
-          />
+        <div className="w-[1100px] h-28 mt-28 overflow-hidden mx-auto text-center">
+          <div
+            className="transition-transform duration-1000 ease-in-out"
+            style={{ transform: `translateY(-${p * 7}rem)` }}
+          >
+            {messages.map((ms, i) => (
+              <Text
+                key={i}
+                label={ms}
+                size="5xl"
+                className="h-28 flex items-center justify-center"
+              />
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -187,7 +181,7 @@ function Dashboard() {
     {
       target: ".header-actions", // Assuming this class is applied to Header actions
       content:
-        "No canto superior direito, você pode configurar sua foto de perfil, acessar suas informações e editá-las. Já no canto superior esquerdo, é possível buscar ajuda, oferecer uma carona, visualizar as solicitações recebidas e acessar dados das caronas que você está oferecendo!",
+        "No canto superior esquerdo, você pode configurar sua foto de perfil, acessar suas informações e editá-las. Já no canto superior esquerdo, é possível buscar ajuda, oferecer uma carona, visualizar as solicitações recebidas e acessar dados das caronas que você está oferecendo!",
       disableBeacon: true,
     },
     {
@@ -224,7 +218,19 @@ function Dashboard() {
               callback={handleJoyrideCallback}
               styles={{
                 options: {
-                  zIndex: 10000,
+                  zIndex: 0,
+                },
+                tooltip: {
+                  fontFamily: "Poppins, sans-serif",
+                },
+                buttonSkip: {
+                  fontFamily: "Poppins, sans-serif",
+                },
+                buttonNext: {
+                  fontFamily: "Poppins, sans-serif",
+                },
+                buttonBack: {
+                  fontFamily: "Poppins, sans-serif",
                 },
               }}
               locale={{
