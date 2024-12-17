@@ -159,7 +159,7 @@ function Ride(props: Props) {
                     )}
                   ></div>
                   <div className="w-full h-full pt-4 pr-4 pb-4 self-start">
-                    <div className={clsx("flex gap-2 items-center mb-2")}>
+                    <div className={clsx("flex gap-2 items-center mb-6")}>
                       <Image
                         className="w-8 h-8 md:w-12 md:h-12"
                         src={MaleAvatar}
@@ -207,13 +207,6 @@ function Ride(props: Props) {
                         />
                         <Text
                           label={`⏰ ${formatarDate(item.scheduledTime)}`}
-                          color="dark"
-                          size="md"
-                          weight="medium"
-                          className="tracking-wide text-xs md:text-md"
-                        />
-                        <Text
-                          label={`💵 ${String(item.price)}`}
                           color="dark"
                           size="md"
                           weight="medium"

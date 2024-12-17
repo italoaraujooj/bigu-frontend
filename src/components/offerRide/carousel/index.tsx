@@ -31,7 +31,7 @@ const Carousel = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    toggleCar(0, items[0]?.vehicleId);
+    toggleCar(0, items[0]);
   }, [items]);
 
   const toggleCar = (index: number, vehicle: CarResponseDTO) => {
@@ -117,7 +117,7 @@ const Carousel = (props: Props) => {
                 >
                   <div
                     className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center"
-                    onClick={() => toggleCar(index, items)}
+                    onClick={() => toggleCar(index, vehicle)}
                   >
                     {selectedCar === index && (
                       <span className="relative flex h-3 w-3">

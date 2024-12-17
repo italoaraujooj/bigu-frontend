@@ -67,19 +67,19 @@ function OfferRideForm(props: Props) {
 
   const ufcgAddresses = [
     {
-      value: "670c7741db1b1d5886b04cdb",
+      value: "6760f01c72afa9ea7dfc590d",
       label: "Entrada principal",
     },
     {
-      value: "670c7815db1b1d5886b04cdc",
+      value: "6760f0c072afa9ea7dfc590e",
       label: "Entrada CEEI",
     },
     {
-      value: "670c78ebdb1b1d5886b04cdd",
+      value: "6760f0ff72afa9ea7dfc5910",
       label: "Entrada Humanas",
     },
     {
-      value: "670c7957db1b1d5886b04cdf",
+      value: "6760f12872afa9ea7dfc5911",
       label: "Entrada CCT",
     },
   ];
@@ -267,21 +267,8 @@ function OfferRideForm(props: Props) {
         )}
         <div className="flex gap-4 items-center space-y-2">
           <div className="w-full flex flex-col ">
-            <NumericField vacancies={vacancies} setVacancies={setVacancies}/>
+            <NumericField vacancies={vacancies} setVacancies={setVacancies} range={selectedCar?.type}/>
           </div>
-          {/* <div className="w-1/2">
-            <Input
-              name="estimated_value"
-              label="VALOR ESTIMADO"
-              type="text"
-              color="extralight"
-              sizing="adjustable"
-              placeholder="R$ 8,90"
-              mask={moneyMask}
-              readOnly={false}
-              value={ride?.price}
-            />
-          </div> */}
         </div>
         {user?.sex === "F" && (
           <div>

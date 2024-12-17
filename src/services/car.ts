@@ -14,7 +14,7 @@ export type Car = {
 
 export async function getUserCars() {
   try {
-    const response = await api.get("/Vehicles/user/vehicles");
+    const response = await api.get("/vehicles/user/vehicles");
     return response;
   } catch (error: any) {
     toast.error(error.message)
@@ -23,7 +23,7 @@ export async function getUserCars() {
 
 export async function createCar(car: CreateCarFormState) {
   try {
-    const response = await api.post("/Vehicles", car);
+    const response = await api.post("/vehicles", car);
     return response;
   } catch (error: any) {
     toast.error(error.message)
@@ -32,7 +32,7 @@ export async function createCar(car: CreateCarFormState) {
 
 export async function getAllCars() {
   try {
-    const response = await api.get("/Vehicles");
+    const response = await api.get("/vehicles");
     return response.data as Car[];
   } catch (error: any) {
     toast.error(error.message)
@@ -41,7 +41,7 @@ export async function getAllCars() {
 
 export async function deleteCar(id: string) {
   try {
-    const response = await api.delete(`/Vehicles/${id}`);
+    const response = await api.delete(`/vehicles/${id}`);
 
     return response.data;
   } catch (error: any) {

@@ -67,7 +67,6 @@ function Profile() {
       }
     };
     loadCars();
-    console.log(cars);
   }, []);
 
   const handleCreateCar: SubmitHandler<CreateCarFormState> = async (data) => {
@@ -79,7 +78,7 @@ function Profile() {
       };
       const response: any = await createCar(payload);
       if (response.status === 201) {
-        setCars([...cars, response.data.newCar]);
+        setCars([...cars, response.data.newVehicle]);
         toast.success(response.data.message);
         toggleModalCar();
       }

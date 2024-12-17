@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import Plus from "../../../assets/plus.png";
 import Minus from "../../../assets/minus.png";
 import clsx from "clsx";
@@ -7,10 +7,17 @@ import clsx from "clsx";
 type Props = {
   vacancies: number;
   setVacancies: React.Dispatch<React.SetStateAction<number>>;
+  range: string | undefined
 };
 
 const NumericField = (props: Props) => {
-  const { vacancies, setVacancies } = props;
+  const { vacancies, setVacancies, range } = props;
+
+  useEffect(() => {
+    if(range === "MOTORCYCLE"){
+      setVacancies(0)
+    }
+  },[range])
 
   const vacanciesUp = () =>
     setVacancies((prev) => {
@@ -59,6 +66,7 @@ const NumericField = (props: Props) => {
           onClick={vacanciesDown}
           className="w-full h-full cursor-pointer"
           type="button"
+          disabled={range === "MOTORCYCLE"}
         >
           <Image
             className="absolute inset-y-3 right-0 w-8 h-8 left-6 cursor-pointer"
@@ -66,21 +74,29 @@ const NumericField = (props: Props) => {
             alt="minus icon"
           />
         </button>
-        <div
-          className={clsx(
-            `absolute space-y-4`,
-            memoizedPosition,
-            "duration-500",
-            "ease-in-out"
-          )}
-        >
-          {[1, 2, 3].map((item) => (
-            <p key={item} className="text-base text-gray">
-              {item}
-            </p>
-          ))}
-        </div>
-        <button onClick={vacanciesUp} type="button">
+        {
+          range === "MOTORCYCLE"
+          ?
+          <p className="text-base text-gray absolute">
+              1
+          </p>
+          :
+          <div
+            className={clsx(
+              `absolute space-y-4`,
+              memoizedPosition,
+              "duration-500",
+              "ease-in-out"
+            )}
+          >
+            {[1, 2, 3].map((item) => (
+              <p key={item} className="text-base text-gray">
+                {item}
+              </p>
+            ))}
+          </div>
+        }
+        <button onClick={vacanciesUp} type="button" disabled={range === "MOTORCYCLE"}>
           <Image
             className="absolute inset-y-3 w-8 h-8 right-6 cursor-pointer "
             src={Plus}

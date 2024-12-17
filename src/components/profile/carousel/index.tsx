@@ -17,7 +17,7 @@ type Props = {
 
 const Carousel = (props: Props) => {
   const { profile, add, items } = props;
-  console.log({items});
+  console.log(items);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [selectedCar, setSelectedCar] = React.useState(0);
 
