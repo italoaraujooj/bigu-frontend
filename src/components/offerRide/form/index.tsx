@@ -12,6 +12,7 @@ import { AuthContext } from "@/context/AuthContext";
 import useFields from "@/hooks/useFields";
 import { fetchUserAddresses } from "@/services/address";
 import { createRide, editRide, getRide } from "@/services/ride";
+import { CarResponseDTO } from "@/types/ride";
 import { formatDateTime, moneyMask } from "@/utils/masks";
 import { checkboxesOptions, fieldsLastRow } from "@/utils/offer-ride-constants";
 import { Address, OfferRideFormState } from "@/utils/types";
@@ -47,7 +48,7 @@ function OfferRideForm(props: Props) {
     useState<FormatAddress>({} as FormatAddress);
   const [vacancies, setVacancies] = useState(0);
   const [onlyWomanChecked, setOnlyWomanChecked] = useState(true);
-  const [selectedCar, setSelectedCar] = useState("");
+  const [selectedCar, setSelectedCar] = useState<CarResponseDTO>();
   const [description, setDescription] = useState("");
   const [scheduledTime, setScheduledTime] = useState("");
 
@@ -166,7 +167,7 @@ function OfferRideForm(props: Props) {
       String(estimated_value).split(" ")[1]?.replace(",", ".")
     );
     const toWomen = user?.sex === "F" ? onlyWomanChecked : false;
-    const carId = selectedCar;
+    const vehicleId = selectedCar?.vehicleId;
     const body = {
       driver: user?.userId,
       startAddress: startAddress,
@@ -175,7 +176,7 @@ function OfferRideForm(props: Props) {
       goingToCollege: value === "going" && checked,
       price: price,
       scheduledTime: dateTime,
-      car: carId,
+      vehicle: vehicleId,
       description: description,
       toWomen: toWomen,
     };
@@ -266,7 +267,7 @@ function OfferRideForm(props: Props) {
         )}
         <div className="flex gap-4 items-center space-y-2">
           <div className="w-full flex flex-col ">
-            <NumericField vacancies={vacancies} setVacancies={setVacancies} />
+            <NumericField vacancies={vacancies} setVacancies={setVacancies}/>
           </div>
           {/* <div className="w-1/2">
             <Input

@@ -26,26 +26,27 @@ export type AddressResponseDTO = {
 };
 
 export type CarResponseDTO = {
-  carId: string;
-  brand: string;
-  carModel: string;
-  plate: string;
-  modelYear: string;
-  color: string;
-};
+    vehicleId: string,
+    brand: string,
+    vehicleModel: string,
+    plate: string,
+    modelYear: string,
+    color: string,
+    type: "CAR" | "MOTORCYCLE"
+}
 
 export type RideDto = {
-  driver: string;
-  startAddress: string;
-  destinationAddress: string;
-  numSeats: number;
-  goingToCollege: boolean;
-  price: number;
-  scheduledTime: string;
-  car: string;
-  description: string;
-  toWomen: boolean;
-};
+    driver: string,
+    startAddress: string,
+    destinationAddress: string,
+    numSeats: number,
+    goingToCollege: boolean,
+    price: number,
+    scheduledTime: string,
+    vehicle: string,
+    description: string,
+    toWomen: boolean  
+}
 
 export type CandidateResponseDTO = {
   user: UserResponseDTO;
@@ -54,24 +55,23 @@ export type CandidateResponseDTO = {
 };
 
 export type RideResponseDTO = {
-  rideId: string;
-  driver: UserResponseDTO;
-  members: {
-    user: UserResponseDTO;
-    address: AddressResponseDTO;
-    aggreedValue: number;
-  }[];
-  candidates: CandidateResponseDTO[];
-  startAddress: AddressResponseDTO;
-  destinationAddress: AddressResponseDTO;
-  numSeats: number;
-  goingToCollege: boolean;
-  price: number;
-  scheduledTime: string;
-  car: CarResponseDTO;
-  description: string;
-  toWomen: boolean;
-};
+    rideId: string,
+    driver: UserResponseDTO,
+    members: {
+        user: UserResponseDTO,
+        address: AddressResponseDTO
+    }[],
+    candidates: CandidateResponseDTO[],
+    startAddress: AddressResponseDTO,
+    destinationAddress: AddressResponseDTO,
+    numSeats: number,
+    goingToCollege: boolean,
+    price: number,
+    scheduledTime: string,
+    vehicle: CarResponseDTO,
+    description: string,
+    toWomen: boolean  
+}
 
 export type RequestRide = {
   rideId: string;

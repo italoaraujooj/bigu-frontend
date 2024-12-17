@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Car from "../../../assets/car.png";
+import Moto from "../../../assets/motorcycle.png";
 import clsx from "clsx";
 import Image from "next/image";
 import Text from "../../text";
@@ -7,11 +8,12 @@ import Trash from "../../../assets/trash.png";
 import Plus from "../../../assets/plus-green.png";
 import Edit from "../../../assets/edit.png";
 import { Car as CarType, getUserCars } from "@/services/car";
+import { CarResponseDTO } from "@/types/ride";
 
 type Props = {
   profile?: boolean;
   add: any;
-  setCarSelected: React.Dispatch<React.SetStateAction<string>>;
+  setCarSelected: React.Dispatch<React.SetStateAction<CarResponseDTO | undefined>>;
 };
 
 const Carousel = (props: Props) => {
@@ -23,18 +25,18 @@ const Carousel = (props: Props) => {
   useEffect(() => {
     const loadData = async () => {
       const responseCars: any = await getUserCars()
-      if(responseCars) setItems(responseCars.data.userCars);
+      if(responseCars) setItems(responseCars.data.userVehicles);
     };
     loadData();
   }, []);
 
   useEffect(() => {
-    toggleCar(0, items[0]?.carId);
+    toggleCar(0, items[0]?.vehicleId);
   }, [items]);
 
-  const toggleCar = (index: number, carId: string) => {
+  const toggleCar = (index: number, vehicle: CarResponseDTO) => {
     setSelectedCar(index);
-    setCarSelected(carId);
+    setCarSelected(vehicle);
   };
 
   const goToIndex = (index: number) => {
@@ -48,6 +50,12 @@ const Carousel = (props: Props) => {
       },
       {
         className: `translate-x-[-110.5%]`,
+      },
+      {
+        className: `translate-x-[-220%]`,
+      },
+      {
+        className: `translate-x-[-330.5%]`,
       },
     ];
     const positionsLg = [
@@ -80,9 +88,9 @@ const Carousel = (props: Props) => {
       >
         {!!items &&
           !props.profile &&
-          items?.map(({ carId, carModel }: CarType, index: number) => (
+          items?.map((vehicle: CarResponseDTO, index: number) => (
             <div
-              key={carId}
+              key={vehicle.vehicleId}
               className={clsx(
                 "w-full shrink-0",
                 "transform-gpu",
@@ -93,11 +101,11 @@ const Carousel = (props: Props) => {
               <div className="w-full h-20 bg-extralight px-6 rounded-lg flex items-center justify-between ">
                 <Image
                   className="w-10 h-10 lg:w-12 lg:h-12"
-                  src={Car}
-                  alt="car"
+                  src={vehicle.type == "CAR" ? Car : Moto}
+                  alt={vehicle.type == "CAR" ? "car" : "moto"}
                 />
                 <Text
-                  label={carModel}
+                  label={vehicle.vehicleModel}
                   size="md"
                   color="gray"
                   weight="medium"
@@ -109,7 +117,7 @@ const Carousel = (props: Props) => {
                 >
                   <div
                     className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center"
-                    onClick={() => toggleCar(index, carId)}
+                    onClick={() => toggleCar(index, items)}
                   >
                     {selectedCar === index && (
                       <span className="relative flex h-3 w-3">
@@ -125,7 +133,7 @@ const Carousel = (props: Props) => {
           ))}
 
         {!!props.profile &&
-          items?.map(({ carId, carModel, color, plate }: CarType, index: number) => (
+          items?.map((vehicle: CarResponseDTO, index: number) => (
             <div
               key={index}
               className={clsx(
@@ -154,7 +162,7 @@ const Carousel = (props: Props) => {
                           Modelo
                         </div>
                         <Text
-                          label={carModel}
+                          label={vehicle.vehicleModel}
                           color="gray"
                           className="uppercase"
                         />
@@ -164,7 +172,7 @@ const Carousel = (props: Props) => {
                           Cor
                         </div>
                         <Text
-                          label={color}
+                          label={vehicle.color}
                           color="gray"
                           className="uppercase"
                         />
@@ -175,7 +183,7 @@ const Carousel = (props: Props) => {
                         <div className="bg-orange text-white px-4 py-2 rounded-md font-semibold ">
                           Placa
                         </div>
-                        <Text label={plate} color="gray" />
+                        <Text label={vehicle.plate} color="gray" />
                       </div>
                       <div className="flex items-center justify-end gap-4 mb-2">
                         <Image

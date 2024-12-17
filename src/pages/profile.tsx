@@ -26,7 +26,8 @@ import Star from "../assets/star.png";
 import WomanAvatar from "../assets/woman.png";
 import Button from "../components/button";
 import Input from "../components/input/input";
-import Homem from "../assets/avatar.png";
+import Homem from "../assets/avatar.png"
+import Radio from "@/components/radio";
 
 function Profile() {
   const router = useRouter();
@@ -59,14 +60,23 @@ function Profile() {
   useEffect(() => {
     const loadCars = async () => {
       const responseCars: any = await getUserCars();
-      if (responseCars) setCars(responseCars.data.userCars);
+      if (Array.isArray(responseCars.data.userVehicles)) {
+        setCars(responseCars.data.userVehicles);
+      } else {
+        console.error("Erro: userCars não é um array", responseCars.data.userVehicles);
+      }
     };
     loadCars();
+    console.log(cars);
   }, []);
 
   const handleCreateCar: SubmitHandler<CreateCarFormState> = async (data) => {
     try {
-      const payload = { ...data, avgConsumption: Number(data.avgConsumption) };
+      const payload = {
+        ...data, 
+        avgConsumption: Number(data.avgConsumption),
+        type: data.type.toLocaleUpperCase(),
+      };
       const response: any = await createCar(payload);
       if (response.status === 201) {
         setCars([...cars, response.data.newCar]);
@@ -85,7 +95,7 @@ function Profile() {
       if (response?.status === 200) {
         const previousCars = cars;
         const currentCars = previousCars.filter(
-          (car: CarResponseDTO) => car.carId !== id
+          (car: CarResponseDTO) => car.vehicleId !== id
         );
         setCars(currentCars);
         toggleModalRemoveCar(null);
@@ -136,6 +146,8 @@ function Profile() {
       toast.error("Erro ao enviar a imagem");
     }
   };
+
+  const [selectedValue, setSelectedValue] = useState("");
 
   return (
     <div className="flex w-full items-center justify-center my-8">
@@ -367,7 +379,7 @@ function Profile() {
             </div>
             <Modal isOpen={modalCar} onClose={toggleModalCar} noActions>
               <Text
-                label="Adicionar carro"
+                label="Adicionar veículo"
                 color="dark"
                 size="lg"
                 weight="bold"
@@ -378,6 +390,20 @@ function Profile() {
                 className="space-y-2"
               >
                 <br />
+                <Text
+                  label="TIPO DE VEICULO"
+                  color="#616161"
+                  size="md"
+                  weight="bold"
+                />
+                <Radio
+                name="type"
+                options={[
+                  { id: "CAR", label: "Carro" },
+                  { id: "MOTORCYCLE", label: "Motocicleta" },
+                ]}
+                onChange={(value: string) => setSelectedValue(value)}
+                />
                 <Input
                   name="brand"
                   label="Marca"
@@ -386,7 +412,7 @@ function Profile() {
                   color="extralight"
                 />
                 <Input
-                  name="carModel"
+                  name="vehicleModel"
                   label="Modelo"
                   placeholder="Onix"
                   sizing="adjustable"
@@ -420,7 +446,9 @@ function Profile() {
                   sizing="adjustable"
                   color="extralight"
                 />
+                
                 <section className="flex justify-center gap-4 mt-12 self-center">
+                  
                   <Button
                     label="Cancelar"
                     size="xs"

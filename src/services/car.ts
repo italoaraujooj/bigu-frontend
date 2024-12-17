@@ -3,18 +3,18 @@ import { toast } from "react-toastify";
 import { api } from "./api";
 
 export type Car = {
-  _id: string;
-  carId: string;
+  vehicleId: string;
   brand: string;
-  carModel: string;
+  vehicleModel: string;
   modelYear: number;
   color: string;
   plate: string;
+  type: "CAR" | "MOTORCYCLE"
 };
 
 export async function getUserCars() {
   try {
-    const response = await api.get("/cars/user/cars");
+    const response = await api.get("/Vehicles/user/vehicles");
     return response;
   } catch (error: any) {
     toast.error(error.message)
@@ -23,7 +23,7 @@ export async function getUserCars() {
 
 export async function createCar(car: CreateCarFormState) {
   try {
-    const response = await api.post("/cars", car);
+    const response = await api.post("/Vehicles", car);
     return response;
   } catch (error: any) {
     toast.error(error.message)
@@ -32,7 +32,7 @@ export async function createCar(car: CreateCarFormState) {
 
 export async function getAllCars() {
   try {
-    const response = await api.get("/cars");
+    const response = await api.get("/Vehicles");
     return response.data as Car[];
   } catch (error: any) {
     toast.error(error.message)
@@ -41,7 +41,7 @@ export async function getAllCars() {
 
 export async function deleteCar(id: string) {
   try {
-    const response = await api.delete(`/cars/${id}`);
+    const response = await api.delete(`/Vehicles/${id}`);
 
     return response.data;
   } catch (error: any) {

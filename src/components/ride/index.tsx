@@ -188,7 +188,7 @@ function Ride(props: Props) {
                     <div className="flex flex-row w-full justify-between">
                       <div className="space-y-2 mt-2 whitespace-nowrap flex flex-col gap-2">
                         <Text
-                          label={`🚕 ${item.car.carModel} ${item.car.color} - ${item.car.plate}`}
+                          label={`🚕 ${item.vehicle.vehicleModel} ${item.vehicle.color} - ${item.vehicle.plate}`}
                           color="dark"
                           size="md"
                           weight="medium"
