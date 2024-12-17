@@ -3,13 +3,13 @@ import { toast } from "react-toastify";
 import { api } from "./api";
 
 export type Car = {
-  _id: string;
-  carId: string;
+  vehicleId: string;
   brand: string;
-  carModel: string;
+  vehicleModel: string;
   modelYear: number;
   color: string;
   plate: string;
+  type: "CAR" | "MOTORCYCLE"
 };
 
 export async function getUserCars() {

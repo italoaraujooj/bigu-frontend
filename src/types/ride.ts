@@ -43,7 +43,7 @@ export type RideDto = {
     goingToCollege: boolean,
     price: number,
     scheduledTime: string,
-    car: string,
+    vehicle: string,
     description: string,
     toWomen: boolean  
 }
@@ -68,7 +68,7 @@ export type RideResponseDTO = {
     goingToCollege: boolean,
     price: number,
     scheduledTime: string,
-    car: CarResponseDTO,
+    vehicle: CarResponseDTO,
     description: string,
     toWomen: boolean  
 }
