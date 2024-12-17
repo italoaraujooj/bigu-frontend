@@ -68,12 +68,16 @@ function History(props: Props) {
           </div>
         ) : races.length ? (
           races.slice(0, 3).map((race: RideResponseDTO) => (
-            <div>
+            <div key={race.rideId}>
               <div
-                key={race.rideId}
+                // This was working before now its not, so the bellow is a workaround solution to get something kinda like the same
+                // className={clsx(
+                //   "flex flex-col w-full px-6 py-6 border-light border-2 gap-5 bg-zinc-800 hover:bg-zinc-700 rounded transition-colors duration-600",
+                //   "bg-white rounded-xl transition-[max-height] duration-500 ease-in-out max-h-20 hover:max-h-96 overflow-hidden"
+                // )}
                 className={clsx(
-                  "flex flex-col w-full px-6 py-6 border-light border-2 gap-5 bg-zinc-800 hover:bg-zinc-700 rounded transition-colors duration-600",
-                  "bg-white rounded-xl transition-[max-height] duration-500 ease-in-out max-h-20 hover:max-h-96 overflow-hidden"
+                  "flex flex-col w-full px-6 py-6 border-light border-2 gap-5 bg-zinc-800 hover:bg-zinc-700 rounded transition-[max-height] duration-1000 ease-in-out",
+                  "bg-white rounded-xl max-h-20 hover:max-h-[500px] overflow-hidden"
                 )}
               >
                 <div className="flex justify-between items-center">
@@ -133,7 +137,9 @@ function History(props: Props) {
                           : "Você"}
                       </span>
                     </p>
-                    {race.members.includes(user?.userId) &&
+                    {race.members.some(
+                      (member) => member.user.userId === user?.userId
+                    ) &&
                       race.driver.userId !== user?.userId && (
                         <span
                           className="animate-pulse text-yellow-500 ease-in-out infinite font-[Poppins] cursor-pointer ml-4"
@@ -160,7 +166,7 @@ function History(props: Props) {
                       race.members.map((member, index) => (
                         <div
                           key={member.user.userId}
-                          className="flex items-center bg-zinc-700 px-4 py-2 rounded-md mb-4"
+                          className="flex items-center bg-zinc-700 px-4 py-2 rounded-md"
                         >
                           <p>
                             <span
@@ -179,7 +185,9 @@ function History(props: Props) {
                                 : "Você"}
                             </span>
                           </p>
-                          {(race.members.includes(user?.userId) ||
+                          {(race.members.some(
+                            (member) => member.user.userId === user?.userId
+                          ) ||
                             race.driver.userId === user?.userId) &&
                             member.user.userId !== user?.userId && (
                               <span

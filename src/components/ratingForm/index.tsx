@@ -22,8 +22,8 @@ type Props = {
   ratingId?: string;
   rateeId?: any;
   rateeName?: string;
-  setShouldFetch: (shouldFetch: boolean) => void;
-  setEditRating: (ratingId: string) => void;
+  // setShouldFetch: (shouldFetch: boolean) => void;
+  // setEditRating: (ratingId: string) => void;
 };
 
 function RatingForm(props: Props) {
@@ -34,8 +34,8 @@ function RatingForm(props: Props) {
     rateeId,
     rateeName,
     ratingId,
-    setShouldFetch,
-    setEditRating,
+    // setShouldFetch,
+    // setEditRating,
   } = props;
 
   const formRef = useRef<FormHandles>(null);

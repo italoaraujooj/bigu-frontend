@@ -26,6 +26,8 @@ function Profile() {
   const router = useRouter();
   const { id } = router.query;
 
+  const [history, setHistory] = useState([]);
+  const [loadingStateHistory, setLoadingStateHistory] = useState<boolean>(true);
   const [userData, setUserData] = useState<UserResponseDTO>();
   const [ratings, setRatings] = useState<RatingResponseDTO[]>([]);
   const [reports, setReports] = useState<ReportResponseDTO[]>([]);
@@ -47,6 +49,7 @@ function Profile() {
     if (id) {
       loadDataUser();
       loadDataRatings();
+      loadDataHistory();
       loadDataReports();
 
       if (shouldFetch) {
@@ -68,6 +71,15 @@ function Profile() {
   const loadDataReports = async () => {
     const responseReports = await getUserReportsReceived(id as string);
     if (responseReports) setReports(responseReports.data.reports);
+  };
+
+  const loadDataHistory = async () => {
+    try {
+      const responseHistory = await getRideHistoryUser(id as string);
+      setHistory(responseHistory.data.userHistory);
+    } finally {
+      setLoadingStateHistory(false);
+    }
   };
 
   return (
@@ -218,20 +230,8 @@ function Profile() {
                   rideId={rideId}
                   rateeId={rateeId}
                   rateeName={rateeName}
-                  setShouldFetch={setShouldFetch}
-                  setEditRating={setEditRating}
-                />
-              </div>
-
-              <div className="w-1 h-auto bg-blackLine md:w-[2px] md:h-[50rem]"></div>
-
-              <div className="w-full md:w-1/2 flex flex-col gap-6">
-                <Ratings ratings={ratings} />
-
-                <Reports
-                  reports={reports}
-                  handleOpenReportForm={handleOpenReportForm}
-                  setEditReport={setEditReport}
+                  // setShouldFetch={setShouldFetch}
+                  // setEditRating={setEditRating}
                 />
               </div>
             </div>
