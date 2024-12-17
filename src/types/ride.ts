@@ -59,7 +59,8 @@ export type RideResponseDTO = {
     driver: UserResponseDTO,
     members: {
         user: UserResponseDTO,
-        address: AddressResponseDTO
+        address: AddressResponseDTO,
+        aggreedValue: number
     }[],
     candidates: CandidateResponseDTO[],
     startAddress: AddressResponseDTO,

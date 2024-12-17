@@ -136,7 +136,7 @@ function Profile() {
               <div className="w-full md:w-1/2 flex flex-col gap-6">
                 {/* Bloco da Barra e Atributos */}
                 <div className="flex md:w-2/3 mx-auto items-center justify-center gap-6 bg-white p-4 pb-0 rounded-md">
-                  <Bar />
+                  <Bar type={"CAR"} />
                   <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
                     <Attribute
                       label={userData?.sex === "Feminino" ? "MULHER" : "HOMEM"}

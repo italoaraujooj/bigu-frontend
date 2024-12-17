@@ -122,9 +122,9 @@ function AvailableRides() {
                   start={item.startAddress}
                   destination={item.destinationAddress}
                   numSeats={item.numSeats}
-                  model={item.car.carModel}
-                  plate={item.car.plate}
-                  color={item.car.color}
+                  model={item.vehicle.vehicleModel}
+                  plate={item.vehicle.plate}
+                  color={item.vehicle.color}
                   dateTime={item.scheduledTime}
                   toWoman={item.toWomen}
                   candidates={item.candidates}
