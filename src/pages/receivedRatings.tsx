@@ -8,14 +8,20 @@ import { GoBack } from "@/components";
 const ReceivedRatings = () => {
   const { user } = useContext(AuthContext);
   const [ratings, setRatings] = useState<RatingResponseDTO[]>([]);
+  const [editRating, setEditRating] = useState<string>("");
+  const [shouldFetch, setShouldFetch] = useState<boolean>(true);
+  const [showRatingForm, setShowRatingForm] = useState(false);
+
+  const handleCloseRatingForm = () => setShowRatingForm(false);
+  const handleOpenRatingForm = () => setShowRatingForm(true);
 
   useEffect(() => {
     if (user?.userId) {
       loadDataRatings();
 
-      //   if (shouldFetch) {
-      //     setShouldFetch(false);
-      //   }
+      if (shouldFetch) {
+        setShouldFetch(false);
+      }
     }
   }, [user?.userId]);
 
@@ -31,7 +37,12 @@ const ReceivedRatings = () => {
           <GoBack />
         </header>
         <div className="mt-8 flex justify-center">
-          <Ratings ratings={ratings} title={"Avaliações Recebidas"} />
+          <Ratings
+            ratings={ratings}
+            title={"Avaliações Recebidas"}
+            handleOpenRatingForm={handleOpenRatingForm}
+            setEditRating={setEditRating}
+          />
         </div>
       </main>
       <footer className="bg-gray-800 text-gray-400 text-center p-4 mt-12 font-[Poppins]">

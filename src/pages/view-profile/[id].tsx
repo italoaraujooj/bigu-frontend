@@ -20,25 +20,36 @@ import ReportForm from "@/components/reportForm";
 import { getUserReportsReceived } from "@/services/report";
 import Ratings from "@/components/ratings";
 import Reports from "@/components/reports";
+import RatingForm from "@/components/ratingForm";
 
 function Profile() {
   const router = useRouter();
   const { id } = router.query;
 
+  const [history, setHistory] = useState([]);
+  const [loadingStateHistory, setLoadingStateHistory] = useState<boolean>(true);
   const [userData, setUserData] = useState<UserResponseDTO>();
   const [ratings, setRatings] = useState<RatingResponseDTO[]>([]);
   const [reports, setReports] = useState<ReportResponseDTO[]>([]);
   const [showReportForm, setShowReportForm] = useState(false);
+  const [showRatingForm, setShowRatingForm] = useState(false);
   const [editReport, setEditReport] = useState<string>("");
+  const [editRating, setEditRating] = useState<string>("");
   const [shouldFetch, setShouldFetch] = useState<boolean>(true);
+  const [rateeId, setRateeId] = useState<string>("");
+  const [rateeName, setRateeName] = useState<string>("");
+  const [rideId, setRideId] = useState<string>("");
 
   const handleCloseReportForm = () => setShowReportForm(false);
   const handleOpenReportForm = () => setShowReportForm(true);
+  const handleCloseRatingForm = () => setShowRatingForm(false);
+  const handleOpenRatingForm = () => setShowRatingForm(true);
 
   useEffect(() => {
     if (id) {
       loadDataUser();
       loadDataRatings();
+      loadDataHistory();
       loadDataReports();
 
       if (shouldFetch) {
@@ -60,6 +71,15 @@ function Profile() {
   const loadDataReports = async () => {
     const responseReports = await getUserReportsReceived(id as string);
     if (responseReports) setReports(responseReports.data.reports);
+  };
+
+  const loadDataHistory = async () => {
+    try {
+      const responseHistory = await getRideHistoryUser(id as string);
+      setHistory(responseHistory.data.userHistory);
+    } finally {
+      setLoadingStateHistory(false);
+    }
   };
 
   return (
@@ -132,7 +152,27 @@ function Profile() {
               </button>
             </div>
 
-            <div className="w-full h-full flex flex-col md:flex-row gap-4">
+            <div className="w-full h-full flex flex-col md:flex-row gap-12">
+              <div className="w-full md:w-1/2 flex flex-col gap-6">
+                {/* Avaliações */}
+                <Ratings
+                  ratings={ratings}
+                  handleOpenRatingForm={handleOpenRatingForm}
+                  setEditRating={setEditRating}
+                />
+
+                {/* Denúncias */}
+                {/* <Reports
+                  reports={reports}
+                  handleOpenReportForm={handleOpenReportForm}
+                  setEditReport={setEditReport}
+                /> */}
+              </div>
+
+              {/* Divider */}
+              <div className="w-1 h-auto bg-blackLine md:w-[2px] md:h-[40rem]"></div>
+
+              {/* Bloco da Barra e Histórico Section */}
               <div className="w-full md:w-1/2 flex flex-col gap-6">
                 {/* Bloco da Barra e Atributos */}
                 <div className="flex md:w-2/3 mx-auto items-center justify-center gap-6 bg-white p-4 pb-0 rounded-md">
@@ -171,6 +211,9 @@ function Profile() {
                   </div>
                 </div>
 
+                {/* Histórico de Caronas */}
+                <History races={history} loading={loadingStateHistory} />
+
                 <ReportForm
                   visible={showReportForm}
                   handleClose={handleCloseReportForm}
@@ -179,17 +222,16 @@ function Profile() {
                   setShouldFetch={setShouldFetch}
                   setEditReport={setEditReport}
                 />
-              </div>
 
-              <div className="w-1 h-auto bg-blackLine md:w-[2px] md:h-[50rem]"></div>
-
-              <div className="w-full md:w-1/2 flex flex-col gap-6">
-                <Ratings ratings={ratings} />
-
-                <Reports
-                  reports={reports}
-                  handleOpenReportForm={handleOpenReportForm}
-                  setEditReport={setEditReport}
+                <RatingForm
+                  visible={showRatingForm}
+                  handleClose={handleCloseRatingForm}
+                  ratingId={editRating}
+                  rideId={rideId}
+                  rateeId={rateeId}
+                  rateeName={rateeName}
+                  // setShouldFetch={setShouldFetch}
+                  // setEditRating={setEditRating}
                 />
               </div>
             </div>

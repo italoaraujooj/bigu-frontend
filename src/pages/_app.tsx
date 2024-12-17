@@ -2,6 +2,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import "@/styles/globals.css";
 import "@/styles/reset.css";
 import "@/styles/banner.css";
+import "@/styles/starRating.css";
 import type { AppProps } from "next/app";
 
 import { NotificationProvider } from "@/context/NotificationContext";

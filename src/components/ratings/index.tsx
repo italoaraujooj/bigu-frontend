@@ -5,14 +5,20 @@ import Homem from "../../assets/avatar.png";
 import WomanAvatar from "../../assets/woman.png";
 import LottieAnimation from "../../components/LottieAnimation";
 import ghost from "../../assets/ghost.json";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
+import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
 
 type Props = {
   ratings: RatingResponseDTO[];
+  handleOpenRatingForm: () => void;
+  setEditRating: (reportId: string) => void;
   title?: string;
 };
 
 const Ratings = (props: Props) => {
-  const { ratings, title } = props;
+  const { ratings, handleOpenRatingForm, setEditRating, title } = props;
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="bg-dark w-full h-fit rounded-lg py-6 flex flex-col mx-auto lg:mx-0 max-w-[800px]">
@@ -64,6 +70,21 @@ const Ratings = (props: Props) => {
                 <span>⏰ {formatarData(rating.createdAt)}</span>
               </div>
             </div>
+
+            {/* {user?.userId === rating.raterId && (
+              <div className="ml-auto">
+                <PencilSimple
+                  color="#FFB400"
+                  weight="bold"
+                  className="cursor-pointer"
+                  size={24}
+                  onClick={() => {
+                    handleOpenRatingForm();
+                    setEditRating(rating._id);
+                  }}
+                />
+              </div>
+            )} */}
           </div>
         ))
       ) : (

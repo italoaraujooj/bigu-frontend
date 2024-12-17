@@ -80,6 +80,7 @@ export type RequestRide = {
 };
 
 export type RatingResponseDTO = {
+  _id: string;
   raterId: string;
   raterName: string;
   raterSex: string;
