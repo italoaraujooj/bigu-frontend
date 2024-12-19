@@ -11,29 +11,32 @@ import { toast } from "react-toastify";
 type Props = {
   visible: boolean;
   handleClose: () => void;
+  myRides: RideResponseDTO[];
   loadDataRidesAvailable: () => void;
+  loadDataMyRides: () => void;
 };
 
 function RidesOffers(props: Props) {
-  const { visible, handleClose, loadDataRidesAvailable } = props;
-  const [myRides, setMyRides] = useState<RideResponseDTO[]>([]);
+  const { visible, handleClose, loadDataRidesAvailable, myRides, loadDataMyRides } = props;
+  // const [myRides, setMyRides] = useState<RideResponseDTO[]>([]);
   const [shouldFetch, setShouldFetch] = useState<boolean>(true);
-  useEffect(() => {
-    const loadData = async () => {
-      if (shouldFetch) {
-        const response = await getMyRidesAvailable();
+  // useEffect(() => {
+  //   const loadData = async () => {
+  //     if (shouldFetch) {
+  //       const response = await getMyRidesAvailable();
 
-        setMyRides(response?.data.userDriverActivesHistory);
-        setShouldFetch(false);
-      }
-    };
-    loadData();
-  }, [shouldFetch]);
+  //       setMyRides(response?.data.userDriverActivesHistory);
+  //       setShouldFetch(false);
+  //     }
+  //   };
+  //   loadData();
+  // }, [shouldFetch]);
 
   const handleDeleteRide = async (ride: RideResponseDTO) => {
     try {
       await deleteRide(ride.rideId);
       setShouldFetch(true);
+      loadDataMyRides();
       loadDataRidesAvailable();
 
       toast.success("A carona foi cancelada com sucesso");
@@ -78,7 +81,7 @@ function RidesOffers(props: Props) {
               handleClose={handleClose}
               handleDeleteRide={handleDeleteRide}
               handleEditRide={handleEditRide}
-              setMyRides={setMyRides}
+              loadDataMyRides={loadDataMyRides}
             />
           );
         })}

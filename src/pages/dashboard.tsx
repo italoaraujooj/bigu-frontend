@@ -94,7 +94,7 @@ function Dashboard() {
             </h1>
             <div className="flex items-center gap-2">
               <Image className="w-3 h-3" src={Star} alt="estrela" />
-              <span className="text-gray text-[0.725rem] pt-1">
+              <span className="text-gray text-[0.725rem] pt-1 font-[Poppins]">
                 {user ? user.avgScore.toFixed(1) : 0.0}
               </span>
             </div>
@@ -276,12 +276,14 @@ function Dashboard() {
             handleClose={handleCloseRequests}
             visible={showRequests}
             myRides={myRides}
-            setMyRides={setMyRides}
+            loadDataMyRides={loadDataMyRides}
           />
           <RidesOffers
             handleClose={handleCloseRides}
             visible={showRides}
+            myRides={myRides}
             loadDataRidesAvailable={loadDataRidesAvailable}
+            loadDataMyRides={loadDataMyRides}
           />
           <button
             className="info-Botton fixed bottom-4 left-4 w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none"

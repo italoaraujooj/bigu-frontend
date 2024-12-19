@@ -18,25 +18,26 @@ type Props = {
   ride: RideResponseDTO;
   handleClose: any;
   candidate: CandidateResponseDTO;
-  setMyRides: Dispatch<SetStateAction<RideResponseDTO[]>>;
+  loadDataMyRides: () => void
 };
 
 const CandidateRequest = (props: Props) => {
-  const { ride, handleClose, candidate, setMyRides } = props;
+  const { ride, handleClose, candidate, loadDataMyRides } = props;
   const router = useRouter()
 
-  const loadDataMyRides = async () => {
-    try{
-      const myRides = await getMyRidesAvailable();
-      if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
-    }catch(error: any){
-      toast.error("Ocorreu um erro ao buscar as suas caronas.")
-    }
-  }
+  // const loadDataMyRides = async () => {
+  //   try{
+  //     const myRides = await getMyRidesAvailable();
+  //     console.log(myRides)
+  //     if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
+  //   }catch(error: any){
+  //     toast.error("Ocorreu um erro ao buscar as suas caronas.")
+  //   }
+  // }
   
   const handleAcceptCandidate = async () => {
     try {
-      const body = { status: "accept", freeRide: "false" };
+      const body = { status: "accept", freeRide: false };
       const response = await answerCandidate(body, ride.rideId, candidate.user.userId);
       if (response?.status === 200) {
         toast.success("O usuário foi adicionado a carona com sucesso");
@@ -51,7 +52,7 @@ const CandidateRequest = (props: Props) => {
 
   const handleAcceptFreeCandidate = async () => {
     try {
-      const body = { status: "accept", freeRide: "true" };
+      const body = { status: "accept", freeRide: true };
       const response = await answerCandidate(body, ride.rideId, candidate.user.userId);
       if (response?.status === 200) {
         toast.success("O usuário foi adicionado a carona com sucesso");

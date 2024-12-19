@@ -5,7 +5,6 @@ import clsx from "clsx";
 import Text from "../text";
 import { AddressResponseDTO, CarResponseDTO } from "@/types/ride";
 import NextLink from "next/link";
-import { toast } from "react-toastify";
 
 type Props = {
   drawerIsOpen: boolean;
@@ -23,7 +22,6 @@ type Props = {
 export default function Drawer({
   drawerIsOpen,
   toggleDrawer,
-  handleNavigateToOfferRide,
   handleLogout,
   handleOpenRequests,
   handleOpenRides,
@@ -99,6 +97,19 @@ export default function Drawer({
             color="gray"
             className="group-hover:text-blackline"
           />
+        </div>
+        <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
+      </div>
+      <div className="w-full px-2 group cursor-pointer">
+        <div className="flex items-center gap-4">
+          <Jeep size={32} color="gray" />
+          <NextLink href="/help" className='pointer-events-none text-[#71717a]'>
+            <Text
+              label="Ajuda"
+              size="xl"
+              color="gray"
+            />
+          </NextLink>
         </div>
         <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
       </div>

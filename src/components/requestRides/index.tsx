@@ -10,11 +10,11 @@ type Props = {
   visible: boolean;
   handleClose: () => void;
   myRides: RideResponseDTO[];
-  setMyRides: Dispatch<SetStateAction<RideResponseDTO[]>>;
+  loadDataMyRides: () => void;
 };
 
 function RidesRequests(props: Props) {
-  const { visible, handleClose, myRides, setMyRides } = props;
+  const { visible, handleClose, myRides, loadDataMyRides } = props;
 
   return (
     <div
@@ -47,7 +47,7 @@ function RidesRequests(props: Props) {
                     candidate={candidate}
                     avatar={Avatar}
                     handleClose={handleClose}
-                    setMyRides={setMyRides}
+                    loadDataMyRides={loadDataMyRides}
                   />
                 ))}
               </>

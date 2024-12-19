@@ -16,19 +16,18 @@ type Props = {
   handleClose: () => void;
   handleDeleteRide: (ride: RideResponseDTO) => void;
   handleEditRide: (ride: string) => void;
-  setMyRides: Dispatch<SetStateAction<RideResponseDTO[]>>;
+  loadDataMyRides: () => void
 };
 
 function Offer(props: Props) {
-  const { ride, setMyRides } = props;
+  const { ride, loadDataMyRides } = props;
 
   const handleOverRide = async (rideId: string) => {
     try {
       const response = await setOverRide(rideId);
       if (response && response.status === 200) {
         toast.success("Carona finalizada com sucesso.");
-        const response = await getMyRidesAvailable();
-        setMyRides(response?.data.userDriverActivesHistory);
+        loadDataMyRides();
       }
     } catch (error) {
       toast.error("Ocorreu algum erro ao finalizar essa carona.");
@@ -86,11 +85,11 @@ function Offer(props: Props) {
             />
             <Text
               label={
-                Number(ride.numSeats) - ride.members.length > 1
-                  ? ride.numSeats + " vagas disponíveis"
+                Number(ride.numSeats) - ride.members.length === 1
+                  ? 1 + " vaga disponível"
                   : Number(ride.numSeats) -
                   ride.members.length +
-                  " vaga disponível"
+                  " vagas disponíveis"
               }
               color="gray"
               size="base"
