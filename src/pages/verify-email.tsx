@@ -20,7 +20,10 @@ const VerifyEmail = () => {
     if (response && response.status === 202) {
       setLoading(false);
       toast.success("Email verificado com sucesso");
-      router.push("/dashboard");
+      router.push({
+        pathname: "/dashboard",
+        query: { firstAccess: true },
+      });
     }
   };
 

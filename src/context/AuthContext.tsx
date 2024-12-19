@@ -52,10 +52,7 @@ export function AuthProvider({ children }: any) {
       setCookie(undefined, "nextauth.refreshToken", response.data.refreshToken);
       setUser(response.data.userResponse);
 
-      router.push({
-        pathname: "/dashboard",
-        query: { firstAccess: true },
-      });
+      router.push("/verify-email");
     }
     return { data: response?.data, status: response?.status };
   }
