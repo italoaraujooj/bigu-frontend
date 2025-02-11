@@ -56,7 +56,7 @@ export default function RecoverPassword() {
         onSubmit={handleSubmit}
         ref={formRef}
         className={clsx(
-          `w-96 drop-shadow-md bg-white rounded-md flex flex-col justify-center py-8 px-12`,
+          `w-[85%] drop-shadow-md bg-white rounded-md flex flex-col justify-center py-6 px-10`,
           successRequest && "hidden"
         )}
       >

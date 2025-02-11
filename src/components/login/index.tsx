@@ -12,7 +12,6 @@ import Router from "next/router";
 import { RequestContext } from "@/context/RequestContext";
 import LottieAnimation from "../LottieAnimation";
 import CarLoading from "../../assets/Car.json";
-import { toast } from "react-toastify";
 
 interface UserLoginState {
   email: string;

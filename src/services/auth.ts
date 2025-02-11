@@ -96,9 +96,9 @@ export async function getUserById(id: string) {
   return await api.get(`/users/id/${id}`)
 }
 
-export async function verifyCode(email: string, code: string) {
+export async function verifyCode(code: string) {
   try {
-    return await api.put(`/auth/validate-code/${email}/${code}`)
+    return await api.put(`/auth/confirm/user/${code}`)
   } catch (error: any) {
     toast.error(error.message);
   }
