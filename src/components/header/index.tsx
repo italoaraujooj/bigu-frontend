@@ -63,19 +63,25 @@ export default function Header(props: Props) {
     <header className="flex justify-between items-center">
       <div className="flex gap-4 items-center">
         {user?.sex === "Feminino" ?
-        <Image
-          onClick={() => router.push("/profile")}
-          className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer"
-          src={Foto}
-          alt="foto"
-        />
+        <div className="relative w-16 h-16">
+          <Image
+            onClick={() => router.push("/profile")}
+            className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer rounded-full"
+            fill
+            src={user?.profileImage? `data:image/jpeg;base64,${user.profileImage}` : Foto}
+            alt="foto"
+          />
+        </div>
         :
-        <Image
-          onClick={() => router.push("/profile")}
-          className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer"
-          src={Homem}
-          alt="foto"
-        />
+        <div className="relative w-16 h-16">
+          <Image
+            onClick={() => router.push("/profile")}
+            className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer rounded-full"
+            fill
+            src={user?.profileImage? `data:image/jpeg;base64,${user.profileImage}` : Homem}
+            alt="foto"
+          />
+        </div>
         }
         {hoveredImage && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">

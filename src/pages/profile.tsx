@@ -180,7 +180,7 @@ function Profile() {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <div
-                  className="relative"
+                  className="relative w-16 h-16"
                   onMouseEnter={() => setHoveredImage(true)}
                   onMouseLeave={() => setHoveredImage(false)}
                 >
@@ -190,7 +190,8 @@ function Profile() {
                       className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
                         hoveredImage ? "blur-sm" : ""
                       }`}
-                      src={WomanAvatar}
+                      fill
+                      src={user?.profileImage? `data:image/jpeg;base64,${user.profileImage}` : WomanAvatar}
                       alt="foto"
                     />
                   ) : (
@@ -199,7 +200,8 @@ function Profile() {
                       className={`w-12 h-12 md:w-24 md:h-24 object-cover rounded-full transition duration-300 ${
                         hoveredImage ? "blur-sm" : ""
                       }`}
-                      src={Homem}
+                      fill
+                      src={user?.profileImage? `data:image/jpeg;base64,${user.profileImage}` : Homem}
                       alt="foto"
                     />
                   )}
@@ -216,11 +218,12 @@ function Profile() {
                           width="512"
                           height="512"
                         />
-                        <Input
+                        <input
                           name="foto"
                           className="w-full md:h-16 md:text-lg hidden"
                           type="file"
-                          sizing="xs"
+                          accept="image/*"
+                          onChange={handleImageChange}
                         />
                       </label>
                     </div>
