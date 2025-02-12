@@ -15,7 +15,7 @@ import Drawer from "../drawer";
 import Input from "../input/input";
 import Text from "../text";
 import Link from "./Link";
-import { AddressResponseDTO, CarResponseDTO } from "@/types/ride";
+import { AddressResponseDTO, CarResponseDTO } from "@/types/types";
 import { AuthContext } from "@/context/AuthContext";
 import Homem from "../../assets/avatar.png"
 

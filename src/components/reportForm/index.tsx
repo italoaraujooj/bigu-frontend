@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useContext, useEffect, useRef, useState } from "react";
-import { RideResponseDTO } from "@/types/ride";
+import { RideResponseDTO } from "@/types/types";
 import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
 import Router from "next/router";
 import { toast } from "react-toastify";

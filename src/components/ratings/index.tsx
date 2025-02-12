@@ -1,4 +1,4 @@
-import { RatingResponseDTO } from "@/types/ride";
+import { RatingResponseDTO } from "@/types/types";
 import { formatarData } from "@/utils/masks";
 import Image from "next/image";
 import Homem from "../../assets/avatar.png";

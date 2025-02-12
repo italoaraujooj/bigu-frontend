@@ -5,7 +5,7 @@ import OK from "../../assets/finished.png";
 import ghost from "../../assets/ghost.json";
 import LottieAnimation from "../LottieAnimation";
 import Text from "../text";
-import { RideResponseDTO } from "@/types/ride";
+import { RideResponseDTO } from "@/types/types";
 
 interface RacesHistory {
   id: number;

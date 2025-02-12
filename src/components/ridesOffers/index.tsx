@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import Offer from "./offers";
 //import { CaretRight } from "@phosphor-icons/react/dist/ssr";
-import { RideResponseDTO } from "@/types/ride";
+import { RideResponseDTO } from "@/types/types";
 import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
 import Router from "next/router";
 import { toast } from "react-toastify";

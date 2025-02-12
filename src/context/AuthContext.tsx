@@ -5,7 +5,7 @@ import {
   signInRequest,
   signUpRequest,
 } from "@/services/auth";
-import { UserResponseDTO } from "@/types/ride";
+import { UserResponseDTO } from "@/types/types";
 import { useRouter } from "next/router";
 import { parseCookies, setCookie } from "nookies";
 import { createContext, useContext, useEffect, useState } from "react";

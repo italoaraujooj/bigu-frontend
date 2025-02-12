@@ -1,4 +1,4 @@
-import { ReportResponseDTO } from "@/types/ride";
+import { ReportResponseDTO } from "@/types/types";
 import { formatarData } from "@/utils/masks";
 import Image from "next/image";
 import Homem from "../../assets/avatar.png";

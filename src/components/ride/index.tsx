@@ -1,7 +1,7 @@
 import { AuthContext } from "@/context/AuthContext";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
-import { AddressResponseDTO, RequestRide, RideResponseDTO } from "@/types/ride";
+import { AddressResponseDTO, RequestRide, RideResponseDTO } from "@/types/types";
 import { formatarData } from "@/utils/masks";
 import type { Ride } from "@/utils/types";
 import clsx from "clsx";

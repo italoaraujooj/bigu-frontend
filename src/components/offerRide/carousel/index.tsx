@@ -8,7 +8,7 @@ import Trash from "../../../assets/trash.png";
 import Plus from "../../../assets/plus-green.png";
 import Edit from "../../../assets/edit.png";
 import { Car as CarType, getUserCars } from "@/services/car";
-import { CarResponseDTO } from "@/types/ride";
+import { CarResponseDTO } from "@/types/types";
 
 type Props = {
   profile?: boolean;

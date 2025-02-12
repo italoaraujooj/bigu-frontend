@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import Reports from "@/components/reports";
 import { getUserReportsSubmitted } from "@/services/report";
-import { ReportResponseDTO } from "@/types/ride";
+import { ReportResponseDTO } from "@/types/types";
 import { GoBack } from "@/components";
 import ReportForm from "@/components/reportForm";
 

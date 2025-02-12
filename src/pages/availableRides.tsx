@@ -8,7 +8,7 @@ import {
   getAllRidesActiveToWomen,
   getAllRidesAvailableToWomen,
  } from "@/services/ride";
-import { RideResponseDTO } from "@/types/ride";
+import { RideResponseDTO } from "@/types/types";
 import Router from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";

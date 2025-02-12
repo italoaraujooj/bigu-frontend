@@ -2,7 +2,7 @@ import Button from "@/components/button";
 import { formatarDate } from "@/utils/masks";
 import Text from "@/components/text";
 import { getMyRidesAvailable, setOverRide } from "@/services/ride";
-import { RideResponseDTO } from "@/types/ride";
+import { RideResponseDTO } from "@/types/types";
 import { formatarData } from "@/utils/masks";
 import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
 import Router from "next/router";

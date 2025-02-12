@@ -6,7 +6,7 @@ import {
   CandidateResponseDTO,
   RequestRide,
   UserResponseDTO,
-} from "@/types/ride";
+} from "@/types/types";
 import { formatarData } from "@/utils/masks";
 import { Clock } from "@phosphor-icons/react/dist/ssr/Clock";
 import { MapPin } from "@phosphor-icons/react/dist/ssr/MapPin";

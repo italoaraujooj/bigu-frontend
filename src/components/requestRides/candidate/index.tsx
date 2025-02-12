@@ -6,7 +6,7 @@ import Router from "next/router";
 import Notification from "@/components/notification";
 import Text from "@/components/text";
 import { toast } from "react-toastify";
-import { CandidateResponseDTO, RideResponseDTO } from "@/types/ride";
+import { CandidateResponseDTO, RideResponseDTO } from "@/types/types";
 import Whatsapp from "../../../assets/whatsapp.png"
 import { Dispatch, SetStateAction } from "react";
 import Homem from "../../../assets/avatar.png"

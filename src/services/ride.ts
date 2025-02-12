@@ -1,7 +1,7 @@
 import { OfferRideBody } from "@/utils/types";
 import { api } from "./api";
 import { toast } from "react-toastify";
-import { RequestRide, RideDto } from "@/types/ride";
+import { RequestRide, RideDto } from "@/types/types";
 
 export const getAllRides = async () => {
   try {

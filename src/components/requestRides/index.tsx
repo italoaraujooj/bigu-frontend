@@ -1,5 +1,5 @@
 import { getMyRidesAvailable } from "@/services/ride";
-import { CandidateResponseDTO, RideResponseDTO } from "@/types/ride";
+import { CandidateResponseDTO, RideResponseDTO } from "@/types/types";
 import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";

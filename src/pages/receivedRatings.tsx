@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import Ratings from "@/components/ratings";
 import { getUserRatings } from "@/services/ratings";
-import { RatingResponseDTO } from "@/types/ride";
+import { RatingResponseDTO } from "@/types/types";
 import { GoBack } from "@/components";
 
 const ReceivedRatings = () => {

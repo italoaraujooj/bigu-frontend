@@ -6,6 +6,7 @@ export type UserResponseDTO = {
   phoneNumber: string;
   matricula: string;
   feedbacks: string[];
+  role: string;
   avgScore: number;
   profileImage: string;
   isVerified: boolean;

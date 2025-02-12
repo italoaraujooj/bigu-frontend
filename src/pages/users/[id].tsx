@@ -1,6 +1,6 @@
 import { GoBack } from '@/components';
 import { getUserById } from '@/services/auth';
-import { UserResponseDTO } from '@/types/ride';
+import { UserResponseDTO } from '@/types/types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';

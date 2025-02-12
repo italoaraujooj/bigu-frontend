@@ -3,7 +3,7 @@ import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut";
 import { X } from "@phosphor-icons/react/dist/ssr/X";
 import clsx from "clsx";
 import Text from "../text";
-import { AddressResponseDTO, CarResponseDTO } from "@/types/ride";
+import { AddressResponseDTO, CarResponseDTO } from "@/types/types";
 import NextLink from "next/link";
 
 type Props = {

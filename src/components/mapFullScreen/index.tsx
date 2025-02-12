@@ -1,4 +1,4 @@
-import { AddressResponseDTO } from "@/types/ride";
+import { AddressResponseDTO } from "@/types/types";
 import Button from "../button";
 import Mapa from "../map";
 

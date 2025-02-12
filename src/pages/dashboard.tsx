@@ -16,7 +16,7 @@ import {
   getMyRidesAvailable,
   getRideHistory,
 } from "@/services/ride";
-import { RideResponseDTO } from "@/types/ride";
+import { RideResponseDTO } from "@/types/types";
 import { fakeDelay } from "@/utils/delay";
 import { useRouter } from "next/router";
 import Joyride, { CallBackProps, Step } from "react-joyride";

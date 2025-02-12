@@ -12,7 +12,7 @@ import { createCar, getUserCars } from "@/services/car";
 import { ChangePassword, CreateCarFormState } from "@/utils/types";
 // import { ArrowCircleLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
 import { deleteCar } from "@/services/car";
-import { CarResponseDTO } from "@/types/ride";
+import { CarResponseDTO } from "@/types/types";
 import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr/ArrowCircleLeft";
 import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
 import { FormHandles, SubmitHandler } from "@unform/core";

@@ -12,7 +12,7 @@ import { AuthContext } from "@/context/AuthContext";
 import useFields from "@/hooks/useFields";
 import { fetchUserAddresses } from "@/services/address";
 import { createRide, editRide, getRide } from "@/services/ride";
-import { CarResponseDTO } from "@/types/ride";
+import { CarResponseDTO } from "@/types/types";
 import { formatDateTime, moneyMask } from "@/utils/masks";
 import { checkboxesOptions, fieldsLastRow } from "@/utils/offer-ride-constants";
 import { Address, OfferRideFormState } from "@/utils/types";

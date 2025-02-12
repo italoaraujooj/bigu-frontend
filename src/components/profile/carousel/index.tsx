@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import Plus from "../../../assets/plus-green.png";
 import { Actions, Attribute, Bar, Navigation } from "./components";
-import { CarResponseDTO } from "@/types/ride";
+import { CarResponseDTO } from "@/types/types";
 import Modal from "@/components/modal";
 import { VehicleType } from "@googlemaps/google-maps-services-js";
 

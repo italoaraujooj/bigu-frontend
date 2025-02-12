@@ -5,7 +5,7 @@ import {
   RatingResponseDTO,
   UserResponseDTO,
   ReportResponseDTO,
-} from "@/types/ride";
+} from "@/types/types";
 import { ArrowCircleLeft } from "@phosphor-icons/react/dist/ssr/ArrowCircleLeft";
 import Image from "next/image";
 import Link from "next/link";

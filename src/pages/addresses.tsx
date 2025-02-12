@@ -5,7 +5,7 @@ import {
   editAddress,
   fetchUserAddresses,
 } from "@/services/address";
-import { AddressResponseDTO } from "@/types/ride";
+import { AddressResponseDTO } from "@/types/types";
 import { Address, AddressFormState } from "@/utils/types";
 // import {
 //   ArrowCircleLeft,
