@@ -35,7 +35,6 @@ export const formatDateTime = (date: string, time: string) => {
 }
 
 export const formatarData = (data: string): string => {
-  console.log(data)
   const date = new Date(data);
 
   const day = String(date.getDate()).padStart(2, '0');
@@ -78,7 +77,6 @@ export function moneyMask(value: any) {
 }
 
 export function timeMask(value: any) {
-
   value = value.replace(/\D/g, "");
 
   if (value.length > 3) {
@@ -95,9 +93,11 @@ export function timeMask(value: any) {
   if (formattedHours && parseInt(formattedHours, 10) > 23) {
     formattedHours = "23";
   }
-
-  if (formattedMinutes && parseInt(formattedMinutes, 10) > 59) {
-    formattedMinutes = "59";
+  
+  if (value.length === 5) {
+    if (formattedMinutes && parseInt(formattedMinutes, 10) > 59) {
+      formattedMinutes = "59";
+    }
   }
 
   const formattedValue = `${formattedHours}${formattedMinutes ? `:${formattedMinutes}` : ""}`;
