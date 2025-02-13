@@ -10,9 +10,10 @@ interface RadioProps {
   name: string;
   options: Option[];
   onChange: any;
+  required: boolean
 }
 
-const Radio: React.FC<RadioProps> = ({ name, options, onChange }) => {
+const Radio: React.FC<RadioProps> = ({ name, options, onChange, required }) => {
   const inputRefs = useRef<HTMLInputElement[]>([]);
   const { fieldName, registerField, defaultValue } = useField(name);
 
@@ -49,6 +50,7 @@ const Radio: React.FC<RadioProps> = ({ name, options, onChange }) => {
             name={fieldName}
             value={option.id}
             defaultChecked={defaultValue === option.id}
+            required={required}
           />
           <span className="font-['Poppins'] text-[#616161] font-bold text-sm md:text-md uppercase">
             {option.label}

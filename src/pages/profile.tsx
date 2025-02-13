@@ -399,6 +399,7 @@ function Profile() {
                   weight="bold"
                 />
                 <Radio
+                required={true}
                 name="type"
                 options={[
                   { id: "CAR", label: "Carro" },
