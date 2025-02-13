@@ -7,14 +7,14 @@ import { useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { FormHandles, SubmitHandler } from "@unform/core";
 
-interface codeState {
+interface CodeState {
   code: string;
 }
 
 const VerifyEmail = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSendCode: SubmitHandler<codeState> = async (data) => {
+  const handleSendCode: SubmitHandler<CodeState> = async (data) => {
     if (!data.code) {
       return;
     }
@@ -22,7 +22,6 @@ const VerifyEmail = () => {
     const response = await verifyCode(data.code);
 
     if (response && response.status === 200) {
-      // toast.success("Email verificado com sucesso");
       router.push({
         pathname: "/dashboard",
         query: { firstAccess: true },
@@ -43,7 +42,7 @@ const VerifyEmail = () => {
           <Text
             label="Digite o código que enviamos ao seu e-mail para verificação de sua conta."
             size="xs"
-            // weight="bold"
+            weight="normal"
             className="text-center uppercase"
             color="dark"
           />
