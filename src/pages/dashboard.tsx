@@ -74,8 +74,8 @@ function Dashboard() {
     try {
       const myRides = await getMyRidesAvailable();
       if (myRides) setMyRides(myRides.data.userDriverActivesHistory);
-    } catch (error: any) {
-      toast.error("Ocorreu um erro ao buscar as suas caronas.");
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
 

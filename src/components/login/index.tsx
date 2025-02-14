@@ -27,7 +27,7 @@ function Login(props: Props) {
   const formRef = useRef<FormHandles>(null);
   const { signIn } = useContext(AuthContext);
   const { visible, handleClose } = props;
-  const { loading, inProgress, done } = useContext(RequestContext);
+  const { loading } = useContext(RequestContext);
 
   const handleSubmit: SubmitHandler<UserLoginState> = async (data) => {
     const user = {

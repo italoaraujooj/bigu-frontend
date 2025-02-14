@@ -17,7 +17,7 @@ const OfferRide = () => {
         <div className="">
           <GoBack />
         </div>
-        <div className="bg-dark w-[21rem] sm:w-528 lg:w-[64rem] h-fit rounded-lg px-4 py-8 lg:px-14 lg:py-16 space-y-12">
+        <div className="bg-dark w-[24rem] sm:w-528 lg:w-[64rem] h-fit rounded-lg px-4 py-8 lg:px-14 lg:py-16 space-y-12">
           <header className="flex gap-4 items-center">
             {user?.sex === "Feminino" ?
               <Image

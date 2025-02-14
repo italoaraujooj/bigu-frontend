@@ -29,8 +29,9 @@ function Offer(props: Props) {
         toast.success("Carona finalizada com sucesso.");
         loadDataMyRides();
       }
-    } catch (error) {
-      toast.error("Ocorreu algum erro ao finalizar essa carona.");
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
     }
   };
 

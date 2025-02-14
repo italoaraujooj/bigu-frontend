@@ -13,6 +13,7 @@ export type UserResponseDTO = {
   ratingCount: number;
   offeredRidesCount: number;
   takenRidesCount: number;
+  documentStatus: string
 };
 
 export type AddressResponseDTO = {
@@ -99,3 +100,8 @@ export type ReportResponseDTO = {
   comment: string;
   createdAt: string;
 };
+
+export type evaluateBody = {
+  isApproved: boolean;
+  reason?: string;
+}

@@ -6,6 +6,7 @@ import { AuthContext } from "@/context/AuthContext";
 import {
   changePasswordRequest,
   getUser,
+  postDocumentPicture,
   profilePicture,
 } from "@/services/auth";
 import { createCar, getUserCars } from "@/services/car";
@@ -92,9 +93,9 @@ function Profile() {
         toast.success(response.data.message);
         toggleModalCar();
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
-      toast.error("Houve um erro na criação do carro");
+      toast.error(err.message);
     }
   };
 
@@ -111,8 +112,9 @@ function Profile() {
         toggleModalRemoveCar(null);
         toast.success(`O carro foi removido.`);
       }
-    } catch (err) {
-      toast.error("Houve um erro na remoção do carro");
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
     }
   };
 
@@ -124,8 +126,9 @@ function Profile() {
         toast.success("A senha foi alterada com sucesso");
         handleCloseChangePassword();
       }
-    } catch (err) {
-      toast.error("Houve um erro na alteração da senha");
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
     }
   };
 
@@ -154,8 +157,9 @@ function Profile() {
         setUser(userResponse.data.user);
         toast.success("Imagem atualizada com sucesso");
       }
-    } catch (error) {
-      toast.error("Erro ao enviar a imagem");
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
     }
   };
 
@@ -178,12 +182,16 @@ function Profile() {
     formData.append("file", file);
 
     try {
-      // Simulação de envio do documento (substituir pela API real)
-      console.log("Enviando documento:", file.name);
-      toast.success("Documento enviado com sucesso!");
-      toggleModalProof();
-    } catch (error) {
-      toast.error("Erro ao enviar o documento");
+      const response: any = await postDocumentPicture(formData);
+      if (response && response.status == 201) {
+        const userResponse = await getUser();
+        setUser(userResponse.data.user);
+        toast.success("Documento enviado com sucesso!");
+        toggleModalProof();
+      }
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
     }
   };
 
@@ -288,14 +296,26 @@ function Profile() {
               </div>
               {/* Botão de comprovação de vínculo */}
               <div className="w-full md:w-auto flex justify-center md:justify-end">
-                <Button
-                  onClick={toggleModalProof}
-                  label="Comprovar vínculo"
-                  size="base"
-                  color="light-blue"
-                  shape="square"
-                  className="uppercase w-full md:w-auto"
-                />
+                {
+                  user?.documentStatus === 'inReview' ?
+                    <div className="w-full flex flex-col justify-center items-center rounded-lg h-20 bg-yellow">
+                      <Text
+                        label="O documento enviado está em análise"
+                        size="sm"
+                        weight="bold"
+                        className="uppercase"
+                      />
+                    </div>
+                  :  
+                    <Button
+                      onClick={toggleModalProof}
+                      label="Comprovar vínculo"
+                      size="base"
+                      color="light-blue"
+                      shape="square"
+                      className="uppercase w-full md:w-auto"
+                    />
+              }
               </div>
             </div>
             
@@ -654,7 +674,7 @@ function Profile() {
           <h2 className="text-2xl font-semibold font-[Poppins] text-center">Comprovação de Vínculo</h2>
 
           {/* Explicação sobre a necessidade do documento */}
-          <p className="text-gray text-center">
+          <p className="text-gray text-center font-[Poppins]">
             Para garantir a segurança da plataforma, solicitamos um documento que comprove seu vínculo com a universidade. 
             Você pode enviar um comprovante de matrícula, certidão de vinculo ou outro documento oficial.
           </p>
@@ -662,7 +682,7 @@ function Profile() {
           {/* Input para upload do documento */}
           <label className="cursor-pointer flex flex-col items-center gap-4 px-6 py-4 border border-gray-300 rounded-lg w-full text-center">
             <img className="w-12" src="https://www.svgrepo.com/show/357902/image-upload.svg" alt="Upload" />
-            <span className="text-gray-600">Clique para selecionar um arquivo</span>
+            <span className="text-gray-600 font-[Poppins]">Clique para selecionar um arquivo</span>
             <input
               type="file"
               accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"

@@ -46,7 +46,7 @@ const CandidateRequest = (props: Props) => {
       }
 
     } catch (err: any) {
-      toast.error("Falha ao aceitar o usuário");
+      toast.error(err.message);
     }
   };
 
@@ -61,7 +61,7 @@ const CandidateRequest = (props: Props) => {
       }
 
     } catch (err: any) {
-      toast.error("Falha ao aceitar o usuário");
+      toast.error(err.message);
     }
   };
 
@@ -76,7 +76,7 @@ const CandidateRequest = (props: Props) => {
       handleClose();
 
     } catch (err: any) {
-      toast.error("Falha ao rejeitar o usuário");
+      toast.error(err.message);
     }
   };
 
