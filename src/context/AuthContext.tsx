@@ -40,7 +40,11 @@ export function AuthProvider({ children }: any) {
       setCookie(undefined, "nextauth.accessToken", response.data.accessToken);
       setCookie(undefined, "nextauth.refreshToken", response.data.refreshToken);
       setUser(response.data.user);
-      await router.push("/dashboard");
+      if(response.data.user.role != 'admin'){
+        await router.push("/dashboard");
+      }else{
+        await router.push("/review-documents");
+      }
     }
     return { data: response?.data, status: response?.status };
   }

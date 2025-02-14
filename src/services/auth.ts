@@ -4,6 +4,7 @@ import { api } from "./api";
 import router from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { toast } from "react-toastify";
+import { evaluateBody } from "@/types/types";
 
 type UserFormState = {
   name: string,
@@ -75,8 +76,9 @@ export const refreshToken = async () => {
     if (response && response.status === 200) {
       setCookie(undefined, "nextauth.accessToken", response.data.newAccessToken);
     }
-  } catch (error) {
-    toast.error("Erro ao renovar token");
+  } catch (err: any) {
+    console.log(err);
+    toast.error(err.message);
   }
 };
 
@@ -87,9 +89,27 @@ export const profilePicture = async (formData: FormData) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-  } catch (error) {
-    toast.error("Erro ao atualizar a foto de perfil.");
+  } catch (err: any) {
+    console.log(err);
+    toast.error(err.message);
   }
+}
+
+export const postDocumentPicture = async (formData: FormData) => {
+  try {
+    return await api.post('/users/upload-id-photo', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  } catch (err: any) {
+    console.log(err);
+    toast.error(err.message);
+  }
+}
+
+export async function getIdPhotoUserById(id: string) {
+  return await api.get(`/users/id-photo/${id}`)
 }
 
 export async function getUserById(id: string) {
@@ -102,4 +122,20 @@ export async function verifyCode(code: string) {
   } catch (error: any) {
     toast.error(error.message);
   }
+}
+
+export async function getUserWithDocumentStatusInReview(){
+  try {
+    return await api.get(`/users/inReview`);
+  } catch (error: any) {
+    toast.error(error.message);
+  } 
+}
+
+export async function evaluateUserDocument(userId: string, body: evaluateBody){
+  try {
+    return await api.put(`/users/evaluate-document/${userId}`, body);
+  } catch (error: any) {
+    toast.error(error.message);
+  } 
 }

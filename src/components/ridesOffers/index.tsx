@@ -42,7 +42,7 @@ function RidesOffers(props: Props) {
       toast.success("A carona foi cancelada com sucesso");
       handleClose();
     } catch (err: any) {
-      toast.error("Falha ao cancelar a carona");
+      toast.error(err.message);
       handleClose();
     }
   };

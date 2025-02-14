@@ -6,6 +6,7 @@ import { AuthContext } from "@/context/AuthContext";
 import {
   changePasswordRequest,
   getUser,
+  postDocumentPicture,
   profilePicture,
 } from "@/services/auth";
 import { createCar, getUserCars } from "@/services/car";
@@ -30,6 +31,7 @@ import Homem from "../assets/avatar.png"
 import Radio from "@/components/radio";
 
 function Profile() {
+  // Hooks do React para manipulação de estado e contexto
   const router = useRouter();
   const formRef = useRef<FormHandles>(null);
   const formRefCar = useRef<FormHandles>(null);
@@ -37,6 +39,7 @@ function Profile() {
 
   const { user, setUser } = useContext(AuthContext);
 
+  // Estados para controle de interatividade da página
   const [readOnly, setReadOnly] = useState(true);
   const [changePassword, setChangePassord] = useState(false);
   const [modalCar, setModalCar] = useState(false);
@@ -44,7 +47,10 @@ function Profile() {
   const [hoveredImage, setHoveredImage] = useState(false);
   const [modalRemoveCar, setModalRemoveCar] = useState(false);
   const [carToRemove, setCarToRemove] = useState<string | null>(null);
+  const [modalProof, setModalProof] = useState(false);
 
+
+  // Funções para alternar modais
   const toggleModalCar = () => setModalCar((prev) => !prev);
   const toggleModalRemoveCar = (id: string | null) => {
     setCarToRemove(id);
@@ -52,11 +58,15 @@ function Profile() {
   };
   const handleOpenChangePassword = () => setChangePassord(true);
   const handleCloseChangePassword = () => setChangePassord(false);
+  const toggleModalProof = () => setModalProof((prev) => !prev);
 
+  
+  // Alterna entre modo de edição e visualização do perfil
   function editSubmit() {
     setReadOnly((prev) => !prev);
   }
 
+  // Carrega os veículos do usuário ao montar o componente
   useEffect(() => {
     const loadCars = async () => {
       const responseCars: any = await getUserCars();
@@ -69,6 +79,7 @@ function Profile() {
     loadCars();
   }, []);
 
+  // Manipula a criação de um novo veículo
   const handleCreateCar: SubmitHandler<CreateCarFormState> = async (data) => {
     try {
       const payload = {
@@ -82,12 +93,13 @@ function Profile() {
         toast.success(response.data.message);
         toggleModalCar();
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
-      toast.error("Houve um erro na criação do carro");
+      toast.error(err.message);
     }
   };
 
+  // Manipula a remoção de um veículo
   const handleDeleteCar = async (id: string): Promise<void> => {
     try {
       const response: any = await deleteCar(id);
@@ -100,11 +112,13 @@ function Profile() {
         toggleModalRemoveCar(null);
         toast.success(`O carro foi removido.`);
       }
-    } catch (err) {
-      toast.error("Houve um erro na remoção do carro");
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
     }
   };
 
+  // Manipula a alteração de senha do usuário
   const handleChangePassword: SubmitHandler<ChangePassword> = async (data) => {
     try {
       const response: any = await changePasswordRequest(data);
@@ -112,11 +126,13 @@ function Profile() {
         toast.success("A senha foi alterada com sucesso");
         handleCloseChangePassword();
       }
-    } catch (err) {
-      toast.error("Houve um erro na alteração da senha");
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
     }
   };
 
+  // Manipula a alteração da imagem de perfil do usuário
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -141,16 +157,48 @@ function Profile() {
         setUser(userResponse.data.user);
         toast.success("Imagem atualizada com sucesso");
       }
-    } catch (error) {
-      toast.error("Erro ao enviar a imagem");
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
     }
   };
 
   const [selectedValue, setSelectedValue] = useState("");
 
+  // Função para lidar com o upload do documento
+  const handleDocumentUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    let file;
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      file = files[0];
+    }
+
+    if (!file) {
+      toast.error("Nenhum arquivo foi selecionado");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response: any = await postDocumentPicture(formData);
+      if (response && response.status == 201) {
+        const userResponse = await getUser();
+        setUser(userResponse.data.user);
+        toast.success("Documento enviado com sucesso!");
+        toggleModalProof();
+      }
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
+    }
+  };
+
   return (
     <div className="flex w-full items-center justify-center my-8">
       <div>
+        {/* Link para voltar ao dashboard */}
         <div>
           <Link
             href="/dashboard"
@@ -165,6 +213,8 @@ function Profile() {
             />
           </Link>
         </div>
+
+        {/* Formulário de perfil do usuário */}
         <div className="w-full h-fit flex items-center justify-center">
           <Form
             className="bg-dark max-w-[360px] p-4 rounded-2xl flex flex-col gap-6 sm:max-w-xl md:max-w-3xl md:p-16 space-y-6 lg:max-w-4xl xl:max-w-4xl"
@@ -177,7 +227,8 @@ function Profile() {
             }}
             ref={formRef}
           >
-            <div className="flex justify-between items-center">
+            {/* Seção de imagem e nome do usuário */}
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
               <div className="flex items-center gap-3">
                 <div
                   className="relative w-16 h-16"
@@ -229,7 +280,8 @@ function Profile() {
                     </div>
                   )}
                 </div>
-
+                
+                {/* Seção de recepção do usuário */}
                 <div className="flex gap-1 items-center">
                   <h1 className="text-xl font-bold text-white md:text-4xl mr-2 font-[Poppins]">
                     {`Olá, ${user?.name.split(" ")[0]}`}
@@ -242,9 +294,34 @@ function Profile() {
                   </div>
                 </div>
               </div>
+              {/* Botão de comprovação de vínculo */}
+              <div className="w-full md:w-auto flex justify-center md:justify-end">
+                {
+                  user?.documentStatus === 'inReview' ?
+                    <div className="w-full flex flex-col justify-center items-center rounded-lg h-20 bg-yellow">
+                      <Text
+                        label="O documento enviado está em análise"
+                        size="sm"
+                        weight="bold"
+                        className="uppercase"
+                      />
+                    </div>
+                  :  
+                    <Button
+                      onClick={toggleModalProof}
+                      label="Comprovar vínculo"
+                      size="base"
+                      color="light-blue"
+                      shape="square"
+                      className="uppercase w-full md:w-auto"
+                    />
+              }
+              </div>
             </div>
-
+            
+            {/* Seção de informações do usuário */}
             <div className="w-full flex flex-col md:flex-row gap-12">
+              {/* Campos de entrada para informações do usuário */}
               <div className="w-full md:w-5/12 space-y-4">
                 <Input
                   label="Nome Completo"
@@ -293,9 +370,12 @@ function Profile() {
                 />
               </div>
 
+              {/* Linha divisória entre informações do usuário e outras opções */}
               <div className="w-full h-1 bg-blackLine md:w-1 md:h-[32.5rem]"></div>
 
+              {/* Seção de links para outras funcionalidades */}
               <div className="w-full flex flex-col md:w-1/2 gap-4">
+                {/* Link para visualizar endereços cadastrados */}
                 <div className="w-full flex items-center justify-between flex-row gap-5">
                   <Link
                     className="w-full py-1 cursor-pointer group"
@@ -313,6 +393,8 @@ function Profile() {
                     <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
                   </Link>
                 </div>
+
+                {/* Link para visualizar avaliações recebidas */}
                 <div className="w-full flex items-center justify-between flex-row gap-5">
                   <Link
                     className="w-full py-1 cursor-pointer group"
@@ -330,6 +412,8 @@ function Profile() {
                     <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
                   </Link>
                 </div>
+
+                {/* Link para visualizar denúncias enviadas */}
                 <div className="w-full flex items-center justify-between flex-row gap-5">
                   <Link
                     className="w-full py-1 cursor-pointer group"
@@ -347,6 +431,8 @@ function Profile() {
                     <div className="w-full h-1 bg-gray mt-4 rounded-sm group-hover:bg-yellow transition ease-in-out duration-300" />
                   </Link>
                 </div>
+
+                {/* Seção de veículos do usuário */}
                 <div className="w-full flex flex-col justify-center">
                   <h1 className="text-2xl text-white font-bold mb-2 font-[Poppins]">
                     Meus veículos
@@ -358,6 +444,8 @@ function Profile() {
                     items={cars}
                   />
                 </div>
+
+                {/* Botões para alterar senha e editar perfil */}
                 <div className="flex gap-7">
                   <Button
                     label="Alterar senha"
@@ -379,6 +467,8 @@ function Profile() {
                 </div>
               </div>
             </div>
+
+            {/* Modal para adicionar um novo veículo */}
             <Modal isOpen={modalCar} onClose={toggleModalCar} noActions>
               <Text
                 label="Adicionar veículo"
@@ -469,6 +559,8 @@ function Profile() {
                 </section>
               </Form>
             </Modal>
+
+            {/* Modal para remover um veículo */}
             <Modal
               isOpen={modalRemoveCar}
               onClose={() => toggleModalRemoveCar(null)}
@@ -501,6 +593,8 @@ function Profile() {
           </Form>
         </div>
       </div>
+
+      {/* Modal para alteração de senha */}
       {
         <Modal
           isOpen={changePassword}
@@ -540,6 +634,8 @@ function Profile() {
                 type="password"
                 placeholder="*********"
               />
+              
+              {/* Link para recuperação de senha */}
               <p
                 className=" text-gray cursor-pointer font-[Poppins]"
                 onClick={() => {
@@ -548,6 +644,8 @@ function Profile() {
               >
                 Esqueci minha senha
               </p>
+
+              {/* Botões de ação para cancelar ou confirmar a alteração de senha */}
               <section className="flex items-center gap-4 mt-12">
                 <Button
                   label="Cancelar"
@@ -567,7 +665,38 @@ function Profile() {
             </div>
           </Form>
         </Modal>
+
+        
       }
+
+      <Modal isOpen={modalProof} onClose={toggleModalProof} noActions>
+        <div className="bg-white rounded-lg p-6 flex flex-col gap-4 justify-center items-center">
+          {/* Título do modal */}
+          <h2 className="text-2xl font-semibold font-[Poppins] text-center">Comprovação de Vínculo</h2>
+
+          {/* Explicação sobre a necessidade do documento */}
+          <p className="text-gray text-center font-[Poppins]">
+            Para garantir a segurança da plataforma, solicitamos um documento que comprove seu vínculo com a universidade. 
+            Você pode enviar um comprovante de matrícula, certidão de vinculo ou outro documento oficial.
+          </p>
+
+          {/* Input para upload do documento */}
+          <label className="cursor-pointer flex flex-col items-center gap-4 px-6 py-4 border border-gray-300 rounded-lg w-full text-center">
+            <img className="w-12" src="https://www.svgrepo.com/show/357902/image-upload.svg" alt="Upload" />
+            <span className="text-gray-600 font-[Poppins]">Clique para selecionar um arquivo</span>
+            <input
+              type="file"
+              accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
+              className="hidden"
+              onChange={handleDocumentUpload}
+            />
+          </label>
+
+          {/* Botão para fechar o modal */}
+          <Button label="Fechar" size="xs" className="uppercase font-semibold px-3 lg:px-6" color="red" onClick={toggleModalProof} />
+        </div>
+      </Modal>
+
       <Notification />
     </div>
   );
