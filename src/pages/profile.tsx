@@ -296,25 +296,37 @@ function Profile() {
               </div>
               {/* Botão de comprovação de vínculo */}
               <div className="w-full md:w-auto flex justify-center md:justify-end">
-                {
-                  user?.documentStatus === 'inReview' ?
-                    <div className="w-full flex flex-col justify-center items-center rounded-lg h-20 bg-yellow">
-                      <Text
-                        label="O documento enviado está em análise"
-                        size="sm"
-                        weight="bold"
-                        className="uppercase"
-                      />
-                    </div>
-                  :  
-                    <Button
-                      onClick={toggleModalProof}
-                      label="Comprovar vínculo"
-                      size="base"
-                      color="light-blue"
-                      shape="square"
-                      className="uppercase w-full md:w-auto"
+              {
+                user?.documentStatus === 'pending' ? (
+                  <Button
+                    onClick={toggleModalProof}
+                    label="Comprovar vínculo"
+                    size="base"
+                    color="light-blue"
+                    shape="square"
+                    className="uppercase w-full md:w-auto"
+                  />
+                ) : (
+                  <div 
+                    className={`w-full flex flex-col justify-center items-center rounded-lg h-20 
+                      ${user?.documentStatus === 'inReview' ? 'bg-yellow' : ''}
+                      ${user?.documentStatus === 'approved' ? 'bg-green' : ''}
+                      ${user?.documentStatus === 'rejected' ? 'bg-red' : ''}`}
+                    >
+                    <Text
+                      label={
+                        user?.documentStatus === 'inReview'
+                          ? 'O documento enviado está em análise'
+                          : user?.documentStatus === 'approved'
+                          ? 'O documento foi aprovado'
+                          : 'O documento foi rejeitado'
+                      }
+                      size="sm"
+                      weight="bold"
+                      className="uppercase"
                     />
+                  </div>
+                )
               }
               </div>
             </div>
