@@ -10,7 +10,7 @@ interface RadioProps {
   name: string;
   options: Option[];
   onChange: any;
-  required: boolean
+  required?: boolean
 }
 
 const Radio: React.FC<RadioProps> = ({ name, options, onChange, required }) => {
