@@ -251,7 +251,9 @@ function Addresses() {
               if (cep.length === 8) {
                 const data = await fetchViaCep(cep);
                 if (data) {
+                  const currentData = formRef.current?.getData();
                   formRef.current?.setData({
+                    ...currentData,
                     cidade: data.localidade,
                     rua: data.logradouro,
                     bairro: data.bairro,
