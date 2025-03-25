@@ -29,33 +29,33 @@ interface DropdownOption {
 }
 
 const ESTADOS: DropdownOption[] = [
-  { label: 'AC', value: 'AC' },
-  { label: 'AL', value: 'AL' },
-  { label: 'AP', value: 'AP' },
-  { label: 'AM', value: 'AM' },
-  { label: 'BA', value: 'BA' },
-  { label: 'CE', value: 'CE' },
-  { label: 'DF', value: 'DF' },
-  { label: 'ES', value: 'ES' },
-  { label: 'GO', value: 'GO' },
-  { label: 'MA', value: 'MA' },
-  { label: 'MT', value: 'MT' },
-  { label: 'MS', value: 'MS' },
-  { label: 'MG', value: 'MG' },
-  { label: 'PA', value: 'PA' },
-  { label: 'PB', value: 'PB' },
-  { label: 'PR', value: 'PR' },
-  { label: 'PE', value: 'PE' },
-  { label: 'PI', value: 'PI' },
-  { label: 'RJ', value: 'RJ' },
-  { label: 'RN', value: 'RN' },
-  { label: 'RS', value: 'RS' },
-  { label: 'RO', value: 'RO' },
-  { label: 'RR', value: 'RR' },
-  { label: 'SC', value: 'SC' },
-  { label: 'SP', value: 'SP' },
-  { label: 'SE', value: 'SE' },
-  { label: 'TO', value: 'TO' }
+  { label: "AC", value: "AC" },
+  { label: "AL", value: "AL" },
+  { label: "AP", value: "AP" },
+  { label: "AM", value: "AM" },
+  { label: "BA", value: "BA" },
+  { label: "CE", value: "CE" },
+  { label: "DF", value: "DF" },
+  { label: "ES", value: "ES" },
+  { label: "GO", value: "GO" },
+  { label: "MA", value: "MA" },
+  { label: "MT", value: "MT" },
+  { label: "MS", value: "MS" },
+  { label: "MG", value: "MG" },
+  { label: "PA", value: "PA" },
+  { label: "PB", value: "PB" },
+  { label: "PR", value: "PR" },
+  { label: "PE", value: "PE" },
+  { label: "PI", value: "PI" },
+  { label: "RJ", value: "RJ" },
+  { label: "RN", value: "RN" },
+  { label: "RS", value: "RS" },
+  { label: "RO", value: "RO" },
+  { label: "RR", value: "RR" },
+  { label: "SC", value: "SC" },
+  { label: "SP", value: "SP" },
+  { label: "SE", value: "SE" },
+  { label: "TO", value: "TO" },
 ];
 
 function Addresses() {
@@ -65,14 +65,14 @@ function Addresses() {
   const [userAddress, setUserAddresses] = React.useState<Address[]>([]);
   const [modalAddress, setModalAddress] = React.useState(false);
   const [modalEditAddress, setModalEditAddress] = React.useState(false);
-  const [addressSelected, setAddressSelected] = React.useState(
-    null as any
+  const [addressSelected, setAddressSelected] = React.useState(null as any);
+  const [stateSelected, setStateSelected] = React.useState(
+    {} as DropdownOption
   );
-  const [stateSelected, setStateSelected] = React.useState({} as DropdownOption)
 
   const toggleModalEditAddress = (address?: AddressResponseDTO) => {
     setAddressSelected(address);
-    
+
     setModalEditAddress((prev) => !prev);
   };
 
@@ -90,7 +90,7 @@ function Addresses() {
   }, []);
 
   const handleCreateAddress: SubmitHandler<AddressFormState> = async (data) => {
-    const payload = {...data, estado: stateSelected.value}
+    const payload = { ...data, estado: stateSelected.value };
     const responsePost = await createAddress(payload);
     if (responsePost?.status === 201) {
       toast.success(`O endereço '${data.nome}' foi cadastrado.`);
@@ -101,7 +101,7 @@ function Addresses() {
   };
 
   const handleEditAddress: SubmitHandler<AddressFormState> = async (data) => {
-    const payload = {...data, estado: stateSelected.value}
+    const payload = { ...data, estado: stateSelected.value };
     const responsePost = await editAddress(payload, addressSelected.addressId);
     if (responsePost?.status === 200) {
       toast.success(`O endereço '${data.nome}' foi editado.`);
@@ -121,6 +121,21 @@ function Addresses() {
   };
 
   const redirect = () => router.push("/dashboard");
+
+  const fetchViaCep = async (cep: string) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+      if (data?.erro) {
+        toast.error("CEP não encontrado.");
+        return null;
+      }
+      return data;
+    } catch (error) {
+      toast.error("Erro ao buscar endereço.");
+      return null;
+    }
+  };
 
   return (
     <div className="flex w-full items-center justify-center flex-col py-8 px-4">
@@ -207,7 +222,7 @@ function Addresses() {
         <Form
           onSubmit={handleCreateAddress}
           ref={formRef}
-          className="py-12 space-y-2 h-screen overflow-y-scroll	"
+          className="py-12 space-y-2 max-h-[80vh] overflow-y-auto"
         >
           {/* @ts-ignore */}
           <Text
@@ -231,6 +246,21 @@ function Addresses() {
             label="CEP"
             placeholder="58432-777"
             sizing="adjustable"
+            onBlur={async (e) => {
+              const cep = e.target.value.replace(/\D/g, "");
+              if (cep.length === 8) {
+                const data = await fetchViaCep(cep);
+                if (data) {
+                  formRef.current?.setData({
+                    cidade: data.localidade,
+                    rua: data.logradouro,
+                    bairro: data.bairro,
+                    estado: data.uf,
+                  });
+                  setStateSelected({ label: data.uf, value: data.uf });
+                }
+              }
+            }}
           />
           {/* @ts-ignore */}
           <Input
@@ -297,12 +327,16 @@ function Addresses() {
           </section>
         </Form>
       </Modal>
-      <Modal isOpen={modalEditAddress} onClose={() => setModalEditAddress(false)} noActions>
+      <Modal
+        isOpen={modalEditAddress}
+        onClose={() => setModalEditAddress(false)}
+        noActions
+      >
         {/* @ts-ignore */}
         <Form
           onSubmit={handleEditAddress}
           ref={formRefEdit}
-          className="py-12 space-y-2 overflow-y-scroll h-96"
+          className="py-12 space-y-2 max-h-[80vh] overflow-y-auto"
           initialData={{
             nome: addressSelected?.nome,
             cep: addressSelected?.cep,
@@ -311,7 +345,7 @@ function Addresses() {
             rua: addressSelected?.rua,
             bairro: addressSelected?.bairro,
             numero: addressSelected?.numero,
-            complemento: addressSelected?.complemento
+            complemento: addressSelected?.complemento,
           }}
         >
           {/* @ts-ignore */}
@@ -366,11 +400,13 @@ function Addresses() {
             sizing="adjustable"
           />
           {/* @ts-ignore */}
-          <Input
-            name="estado"
+          <Dropdown
             label="Estado"
-            placeholder="PB"
-            sizing="adjustable"
+            options={ESTADOS}
+            selectedOption={stateSelected}
+            onSelectOption={(selectedOption) =>
+              setStateSelected(selectedOption)
+            }
           />
           {/* @ts-ignore */}
           <Input

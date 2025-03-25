@@ -2,7 +2,14 @@ import React, { useEffect, useRef } from "react";
 import clsx from "clsx";
 import { useField } from "@unform/core";
 
-type InputType = "text" | "email" | "password" | "tel" | "file" | "search" | "date";
+type InputType =
+  | "text"
+  | "email"
+  | "password"
+  | "tel"
+  | "file"
+  | "search"
+  | "date";
 type InputColor = "light" | "extralight";
 type InputSize = "sm" | "adjustable" | "xs";
 
@@ -19,13 +26,13 @@ interface Props {
   value?: string | number;
   mask?: (value: string) => string;
   className?: string;
-  required?:boolean
+  required?: boolean;
   validate?: (value: string) => string | undefined;
   maxLength?: number;
-};
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+}
 
 // type InputProps = JSX.IntrinsicElements["input"] & Props;
-
 
 export default function Input(props: Props) {
   const {
@@ -50,7 +57,7 @@ export default function Input(props: Props) {
     sizes: {
       xs: "w-24 h-14 px-5 text-sm",
       sm: "w-80 h-14 px-5 text-sm",
-      adjustable: 'w-full h-14 px-5 text-sm'
+      adjustable: "w-full h-14 px-5 text-sm",
     },
     shapes: {
       square: "rounded-none",
@@ -59,7 +66,7 @@ export default function Input(props: Props) {
     colors: {
       light: "bg-light",
       extralight: "bg-extralight",
-    }
+    },
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -126,7 +133,10 @@ export default function Input(props: Props) {
         value={value}
         required={required}
         onChange={handleChange}
-        onBlur={handleBlur}
+        onBlur={(e) => {
+          handleBlur();
+          props.onBlur?.(e);
+        }}
         maxLength={maxLength}
       />
       {error && <span>{error}</span>}
