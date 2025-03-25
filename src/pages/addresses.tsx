@@ -58,6 +58,13 @@ const ESTADOS: DropdownOption[] = [
   { label: "TO", value: "TO" },
 ];
 
+export function cepMask(value: string): string {
+  return value
+    .replace(/\D/g, '')             // Remove tudo que não for dígito
+    .slice(0, 8)                    // Limita a 8 dígitos
+    .replace(/^(\d{5})(\d{1,3})/, '$1-$2'); // Insere o hífen após o quinto dígito
+}
+
 function Addresses() {
   const formRef = React.useRef<FormHandles>(null);
   const formRefEdit = React.useRef<FormHandles>(null);
@@ -246,6 +253,7 @@ function Addresses() {
             label="CEP"
             placeholder="58432-777"
             sizing="adjustable"
+            mask={cepMask}
             onBlur={async (e) => {
               const cep = e.target.value.replace(/\D/g, "");
               if (cep.length === 8) {
