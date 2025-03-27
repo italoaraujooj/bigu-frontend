@@ -89,7 +89,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
         ref.current.value = "";
       },
     });
-  }, [fieldName, registerField]);
+  }, [fieldName, registerField, inputRef]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -141,5 +141,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     </div>
   );
 });
+
+Input.displayName = "Input";
 
 export default Input;
