@@ -3,7 +3,7 @@ import { ptBR } from 'date-fns/locale';
 
 const MESES: any = {
   '01': 'Janeiro',
-  '02': 'Fevereivo',
+  '02': 'Fevereiro',
   '03': 'Março',
   '04': 'Abril',
   '05': 'Maio',
