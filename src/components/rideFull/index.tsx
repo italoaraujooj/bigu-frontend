@@ -22,6 +22,7 @@ import Dropdown from "../dropdown";
 import Mapa from "../map";
 import MapFullScreen from "../mapFullScreen";
 import Modal from "../modal";
+import { createOrGetChatRoom } from "@/services/chat";
 
 interface RideProps {
   id: string;
@@ -109,8 +110,21 @@ function RideFull(props: RideProps) {
     setIsMapFullScreen((prev) => !prev);
   };
 
-  const handleChatWithDriver = () => {
-    Router.push(`/chat?rideId=${props.id}&senderId=${user?.userId}`);
+  const handleChatWithDriver = async () => {
+    if (!user) return;
+    try {
+      const response = await createOrGetChatRoom(
+        props.id,
+        user?.userId || "",
+        props.driver.userId
+      );
+      if (response?.data?.chatRoomId) {
+        Router.push(`/chat?chatRoomId=${response.data.chatRoomId}`);
+      }
+    } catch (err) {
+      console.error("Erro ao abrir chat:", err);
+      toast.error("Erro ao abrir o chat.");
+    }
   };
 
   if (isMapFullScreen) {
@@ -179,7 +193,7 @@ function RideFull(props: RideProps) {
                   {props.numSeats}{" "}
                   {Number(props.numSeats) > 1
                     ? "vagas disponíveis"
-                    : "vaga disponível"}{" "}
+                    : "vaga disponível"}
                 </span>
               </div>
 

@@ -1,26 +1,28 @@
 import Button from "@/components/button";
 import { formatarDate } from "@/utils/masks";
 import Text from "@/components/text";
-import { getMyRidesAvailable, setOverRide } from "@/services/ride";
+import { setOverRide } from "@/services/ride";
 import { RideResponseDTO } from "@/types/types";
-import { formatarData } from "@/utils/masks";
 import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
 import Router from "next/router";
-import { Dispatch, SetStateAction } from "react";
+import { useContext } from "react";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import chat from "../../../assets/message-circle.svg";
+import { AuthContext } from "@/context/AuthContext";
+import { createOrGetChatRoom } from "@/services/chat";
 
 type Props = {
   ride: RideResponseDTO;
   handleClose: () => void;
   handleDeleteRide: (ride: RideResponseDTO) => void;
   handleEditRide: (ride: string) => void;
-  loadDataMyRides: () => void
+  loadDataMyRides: () => void;
 };
 
 function Offer(props: Props) {
   const { ride, loadDataMyRides } = props;
+  const { user } = useContext(AuthContext);
 
   const handleOverRide = async (rideId: string) => {
     try {
@@ -39,8 +41,32 @@ function Offer(props: Props) {
     Router.push(`/view-profile/${userId}`);
   };
 
-  const handleChat = () => {
-    Router.push(`/chat?rideId=${ride.rideId}&senderId=${ride.driver.userId}`);
+  const handleChat = async () => {
+    if (!user) return;
+
+    try {
+      const participantId =
+        ride.driver.userId === user.userId
+          ? ride.members[0]?.user.userId // se for motorista, pegue o primeiro passageiro (ou personalize isso)
+          : ride.driver.userId;
+
+      if (!participantId) {
+        toast.info("Nenhum participante encontrado para iniciar o chat.");
+        return;
+      }
+
+      const response = await createOrGetChatRoom(
+        ride.rideId,
+        user.userId,
+        participantId
+      );
+
+      const chatRoomId = response.data.chatRoomId;
+      Router.push(`/chat?chatRoomId=${chatRoomId}`);
+    } catch (error: any) {
+      toast.error("Erro ao iniciar o chat.");
+      console.error(error);
+    }
   };
 
   return (
@@ -89,38 +115,55 @@ function Offer(props: Props) {
                 Number(ride.numSeats) - ride.members.length === 1
                   ? 1 + " vaga disponível"
                   : Number(ride.numSeats) -
-                  ride.members.length +
-                  " vagas disponíveis"
+                    ride.members.length +
+                    " vagas disponíveis"
               }
               color="gray"
               size="base"
             />
           </div>
 
-            <div>
-              <Text label="⏰ Data e hora:" color="dark" size="base" weight="bold" />
-              <Text label={formatarDate(ride.scheduledTime)} color="gray" size="base" />
-            </div>
+          <div>
+            <Text
+              label="⏰ Data e hora:"
+              color="dark"
+              size="base"
+              weight="bold"
+            />
+            <Text
+              label={formatarDate(ride.scheduledTime)}
+              color="gray"
+              size="base"
+            />
+          </div>
 
-            <div>
-              <Text label="🙋 Membros:" color="dark" size="base" weight="bold" />
-              {ride.members && ride.members.length > 0 ? (
-                <ul>
-                  {ride.members.map((member, index) => (
-                    <li key={index}>
-                      <p
-                        className="font-[Poppins] text-gray text-lg cursor-pointer hover:text-blue-500"
-                        onClick={() => handleViewProfile(member.user.userId)}
-                      >
-                        {`- ${member.user.name} (${member.aggreedValue ? `R$ ${member.aggreedValue}` : 'De Graça'})`}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <Text label="Sem membros por enquanto..." color="gray" size="base" />
-              )}
-            </div>
+          <div>
+            <Text label="🙋 Membros:" color="dark" size="base" weight="bold" />
+            {ride.members && ride.members.length > 0 ? (
+              <ul>
+                {ride.members.map((member, index) => (
+                  <li key={index}>
+                    <p
+                      className="font-[Poppins] text-gray text-lg cursor-pointer hover:text-blue-500"
+                      onClick={() => handleViewProfile(member.user.userId)}
+                    >
+                      {`- ${member.user.name} (${
+                        member.aggreedValue
+                          ? `R$ ${member.aggreedValue}`
+                          : "De Graça"
+                      })`}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <Text
+                label="Sem membros por enquanto..."
+                color="gray"
+                size="base"
+              />
+            )}
+          </div>
         </div>
         <PencilSimple
           color="#FFB400"
@@ -156,7 +199,12 @@ function Offer(props: Props) {
           shape="square"
           onClick={() => handleOverRide(ride.rideId)}
         />
-        <Image onClick={() => handleChat()} className="w-10 h-10" src={chat} alt="car" />
+        <Image
+          onClick={() => handleChat()}
+          className="w-10 h-10"
+          src={chat}
+          alt="car"
+        />
       </div>
     </div>
   );
