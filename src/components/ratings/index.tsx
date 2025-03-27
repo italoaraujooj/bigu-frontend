@@ -3,8 +3,12 @@ import { formatarData } from "@/utils/masks";
 import Image from "next/image";
 import Homem from "../../assets/avatar.png";
 import WomanAvatar from "../../assets/woman.png";
-import LottieAnimation from "../../components/LottieAnimation";
 import ghost from "../../assets/ghost.json";
+import dynamic from "next/dynamic";
+
+const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
+  ssr: false,
+});
 
 type Props = {
   ratings: RatingResponseDTO[];

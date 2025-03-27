@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, forwardRef } from "react";
 import clsx from "clsx";
 import { useField } from "@unform/core";
 
@@ -30,11 +30,11 @@ interface Props {
   validate?: (value: string) => string | undefined;
   maxLength?: number;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-// type InputProps = JSX.IntrinsicElements["input"] & Props;
-
-export default function Input(props: Props) {
+const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const {
     name,
     label,
@@ -51,6 +51,7 @@ export default function Input(props: Props) {
     className,
     validate,
     maxLength = 100,
+    onBlur,
   } = props;
 
   const styles = {
@@ -69,16 +70,18 @@ export default function Input(props: Props) {
     },
   };
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const internalRef = useRef<HTMLInputElement>(null);
+  const inputRef = (ref || internalRef) as React.RefObject<HTMLInputElement>;
+
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
   useEffect(() => {
+    if (!inputRef.current) return;
+
     registerField({
       name: fieldName,
       ref: inputRef,
-      getValue: (ref) => {
-        return ref.current.value;
-      },
+      getValue: (ref) => ref.current.value,
       setValue: (ref, value) => {
         ref.current.value = value;
       },
@@ -86,20 +89,18 @@ export default function Input(props: Props) {
         ref.current.value = "";
       },
     });
-  }, [fieldName, registerField]);
+  }, [fieldName, registerField, inputRef]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const maskedValue = mask ? mask(value) : value;
-
-    inputRef.current!.value = maskedValue;
+    if (inputRef.current) inputRef.current.value = maskedValue;
   };
 
-  const handleBlur = () => {
-    const inputValue = inputRef.current!.value;
-    const error = validate ? validate(inputValue) : undefined;
-
-    // TODO: Handle the error state and display the error message accordingly
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const inputValue = inputRef.current?.value;
+    const validationError = validate ? validate(inputValue || "") : undefined;
+    onBlur?.(e);
   };
 
   return (
@@ -133,13 +134,14 @@ export default function Input(props: Props) {
         value={value}
         required={required}
         onChange={handleChange}
-        onBlur={(e) => {
-          handleBlur();
-          props.onBlur?.(e);
-        }}
+        onBlur={handleBlur}
         maxLength={maxLength}
       />
       {error && <span>{error}</span>}
     </div>
   );
-}
+});
+
+Input.displayName = "Input";
+
+export default Input;
