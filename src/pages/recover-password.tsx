@@ -1,6 +1,5 @@
 // import { Button, Input, Text } from '@/components';
 import { Button, Input, Text } from "@/components";
-import LottieAnimation from "@/components/LottieAnimation";
 import { forgotPasswordRequest, verifyCode } from "@/services/auth";
 import { CaretCircleLeft } from "@phosphor-icons/react/dist/ssr/CaretCircleLeft";
 import { FormHandles, SubmitHandler } from "@unform/core";
@@ -10,6 +9,11 @@ import Router, { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import success from "../assets/message_sent.json";
 import { toast } from "react-toastify";
+import dynamic from "next/dynamic";
+
+const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
+  ssr: false,
+});
 
 interface RecoverPasswordFormState {
   email: string;
@@ -24,19 +28,19 @@ export default function RecoverPassword() {
   const formRef = useRef<FormHandles>(null);
   const formRefCod = useRef<FormHandles>(null);
   const [successRequest, setSuccessRequest] = useState(false);
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("");
 
   const handleSubmit: SubmitHandler<RecoverPasswordFormState> = async ({
     email,
   }) => {
-    try{
+    try {
       const res = await forgotPasswordRequest(email);
       if (res?.status === 200) {
-        setEmail(email)
+        setEmail(email);
         setSuccessRequest(true);
       }
-    }catch(error: any){
-      toast.error(error.message)
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -44,11 +48,11 @@ export default function RecoverPassword() {
     const res = await verifyCode(data.code);
     if (res?.status === 202) {
       router.push({
-        pathname: '/update-password',
-        query: { email: email }
-      })
+        pathname: "/update-password",
+        query: { email: email },
+      });
     }
-  }
+  };
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -126,7 +130,13 @@ export default function RecoverPassword() {
                   required
                 />
               </div>
-              <Button label="Enviar" size="lg" color="yellow" shape="square" type="submit" />
+              <Button
+                label="Enviar"
+                size="lg"
+                color="yellow"
+                shape="square"
+                type="submit"
+              />
             </div>
           </Form>
         </div>

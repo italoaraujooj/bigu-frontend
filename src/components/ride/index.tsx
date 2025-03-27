@@ -1,7 +1,11 @@
 import { AuthContext } from "@/context/AuthContext";
 import { fetchUserAddresses } from "@/services/address";
 import { requestRide } from "@/services/ride";
-import { AddressResponseDTO, RequestRide, RideResponseDTO } from "@/types/types";
+import {
+  AddressResponseDTO,
+  RequestRide,
+  RideResponseDTO,
+} from "@/types/types";
 import { formatarData } from "@/utils/masks";
 import type { Ride } from "@/utils/types";
 import clsx from "clsx";
@@ -15,9 +19,13 @@ import { formatarDate } from "@/utils/masks";
 import Modal from "../modal";
 import Button from "../button";
 import Dropdown from "../dropdown";
-import LottieAnimation from "../LottieAnimation";
 import MapFullScreen from "../mapFullScreen";
 import Text from "../text";
+import dynamic from "next/dynamic";
+
+const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
+  ssr: false,
+});
 
 type Props = {
   ridesAvailable: RideResponseDTO[];

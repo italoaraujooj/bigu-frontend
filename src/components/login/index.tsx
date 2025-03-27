@@ -10,8 +10,13 @@ import clsx from "clsx";
 import Modal from "../modal";
 import Router from "next/router";
 import { RequestContext } from "@/context/RequestContext";
-import LottieAnimation from "../LottieAnimation";
 import CarLoading from "../../assets/Car.json";
+
+import dynamic from "next/dynamic";
+
+const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
+  ssr: false,
+});
 
 interface UserLoginState {
   email: string;
@@ -39,10 +44,8 @@ function Login(props: Props) {
   };
 
   const handleRecoveryPassword = () => {
-
-    Router.push("/recover-password")
-
-  }
+    Router.push("/recover-password");
+  };
 
   return (
     <div
@@ -94,13 +97,28 @@ function Login(props: Props) {
               required
             />
           </div>
-          <span className="text-sm text-gray cursor-pointer self-end hover:underline font-[Poppins]" onClick={handleRecoveryPassword}>Esqueci minha senha</span>
-          <Button label="Entrar" size="lg" color="yellow" shape="square" type="submit" />
+          <span
+            className="text-sm text-gray cursor-pointer self-end hover:underline font-[Poppins]"
+            onClick={handleRecoveryPassword}
+          >
+            Esqueci minha senha
+          </span>
+          <Button
+            label="Entrar"
+            size="lg"
+            color="yellow"
+            shape="square"
+            type="submit"
+          />
         </div>
       </Form>
-      {<Modal isOpen={loading} onClose={() => {}} noActions transparent>
-          <div className="w-72 h-72"><LottieAnimation data={CarLoading}  /></div>
-        </Modal> }
+      {
+        <Modal isOpen={loading} onClose={() => {}} noActions transparent>
+          <div className="w-72 h-72">
+            <LottieAnimation data={CarLoading} />
+          </div>
+        </Modal>
+      }
     </div>
   );
 }

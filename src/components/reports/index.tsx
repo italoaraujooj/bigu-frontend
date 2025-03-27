@@ -3,11 +3,15 @@ import { formatarData } from "@/utils/masks";
 import Image from "next/image";
 import Homem from "../../assets/avatar.png";
 import WomanAvatar from "../../assets/woman.png";
-import LottieAnimation from "../../components/LottieAnimation";
 import ghost from "../../assets/ghost.json";
 import { PencilSimple } from "@phosphor-icons/react/dist/ssr/PencilSimple";
 import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
+import dynamic from "next/dynamic";
+
+const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
+  ssr: false,
+});
 
 type Props = {
   reports: ReportResponseDTO[];
@@ -28,10 +32,7 @@ const Reports = (props: Props) => {
 
       {reports?.length > 0 ? (
         reports?.map((report, index) => (
-          <div
-            key={index}
-            className="flex flex-col bg-white rounded-lg p-4"
-          >
+          <div key={index} className="flex flex-col bg-white rounded-lg p-4">
             <div className="flex md:flex-row items-center gap-4 justify-between">
               <div className="flex items-center gap-3">
                 <div className="relative">

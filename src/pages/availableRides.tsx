@@ -2,18 +2,22 @@ import { Button } from "@/components";
 import RideFull from "@/components/rideFull";
 import Text from "@/components/text";
 import { AuthContext } from "@/context/AuthContext";
-import { 
-  getAllRidesActive, 
+import {
+  getAllRidesActive,
   getAllRidesAvailable,
   getAllRidesActiveToWomen,
   getAllRidesAvailableToWomen,
- } from "@/services/ride";
+} from "@/services/ride";
 import { RideResponseDTO } from "@/types/types";
 import Router from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ghost from "../assets/ghost.json";
-import LottieAnimation from "../components/LottieAnimation";
+import dynamic from "next/dynamic";
+
+const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
+  ssr: false,
+});
 
 function AvailableRides() {
   const [rides, setRides] = useState<RideResponseDTO[]>([]);
@@ -33,14 +37,11 @@ function AvailableRides() {
 
       if (isAvailable && isToWomen) {
         response = await getAllRidesAvailableToWomen();
-      } 
-      else if (isAvailable) {
+      } else if (isAvailable) {
         response = await getAllRidesAvailable();
-      } 
-      else if (isToWomen) {
+      } else if (isToWomen) {
         response = await getAllRidesActiveToWomen();
-      } 
-      else {
+      } else {
         response = await getAllRidesActive();
       }
       setRides(response?.data.rides || []);
@@ -90,21 +91,20 @@ function AvailableRides() {
               shape="square"
               onClick={clearFilters}
             />
-            <Button 
-              label="Disponíveis" 
-              size="res" 
+            <Button
+              label="Disponíveis"
+              size="res"
               color={isAvailable ? "green" : "yellow"}
-              shape="square" 
+              shape="square"
               onClick={() => setIsAvailable(!isAvailable)}
             />
-            <Button 
-              label="Para elas" 
-              size="res" 
+            <Button
+              label="Para elas"
+              size="res"
               color={isToWomen ? "pink" : "yellow"}
-              shape="square" 
+              shape="square"
               onClick={() => setIsToWomen(!isToWomen)}
             />
-              
           </div>
           {loading ? (
             <div className="flex items-center justify-center">

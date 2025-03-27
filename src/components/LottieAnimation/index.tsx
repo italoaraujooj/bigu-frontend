@@ -1,25 +1,37 @@
 import clsx from "clsx";
-import Lottie from "lottie-web";
+import Lottie, { AnimationItem } from "lottie-web";
 import { useEffect, useRef } from "react";
-// import animationData from '../../assets/ghost.json';
 
-const LottieAnimation = ({ data, loop = true, className = "" }: any) => {
-  const animationRef = useRef(null);
+interface LottieProps {
+  data: object;
+  loop?: boolean;
+  className?: string;
+}
+
+const LottieAnimation = ({
+  data,
+  loop = true,
+  className = "",
+}: LottieProps) => {
+  const animationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const anim = Lottie.loadAnimation({
-      // @ts-ignore
-      container: animationRef.current,
-      renderer: "svg",
-      loop: loop,
-      autoplay: true,
-      animationData: data,
-    });
+    let anim: AnimationItem | undefined;
+
+    if (animationRef.current) {
+      anim = Lottie.loadAnimation({
+        container: animationRef.current,
+        renderer: "svg",
+        loop,
+        autoplay: true,
+        animationData: data,
+      });
+    }
 
     return () => {
-      anim.destroy();
+      anim?.destroy();
     };
-  }, []);
+  }, [data, loop]);
 
   return <div ref={animationRef} className={clsx(className)} />;
 };
