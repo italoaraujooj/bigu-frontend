@@ -1,163 +1,128 @@
-// "use client";
-import { GoBack } from "@/components";
+import React, { useContext, useEffect, useState } from "react";
+import ChatLayout from "@/components/chat/ChatLayout";
+import ChatWindow from "@/components/chat/ChatWindow";
+import {
+  fetchUserConversations,
+  fetchMessages,
+  sendMessage,
+  createOrGetChatRoom,
+} from "@/services/chat";
 import { AuthContext } from "@/context/AuthContext";
-import { pollMessages, sendChatMessage } from "@/services/chat";
-import clsx from "clsx";
-import { useSearchParams } from "next/navigation";
-import { useContext, useEffect, useRef, useState } from "react";
+import ChatSidebar from "@/components/chat/ChatSidebar";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
-const Chat = () => {
-  const searchParams = useSearchParams();
-
-  const senderId = searchParams.get("senderId");
-  const rideId = searchParams.get("rideId");
-
+export default function ChatPage() {
+  const [conversations, setConversations] = useState<any[]>([]);
+  const [selectedConversationId, setSelectedConversationId] = useState<
+    string | null
+  >(null);
+  const [messages, setMessages] = useState<any[]>([]);
   const { user } = useContext(AuthContext);
+  const currentUserId = user?.userId || "";
+  const router = useRouter();
+  const { chatRoomId } = router.query;
 
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<
-    Array<{
-      _id: string;
-      message: string;
-      userId: {
-        _id: string;
-        name: string;
-      };
-      rideId: string;
-      timestamp: string;
-    }>
-  >([]);
+  const loadConversations = async () => {
+    if (!user) return;
 
-  const [loading, setLoading] = useState(false);
+    try {
+      const response = await fetchUserConversations(user.userId);
+      setConversations(response.data); // depende do formato retornado pelo backend
+    } catch (error) {
+      console.error("Erro ao buscar conversas:", error);
+    }
+  };
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  // Exemplo: carregar as conversas ao abrir a tela
+  useEffect(() => {
+    loadConversations();
+  }, []);
 
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+  const handleStartChat = async (rideId: string, participantId: string) => {
+    if (!user) return;
+
+    try {
+      const response = await createOrGetChatRoom(
+        rideId,
+        user.userId,
+        participantId
+      );
+      const chatRoomId = response.data.chatRoomId;
+
+      // Redireciona para a conversa
+      router.push(`/chat?chatRoomId=${chatRoomId}`);
+
+      // Atualiza a lista de conversas na sidebar
+      await loadConversations();
+    } catch (error) {
+      console.error("Erro ao iniciar o chat:", error);
+      toast.error("Não foi possível iniciar a conversa.");
     }
   };
 
   useEffect(() => {
-    const getMessagens = async () => {
-      if (!rideId) {
-        return;
-      }
-
-      const timestampOneWeekAgo = new Date();
-      timestampOneWeekAgo.setDate(timestampOneWeekAgo.getDate() - 7);
-      const response = await pollMessages(
-        rideId,
-        timestampOneWeekAgo.toISOString()
-      );
-      setMessages(response?.data?.messages || []);
-      setTimeout(() => {
-        scrollToBottom();
-      }, 300);
-    };
-
-    // refetch messages every 5 seconds
-
-    getMessagens();
-
-    const interval = setInterval(() => {
-      getMessagens();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [rideId]);
-
-  const handleSendMessage = () => {
-    if (!rideId || !senderId) {
-      return;
+    if (chatRoomId && typeof chatRoomId === "string") {
+      setSelectedConversationId(chatRoomId);
     }
-    setLoading(true);
-    sendChatMessage({
-      rideId: rideId!,
-      userId: senderId!,
-      message,
-    }).then((response) => {
-      const timestampOneWeekAgo = new Date();
-      timestampOneWeekAgo.setDate(timestampOneWeekAgo.getDate() - 7);
-      pollMessages(rideId!, timestampOneWeekAgo.toISOString())
-        .then((response) => {
-          setMessages(response?.data?.messages || []);
-        })
-        .finally(() => {
-          setMessage("");
-          setLoading(false);
-          setTimeout(() => {
-            scrollToBottom();
-          }, 300);
-        });
-    });
+  }, [chatRoomId]);
+
+  useEffect(() => {
+    const loadConversations = async () => {
+      if (user) {
+        const response = await fetchUserConversations(user?.userId);
+        setConversations(response.data);
+      }
+    };
+    loadConversations();
+  }, []);
+
+  useEffect(() => {
+    const loadMessages = async () => {
+      if (selectedConversationId) {
+        const response = await fetchMessages(selectedConversationId);
+        setMessages(response.data);
+      }
+    };
+    loadMessages();
+  }, [selectedConversationId]);
+
+  const handleSend = async (message: string) => {
+    if (selectedConversationId) {
+      await sendMessage(selectedConversationId, message, user?.userId);
+      const response = await fetchMessages(selectedConversationId);
+      setMessages(response.data);
+    }
   };
 
+  if (!user) return null;
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen w-screen">
-      <GoBack />
-      <div className="bg-white flex gap-2 flex-col items-center p-4 rounded max-h-[75%]">
-        <div
-          ref={messagesEndRef}
-          className="flex flex-col gap-2 p-2 w-[100%] overflow-y-scroll"
-        >
-          {messages.map((message) => (
-            <div
-              key={message._id}
-              className={clsx("border-4 rounded px-3 py-1 flex flex-col", {
-                "self-end bg-slate-300": message.userId._id === user?.userId,
-                "self-start bg-blue-300": message.userId._id !== user?.userId,
-              })}
-            >
-              <span
-                className={clsx("text-xs text-slate-800", {
-                  "self-end": message.userId._id === user?.userId,
-                  "self-start": message.userId._id !== user?.userId,
-                })}
-              >
-                {message.userId.name}
-              </span>
-              <span
-                className={clsx({
-                  "self-end": message.userId._id == user?.userId,
-                })}
-              >
-                {message.message}
-              </span>
-              <span
-                className={clsx("text-xs text-slate-800", {
-                  "self-end": message.userId._id === user?.userId,
-                  "self-start": message.userId._id !== user?.userId,
-                })}
-              >
-                {new Date(message.timestamp).toLocaleTimeString()}
-              </span>
-            </div>
-          ))}
-          {messages.length === 0 && (
-            <div className="text-center text-gray-500">Sem mensagens</div>
-          )}
-        </div>
-        <div className="p-2 flex gap-2">
-          <input
-            className="border-2 rounded p-2"
-            type="text"
-            placeholder="Digite sua mensagem"
-            disabled={!rideId || !senderId || loading}
-            onChange={(e) => setMessage(e.target.value)}
-            value={message}
+    <div className="w-screen h-screen bg-dark text-white">
+      <ChatLayout
+        sidebar={
+          <ChatSidebar
+            conversations={conversations}
+            onSelectConversation={setSelectedConversationId}
           />
-          <button
-            type="button"
-            onClick={handleSendMessage}
-            className="bg-blue-500 text-white rounded p-2"
-          >
-            Enviar
-          </button>
-        </div>
-      </div>
+        }
+        chatWindow={
+          selectedConversationId ? (
+            <ChatWindow
+              messages={messages}
+              onSend={handleSend}
+              currentUserId={currentUserId}
+              conversationId={selectedConversationId}
+            />
+          ) : (
+            <div className="flex-1 h-screen flex items-center justify-center">
+              <p className="text-white text-xl font-semibold">
+                Selecione uma conversa
+              </p>
+            </div>
+          )
+        }
+      />
     </div>
   );
-};
-
-export default Chat;
+}

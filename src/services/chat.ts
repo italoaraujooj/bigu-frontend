@@ -1,36 +1,29 @@
-import { toast } from "react-toastify";
-import { api } from "./api";
+import { api } from "./api"; // seu axios ou fetch wrapper
 
-export const sendChatMessage = async (body:
-  {
-    rideId: string,
-    userId: string,
-    message: string
-  }
+export const fetchUserConversations = async (userId: string) => {
+  return api.get(`/chat/conversations/${userId}`);
+};
+
+export const fetchMessages = async (chatRoomId: string) => {
+  return api.get(`/chat/messages/${chatRoomId}`);
+};
+
+export const sendMessage = async (chatRoomId: string, content: string, userId?: string) => {
+  return api.post(`/chat/messages`, {
+    chatRoom: chatRoomId,
+    content,
+    sender: userId,
+  });
+};
+
+export const createOrGetChatRoom = async (
+  rideId: string,
+  userId: string,
+  participantId: string
 ) => {
-  try {
-    const response = api.post('/chat/send', body);
-    return response;
-  } catch (err: any) {
-    toast.error(err.message)
-  }
-}
-
-// export const getChatMessages = async (userId: string, otherUserId: string) => {
-//   try {
-//     const response = api.get(`/messages?userId=${userId}&otherUserId=${otherUserId}`);
-//     return response;
-//   } catch (err: any) {
-//     toast.error(err.message)
-//   }
-// }
-
-
-export const pollMessages = async (rideId: string, timestamp: string) => {
-  try {
-    const response = api.get(`/chat/poll?rideId=${rideId}&lastTimestamp=${timestamp}`);
-    return response;
-  } catch (err: any) {
-    toast.error(err.message)
-  }
-}
+  return api.post(`/chat/create-or-get-room`, {
+    rideId,
+    userId,
+    participantId,
+  });
+};
