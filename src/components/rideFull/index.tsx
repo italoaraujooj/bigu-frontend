@@ -23,6 +23,7 @@ import Mapa from "../map";
 import MapFullScreen from "../mapFullScreen";
 import Modal from "../modal";
 import { createOrGetChatRoom } from "@/services/chat";
+import socket from "@/services/socket";
 
 interface RideProps {
   id: string;
@@ -110,17 +111,21 @@ function RideFull(props: RideProps) {
     setIsMapFullScreen((prev) => !prev);
   };
 
-  const handleChatWithDriver = async () => {
+  const handleChatWithDriver = async (
+    rideId: string,
+    driverId: string,
+    currentUserId: string
+  ) => {
     if (!user) return;
     try {
       const response = await createOrGetChatRoom(
-        props.id,
-        user?.userId || "",
-        props.driver.userId
+        rideId,
+        currentUserId,
+        driverId
       );
-      if (response?.data?.chatRoomId) {
-        Router.push(`/chat?chatRoomId=${response.data.chatRoomId}`);
-      }
+      const chatRoomId = response.data.chatRoomId;
+      socket.emit('chatRoomCreated', { driverId, chatRoomId });
+      Router.push(`/chat?chatRoomId=${chatRoomId}&participantId=${driverId}`);
     } catch (err) {
       console.error("Erro ao abrir chat:", err);
       toast.error("Erro ao abrir o chat.");
@@ -208,7 +213,7 @@ function RideFull(props: RideProps) {
               <div className="flex flex-col h-full items-center gap-4 md:self-center">
                 <Button
                   label={"Chat"}
-                  onClick={() => handleChatWithDriver()}
+                  onClick={() => handleChatWithDriver(props.id, props.driver.userId, (user?.userId || ''))}
                   size="xs"
                   color="green"
                   shape="square"

@@ -17,12 +17,12 @@ import Text from "../text";
 import Link from "./Link";
 import { AddressResponseDTO, CarResponseDTO } from "@/types/types";
 import { AuthContext } from "@/context/AuthContext";
-import Homem from "../../assets/avatar.png"
+import Homem from "../../assets/avatar.png";
 
 type Props = {
   handleOpenRequests: () => void;
   handleOpenRides: () => void;
-  hasCandidates: boolean
+  hasCandidates: boolean;
 };
 
 export default function Header(props: Props) {
@@ -33,7 +33,7 @@ export default function Header(props: Props) {
     handleNavigateToOfferRide,
   } = useDrawer();
   const router = useRouter();
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
 
   const [carsUser, setCarsUser] = useState<CarResponseDTO[]>([]);
   const [userAddresses, setUserAddresses] = useState<AddressResponseDTO[]>([]);
@@ -62,27 +62,35 @@ export default function Header(props: Props) {
   return (
     <header className="flex justify-between items-center">
       <div className="flex gap-4 items-center">
-        {user?.sex === "Feminino" ?
-        <div className="relative w-16 h-16">
-          <Image
-            onClick={() => router.push("/profile")}
-            className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer rounded-full"
-            fill
-            src={user?.profileImage? `data:image/jpeg;base64,${user.profileImage}` : Foto}
-            alt="foto"
-          />
-        </div>
-        :
-        <div className="relative w-16 h-16">
-          <Image
-            onClick={() => router.push("/profile")}
-            className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer rounded-full"
-            fill
-            src={user?.profileImage? `data:image/jpeg;base64,${user.profileImage}` : Homem}
-            alt="foto"
-          />
-        </div>
-        }
+        {user?.sex === "Feminino" ? (
+          <div className="relative w-16 h-16">
+            <Image
+              onClick={() => router.push("/profile")}
+              className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer rounded-full"
+              fill
+              src={
+                user?.profileImage
+                  ? `data:image/jpeg;base64,${user.profileImage}`
+                  : Foto
+              }
+              alt="foto"
+            />
+          </div>
+        ) : (
+          <div className="relative w-16 h-16">
+            <Image
+              onClick={() => router.push("/profile")}
+              className="w-12 h-12 lg:w-20 lg:h-20 cursor-pointer rounded-full"
+              fill
+              src={
+                user?.profileImage
+                  ? `data:image/jpeg;base64,${user.profileImage}`
+                  : Homem
+              }
+              alt="foto"
+            />
+          </div>
+        )}
         {hoveredImage && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-800/70 rounded-full">
             <label
@@ -123,15 +131,20 @@ export default function Header(props: Props) {
         )}
       </div>
       <div className="hidden lg:flex md:gap-5 items-center">
-      <button
-          className="group transition-all duration-300 ease-in-out"
-        >
+        <button className="group transition-all duration-300 ease-in-out">
           <Link
             to="/help"
             className={clsx(
               "py-2 text-gray text-base hover:text-[#a8a29e] uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8"
             )}
             label="Ajuda"
+          />
+        </button>
+        <button className="group transition-all duration-300 ease-in-out">
+          <Link
+            to="/chat"
+            className="py-2 text-gray text-base hover:text-[#a8a29e] uppercase font-medium bg-left-bottom bg-gradient-to-r from-amber-400 to-amber-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out underline-offset-8"
+            label="Chat"
           />
         </button>
         <button
@@ -153,7 +166,7 @@ export default function Header(props: Props) {
         <button
           onClick={props.handleOpenRequests}
           className="group transition-all duration-300 ease-in-out"
-        > 
+        >
           <div className="flex">
             <Text
               label="Solicitações"
@@ -163,7 +176,7 @@ export default function Header(props: Props) {
               weight="medium"
             />
             {props.hasCandidates && (
-            <span className="w-2 h-2 rounded-full bg-red" />
+              <span className="w-2 h-2 rounded-full bg-red" />
             )}
           </div>
         </button>

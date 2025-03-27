@@ -28,8 +28,8 @@ export default function MessageBubble({
   return (
     <div
       className={clsx("flex flex-col max-w-[75%]", {
-        "self-start items-start": isOwnMessage,
-        "self-end items-end": !isOwnMessage,
+        "self-end items-end": isOwnMessage, // Alinha à direita se for do próprio usuário
+        "self-start items-start": !isOwnMessage, // Alinha à esquerda se for do outro
       })}
     >
       {showAvatar && avatarUrl && (
@@ -42,10 +42,12 @@ export default function MessageBubble({
         />
       )}
       <div
-        className={clsx("px-4 py-2 rounded-lg text-sm", {
-          "bg-green-600 text-white rounded-br-none": isOwnMessage,
-          "bg-zinc-700 text-white rounded-bl-none": !isOwnMessage,
-        })}
+        className={clsx(
+          "px-4 py-2 rounded-lg text-sm",
+          isOwnMessage
+            ? "bg-amber-500 text-white rounded-br-none"
+            : "bg-zinc-700 text-white rounded-bl-none"
+        )}
       >
         {message}
       </div>

@@ -26,7 +26,7 @@ export default function MessageInput({ onSend }: MessageInputProps) {
           if (e.key === "Enter") handleSend();
         }}
       />
-      <Button label="Enviar" color="green" size="sm" onClick={handleSend} />
+      <Button label="Enviar" color="yellow" size="sm" onClick={handleSend} />
     </div>
   );
 }

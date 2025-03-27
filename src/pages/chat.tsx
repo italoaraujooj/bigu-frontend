@@ -17,22 +17,27 @@ export default function ChatPage() {
   const [selectedConversationId, setSelectedConversationId] = useState<
     string | null
   >(null);
+  const [participantId, setParticipantId] = useState<string | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const { user } = useContext(AuthContext);
   const currentUserId = user?.userId || "";
   const router = useRouter();
-  const { chatRoomId } = router.query;
+  const { chatRoomId, participantId: queryParticipantId } = router.query;
 
   const loadConversations = async () => {
     if (!user) return;
 
     try {
       const response = await fetchUserConversations(user.userId);
-      setConversations(response.data); // depende do formato retornado pelo backend
+      setConversations(response.data);
     } catch (error) {
       console.error("Erro ao buscar conversas:", error);
     }
   };
+
+  useEffect(() => {
+    loadConversations();
+  }, [user]);
 
   // Exemplo: carregar as conversas ao abrir a tela
   useEffect(() => {
@@ -50,10 +55,15 @@ export default function ChatPage() {
       );
       const chatRoomId = response.data.chatRoomId;
 
-      // Redireciona para a conversa
-      router.push(`/chat?chatRoomId=${chatRoomId}`);
+      // Seta o participantId que você acabou de usar
+      setParticipantId(participantId);
 
-      // Atualiza a lista de conversas na sidebar
+      // Redireciona para a conversa
+      router.push(
+        `/chat?chatRoomId=${chatRoomId}&participantId=${participantId}`
+      );
+
+      // Atualiza a sidebar
       await loadConversations();
     } catch (error) {
       console.error("Erro ao iniciar o chat:", error);
@@ -65,17 +75,11 @@ export default function ChatPage() {
     if (chatRoomId && typeof chatRoomId === "string") {
       setSelectedConversationId(chatRoomId);
     }
-  }, [chatRoomId]);
 
-  useEffect(() => {
-    const loadConversations = async () => {
-      if (user) {
-        const response = await fetchUserConversations(user?.userId);
-        setConversations(response.data);
-      }
-    };
-    loadConversations();
-  }, []);
+    if (queryParticipantId && typeof queryParticipantId === "string") {
+      setParticipantId(queryParticipantId);
+    }
+  }, [chatRoomId, queryParticipantId]);
 
   useEffect(() => {
     const loadMessages = async () => {
@@ -103,7 +107,9 @@ export default function ChatPage() {
         sidebar={
           <ChatSidebar
             conversations={conversations}
-            onSelectConversation={setSelectedConversationId}
+            selectedChatId={setSelectedConversationId}
+            onStartChat={handleStartChat}
+            onRefresh={loadConversations}
           />
         }
         chatWindow={
@@ -113,6 +119,7 @@ export default function ChatPage() {
               onSend={handleSend}
               currentUserId={currentUserId}
               conversationId={selectedConversationId}
+              participantId={participantId}
             />
           ) : (
             <div className="flex-1 h-screen flex items-center justify-center">
