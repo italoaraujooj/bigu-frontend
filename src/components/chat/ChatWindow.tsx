@@ -101,21 +101,9 @@ export default function ChatWindow({
         <div className="flex flex-col gap-2">
           {[...chatMessages].map((msg, index, arr) => {
             const isOwn = msg.sender._id === currentUserId;
-            const isLastOwnMessage =
+            const isLastFromUser =
               index === arr.length - 1 ||
               arr[index + 1]?.sender._id !== msg.sender._id;
-
-            const current = msg;
-            const next = arr[index + 1];
-
-            let showTimestamp = true;
-            if (next && current.sender._id === next.sender._id) {
-              const currentTime = new Date(current.timestamp).getTime();
-              const nextTime = new Date(next.timestamp).getTime();
-              const diffMinutes =
-                Math.abs(currentTime - nextTime) / (1000 * 60);
-              if (diffMinutes <= 30) showTimestamp = false;
-            }
 
             const avatarUrl = isOwn
               ? user?.profileImage
@@ -129,37 +117,33 @@ export default function ChatWindow({
               ? WomanAvatar.src
               : HomemAvatar.src;
 
-            // Define margem lateral para alinhar bolhas com ou sem avatar
-            const bubbleMargin =
-              !isOwn && !isLastOwnMessage
-                ? "ml-10"
-                : isOwn && !isLastOwnMessage
-                ? "mr-10"
-                : "";
-
             return (
               <div
-                key={current.id || index}
-                className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+                key={msg.id || index}
+                className={`flex ${
+                  isOwn ? "justify-end ml-10" : "justify-start mr-10"
+                }`}
               >
                 <div
-                  className={`flex ${
+                  className={`flex items-end gap-2 ${
                     isOwn ? "flex-row-reverse" : "flex-row"
-                  } gap-2 items-end`}
+                  }`}
                 >
-                  <MessageBubble
-                    message={current.content}
-                    isOwnMessage={isOwn}
-                    timestamp={showTimestamp ? current.timestamp : undefined}
-                  />
-
-                  {isLastOwnMessage && (
+                  {isLastFromUser ? (
                     <img
                       src={avatarUrl}
                       alt="avatar"
                       className="w-8 h-8 rounded-full"
                     />
+                  ) : (
+                    <div className="w-8 h-8" />
                   )}
+
+                  <MessageBubble
+                    message={msg.content}
+                    isOwnMessage={isOwn}
+                    timestamp={isLastFromUser ? msg.timestamp : undefined}
+                  />
                 </div>
               </div>
             );
