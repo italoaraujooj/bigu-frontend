@@ -113,7 +113,7 @@ const Carousel = (props: Props) => {
                 />
                 <button
                   type="button"
-                  className="h-12 font-family bg-green rounded-lg text-white font-semibold text-sm lg:text-base px-4 lg:px-6 flex items-center justify-between gap-3 lg:gap-6 uppercase tracking-tight hover:bg-hover-green"
+                  className="h-12 font-family bg-yellow rounded-lg text-white font-semibold text-sm lg:text-base px-4 lg:px-6 flex items-center justify-between gap-3 lg:gap-6 uppercase tracking-tight hover:bg-hover-yellow"
                 >
                   <div
                     className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center"
