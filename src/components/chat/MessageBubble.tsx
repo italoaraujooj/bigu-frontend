@@ -27,11 +27,12 @@ export default function MessageBubble({
 
   return (
     <div
-      className={clsx("flex flex-col max-w-[75%]", {
-        "self-end items-end": isOwnMessage, // Alinha à direita se for do próprio usuário
-        "self-start items-start": !isOwnMessage, // Alinha à esquerda se for do outro
+      className={clsx("flex items-end gap-2 max-w-[75%]", {
+        "self-end flex-row-reverse": isOwnMessage,
+        "self-start flex-row": !isOwnMessage,
       })}
     >
+      {/* Avatar */}
       {showAvatar && avatarUrl && (
         <Image
           src={avatarUrl}
@@ -41,19 +42,23 @@ export default function MessageBubble({
           className="rounded-full object-cover"
         />
       )}
-      <div
-        className={clsx(
-          "px-4 py-2 rounded-lg text-sm",
-          isOwnMessage
-            ? "bg-amber-500 text-white rounded-br-none"
-            : "bg-zinc-700 text-white rounded-bl-none"
+
+      {/* Mensagem + Timestamp */}
+      <div className="flex flex-col">
+        <div
+          className={clsx(
+            "px-4 py-2 rounded-lg text-sm break-words",
+            isOwnMessage
+              ? "bg-amber-500 text-white rounded-br-none"
+              : "bg-zinc-700 text-white rounded-bl-none"
+          )}
+        >
+          {message}
+        </div>
+        {formattedTime && (
+          <span className="text-xs text-gray-400 mt-1">{formattedTime}</span>
         )}
-      >
-        {message}
       </div>
-      {formattedTime && (
-        <span className="text-xs text-gray-400 mt-1">{formattedTime}</span>
-      )}
     </div>
   );
 }

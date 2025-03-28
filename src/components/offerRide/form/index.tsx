@@ -311,7 +311,7 @@ function OfferRideForm(props: Props) {
             label="oferecer carona"
             size="base"
             className="uppercase font-semibold px-3 lg:px-6"
-            color="green"
+            color="yellow"
             type="submit"
           />
         </section>
